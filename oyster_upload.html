@@ -50,7 +50,6 @@
 
         var reader = new FileReader();
 
-        // If we use onloadend, we need to check the readyState.
         reader.onloadend = function(evt) {
             if (evt.target.readyState == FileReader.DONE) { // DONE == 2
 
