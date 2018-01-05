@@ -51,6 +51,7 @@ const sendToAlphaBroker = (byteChunks, file) => {
       );
       reader.readAsBinaryString(blob);
     });
+    resolve();
   });
 };
 
@@ -68,5 +69,6 @@ const sendToBetaBroker = (byteChunks, file) => {
       );
       reader.readAsBinaryString(blob);
     });
+    resolve();
   });
 };
