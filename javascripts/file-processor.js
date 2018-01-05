@@ -38,33 +38,35 @@ const createReader = onRead => {
 };
 
 const sendToAlphaBroker = (byteChunks, file) => {
-  console.log("FIRST HALF: ", byteChunks);
-  byteChunks.forEach(byte => {
-    // TODO: Do something with byte.chunkId (the index)
-    const { chunkStartingPoint } = byte;
-    const reader = createReader(content => {
-      document.getElementById("byte_content").textContent += content;
+  new Promise((resolve, reject) => {
+    byteChunks.forEach(byte => {
+      // TODO: Do something with byte.chunkId (the index)
+      const { chunkStartingPoint } = byte;
+      const reader = createReader(content => {
+        document.getElementById("byte_content").textContent += content;
+      });
+      const blob = file.slice(
+        chunkStartingPoint,
+        chunkStartingPoint + CHUNK_BYTE_SIZE
+      );
+      reader.readAsBinaryString(blob);
     });
-    const blob = file.slice(
-      chunkStartingPoint,
-      chunkStartingPoint + CHUNK_BYTE_SIZE
-    );
-    reader.readAsBinaryString(blob);
   });
 };
 
 const sendToBetaBroker = (byteChunks, file) => {
-  console.log("LAST HALF: ", byteChunks);
-  byteChunks.reverse().forEach(byte => {
-    // TODO: Do something with byte.chunkId (the index)
-    const { chunkStartingPoint } = byte;
-    const reader = createReader(content => {
-      document.getElementById("byte_content").textContent += content;
+  new Promise((resolve, reject) => {
+    byteChunks.reverse().forEach(byte => {
+      // TODO: Do something with byte.chunkId (the index)
+      const { chunkStartingPoint } = byte;
+      const reader = createReader(content => {
+        document.getElementById("byte_content").textContent += content;
+      });
+      const blob = file.slice(
+        chunkStartingPoint,
+        Math.min(file.size, chunkStartingPoint + CHUNK_BYTE_SIZE)
+      );
+      reader.readAsBinaryString(blob);
     });
-    const blob = file.slice(
-      chunkStartingPoint,
-      Math.min(file.size, chunkStartingPoint + CHUNK_BYTE_SIZE)
-    );
-    reader.readAsBinaryString(blob);
   });
 };
