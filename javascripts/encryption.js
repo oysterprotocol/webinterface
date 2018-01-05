@@ -27,6 +27,38 @@ const decrypt = (ciphertext, secretkey) => {
   return bytes.toString(CryptoJS.enc.Utf8);
 };
 
+//ADDING METADATA SECTION
+var buildMetaDataPacket = function(name, extension, handle){
+	
+	var jsonString = assembleMetaDataJson(name,extension);
+
+	var encryptedMetaData = encrypt(jsonString, handle);
+	
+	return encryptedMetaData;
+	
+};
+
+var assembleMetaDataJson = function(name,extension){
+  
+	var jsonString =  "{\"fname\":\""+name+"\",\"ext\":\""+extension+"\"}";
+  
+	return jsonString;
+}
+
+
+//TESTING ADD METADATA (Handle building was pulled out of this class, but this method is tested)
+var testAddMetaData = function(handle){
+	var name = "test1";
+	var ext = "png";
+	var split_size = 30;
+	
+	var metaDataPacket = buildMetaDataPacket(name, ext, handle); 
+
+	//decrypt and see if we can get the json back
+	var decryptedMetaData = decrypt(metaDataPacket, handle);
+	console.log(JSON.parse(decryptedMetaData).fname == name);
+}
+
 // TESTING:  MOVE TO DIFFERENT FILE
 // console.log("salt");
 // console.log(getSalt(8));
