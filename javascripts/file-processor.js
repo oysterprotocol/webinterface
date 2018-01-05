@@ -24,8 +24,23 @@ const uploadFileToBrokerNodes = file => {
   sendToBetaBroker(lastHalfOfBytes, file);
 };
 
+const createReader = () => {
+  const reader = new FileReader();
+  reader.onloadend = function(evt) {
+    if (evt.target.readyState == FileReader.DONE) {
+      document.getElementById("byte_content").textContent += evt.target.result;
+    }
+  };
+  return reader;
+};
+
 const sendToAlphaBroker = (byteChunks, file) => {
   console.log("FIRST HALF: ", byteChunks);
+  byteChunks.forEach(byte => {
+    const reader = createReader();
+    const blob = file.slice(byte, byte + CHUNK_BYTE_SIZE);
+    reader.readAsBinaryString(blob);
+  });
 };
 
 const sendToBetaBroker = (byteChunks, file) => {
