@@ -1,3 +1,5 @@
+const CHUNK_BYTE_SIZE = 30;
+
 const buildOysterHandle = (fileName, entropy) => {
   const fileNameTrimmed = parseEightCharsOfFilename(fileName);
   const salt = getSalt(8);
@@ -7,9 +9,7 @@ const buildOysterHandle = (fileName, entropy) => {
   return handle;
 };
 
-const CHUNK_BYTE_SIZE = 30;
-
-const uploadFileToBrokerNodes = file => {
+const createByteChunks = file => {
   // This returns an array with the starting byte pointers
   // ex: For a 150 byte file it would return: [0, 31, 62, 93, 124]
   const byteLocations = _.range(0, file.size, CHUNK_BYTE_SIZE + 1);
@@ -17,14 +17,25 @@ const uploadFileToBrokerNodes = file => {
     return { chunkId: index, chunkStartingPoint: byte };
   });
 
+  return byteChunks;
+};
+
+const uploadFileToBrokerNodes = file => {
+  const byteChunks = createByteChunks(file);
+
   const firstHalfOfByteChunks = byteChunks.slice(0, byteChunks.length / 2);
   const lastHalfOfByteChunks = byteChunks.slice(
     byteChunks.length / 2,
     byteChunks.length
   );
 
-  sendToAlphaBroker(firstHalfOfByteChunks, file);
-  sendToBetaBroker(lastHalfOfByteChunks, file);
+  Promise.all([
+    sendToAlphaBroker(firstHalfOfByteChunks, file),
+    sendToBetaBroker(lastHalfOfByteChunks, file)
+  ]).then(([fileChunkMapSentToAlpha, fileChunkMapSentToBeta]) => {
+    console.log("ALPHA COMPLETE: ", fileChunkMapSentToAlpha);
+    console.log("BETA COMPLETE: ", fileChunkMapSentToBeta);
+  });
 };
 
 const createReader = onRead => {
@@ -37,38 +48,39 @@ const createReader = onRead => {
   return reader;
 };
 
-const sendToAlphaBroker = (byteChunks, file) => {
-  new Promise((resolve, reject) => {
-    byteChunks.forEach(byte => {
-      // TODO: Do something with byte.chunkId (the index)
-      const { chunkStartingPoint } = byte;
-      const reader = createReader(content => {
-        document.getElementById("byte_content").textContent += content;
-      });
-      const blob = file.slice(
-        chunkStartingPoint,
-        chunkStartingPoint + CHUNK_BYTE_SIZE
-      );
-      reader.readAsBinaryString(blob);
+const chunkFile = (file, byteChunks, sliceCutOffFn) => {
+  const chunks = {};
+
+  byteChunks.forEach(byte => {
+    const { chunkId, chunkStartingPoint } = byte;
+    const reader = createReader(fileSlice => {
+      chunks[chunkId] = fileSlice;
+      // document.getElementById("byte_content").textContent += content;
     });
-    resolve();
+    const blob = file.slice(
+      chunkStartingPoint,
+      sliceCutOffFn(chunkStartingPoint)
+    );
+    reader.readAsBinaryString(blob);
   });
+
+  return chunks;
 };
 
-const sendToBetaBroker = (byteChunks, file) => {
+const sendToAlphaBroker = (byteChunks, file) =>
   new Promise((resolve, reject) => {
-    byteChunks.reverse().forEach(byte => {
-      // TODO: Do something with byte.chunkId (the index)
-      const { chunkStartingPoint } = byte;
-      const reader = createReader(content => {
-        document.getElementById("byte_content").textContent += content;
-      });
-      const blob = file.slice(
-        chunkStartingPoint,
-        Math.min(file.size, chunkStartingPoint + CHUNK_BYTE_SIZE)
-      );
-      reader.readAsBinaryString(blob);
-    });
-    resolve();
+    fileChunkMap = chunkFile(
+      file,
+      byteChunks,
+      byteLocation => byteLocation + CHUNK_BYTE_SIZE
+    );
+    resolve(fileChunkMap);
   });
-};
+
+const sendToBetaBroker = (byteChunks, file) =>
+  new Promise((resolve, reject) => {
+    fileChunkMap = chunkFile(file, byteChunks.reverse(), byteLocation =>
+      Math.min(file.size, byteLocation + CHUNK_BYTE_SIZE)
+    );
+    resolve(fileChunkMap);
+  });
