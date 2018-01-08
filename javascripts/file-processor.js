@@ -34,9 +34,8 @@ const uploadFileToBrokerNodes = file => {
   Promise.all([
     sendToAlphaBroker(firstHalfOfByteChunks, file),
     sendToBetaBroker(lastHalfOfByteChunks, file)
-  ]).then(([fileChunkMapSentToAlpha, fileChunkMapSentToBeta]) => {
-    console.log("ALPHA COMPLETE: ", fileChunkMapSentToAlpha);
-    console.log("BETA COMPLETE: ", fileChunkMapSentToBeta);
+  ]).then(() => {
+    console.log("Upload complete!");
   });
 };
 
@@ -51,14 +50,15 @@ const createReader = onRead => {
 };
 
 const chunkFile = (file, byteChunks, sliceCutOffFn) => {
-  const chunks = {};
   const handle = createHandle(file.name);
 
   byteChunks.forEach(byte => {
     const { chunkId, chunkStartingPoint } = byte;
     const reader = createReader(fileSlice => {
-      chunks[chunkId] = encrypt(fileSlice, SECRET_KEY);
-      // document.getElementById("byte_content").textContent += content;
+      document.getElementById("byte_content").textContent += encrypt(
+        fileSlice,
+        SECRET_KEY
+      );
     });
     const blob = file.slice(
       chunkStartingPoint,
@@ -66,24 +66,18 @@ const chunkFile = (file, byteChunks, sliceCutOffFn) => {
     );
     reader.readAsBinaryString(blob);
   });
-
-  return chunks;
 };
 
 const sendToAlphaBroker = (byteChunks, file) =>
   new Promise((resolve, reject) => {
-    fileChunkMap = chunkFile(
-      file,
-      byteChunks,
-      byteLocation => byteLocation + CHUNK_BYTE_SIZE
-    );
-    resolve(fileChunkMap);
+    chunkFile(file, byteChunks, byteLocation => byteLocation + CHUNK_BYTE_SIZE);
+    resolve();
   });
 
 const sendToBetaBroker = (byteChunks, file) =>
   new Promise((resolve, reject) => {
-    fileChunkMap = chunkFile(file, byteChunks.reverse(), byteLocation =>
+    chunkFile(file, byteChunks.reverse(), byteLocation =>
       Math.min(file.size, byteLocation + CHUNK_BYTE_SIZE)
     );
-    resolve(fileChunkMap);
+    resolve();
   });
