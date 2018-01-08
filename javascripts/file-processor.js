@@ -1,9 +1,11 @@
+const SECRET_KEY = "SecretKey";
+const ENTROPY = "abc123";
 const CHUNK_BYTE_SIZE = 30;
 
-const buildOysterHandle = (fileName, entropy) => {
+const createHandle = fileName => {
   const fileNameTrimmed = parseEightCharsOfFilename(fileName);
   const salt = getSalt(8);
-  const primordialHash = getPrimordialHash(entropy);
+  const primordialHash = getPrimordialHash(ENTROPY);
   const handle = fileNameTrimmed + primordialHash + salt;
 
   return handle;
@@ -50,11 +52,12 @@ const createReader = onRead => {
 
 const chunkFile = (file, byteChunks, sliceCutOffFn) => {
   const chunks = {};
+  const handle = createHandle(file.name);
 
   byteChunks.forEach(byte => {
     const { chunkId, chunkStartingPoint } = byte;
     const reader = createReader(fileSlice => {
-      chunks[chunkId] = fileSlice;
+      chunks[chunkId] = encrypt(fileSlice, SECRET_KEY);
       // document.getElementById("byte_content").textContent += content;
     });
     const blob = file.slice(
