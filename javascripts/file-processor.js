@@ -24,15 +24,9 @@ const createByteChunks = file => {
 const uploadFileToBrokerNodes = file => {
   const byteChunks = createByteChunks(file);
 
-  const firstHalfOfByteChunks = byteChunks.slice(0, byteChunks.length / 2);
-  const lastHalfOfByteChunks = byteChunks.slice(
-    byteChunks.length / 2,
-    byteChunks.length
-  );
-
   Promise.all([
-    sendToAlphaBroker(firstHalfOfByteChunks, file),
-    sendToBetaBroker(lastHalfOfByteChunks, file)
+    sendToAlphaBroker(byteChunks, file),
+    sendToBetaBroker(byteChunks, file)
   ]).then(() => {
     console.log("Upload complete!");
   });
@@ -48,21 +42,32 @@ const createReader = onRead => {
   return reader;
 };
 
+const sentChunks = {};
+const sendChunkToNode = (chunkId, fileSlice, handle) => {
+  if (!!sentChunks[chunkId]) {
+    return;
+  }
+
+  // TODO: wrap this in promise and actually send the chunks to nodes
+  const encryptedChunk = encrypt(fileSlice, handle);
+  sentChunks[chunkId] = encryptedChunk;
+
+  return encryptedChunk;
+};
+
 const chunkFile = (file, byteChunks, sliceCutOffFn) => {
   const handle = createHandle(file.name);
 
   byteChunks.forEach(byte => {
     const { chunkId, chunkStartingPoint } = byte;
-    const reader = createReader(fileSlice => {
-      document.getElementById("byte_content").textContent += encrypt(
-        fileSlice,
-        handle
-      );
-    });
     const blob = file.slice(
       chunkStartingPoint,
       sliceCutOffFn(chunkStartingPoint)
     );
+
+    const reader = createReader(fileSlice => {
+      sendChunkToNode(chunkId, fileSlice, handle);
+    });
     reader.readAsBinaryString(blob);
   });
 };
