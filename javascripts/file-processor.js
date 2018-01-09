@@ -58,7 +58,7 @@ const sendChunkToNode = (chunkId, fileSlice, handle) => {
 const chunkFile = (file, byteChunks, sliceCutOffFn) => {
   const handle = createHandle(file.name);
 
-  byteChunks.forEach(byte => {
+  return byteChunks.map(byte => {
     const { chunkId, chunkStartingPoint } = byte;
     const blob = file.slice(
       chunkStartingPoint,
@@ -68,22 +68,26 @@ const chunkFile = (file, byteChunks, sliceCutOffFn) => {
     const reader = createReader(fileSlice => {
       sendChunkToNode(chunkId, fileSlice, handle);
     });
-    reader.readAsBinaryString(blob);
+    return reader.readAsBinaryString(blob);
   });
 };
 
 const sendToAlphaBroker = (byteChunks, file) =>
   new Promise((resolve, reject) => {
-    chunkFile(file, byteChunks, byteLocation => byteLocation + CHUNK_BYTE_SIZE);
-    resolve();
+    const blobs = chunkFile(
+      file,
+      byteChunks,
+      byteLocation => byteLocation + CHUNK_BYTE_SIZE
+    );
+    resolve(blobs);
   });
 
 const sendToBetaBroker = (byteChunks, file) =>
   new Promise((resolve, reject) => {
-    chunkFile(file, byteChunks.reverse(), byteLocation =>
+    const blobs = chunkFile(file, byteChunks.reverse(), byteLocation =>
       Math.min(file.size, byteLocation + CHUNK_BYTE_SIZE)
     );
-    resolve();
+    resolve(blobs);
   });
 
 const buildMetaDataPacket = (name, extension, handle) => {
