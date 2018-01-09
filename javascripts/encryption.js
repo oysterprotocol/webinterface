@@ -17,13 +17,13 @@ const getPrimordialHash = entropy => {
   return CryptoJS.SHA256(entropy);
 };
 
-const encrypt = (message, secretkey) => {
-  const ciphertext = CryptoJS.AES.encrypt(message, secretkey);
+const encrypt = (message, secretKey) => {
+  const ciphertext = CryptoJS.AES.encrypt(message, secretKey);
   return ciphertext.toString();
 };
 
-const decrypt = (ciphertext, secretkey) => {
-  const bytes = CryptoJS.AES.decrypt(ciphertext, secretkey);
+const decrypt = (ciphertext, secretKey) => {
+  const bytes = CryptoJS.AES.decrypt(ciphertext, secretKey);
   return bytes.toString(CryptoJS.enc.Utf8);
 };
 
