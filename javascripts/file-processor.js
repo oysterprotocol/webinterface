@@ -1,4 +1,3 @@
-const SECRET_KEY = "SecretKey";
 const ENTROPY = "abc123";
 const CHUNK_BYTE_SIZE = 30;
 
@@ -57,7 +56,7 @@ const chunkFile = (file, byteChunks, sliceCutOffFn) => {
     const reader = createReader(fileSlice => {
       document.getElementById("byte_content").textContent += encrypt(
         fileSlice,
-        SECRET_KEY
+        handle
       );
     });
     const blob = file.slice(
@@ -81,3 +80,28 @@ const sendToBetaBroker = (byteChunks, file) =>
     );
     resolve();
   });
+
+const buildMetaDataPacket = (name, extension, handle) => {
+  const metaData = assembleMetaData(name, extension);
+  const encryptedMetaData = encrypt(metaData, handle);
+
+  return encryptedMetaData;
+};
+
+const assembleMetaData = (name, extension) => {
+  const metaData = { fname: name, ext: extension };
+  return JSON.stringify(metaData);
+};
+
+// TODO: put this in an actual spec test
+const testAddMetaData = handle => {
+  const name = "test1";
+  const ext = "png";
+  const split_size = 30;
+
+  const metaDataPacket = buildMetaDataPacket(name, ext, handle);
+
+  //decrypt and see if we can get the json back
+  const decryptedMetaData = decrypt(metaDataPacket, handle);
+  console.log(JSON.parse(decryptedMetaData).fname == name);
+};
