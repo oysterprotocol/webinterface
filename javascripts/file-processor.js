@@ -28,7 +28,7 @@ const uploadFileToBrokerNodes = file => {
     sendToAlphaBroker(byteChunks, file),
     sendToBetaBroker(byteChunks, file)
   ]).then(() => {
-    console.log("Upload complete!");
+    console.log("Upload complete! ", sentChunks);
   });
 };
 
