@@ -17,47 +17,15 @@ const getPrimordialHash = entropy => {
   return CryptoJS.SHA256(entropy);
 };
 
-const encrypt = (message, secretkey) => {
-  const ciphertext = CryptoJS.AES.encrypt(message, secretkey);
+const encrypt = (message, secretKey) => {
+  const ciphertext = CryptoJS.AES.encrypt(message, secretKey);
   return ciphertext.toString();
 };
 
-const decrypt = (ciphertext, secretkey) => {
-  const bytes = CryptoJS.AES.decrypt(ciphertext, secretkey);
+const decrypt = (ciphertext, secretKey) => {
+  const bytes = CryptoJS.AES.decrypt(ciphertext, secretKey);
   return bytes.toString(CryptoJS.enc.Utf8);
 };
-
-//ADDING METADATA SECTION
-var buildMetaDataPacket = function(name, extension, handle){
-	
-	var jsonString = assembleMetaDataJson(name,extension);
-
-	var encryptedMetaData = encrypt(jsonString, handle);
-	
-	return encryptedMetaData;
-	
-};
-
-var assembleMetaDataJson = function(name,extension){
-  
-	var jsonString =  "{\"fname\":\""+name+"\",\"ext\":\""+extension+"\"}";
-  
-	return jsonString;
-}
-
-
-//TESTING ADD METADATA (Handle building was pulled out of this class, but this method is tested)
-var testAddMetaData = function(handle){
-	var name = "test1";
-	var ext = "png";
-	var split_size = 30;
-	
-	var metaDataPacket = buildMetaDataPacket(name, ext, handle); 
-
-	//decrypt and see if we can get the json back
-	var decryptedMetaData = decrypt(metaDataPacket, handle);
-	console.log(JSON.parse(decryptedMetaData).fname == name);
-}
 
 // TESTING:  MOVE TO DIFFERENT FILE
 // console.log("salt");
