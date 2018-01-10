@@ -1,6 +1,9 @@
 const ENTROPY = "abc123";
 const CHUNK_BYTE_SIZE = 30;
 
+// TODO: replace with real host when __ENV__ !== "development"
+const API_HOST = "http://localhost:8000";
+
 const createHandle = fileName => {
   const fileNameTrimmed = parseEightCharsOfFilename(fileName);
   const salt = getSalt(8);
@@ -15,11 +18,29 @@ const createByteChunks = file => {
   // ex: For a 150 byte file it would return: [0, 31, 62, 93, 124]
   const byteLocations = _.range(0, file.size, CHUNK_BYTE_SIZE + 1);
   const byteChunks = _.map(byteLocations, (byte, index) => {
-    return { chunkId: index, chunkStartingPoint: byte };
+    return { chunkIdx: index, chunkStartingPoint: byte };
   });
 
   return byteChunks;
 };
+
+const createUploadSession = file =>
+  new Promise((resolve, reject) => {
+    const postBody = {
+      file_size_bytes: file.size,
+      genesis_hash: createHandle(file.name)
+    };
+    fetch(`${API_HOST}/api/v1/upload-sessions`, {
+      method: "post",
+      body: JSON.stringify(postBody)
+    })
+      .then(response => resolve(response.json()))
+      .catch(error => {
+        // TODO: handle unhappy path when we get the broker node hosts
+        console.log("ERROR: ", error);
+        resolve();
+      });
+  });
 
 const uploadFileToBrokerNodes = file => {
   const byteChunks = createByteChunks(file);
@@ -43,14 +64,14 @@ const createReader = onRead => {
 };
 
 const sentChunks = {};
-const sendChunkToNode = (chunkId, fileSlice, handle) => {
-  if (!!sentChunks[chunkId]) {
+const sendChunkToNode = (chunkIdx, fileSlice, handle) => {
+  if (!!sentChunks[chunkIdx]) {
     return;
   }
 
   // TODO: wrap this in promise and actually send the chunks to nodes
   const encryptedChunk = encrypt(fileSlice, handle);
-  sentChunks[chunkId] = encryptedChunk;
+  sentChunks[chunkIdx] = encryptedChunk;
 
   return encryptedChunk;
 };
@@ -59,14 +80,14 @@ const chunkFile = (file, byteChunks, sliceCutOffFn) => {
   const handle = createHandle(file.name);
 
   return byteChunks.map(byte => {
-    const { chunkId, chunkStartingPoint } = byte;
+    const { chunkIdx, chunkStartingPoint } = byte;
     const blob = file.slice(
       chunkStartingPoint,
       sliceCutOffFn(chunkStartingPoint)
     );
 
     const reader = createReader(fileSlice => {
-      sendChunkToNode(chunkId, fileSlice, handle);
+      sendChunkToNode(chunkIdx, fileSlice, handle);
     });
     return reader.readAsBinaryString(blob);
   });

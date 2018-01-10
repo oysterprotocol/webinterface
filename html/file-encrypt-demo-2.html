@@ -36,7 +36,7 @@
       }
       var file = files[0];
 
-      uploadFileToBrokerNodes(file);
+      createUploadSession(file).then(() => uploadFileToBrokerNodes(file));
     }
   }, false);
 </script>
