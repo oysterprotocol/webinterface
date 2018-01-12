@@ -1,14 +1,12 @@
-import React, { Component } from "react";
+import React from "react";
 
-import Logo from "components/shared/Logo";
-import "components/app.css";
+import "./app.css";
+
+import Header from "./header";
 
 const Root = () => (
   <div className="App">
-    <header className="App-header">
-      <Logo />
-      <h1 className="App-title">Welcome to Oyster</h1>
-    </header>
+    <Header />
     <button className="App-intro">Upload a file.</button>
   </div>
 );
