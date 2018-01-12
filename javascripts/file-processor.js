@@ -122,16 +122,3 @@ const assembleMetaData = (name, extension) => {
   const metaData = { fname: name, ext: extension };
   return JSON.stringify(metaData);
 };
-
-// TODO: put this in an actual spec test
-const testAddMetaData = handle => {
-  const name = "test1";
-  const ext = "png";
-  const split_size = 30;
-
-  const metaDataPacket = buildMetaDataPacket(name, ext, handle);
-
-  //decrypt and see if we can get the json back
-  const decryptedMetaData = decrypt(metaDataPacket, handle);
-  console.log(JSON.parse(decryptedMetaData).fname == name);
-};
