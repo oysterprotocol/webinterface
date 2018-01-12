@@ -1,16 +1,16 @@
 import React from "react";
-import App from "components/App";
-import Logo from "components/shared/Logo";
+import Main from "components/main";
+import Logo from "components/shared/logo";
 
-describe("<App />", () => {
+describe("<Main />", () => {
   it("renders welcome text", () => {
-    const app = shallow(<App />);
+    const app = shallow(<Main />);
 
     expect(app.text()).toContain("Welcome to Oyster");
   });
 
   it("renders the <Logo /> component", () => {
-    const app = shallow(<App />);
+    const app = shallow(<Main />);
 
     expect(app.find(Logo)).toHaveLength(1);
   });
