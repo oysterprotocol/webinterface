@@ -1,6 +1,7 @@
 import React, { Component } from "react";
+
 import Logo from "components/shared/Logo";
-import "./App.css";
+import "components/App.css";
 
 class App extends Component {
   render() {
@@ -10,7 +11,7 @@ class App extends Component {
           <Logo />
           <h1 className="App-title">Welcome to Oyster</h1>
         </header>
-        <p className="App-intro">Upload a file.</p>
+        <button className="App-intro">Upload a file.</button>
       </div>
     );
   }
