@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 
 import Logo from "components/shared/Logo";
-import "components/App.css";
+import "components/app.css";
 
 const Root = () => (
   <div className="App">
