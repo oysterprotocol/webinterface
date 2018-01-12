@@ -1,6 +1,5 @@
 import { combineReducers } from "redux";
 
-// TODO: Create real reducers
-const reducer = (state = { hello: "world" }, action) => state;
+import exampleReducer from "./example-reducer";
 
-export default combineReducers({ reducer });
+export default combineReducers({ exampleReducer });
