@@ -22,14 +22,13 @@
     "identity-obj-proxy": "^3.0.0",
     "jest": "21.2.1",
     "jest-enzyme": "^4.0.2",
-    "react-addons-test-utils": "^15.6.2",
     "react-scripts": "1.0.17",
     "regenerator-runtime": "^0.11.1"
   },
   "scripts": {
     "start": "NODE_PATH=src react-scripts start",
     "build": "NODE_PATH=src react-scripts build",
-    "test": "NODE_PATH=src jest",
+    "test": "jest",
     "eject": "NODE_PATH=src react-scripts eject"
   },
   "jest": {
