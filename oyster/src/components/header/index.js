@@ -2,7 +2,7 @@ import React from "react";
 
 import "../app.css";
 
-import Logo from "../shared/Logo";
+import Logo from "../shared/logo";
 
 const Header = () => (
   <header className="App-header">
