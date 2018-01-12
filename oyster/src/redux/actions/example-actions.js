@@ -1,7 +1,11 @@
-const ACTIONS = Object.freeze({
-  INCREMENT: "oyster/example/increment"
-});
+const INCREMENT = "oyster/example/increment";
 
-export const incrementAction = () => ({ type: ACTIONS.INCREMENT });
+const ACTIONS = Object.freeze({
+  // actions
+  INCREMENT,
+
+  // actionCreators
+  incrementAction: () => ({ type: ACTIONS.INCREMENT })
+});
 
 export default ACTIONS;
