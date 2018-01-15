@@ -1,6 +1,6 @@
 import React from "react";
 
-import "../root.css";
+import "components/root.css";
 
 import Logo from "../shared/logo";
 
