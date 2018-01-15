@@ -2,8 +2,8 @@ import { applyMiddleware, compose, createStore } from "redux";
 import { createLogger } from "redux-logger";
 import { createEpicMiddleware } from "redux-observable";
 
-import epics from "./epics";
-import reducer from "./reducers";
+import epics from "redux/epics";
+import reducer from "redux/reducers";
 
 const composeFn = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 const middleware = [

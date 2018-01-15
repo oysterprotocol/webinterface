@@ -1,4 +1,4 @@
-import exampleActions from "../actions/example-actions";
+import exampleActions from "redux/actions/example-actions";
 
 const initState = { counter: 0 };
 
