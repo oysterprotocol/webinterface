@@ -1,4 +1,9 @@
 import _ from "lodash";
+import {
+  parseEightCharsOfFilename,
+  getSalt,
+  getPrimordialHash
+} from "utils/encryption";
 
 const ENTROPY = "abc123";
 const CHUNK_BYTE_SIZE = 30;
@@ -125,4 +130,4 @@ const assembleMetaData = (name, extension) => {
   return JSON.stringify(metaData);
 };
 
-export default { createByteChunks };
+export default { createHandle, createByteChunks };

@@ -12,6 +12,9 @@ global.render = render;
 global.mount = mount;
 global.toJson = toJson;
 
+// Mock globals
+global.Math.random = () => 0.123456789;
+
 // Fail tests on any warning
 console.error = message => {
   throw new Error(message);

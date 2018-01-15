@@ -1,5 +1,15 @@
 import FileProcessor from "utils/file-processor";
 
+describe("createHandle", () => {
+  it("returns a string based on file name, primordial hash, and salt", () => {
+    // jest.mock("utils/encryption", () => ({
+    // parseEightCharsOfFilename: jest.fn(filename => "abc123")
+    // }));
+    const handle = FileProcessor.createHandle("my_file.png");
+    expect(handle).toEqual("aaa");
+  });
+});
+
 describe("createByteChunks", () => {
   it("loads returns an array of objects with chunkIdx and chunkStartingPoint", () => {
     const file = { size: 90 };
