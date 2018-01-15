@@ -1,3 +1,5 @@
+import CryptoJS from "crypto-js";
+
 const parseEightCharsOfFilename = fileName => {
   fileName = fileName + "________";
   fileName = fileName.substr(0, 8);
@@ -14,17 +16,19 @@ const getSalt = numChars => {
 };
 
 const getPrimordialHash = entropy => {
-  return CryptoJS.SHA256(entropy);
+  return CryptoJS.SHA256(entropy).toString();
 };
 
-const encrypt = (message, secretKey) => {
-  const ciphertext = CryptoJS.AES.encrypt(message, secretKey);
-  return ciphertext.toString();
-};
+const encrypt = (message, secretKey) =>
+  CryptoJS.AES.encrypt(message, secretKey);
 
-const decrypt = (ciphertext, secretKey) => {
-  const bytes = CryptoJS.AES.decrypt(ciphertext, secretKey);
-  return bytes.toString(CryptoJS.enc.Utf8);
-};
+const decrypt = (ciphertext, secretKey) =>
+  CryptoJS.AES.decrypt(ciphertext, secretKey);
 
-export default { parseEightCharsOfFilename, getSalt, getPrimordialHash };
+export default {
+  parseEightCharsOfFilename,
+  getSalt,
+  getPrimordialHash,
+  encrypt,
+  decrypt
+};
