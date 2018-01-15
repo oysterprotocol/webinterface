@@ -1,4 +1,3 @@
-import CryptoJS from "crypto-js";
 jest.mock("crypto-js", () => ({
   SHA256: jest.fn(() => "mocked_sha256_string"),
   AES: {
@@ -6,7 +5,6 @@ jest.mock("crypto-js", () => ({
     decrypt: jest.fn(() => "mocked_decrypted_message")
   }
 }));
-
 import Encryption from "utils/encryption";
 
 describe("parseEightCharsOfFilename", () => {

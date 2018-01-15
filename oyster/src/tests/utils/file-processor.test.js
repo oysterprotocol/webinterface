@@ -1,12 +1,14 @@
+jest.mock("utils/encryption", () => ({
+  parseEightCharsOfFilename: jest.fn(() => "12345678"),
+  getSalt: jest.fn(() => "salty_salt"),
+  getPrimordialHash: jest.fn(() => "hashy_hash")
+}));
 import FileProcessor from "utils/file-processor";
 
 describe("createHandle", () => {
   it("returns a string based on file name, primordial hash, and salt", () => {
-    // jest.mock("utils/encryption", () => ({
-    // parseEightCharsOfFilename: jest.fn(filename => "abc123")
-    // }));
     const handle = FileProcessor.createHandle("my_file.png");
-    expect(handle).toEqual("aaa");
+    expect(handle).toEqual("12345678hashy_hashsalty_salt");
   });
 });
 
