@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "lodash": "^4.17.4",
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
     "react-redux": "^5.0.6",
@@ -30,12 +31,15 @@
     "eject": "NODE_PATH=src react-scripts eject"
   },
   "jest": {
-    "roots": ["<rootDir>/src"],
-    "modulePaths": ["<rootDir>/src"],
+    "roots": [
+      "<rootDir>/src"
+    ],
+    "modulePaths": [
+      "<rootDir>/src"
+    ],
     "setupTestFrameworkScriptFile": "<rootDir>/src/setup-tests.js",
     "moduleNameMapper": {
-      ".+\\.(css|styl|less|sass|scss|png|jpg|ttf|woff|woff2)$":
-        "identity-obj-proxy"
+      ".+\\.(css|styl|less|sass|scss|png|jpg|ttf|woff|woff2)$": "identity-obj-proxy"
     }
   }
 }
