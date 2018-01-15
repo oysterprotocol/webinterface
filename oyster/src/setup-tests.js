@@ -1,4 +1,4 @@
-import raf from "tempPolyfills";
+import raf from "temp-polyfills";
 import Enzyme, { shallow, render, mount } from "enzyme";
 import Adapter from "enzyme-adapter-react-16";
 import toJson from "enzyme-to-json";

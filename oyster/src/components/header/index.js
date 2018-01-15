@@ -1,7 +1,6 @@
 import React from "react";
 
 import "components/root.css";
-
 import Logo from "../shared/logo";
 
 const Header = () => (
