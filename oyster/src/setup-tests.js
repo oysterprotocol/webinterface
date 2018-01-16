@@ -1,3 +1,4 @@
+import nock from "nock";
 import raf from "temp-polyfills";
 import Enzyme, { shallow, render, mount } from "enzyme";
 import Adapter from "enzyme-adapter-react-16";
@@ -19,3 +20,5 @@ global.Math.random = () => 0.123456789;
 console.error = message => {
   throw new Error(message);
 };
+
+nock.disableNetConnect();

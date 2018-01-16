@@ -11,6 +11,7 @@
     "redux": "^3.7.2",
     "redux-logger": "^3.0.6",
     "redux-observable": "^0.17.0",
+    "request": "^2.83.0",
     "rxjs": "^5.5.6"
   },
   "devDependencies": {
@@ -22,6 +23,7 @@
     "enzyme-to-json": "^3.3.0",
     "identity-obj-proxy": "^3.0.0",
     "jest-enzyme": "^4.0.2",
+    "nock": "^9.1.6",
     "react-scripts": "1.0.17",
     "regenerator-runtime": "^0.11.1"
   },
