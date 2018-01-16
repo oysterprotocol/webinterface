@@ -1,9 +1,12 @@
+import nock from "nock";
 jest.mock("utils/encryption", () => ({
   parseEightCharsOfFilename: jest.fn(() => "12345678"),
   getSalt: jest.fn(() => "salty_salt"),
   getPrimordialHash: jest.fn(() => "hashy_hash")
 }));
+
 import FileProcessor from "utils/file-processor";
+import { API } from "config";
 
 describe("createHandle", () => {
   it("returns a string based on file name, primordial hash, and salt", () => {
@@ -22,5 +25,21 @@ describe("createByteChunks", () => {
       { chunkIdx: 2, chunkStartingPoint: 62 }
     ];
     expect(byteChunks).toEqual(expectedResult);
+  });
+});
+
+describe("createUploadSession", () => {
+  beforeEach(() => {
+    nock(API.HOST)
+      .post(API.V1_UPLOAD_SESSIONS_PATH)
+      .reply(201, {
+        ok: true
+      });
+  });
+
+  it("makes a POST request to /api/v1/upload-sessions", async () => {
+    const file = { size: 90, name: "secretFile.png" };
+    const response = await FileProcessor.createUploadSession(file);
+    expect(response).toEqual({ ok: true });
   });
 });

@@ -1,15 +1,15 @@
 import _ from "lodash";
+import request from "request";
 import {
   parseEightCharsOfFilename,
   getSalt,
   getPrimordialHash
 } from "utils/encryption";
 
+import { API } from "config";
+
 const ENTROPY = "abc123";
 const CHUNK_BYTE_SIZE = 30;
-
-// TODO: replace with real host when __ENV__ !== "development"
-const API_HOST = "http://localhost:8000";
 
 const createHandle = fileName => {
   const fileNameTrimmed = parseEightCharsOfFilename(fileName);
@@ -33,20 +33,19 @@ const createByteChunks = file => {
 
 const createUploadSession = file =>
   new Promise((resolve, reject) => {
-    const postBody = {
-      file_size_bytes: file.size,
-      genesis_hash: createHandle(file.name)
-    };
-    fetch(`${API_HOST}/api/v1/upload-sessions`, {
-      method: "post",
-      body: JSON.stringify(postBody)
-    })
-      .then(response => resolve(response.json()))
-      .catch(error => {
-        // TODO: handle unhappy path when we get the broker node hosts
-        console.log("ERROR: ", error);
-        resolve();
-      });
+    request.post(
+      `${API.HOST}${API.V1_UPLOAD_SESSIONS_PATH}`,
+      {
+        file_size_bytes: file.size,
+        genesis_hash: createHandle(file.name)
+      },
+      (error, response, body) => {
+        if (error) {
+          return reject(error);
+        }
+        resolve(JSON.parse(response.body));
+      }
+    );
   });
 
 const uploadFileToBrokerNodes = file => {
@@ -130,4 +129,4 @@ const assembleMetaData = (name, extension) => {
   return JSON.stringify(metaData);
 };
 
-export default { createHandle, createByteChunks };
+export default { createHandle, createByteChunks, createUploadSession };
