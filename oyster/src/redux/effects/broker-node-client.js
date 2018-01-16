@@ -36,9 +36,9 @@ export const pollUntilComplete = (genHash, chunkIdx) =>
         .get(`BROKER_NODE_URL/api/v1/chunk-status`, params)
         .then(({ status }) => {
           switch (status) {
-            case CHUNK_STATUSES.PENDING:
+            case CHUNK_STATUSES_API.PENDING:
               return; // continue polling.
-            case CHUNK_STATUSES.COMPLETE:
+            case CHUNK_STATUSES_API.COMPLETE:
               clearInterval(pollInterval);
               return resolve({ status: "complete" });
             default:
