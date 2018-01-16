@@ -33,11 +33,14 @@ const createByteChunks = file => {
 
 const createUploadSession = file =>
   new Promise((resolve, reject) => {
+    console.log(createHandle(file.name));
     request.post(
-      `${API.HOST}${API.V1_UPLOAD_SESSIONS_PATH}`,
       {
-        file_size_bytes: file.size,
-        genesis_hash: createHandle(file.name)
+        url: `${API.HOST}${API.V1_UPLOAD_SESSIONS_PATH}`,
+        form: {
+          file_size_bytes: 90,
+          genesis_hash: "12345678hashy_hashsalty_salt"
+        }
       },
       (error, response, body) => {
         if (error) {

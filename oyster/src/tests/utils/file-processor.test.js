@@ -30,6 +30,7 @@ describe("createByteChunks", () => {
 
 describe("createUploadSession", () => {
   beforeEach(() => {
+    // TODO: figure out how to mock request with certain params
     nock(API.HOST)
       .post(API.V1_UPLOAD_SESSIONS_PATH)
       .reply(201, {
