@@ -24,24 +24,28 @@ const CHUNK_STATUSES_API = Object.freeze({
 export const pollUntilComplete = (genHash, chunkIdx) =>
   new Promise((resolve, reject) => {
     const startTs = Date.now();
+    const params = { genesis_hash: genHash, chunk_idx: chunkIdx };
+
     const pollInterval = setInterval(() => {
       if (Date.now() > startTs + POLLING_TIMEOUT) {
         clearInterval(pollInterval);
         return reject({ status: CHUNK_STATUSES.TIMEOUT });
       }
 
-      axios.get(`BROKER_NODE_URL/api/v1/chunk-status`).then(({ status }) => {
-        switch (status) {
-          case CHUNK_STATUSES.PENDING:
-            return; // continue polling.
-          case CHUNK_STATUSES.COMPLETE:
-            clearInterval(pollInterval);
-            return resolve({ status: "complete" });
-          default:
-            // assumes error.
-            clearInterval(pollInterval);
-            return reject({ status: CHUNK_STATUSES.ERROR });
-        }
-      });
+      axios
+        .get(`BROKER_NODE_URL/api/v1/chunk-status`, params)
+        .then(({ status }) => {
+          switch (status) {
+            case CHUNK_STATUSES.PENDING:
+              return; // continue polling.
+            case CHUNK_STATUSES.COMPLETE:
+              clearInterval(pollInterval);
+              return resolve({ status: "complete" });
+            default:
+              // assumes error.
+              clearInterval(pollInterval);
+              return reject({ status: CHUNK_STATUSES.ERROR });
+          }
+        });
     }, POLLING_FREQ);
   });
