@@ -12,7 +12,7 @@ function uploadFile(action$, store) {
     return Observable.fromPromise(FileProcessor.uploadFileToBrokerNodes(file))
       .map(fileActions.uploadSuccessAction)
       .catch(error => {
-        console.log("ERRRRRORRRRRR: ", error);
+        console.log("ERROR: ", error);
         return Observable.of(fileActions.uploadFailureAction);
       });
   });

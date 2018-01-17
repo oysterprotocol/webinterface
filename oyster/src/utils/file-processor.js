@@ -71,18 +71,28 @@ const createReader = onRead => {
   return reader;
 };
 
-const sentChunks = {};
-const sendChunkToNode = (chunkIdx, fileSlice, handle) => {
-  if (!!sentChunks[chunkIdx]) {
-    return;
-  }
+const sendChunkToNode = (chunkIdx, data, handle) =>
+  new Promise((resolve, reject) => {
+    const encryptedData = encrypt(data, handle);
+    request.post(
+      {
+        url: `${API.HOST}${API.V1_UPLOAD_CHUNKS_PATH}`,
+        form: {
+          chunkIdx,
+          data: encryptedData,
+          genesis_hash: handle
+        }
+      },
+      (error, response, body) => {
+        if (error) {
+          return reject(error);
+        }
+        resolve(JSON.parse(response.body));
+      }
+    );
 
-  // TODO: wrap this in promise and actually send the chunks to nodes
-  const encryptedChunk = encrypt(fileSlice, handle);
-  sentChunks[chunkIdx] = encryptedChunk;
-
-  return encryptedChunk;
-};
+    return encryptedData;
+  });
 
 const chunkFile = (file, byteChunks, sliceCutOffFn) => {
   const handle = createHandle(file.name);
@@ -133,6 +143,7 @@ const assembleMetaData = (name, extension) => {
 
 export default {
   uploadFileToBrokerNodes,
+  sendChunkToNode,
   createHandle,
   createByteChunks,
   createUploadSession,
