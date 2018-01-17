@@ -13,7 +13,7 @@ function uploadFile(action$, store) {
       .map(fileActions.uploadSuccessAction)
       .catch(error => {
         console.log("ERROR: ", error);
-        return Observable.of(fileActions.uploadFailureAction);
+        return fileActions.uploadFailureAction;
       });
   });
 }

@@ -17,10 +17,12 @@ const uploadFileToBrokerNodes = file => {
   const byteChunks = createByteChunks(file);
   const handle = createHandle(file.name);
 
-  return Promise.all([
-    sendToAlphaBroker(byteChunks, file, handle),
-    sendToBetaBroker(byteChunks, file, handle)
-  ]);
+  return createUploadSession(file, handle).then(() =>
+    Promise.all([
+      sendToAlphaBroker(byteChunks, file, handle),
+      sendToBetaBroker(byteChunks, file, handle)
+    ])
+  );
 };
 
 const createHandle = fileName => {
@@ -43,21 +45,23 @@ const createByteChunks = file => {
   return byteChunks;
 };
 
-const createUploadSession = file =>
+const createUploadSession = (file, handle) =>
   new Promise((resolve, reject) => {
     request.post(
       {
         url: `${API.HOST}${API.V1_UPLOAD_SESSIONS_PATH}`,
         form: {
-          file_size_bytes: 90,
-          genesis_hash: "12345678hashy_hashsalty_salt"
+          file_size_bytes: file.size,
+          genesis_hash: handle
         }
       },
       (error, response, body) => {
         if (error) {
-          return reject(error);
+          console.log("ERROR: ", error);
+          // TODO: uncomment this
+          // return reject(error);
         }
-        resolve(JSON.parse(response.body));
+        resolve();
       }
     );
   });
