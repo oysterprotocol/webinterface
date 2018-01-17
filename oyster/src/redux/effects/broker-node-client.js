@@ -3,7 +3,7 @@ import axios from "axios";
 // TODO: Put all interactions with backend here.
 
 const BROKER_NODE_URL = "https://www.google.com"; // TODO: Real url.
-const POLLING_FREQ = 4; // 4 seconds.
+const POLLING_FREQ = 4000; // 4 seconds.
 const POLLING_TIMEOUT = 100000000; // TODO: Agree on a timeout value.
 
 export const CHUNK_STATUSES = Object.freeze({
