@@ -1,15 +1,26 @@
 import _ from "lodash";
 import request from "request";
-import {
+import Encryption from "utils/encryption";
+import { API } from "config";
+
+const {
   parseEightCharsOfFilename,
   getSalt,
-  getPrimordialHash
-} from "utils/encryption";
-
-import { API } from "config";
+  getPrimordialHash,
+  encrypt
+} = Encryption;
 
 const ENTROPY = "abc123";
 const CHUNK_BYTE_SIZE = 30;
+
+const uploadFileToBrokerNodes = file => {
+  const byteChunks = createByteChunks(file);
+
+  return Promise.all([
+    sendToAlphaBroker(byteChunks, file),
+    sendToBetaBroker(byteChunks, file)
+  ]);
+};
 
 const createHandle = fileName => {
   const fileNameTrimmed = parseEightCharsOfFilename(fileName);
@@ -33,7 +44,6 @@ const createByteChunks = file => {
 
 const createUploadSession = file =>
   new Promise((resolve, reject) => {
-    console.log(createHandle(file.name));
     request.post(
       {
         url: `${API.HOST}${API.V1_UPLOAD_SESSIONS_PATH}`,
@@ -51,21 +61,10 @@ const createUploadSession = file =>
     );
   });
 
-const uploadFileToBrokerNodes = file => {
-  const byteChunks = createByteChunks(file);
-
-  Promise.all([
-    sendToAlphaBroker(byteChunks, file),
-    sendToBetaBroker(byteChunks, file)
-  ]).then(() => {
-    console.log("Upload complete! ", sentChunks);
-  });
-};
-
 const createReader = onRead => {
   const reader = new FileReader();
   reader.onloadend = function(evt) {
-    if (evt.target.readyState == FileReader.DONE) {
+    if (evt.target.readyState === FileReader.DONE) {
       onRead(evt.target.result);
     }
   };
@@ -132,4 +131,10 @@ const assembleMetaData = (name, extension) => {
   return JSON.stringify(metaData);
 };
 
-export default { createHandle, createByteChunks, createUploadSession };
+export default {
+  uploadFileToBrokerNodes,
+  createHandle,
+  createByteChunks,
+  createUploadSession,
+  buildMetaDataPacket
+};

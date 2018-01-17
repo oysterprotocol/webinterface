@@ -1,3 +1,5 @@
 import { combineEpics } from "redux-observable";
 
-export default combineEpics();
+import fileEpic from "redux/epics/file-epic";
+
+export default combineEpics(fileEpic);
