@@ -20,7 +20,7 @@ const getPrimordialHash = entropy => {
 };
 
 const encrypt = (message, secretKey) =>
-  CryptoJS.AES.encrypt(message, secretKey);
+  CryptoJS.AES.encrypt(message, secretKey).toString();
 
 const decrypt = (ciphertext, secretKey) =>
   CryptoJS.AES.decrypt(ciphertext, secretKey);
