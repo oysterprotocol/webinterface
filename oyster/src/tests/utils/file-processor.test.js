@@ -21,9 +21,9 @@ describe("createByteChunks", () => {
     const file = { size: 90 };
     const byteChunks = FileProcessor.createByteChunks(file);
     const expectedResult = [
-      { chunkIdx: 0, chunkStartingPoint: 0 },
-      { chunkIdx: 1, chunkStartingPoint: 31 },
-      { chunkIdx: 2, chunkStartingPoint: 62 }
+      { chunkIdx: 1, chunkStartingPoint: 0 },
+      { chunkIdx: 2, chunkStartingPoint: 31 },
+      { chunkIdx: 3, chunkStartingPoint: 62 }
     ];
     expect(byteChunks).toEqual(expectedResult);
   });
@@ -46,7 +46,7 @@ describe("createUploadSession", () => {
   });
 });
 
-describe("createUploadSession", () => {
+describe("sendChunkToBroker", () => {
   beforeEach(() => {
     // TODO: figure out how to mock request with certain params
     nock(API.HOST)
@@ -57,7 +57,7 @@ describe("createUploadSession", () => {
   });
 
   it("makes a POST request to /api/v1/upload-chunks", async () => {
-    const response = await FileProcessor.sendChunkToNode(
+    const response = await FileProcessor.sendChunkToBroker(
       1,
       "not_encrypted",
       "handle"
