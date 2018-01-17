@@ -33,7 +33,7 @@ export const pollUntilComplete = (genHash, chunkIdx) =>
       }
 
       axios
-        .get(`BROKER_NODE_URL/api/v1/chunk-status`, params)
+        .get(`${BROKER_NODE_URL}/api/v1/chunk-status`, params)
         .then(({ status }) => {
           switch (status) {
             case CHUNK_STATUSES_API.PENDING:
