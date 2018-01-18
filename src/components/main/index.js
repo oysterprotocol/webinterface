@@ -12,7 +12,7 @@ const mapDispatchToProps = dispatch => ({
 
 class Main extends Component {
   render() {
-    const { uploadFn } = this.props;
+    const { file, uploadFn } = this.props;
     return (
       <div>
         <input
@@ -30,6 +30,7 @@ class Main extends Component {
         >
           Upload a file.
         </button>
+        <span>UPLOAD PROGRESS: {file.progressBarPercentage}%</span>
       </div>
     );
   }

@@ -18,12 +18,12 @@ describe("createHandle", () => {
 
 describe("createByteChunks", () => {
   it("loads returns an array of objects with chunkIdx and chunkStartingPoint", () => {
-    const file = { size: 90 };
+    const file = { size: 3000 };
     const byteChunks = FileProcessor.createByteChunks(file);
     const expectedResult = [
       { chunkIdx: 1, chunkStartingPoint: 0 },
-      { chunkIdx: 2, chunkStartingPoint: 31 },
-      { chunkIdx: 3, chunkStartingPoint: 62 }
+      { chunkIdx: 2, chunkStartingPoint: 1001 },
+      { chunkIdx: 3, chunkStartingPoint: 2002 }
     ];
     expect(byteChunks).toEqual(expectedResult);
   });

@@ -1,7 +1,7 @@
 import _ from "lodash";
 import request from "request";
 import Encryption from "utils/encryption";
-import { API } from "config";
+import { API, FILE } from "config";
 
 const {
   parseEightCharsOfFilename,
@@ -11,7 +11,6 @@ const {
 } = Encryption;
 
 const ENTROPY = "abc123";
-const CHUNK_BYTE_SIZE = 30;
 
 const uploadFileToBrokerNodes = file => {
   const byteChunks = createByteChunks(file);
@@ -36,8 +35,8 @@ const createHandle = fileName => {
 
 const createByteChunks = file => {
   // This returns an array with the starting byte pointers
-  // ex: For a 150 byte file it would return: [0, 31, 62, 93, 124]
-  const byteLocations = _.range(0, file.size, CHUNK_BYTE_SIZE + 1);
+  // ex: For a 150 byte file it would return: [0, 1001, 2002, 3003, 4004]
+  const byteLocations = _.range(0, file.size, FILE.CHUNK_BYTE_SIZE + 1);
   const byteChunks = _.map(byteLocations, (byte, index) => {
     return { chunkIdx: index + 1, chunkStartingPoint: byte };
   });
@@ -58,10 +57,12 @@ const createUploadSession = (file, handle) =>
       (error, response, body) => {
         if (error) {
           console.log("ERROR: ", error);
+          resolve();
           // TODO: uncomment this
           // return reject(error);
+        } else {
+          resolve(JSON.parse(response.body));
         }
-        resolve();
       }
     );
   });
@@ -90,9 +91,13 @@ const sendChunkToBroker = (chunkIdx, data, handle) =>
       },
       (error, response, body) => {
         if (error) {
-          return reject(error);
+          console.log("ERROR: ", error);
+          resolve();
+          // TODO: uncomment this
+          // return reject(error);
+        } else {
+          resolve(JSON.parse(response.body));
         }
-        resolve(JSON.parse(response.body));
       }
     );
 
@@ -149,7 +154,7 @@ const sendToAlphaBroker = (byteChunks, file, handle) =>
           file,
           handle,
           byteChunks,
-          byteLocation => byteLocation + CHUNK_BYTE_SIZE
+          byteLocation => byteLocation + FILE.CHUNK_BYTE_SIZE
         )
       )
       .then(resolve);
@@ -157,8 +162,11 @@ const sendToAlphaBroker = (byteChunks, file, handle) =>
 
 const sendToBetaBroker = (byteChunks, file, handle) =>
   new Promise((resolve, reject) => {
-    sendFileContentsToBroker(file, handle, byteChunks.reverse(), byteLocation =>
-      Math.min(file.size, byteLocation + CHUNK_BYTE_SIZE)
+    sendFileContentsToBroker(
+      file,
+      handle,
+      [...byteChunks].reverse(),
+      byteLocation => Math.min(file.size, byteLocation + FILE.CHUNK_BYTE_SIZE)
     )
       .then(() => sendMetaDataToBroker(file, handle))
       .then(resolve);
@@ -173,7 +181,8 @@ const buildMetaDataPacket = (file, handle) => {
 };
 
 const assembleMetaData = (name, extension) => {
-  const metaData = { fname: name, ext: extension };
+  const shortenedName = name.substr(0, 500);
+  const metaData = { filename: shortenedName, ext: extension };
   return JSON.stringify(metaData);
 };
 
