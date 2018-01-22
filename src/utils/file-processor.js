@@ -82,7 +82,7 @@ const sendChunkToBroker = (chunkIdx, data, handle) =>
     const encryptedData = encrypt(data, handle);
     request.post(
       {
-        url: `${API.HOST}${API.V1_UPLOAD_CHUNKS_PATH}`,
+        url: `${API.HOST}${API.V1_UPLOAD_SESSIONS_PATH}`,
         form: {
           chunkIdx,
           data: encryptedData,
@@ -128,7 +128,7 @@ const sendMetaDataToBroker = (file, handle) =>
   new Promise((resolve, reject) => {
     request.post(
       {
-        url: `${API.HOST}${API.V1_UPLOAD_CHUNKS_PATH}`,
+        url: `${API.HOST}${API.V1_UPLOAD_SESSIONS_PATH}`,
         form: {
           chunkIdx: 0,
           data: buildMetaDataPacket(file, handle),
