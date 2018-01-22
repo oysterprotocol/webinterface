@@ -19,12 +19,12 @@ const uploadFileToBrokerNodes = file => {
   return createUploadSession(file, handle)
     .then(({ genesisHash, sessionId }) =>
       Promise.all([
-        sendToAlphaBroker(sessionId, byteChunks, file, handle),
-        sendToBetaBroker(sessionId, byteChunks, file, handle)
+        sendToAlphaBroker(sessionId, byteChunks, file, genesisHash),
+        sendToBetaBroker(sessionId, byteChunks, file, genesisHash)
       ])
     )
     .then(() => {
-      return { numberOfChunks: byteChunks.length, handle };
+      return { numberOfChunks: byteChunks.length, genesisHash: handle };
     });
 };
 
@@ -142,14 +142,14 @@ const sendMetaDataToBroker = (sessionId, file, handle) =>
       });
   });
 
-const sendToAlphaBroker = (sessionId, byteChunks, file, handle) =>
+const sendToAlphaBroker = (sessionId, byteChunks, file, genesisHash) =>
   new Promise((resolve, reject) => {
-    sendMetaDataToBroker(sessionId, file, handle)
+    sendMetaDataToBroker(sessionId, file, genesisHash)
       .then(() =>
         sendFileContentsToBroker(
           sessionId,
           file,
-          handle,
+          genesisHash,
           byteChunks,
           byteLocation => byteLocation + FILE.CHUNK_BYTE_SIZE
         )
@@ -157,16 +157,16 @@ const sendToAlphaBroker = (sessionId, byteChunks, file, handle) =>
       .then(resolve);
   });
 
-const sendToBetaBroker = (sessionId, byteChunks, file, handle) =>
+const sendToBetaBroker = (sessionId, byteChunks, file, genesisHash) =>
   new Promise((resolve, reject) => {
     sendFileContentsToBroker(
       sessionId,
       file,
-      handle,
+      genesisHash,
       [...byteChunks].reverse(),
       byteLocation => Math.min(file.size, byteLocation + FILE.CHUNK_BYTE_SIZE)
     )
-      .then(() => sendMetaDataToBroker(sessionId, file, handle))
+      .then(() => sendMetaDataToBroker(sessionId, file, genesisHash))
       .then(resolve);
   });
 

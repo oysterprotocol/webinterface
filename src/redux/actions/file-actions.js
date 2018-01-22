@@ -14,9 +14,9 @@ const ACTIONS = Object.freeze({
 
   // actionCreators
   uploadAction: file => ({ type: ACTIONS.UPLOAD, payload: file }),
-  uploadSuccessAction: ({ numberOfChunks, handle }) => ({
+  uploadSuccessAction: ({ numberOfChunks, genesisHash }) => ({
     type: ACTIONS.UPLOAD_SUCCESS,
-    payload: { numberOfChunks, handle }
+    payload: { numberOfChunks, genesisHash }
   }),
   uploadFailureAction: error => ({
     type: ACTIONS.UPLOAD_FAILURE,

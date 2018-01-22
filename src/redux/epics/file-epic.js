@@ -12,8 +12,8 @@ function uploadFile(action$, store) {
   return action$.ofType(fileActions.UPLOAD).mergeMap(action => {
     const file = action.payload;
     return Observable.fromPromise(FileProcessor.uploadFileToBrokerNodes(file))
-      .map(({ numberOfChunks, handle }) =>
-        fileActions.uploadSuccessAction({ numberOfChunks, handle })
+      .map(({ numberOfChunks, genesisHash }) =>
+        fileActions.uploadSuccessAction({ numberOfChunks, genesisHash })
       )
       .catch(error => {
         console.log("ERROR: ", error);
@@ -24,8 +24,8 @@ function uploadFile(action$, store) {
 
 function checkUploadProgress(action$, store) {
   return action$.ofType(fileActions.UPLOAD_SUCCESS).switchMap(action => {
-    const { numberOfChunks, handle } = action.payload;
-    const datamap = Datamap.generate(numberOfChunks, handle);
+    const { numberOfChunks, genesisHash } = action.payload;
+    const datamap = Datamap.generate(numberOfChunks, genesisHash);
     const addresses = _.values(datamap);
 
     return Observable.interval(2000)
