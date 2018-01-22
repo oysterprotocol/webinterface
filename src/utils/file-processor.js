@@ -1,5 +1,6 @@
 import _ from "lodash";
 import request from "request";
+import axios from "axios";
 import Encryption from "utils/encryption";
 import { API, FILE } from "config";
 
@@ -16,12 +17,16 @@ const uploadFileToBrokerNodes = file => {
   const byteChunks = createByteChunks(file);
   const handle = createHandle(file.name);
 
-  return createUploadSession(file, handle).then(() =>
-    Promise.all([
-      sendToAlphaBroker(byteChunks, file, handle),
-      sendToBetaBroker(byteChunks, file, handle)
-    ])
-  );
+  return createUploadSession(file, handle)
+    .then(({ genesisHash, sessionId }) =>
+      Promise.all([
+        sendToAlphaBroker(sessionId, byteChunks, file, handle),
+        sendToBetaBroker(sessionId, byteChunks, file, handle)
+      ])
+    )
+    .then(() => {
+      return { numberOfChunks: byteChunks.length, handle };
+    });
 };
 
 const createHandle = fileName => {
@@ -54,14 +59,17 @@ const createUploadSession = (file, handle) =>
           genesis_hash: handle
         }
       },
-      (error, response, body) => {
+      (error, response, uploadSession) => {
         if (error) {
-          console.log("ERROR: ", error);
+          console.log("UPLOAD SESSION ERROR: ", error);
           resolve();
           // TODO: uncomment this
           // return reject(error);
         } else {
-          resolve(JSON.parse(response.body));
+          const { genesis_hash: genesisHash, id: sessionId } = JSON.parse(
+            uploadSession
+          );
+          resolve({ genesisHash, sessionId });
         }
       }
     );
@@ -77,34 +85,34 @@ const createReader = onRead => {
   return reader;
 };
 
-const sendChunkToBroker = (chunkIdx, data, handle) =>
+const sendChunkToBroker = (sessionId, chunkIdx, data, handle) =>
   new Promise((resolve, reject) => {
     const encryptedData = encrypt(data, handle);
-    request.post(
-      {
-        url: `${API.HOST}${API.V1_UPLOAD_SESSIONS_PATH}`,
-        form: {
-          chunkIdx,
+    axios
+      .put(`${API.HOST}${API.V1_UPLOAD_SESSIONS_PATH}/${sessionId}`, {
+        chunk: {
+          idx: chunkIdx,
           data: encryptedData,
-          genesis_hash: handle
+          hash: handle
         }
-      },
-      (error, response, body) => {
-        if (error) {
-          console.log("ERROR: ", error);
-          resolve();
-          // TODO: uncomment this
-          // return reject(error);
-        } else {
-          resolve(JSON.parse(response.body));
-        }
-      }
-    );
-
-    return encryptedData;
+      })
+      .then(response => {
+        console.log("SENT CHUNK TO BROKER: ", response);
+        resolve(response);
+      })
+      .catch(error => {
+        console.log("ERROR SENDING CHUNK TO BROKER:", error);
+        reject();
+      });
   });
 
-const sendFileContentsToBroker = (file, handle, byteChunks, sliceCutOffFn) => {
+const sendFileContentsToBroker = (
+  sessionId,
+  file,
+  handle,
+  byteChunks,
+  sliceCutOffFn
+) => {
   const chunkRequests = byteChunks.map(
     byte =>
       new Promise((resolve, reject) => {
@@ -115,7 +123,9 @@ const sendFileContentsToBroker = (file, handle, byteChunks, sliceCutOffFn) => {
         );
 
         const reader = createReader(fileSlice => {
-          sendChunkToBroker(chunkIdx, fileSlice, handle).then(resolve);
+          sendChunkToBroker(sessionId, chunkIdx, fileSlice, handle).then(
+            resolve
+          );
         });
         reader.readAsBinaryString(blob);
       })
@@ -124,11 +134,11 @@ const sendFileContentsToBroker = (file, handle, byteChunks, sliceCutOffFn) => {
   return Promise.all(chunkRequests);
 };
 
-const sendMetaDataToBroker = (file, handle) =>
+const sendMetaDataToBroker = (sessionId, file, handle) =>
   new Promise((resolve, reject) => {
-    request.post(
+    request.put(
       {
-        url: `${API.HOST}${API.V1_UPLOAD_SESSIONS_PATH}`,
+        url: `${API.HOST}${API.V1_UPLOAD_SESSIONS_PATH}/${sessionId}`,
         form: {
           chunkIdx: 0,
           data: buildMetaDataPacket(file, handle),
@@ -146,11 +156,12 @@ const sendMetaDataToBroker = (file, handle) =>
     );
   });
 
-const sendToAlphaBroker = (byteChunks, file, handle) =>
+const sendToAlphaBroker = (sessionId, byteChunks, file, handle) =>
   new Promise((resolve, reject) => {
-    sendMetaDataToBroker(file, handle)
+    sendMetaDataToBroker(sessionId, file, handle)
       .then(() =>
         sendFileContentsToBroker(
+          sessionId,
           file,
           handle,
           byteChunks,
@@ -160,15 +171,16 @@ const sendToAlphaBroker = (byteChunks, file, handle) =>
       .then(resolve);
   });
 
-const sendToBetaBroker = (byteChunks, file, handle) =>
+const sendToBetaBroker = (sessionId, byteChunks, file, handle) =>
   new Promise((resolve, reject) => {
     sendFileContentsToBroker(
+      sessionId,
       file,
       handle,
       [...byteChunks].reverse(),
       byteLocation => Math.min(file.size, byteLocation + FILE.CHUNK_BYTE_SIZE)
     )
-      .then(() => sendMetaDataToBroker(file, handle))
+      .then(() => sendMetaDataToBroker(sessionId, file, handle))
       .then(resolve);
   });
 

@@ -1,7 +1,8 @@
 import IOTA from "iota.lib.js";
+import { IOTA_API } from "config";
 
 const Iota = new IOTA({
-  provider: "http://localhost:14265"
+  provider: IOTA_API.PROVIDER
 });
 
 const checkUploadPercentage = addresses =>
