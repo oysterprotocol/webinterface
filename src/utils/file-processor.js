@@ -1,5 +1,4 @@
 import _ from "lodash";
-import request from "request";
 import axios from "axios";
 import Encryption from "utils/encryption";
 import { API, FILE } from "config";
@@ -51,28 +50,20 @@ const createByteChunks = file => {
 
 const createUploadSession = (file, handle) =>
   new Promise((resolve, reject) => {
-    request.post(
-      {
-        url: `${API.HOST}${API.V1_UPLOAD_SESSIONS_PATH}`,
-        form: {
-          file_size_bytes: file.size,
-          genesis_hash: handle
-        }
-      },
-      (error, response, uploadSession) => {
-        if (error) {
-          console.log("UPLOAD SESSION ERROR: ", error);
-          resolve();
-          // TODO: uncomment this
-          // return reject(error);
-        } else {
-          const { genesis_hash: genesisHash, id: sessionId } = JSON.parse(
-            uploadSession
-          );
-          resolve({ genesisHash, sessionId });
-        }
-      }
-    );
+    axios
+      .post(`${API.HOST}${API.V1_UPLOAD_SESSIONS_PATH}`, {
+        file_size_bytes: file.size,
+        genesis_hash: handle
+      })
+      .then(({ data }) => {
+        console.log("UPLOAD SESSION SUCCESS: ", data);
+        const { genesis_hash: genesisHash, id: sessionId } = data;
+        resolve({ genesisHash, sessionId });
+      })
+      .catch(error => {
+        console.log("UPLOAD SESSION ERROR: ", error);
+        reject(error);
+      });
   });
 
 const createReader = onRead => {
@@ -136,24 +127,19 @@ const sendFileContentsToBroker = (
 
 const sendMetaDataToBroker = (sessionId, file, handle) =>
   new Promise((resolve, reject) => {
-    request.put(
-      {
-        url: `${API.HOST}${API.V1_UPLOAD_SESSIONS_PATH}/${sessionId}`,
-        form: {
-          chunkIdx: 0,
-          data: buildMetaDataPacket(file, handle),
-          genesis_hash: handle
-        }
-      },
-      (error, response, body) => {
-        if (error) {
-          console.log("ERROR: ", error);
-          // TODO: uncomment this out
-          // return reject(error);
-        }
-        resolve();
-      }
-    );
+    axios
+      .put(`${API.HOST}${API.V1_UPLOAD_SESSIONS_PATH}/${sessionId}`, {
+        chunkIdx: 0,
+        data: buildMetaDataPacket(file, handle),
+        hash: handle
+      })
+      .then(({ data }) => {
+        resolve(data);
+      })
+      .catch(error => {
+        console.log("METADATA TO BROKER ERROR: ", error);
+        reject(error);
+      });
   });
 
 const sendToAlphaBroker = (sessionId, byteChunks, file, handle) =>
