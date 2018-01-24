@@ -15,9 +15,7 @@ const getSalt = numChars => {
   return salt;
 };
 
-const getPrimordialHash = entropy => {
-  return CryptoJS.SHA256(entropy).toString();
-};
+const getPrimordialHash = entropy => CryptoJS.SHA256(entropy).toString();
 
 const getNextHash = (previousHash) =>
     CryptoJS.SHA256(previousHash).toString();

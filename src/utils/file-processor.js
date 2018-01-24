@@ -129,11 +129,14 @@ const sendMetaDataToBroker = (sessionId, file, handle) =>
   new Promise((resolve, reject) => {
     axios
       .put(`${API.HOST}${API.V1_UPLOAD_SESSIONS_PATH}/${sessionId}`, {
-        chunkIdx: 0,
-        data: buildMetaDataPacket(file, handle),
-        hash: handle
+        chunk: {
+          idx: 0,
+          data: buildMetaDataPacket(file, handle),
+          hash: handle
+        }
       })
       .then(({ data }) => {
+        console.log("METADATA TO BROKER SUCCESS: ", data);
         resolve(data);
       })
       .catch(error => {
