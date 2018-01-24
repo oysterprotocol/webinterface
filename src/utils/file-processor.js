@@ -12,6 +12,10 @@ const {
 
 const ENTROPY = "abc123";
 
+const chunkGenerator = (idx, data, hash) => {
+  return { idx, data, hash };
+};
+
 const uploadFileToBrokerNodes = file => {
   const byteChunks = createByteChunks(file);
   const handle = createHandle(file.name);
@@ -81,11 +85,7 @@ const sendChunkToBroker = (sessionId, chunkIdx, data, handle) =>
     const encryptedData = encrypt(data, handle);
     axios
       .put(`${API.HOST}${API.V1_UPLOAD_SESSIONS_PATH}/${sessionId}`, {
-        chunk: {
-          idx: chunkIdx,
-          data: encryptedData,
-          hash: handle
-        }
+        chunk: chunkGenerator(chunkIdx, encryptedData, handle)
       })
       .then(response => {
         console.log("SENT CHUNK TO BROKER: ", response);
@@ -129,11 +129,7 @@ const sendMetaDataToBroker = (sessionId, file, handle) =>
   new Promise((resolve, reject) => {
     axios
       .put(`${API.HOST}${API.V1_UPLOAD_SESSIONS_PATH}/${sessionId}`, {
-        chunk: {
-          idx: 0,
-          data: buildMetaDataPacket(file, handle),
-          hash: handle
-        }
+        chunk: chunkGenerator(0, buildMetaDataPacket(file, handle), handle)
       })
       .then(({ data }) => {
         console.log("METADATA TO BROKER SUCCESS: ", data);
