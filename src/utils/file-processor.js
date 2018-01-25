@@ -10,8 +10,6 @@ const {
   encrypt
 } = Encryption;
 
-const ENTROPY = "abc123";
-
 const chunkGenerator = (idx, data, hash) => {
   return { idx, data, hash };
 };
@@ -35,7 +33,7 @@ const uploadFileToBrokerNodes = file => {
 const createHandle = fileName => {
   const fileNameTrimmed = parseEightCharsOfFilename(fileName);
   const salt = getSalt(8);
-  const primordialHash = getPrimordialHash(ENTROPY);
+  const primordialHash = getPrimordialHash();
   const handle = fileNameTrimmed + primordialHash + salt;
 
   return handle;

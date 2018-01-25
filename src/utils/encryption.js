@@ -1,4 +1,5 @@
 import CryptoJS from "crypto-js";
+import uuidv4 from "uuid/v4";
 
 const parseEightCharsOfFilename = fileName => {
   fileName = fileName + "________";
@@ -15,7 +16,10 @@ const getSalt = numChars => {
   return salt;
 };
 
-const getPrimordialHash = entropy => CryptoJS.SHA256(entropy).toString();
+const getPrimordialHash = () => {
+  const entropy = uuidv4();
+  return CryptoJS.SHA256(entropy).toString();
+};
 
 const getNextHash = (previousHash) =>
     CryptoJS.SHA256(previousHash).toString();
