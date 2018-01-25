@@ -27,9 +27,10 @@ function checkUploadProgress(action$, store) {
   return action$.ofType(fileActions.UPLOAD_SUCCESS).switchMap(action => {
     const { numberOfChunks, genesisHash } = action.payload;
     const datamap = Datamap.generate(numberOfChunks, genesisHash);
-    const addresses = _.values(datamap).map(trytes => {
-      return trytes.substr(0, IOTA_API.ADDRESS_LENGTH);
-    });
+    const addresses = _.values(datamap).map(trytes =>
+      trytes.substr(0, IOTA_API.ADDRESS_LENGTH)
+    );
+    console.log("POLLING 81 CHARACTER IOTA ADDRESSES: ", addresses);
 
     return Observable.interval(2000)
       .takeUntil(action$.ofType(fileActions.MARK_AS_COMPLETE))

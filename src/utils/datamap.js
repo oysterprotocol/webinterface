@@ -5,6 +5,7 @@ import Encryption from "utils/encryption";
 const generate = (size, handle) => {
   const keys = _.range(1, size + 1);
   const handleInTrytes = iota.utils.toTrytes(handle);
+  console.log(`TRYTES REPRESENTATION FOR CHUNK 0: ${handleInTrytes}`);
 
   return _.reduce(
     keys,
@@ -17,7 +18,9 @@ const generate = (size, handle) => {
       const encryptedHash = Encryption.encrypt(previousEncryptedChunk);
       const encryptedHashInTrytes = iota.utils.toTrytes(encryptedHash);
 
-      console.log("IOTA ADDRESS: ", encryptedHashInTrytes);
+      console.log(
+        `TRYTES REPRESENTATION FOR CHUNK ${n}: ${encryptedHashInTrytes}`
+      );
 
       hash[n] = encryptedHashInTrytes;
 
