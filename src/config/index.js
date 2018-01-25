@@ -4,7 +4,8 @@ export const API = Object.freeze({
 });
 
 export const IOTA_API = Object.freeze({
-  PROVIDER: "http://localhost:14265"
+  PROVIDER: "http://eugene.iota.community:14265",
+  ADDRESS_LENGTH: 81
 });
 
 export const FILE = Object.freeze({

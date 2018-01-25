@@ -21,11 +21,7 @@ const getPrimordialHash = () => {
   return CryptoJS.SHA256(entropy).toString();
 };
 
-const getNextHash = (previousHash) =>
-    CryptoJS.SHA256(previousHash).toString();
-
-const encrypt = (message, secretKey) =>
-  CryptoJS.AES.encrypt(message, secretKey).toString();
+const encrypt = message => CryptoJS.SHA256(message).toString();
 
 const decrypt = (ciphertext, secretKey) =>
   CryptoJS.AES.decrypt(ciphertext, secretKey);
