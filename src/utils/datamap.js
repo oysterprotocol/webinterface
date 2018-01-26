@@ -11,7 +11,7 @@ const generate = (size, handle) => {
   return _.reduce(
     keys,
     (hash, n) => {
-      const encryptedHash = Encryption.encrypt(hash[n - 1], handle);
+      const encryptedHash = Encryption.getNextHash(hash[n - 1], handle);
       const encryptedHashInTrytes = iota.utils.toTrytes(encryptedHash);
       hash[n] = encryptedHashInTrytes.substr(0, IOTA_ADDRESS_LENGTH);
 
