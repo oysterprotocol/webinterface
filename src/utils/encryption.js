@@ -30,7 +30,6 @@ export default {
   parseEightCharsOfFilename,
   getSalt,
   getPrimordialHash,
-  getNextHash,
   encrypt,
   decrypt
 };
