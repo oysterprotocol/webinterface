@@ -9,15 +9,25 @@ import Iota from "services/iota";
 import Datamap from "utils/datamap";
 import FileProcessor from "utils/file-processor";
 
-function uploadFile(action$, store) {
-  return action$.ofType(fileActions.UPLOAD).mergeMap(action => {
+function createHandle(action$, store) {
+  return action$.ofType(fileActions.INITIALIZE_UPLOAD).map(action => {
     const file = action.payload;
-    return Observable.fromPromise(FileProcessor.uploadFileToBrokerNodes(file))
+    const handle = FileProcessor.createHandle(file.name);
+    return fileActions.createHandleAction({ file, handle });
+  });
+}
+
+function uploadFile(action$, store) {
+  return action$.ofType(fileActions.CREATE_HANDLE).mergeMap(action => {
+    const { file, handle } = action.payload;
+    return Observable.fromPromise(
+      FileProcessor.uploadFileToBrokerNodes(file, handle)
+    )
       .map(({ numberOfChunks, genesisHash }) =>
         fileActions.uploadSuccessAction({ numberOfChunks, genesisHash })
       )
       .catch(error => {
-        console.log("ERROR: ", error);
+        console.log("UPLOAD FILE EPIC ERROR: ", error);
         return fileActions.uploadFailureAction;
       });
   });
@@ -53,6 +63,7 @@ function markDownloadAsComplete(action$, store) {
 }
 
 export default combineEpics(
+  createHandle,
   uploadFile,
   checkUploadProgress,
   markDownloadAsComplete

@@ -14,11 +14,11 @@ const chunkGenerator = (idx, data, hash) => {
   return { idx, data, hash };
 };
 
-const uploadFileToBrokerNodes = file => {
+const uploadFileToBrokerNodes = (file, handle) => {
   const byteChunks = createByteChunks(file);
-  const handle = createHandle(file.name);
+  const genesisHash = encrypt(handle);
 
-  return createUploadSession(file, handle)
+  return createUploadSession(file, genesisHash)
     .then(({ genesisHash, sessionId }) =>
       Promise.all([
         sendToAlphaBroker(sessionId, byteChunks, file, genesisHash),
@@ -26,7 +26,7 @@ const uploadFileToBrokerNodes = file => {
       ])
     )
     .then(() => {
-      return { numberOfChunks: byteChunks.length, genesisHash: handle };
+      return { numberOfChunks: byteChunks.length, genesisHash };
     });
 };
 

@@ -2,10 +2,10 @@ import _ from "lodash";
 import iota from "services/iota";
 import Encryption from "utils/encryption";
 
-const generate = (size, handle) => {
+const generate = (size, genesisHash) => {
   const keys = _.range(1, size + 1);
-  const handleInTrytes = iota.utils.toTrytes(handle);
-  console.log(`TRYTES REPRESENTATION FOR CHUNK 0: ${handleInTrytes}`);
+  const genesisHashInTrytes = iota.utils.toTrytes(genesisHash);
+  console.log(`TRYTES REPRESENTATION FOR CHUNK 0: ${genesisHashInTrytes}`);
 
   return _.reduce(
     keys,
@@ -26,7 +26,7 @@ const generate = (size, handle) => {
 
       return hash;
     },
-    { 0: handleInTrytes }
+    { 0: genesisHashInTrytes }
   );
 };
 

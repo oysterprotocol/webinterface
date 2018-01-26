@@ -7,12 +7,12 @@ const mapStateToProps = state => ({
   file: state.file
 });
 const mapDispatchToProps = dispatch => ({
-  uploadFn: file => dispatch(fileActions.uploadAction(file))
+  initializeUploadFn: file => dispatch(fileActions.initializeUploadAction(file))
 });
 
 class Main extends Component {
   render() {
-    const { file, uploadFn } = this.props;
+    const { file, initializeUploadFn } = this.props;
     return (
       <div>
         <input
@@ -25,7 +25,7 @@ class Main extends Component {
         <button
           onClick={() => {
             const file = this.refs.fileInput.files[0];
-            uploadFn(file);
+            initializeUploadFn(file);
           }}
         >
           Upload a file.
