@@ -19,6 +19,9 @@ const getPrimordialHash = entropy => {
   return CryptoJS.SHA256(entropy).toString();
 };
 
+const getNextHash = (previousHash) =>
+    CryptoJS.SHA256(previousHash).toString();
+
 const encrypt = (message, secretKey) =>
   CryptoJS.AES.encrypt(message, secretKey).toString();
 
@@ -29,6 +32,7 @@ export default {
   parseEightCharsOfFilename,
   getSalt,
   getPrimordialHash,
+  getNextHash,
   encrypt,
   decrypt
 };
