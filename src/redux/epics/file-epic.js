@@ -52,19 +52,19 @@ function checkUploadProgress(action$, store) {
   });
 }
 
-function markDownloadAsComplete(action$, store) {
+function markUploadAsComplete(action$, store) {
   return action$
-    .ofType(fileActions.UPDATE_PROGRESS)
+    .ofType(fileActions.UPDATE_UPLOAD_PROGRESS)
     .filter(action => {
       const percentage = action.payload;
       return percentage >= 100;
     })
-    .map(() => fileActions.markDownloadAsComplete());
+    .map(() => fileActions.markUploadAsComplete());
 }
 
 export default combineEpics(
   createHandle,
   uploadFile,
   checkUploadProgress,
-  markDownloadAsComplete
+  markUploadAsComplete
 );

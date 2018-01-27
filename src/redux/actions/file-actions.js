@@ -4,7 +4,7 @@ const UPLOAD = "oyster/file/upload";
 const UPLOAD_SUCCESS = "oyster/file/upload_success";
 const UPLOAD_FAILURE = "oyster/file/upload_failure";
 const UPDATE_UPLOAD_PROGRESS = "oyster/file/update_upload_progress";
-const MARK_UPLOAD_AS_COMPLETE = "oyster/file/mark_as_complete";
+const MARK_UPLOAD_AS_COMPLETE = "oyster/file/mark_upload_as_complete";
 
 const ACTIONS = Object.freeze({
   // actions

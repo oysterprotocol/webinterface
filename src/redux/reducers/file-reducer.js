@@ -6,7 +6,7 @@ const initState = {
 
 const fileReducer = (state = initState, action) => {
   switch (action.type) {
-    case fileActions.UPDATE_PROGRESS:
+    case fileActions.UPDATE_UPLOAD_PROGRESS:
       return {
         ...state,
         progressBarPercentage: action.payload
