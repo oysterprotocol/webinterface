@@ -10,6 +10,8 @@ const mapStateToProps = state => ({
   uploadHistory: state.upload.history
 });
 const mapDispatchToProps = dispatch => ({
+  initializeDownloadFn: handle =>
+    dispatch(downloadActions.initializeDownloadAction(handle)),
   beginDownloadFn: ({ fileName, handle, numberOfChunks }) =>
     dispatch(
       downloadActions.beginDownloadAction({ fileName, handle, numberOfChunks })
@@ -44,7 +46,12 @@ class Main extends Component {
   }
 
   render() {
-    const { initializeUploadFn, uploadHistory, beginDownloadFn } = this.props;
+    const {
+      initializeDownloadFn,
+      initializeUploadFn,
+      beginDownloadFn,
+      uploadHistory
+    } = this.props;
     return (
       <div>
         <input
@@ -61,6 +68,21 @@ class Main extends Component {
           }}
         >
           Upload a file.
+        </button>
+        <input
+          ref="downloadText"
+          type="text"
+          onClick={event => {
+            event.target.value = null;
+          }}
+        />
+        <button
+          onClick={() => {
+            const handle = this.refs.downloadText.value;
+            initializeDownloadFn(handle);
+          }}
+        >
+          Retrieve file
         </button>
         <div>
           {uploadHistory.map(upload =>
