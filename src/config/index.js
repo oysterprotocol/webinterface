@@ -1,5 +1,5 @@
 export const API = Object.freeze({
-  HOST: "http://localhost:8000",
+  HOST: "https://broker-1.oysternodes.com",
   // BROKER_NODE_A: "http://localhost:8000",
   // BROKER_NODE_B: "http://localhost:8000",
   BROKER_NODE_A: "https://broker-1.oysternodes.com",
