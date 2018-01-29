@@ -13,7 +13,7 @@ const composeFn = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 const middleware = [
   process.env.NODE_ENV === `development` && createLogger(),
   createEpicMiddleware(epics)
-];
+].filter(x => !!x);
 
 const uploadTransform = createTransform(
   inboundState => inboundState,
