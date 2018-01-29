@@ -1,6 +1,8 @@
 import { applyMiddleware, compose, createStore } from "redux";
 import { createLogger } from "redux-logger";
 import { createEpicMiddleware } from "redux-observable";
+import { persistReducer, persistStore } from "redux-persist";
+import storage from "redux-persist/lib/storage";
 
 import epics from "redux/epics";
 import reducer from "redux/reducers";
@@ -10,6 +12,16 @@ const middleware = [
   process.env.NODE_ENV === `development` && createLogger(),
   createEpicMiddleware(epics)
 ];
-const store = createStore(reducer, composeFn(applyMiddleware(...middleware)));
 
-export default store;
+const persistConfig = {
+  key: "oyster",
+  storage: storage,
+  whitelist: ["upload"]
+};
+
+export const store = createStore(
+  persistReducer(persistConfig, reducer),
+  composeFn(applyMiddleware(...middleware))
+);
+
+export const persistor = persistStore(store);

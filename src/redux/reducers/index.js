@@ -1,5 +1,5 @@
 import { combineReducers } from "redux";
 
-import file from "redux/reducers/file-reducer";
+import upload from "redux/reducers/upload-reducer";
 
-export default combineReducers({ file });
+export default combineReducers({ upload });

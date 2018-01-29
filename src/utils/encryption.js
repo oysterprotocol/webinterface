@@ -21,15 +21,19 @@ const getPrimordialHash = () => {
   return CryptoJS.SHA256(entropy).toString();
 };
 
-const encrypt = message => CryptoJS.SHA256(message).toString();
+const sha256 = message => CryptoJS.SHA256(message).toString();
 
-const decrypt = (ciphertext, secretKey) =>
-  CryptoJS.AES.decrypt(ciphertext, secretKey);
+const encrypt = (text, secretKey) =>
+  CryptoJS.AES.encrypt(text, secretKey).toString();
+
+const decrypt = (text, secretKey) =>
+  CryptoJS.AES.decrypt(text, secretKey).toString(CryptoJS.enc.Utf8);
 
 export default {
   parseEightCharsOfFilename,
   getSalt,
   getPrimordialHash,
+  sha256,
   encrypt,
   decrypt
 };
