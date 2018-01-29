@@ -44,10 +44,7 @@ const uploadFile = (action$, store) => {
       .map(({ numberOfChunks, handle, fileName }) =>
         uploadActions.uploadSuccessAction({ numberOfChunks, handle, fileName })
       )
-      .catch(error => {
-        console.log("UPLOAD FILE EPIC ERROR: ", error);
-        return uploadActions.uploadFailureAction;
-      });
+      .catch(() => Observable.of(uploadActions.uploadFailureAction(handle)));
   });
 };
 

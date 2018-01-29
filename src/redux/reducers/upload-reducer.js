@@ -1,13 +1,20 @@
 import uploadActions from "redux/actions/upload-actions";
+import { UPLOAD_STATUSES } from "config";
 
 const initState = {
   history: [
-    // { numberOfChunks: 10, fileName: "hello.txt", handle: "abc123", uploadProgress: 0 }
+    // object returned by uploadedFileGenerator()
   ]
 };
 
 const uploadedFileGenerator = ({ numberOfChunks, fileName, handle }) => {
-  return { numberOfChunks, fileName, handle, uploadProgress: 0 };
+  return {
+    numberOfChunks,
+    fileName,
+    handle,
+    uploadProgress: 0,
+    status: UPLOAD_STATUSES.PENDING
+  };
 };
 
 const uploadReducer = (state = initState, action) => {
@@ -31,6 +38,31 @@ const uploadReducer = (state = initState, action) => {
           uploadedFileGenerator({ numberOfChunks, fileName, handle })
         ]
       };
+
+    case uploadActions.UPLOAD_SUCCESS:
+      const { handle: succeededHandle } = action.payload;
+      const newHistory = state.history.map(f => {
+        return f.handle === succeededHandle
+          ? { ...f, status: UPLOAD_STATUSES.SENT }
+          : f;
+      });
+      return {
+        ...state,
+        history: newHistory
+      };
+
+    case uploadActions.UPLOAD_FAILURE:
+      const failedHandle = action.payload;
+      const h = state.history.map(f => {
+        return f.handle === failedHandle
+          ? { ...f, status: UPLOAD_STATUSES.FAILED }
+          : f;
+      });
+      return {
+        ...state,
+        history: h
+      };
+
     default:
       return state;
   }

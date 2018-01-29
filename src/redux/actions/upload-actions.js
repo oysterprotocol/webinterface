@@ -39,9 +39,9 @@ const ACTIONS = Object.freeze({
     type: ACTIONS.UPLOAD_SUCCESS,
     payload: { numberOfChunks, handle, fileName }
   }),
-  uploadFailureAction: error => ({
+  uploadFailureAction: handle => ({
     type: ACTIONS.UPLOAD_FAILURE,
-    payload: error
+    payload: handle
   }),
   updateUploadProgress: ({ handle, uploadProgress }) => ({
     type: ACTIONS.UPDATE_UPLOAD_PROGRESS,
