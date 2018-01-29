@@ -1,6 +1,7 @@
 import _ from "lodash";
 import axios from "axios";
 import Encryption from "utils/encryption";
+import Iota from "services/iota";
 import { API, FILE } from "config";
 import Base64 from "base64-arraybuffer";
 
@@ -227,15 +228,16 @@ const sendToBetaBroker = (sessionId, byteChunks, file, handle, genesisHash) =>
 
 const buildMetaDataPacket = (file, handle) => {
   const fileExtension = file.name.split(".").pop();
-  const metaData = assembleMetaData(file.name, fileExtension);
+  const metaData = assembleMetaData(file.name, fileExtension, file.size);
   const encryptedMetaData = encrypt(metaData, handle);
 
   return encryptedMetaData;
 };
 
-const assembleMetaData = (name, extension) => {
+const assembleMetaData = (name, extension, fileSizeBytes) => {
   const shortenedName = name.substr(0, 500);
-  const metaData = { filename: shortenedName, ext: extension };
+  const numberOfChunks = createByteLocations(fileSizeBytes).length;
+  const metaData = { fileName: shortenedName, ext: extension, numberOfChunks };
   return JSON.stringify(metaData);
 };
 
