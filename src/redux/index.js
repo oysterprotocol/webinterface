@@ -1,9 +1,10 @@
 import { applyMiddleware, compose, createStore } from "redux";
 import { createLogger } from "redux-logger";
 import { createEpicMiddleware } from "redux-observable";
-import { persistReducer, persistStore } from "redux-persist";
+import { persistReducer, persistStore, createTransform } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 
+import { UPLOAD_STATUSES } from "config";
 import epics from "redux/epics";
 import reducer from "redux/reducers";
 
@@ -13,10 +14,21 @@ const middleware = [
   createEpicMiddleware(epics)
 ];
 
+const uploadTransform = createTransform(
+  inboundState => inboundState,
+  outboundState => {
+    const { history } = outboundState;
+    const sentFiles = history.filter(f => f.status === UPLOAD_STATUSES.SENT);
+    return { ...outboundState, history: sentFiles };
+  },
+  { whitelist: ["upload"] }
+);
+
 const persistConfig = {
   key: "oyster",
   storage: storage,
-  whitelist: ["upload"]
+  whitelist: ["upload"],
+  transforms: [uploadTransform]
 };
 
 export const store = createStore(
