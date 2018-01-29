@@ -6,6 +6,8 @@ const UPLOAD_SUCCESS = "oyster/upload/upload_success";
 const UPLOAD_FAILURE = "oyster/upload/upload_failure";
 const UPDATE_UPLOAD_PROGRESS = "oyster/upload/update_upload_progress";
 const MARK_UPLOAD_AS_COMPLETE = "oyster/upload/mark_upload_as_complete";
+const REFRESH_INCOMPLETE_UPLOADS = "oyster/upload/refresh_incomplete_uploads";
+const POLL_UPLOAD_PROGRESS = "oyster/upload/poll_upload_progress";
 
 const ACTIONS = Object.freeze({
   // actions
@@ -17,6 +19,8 @@ const ACTIONS = Object.freeze({
   UPLOAD_FAILURE,
   UPDATE_UPLOAD_PROGRESS,
   MARK_UPLOAD_AS_COMPLETE,
+  REFRESH_INCOMPLETE_UPLOADS,
+  POLL_UPLOAD_PROGRESS,
 
   // actionCreators
   initializeUploadAction: file => ({
@@ -39,9 +43,9 @@ const ACTIONS = Object.freeze({
     type: ACTIONS.UPLOAD_SUCCESS,
     payload: { numberOfChunks, handle, fileName }
   }),
-  uploadFailureAction: error => ({
+  uploadFailureAction: handle => ({
     type: ACTIONS.UPLOAD_FAILURE,
-    payload: error
+    payload: handle
   }),
   updateUploadProgress: ({ handle, uploadProgress }) => ({
     type: ACTIONS.UPDATE_UPLOAD_PROGRESS,
@@ -50,6 +54,13 @@ const ACTIONS = Object.freeze({
   markUploadAsComplete: handle => ({
     type: ACTIONS.MARK_UPLOAD_AS_COMPLETE,
     payload: handle
+  }),
+  refreshIncompleteUploads: () => ({
+    type: ACTIONS.REFRESH_INCOMPLETE_UPLOADS
+  }),
+  pollUploadProgress: ({ handle, numberOfChunks }) => ({
+    type: ACTIONS.POLL_UPLOAD_PROGRESS,
+    payload: { handle, numberOfChunks }
   })
 });
 

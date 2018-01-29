@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 
+import { UPLOAD_STATUSES } from "config";
+
 import uploadActions from "../../redux/actions/upload-actions";
 import downloadActions from "../../redux/actions/download-actions";
 
@@ -18,11 +20,14 @@ const mapDispatchToProps = dispatch => ({
 
 class Main extends Component {
   renderUploadRow(upload, downloadFileFn) {
-    const { fileName, uploadProgress, handle, numberOfChunks } = upload;
+    const { fileName, uploadProgress, handle, numberOfChunks, status } = upload;
     if (uploadProgress < 100) {
       return (
         <p key={handle}>
-          {fileName}: UPLOAD PROGRESS: {uploadProgress}%
+          {fileName}:{" "}
+          {status === UPLOAD_STATUSES.FAILED
+            ? "UPLOAD FAILED, PLEASE TRY AGAIN"
+            : `UPLOAD PROGRESS: ${uploadProgress}%`}
         </p>
       );
     } else {

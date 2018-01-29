@@ -4,7 +4,7 @@ import _ from "lodash";
 
 import uploadActions from "redux/actions/upload-actions";
 
-import { IOTA_API } from "config";
+import { IOTA_API, UPLOAD_STATUSES } from "config";
 import Iota from "services/iota";
 import Datamap from "utils/datamap";
 import FileProcessor from "utils/file-processor";
@@ -44,37 +44,57 @@ const uploadFile = (action$, store) => {
       .map(({ numberOfChunks, handle, fileName }) =>
         uploadActions.uploadSuccessAction({ numberOfChunks, handle, fileName })
       )
-      .catch(error => {
-        console.log("UPLOAD FILE EPIC ERROR: ", error);
-        return uploadActions.uploadFailureAction;
-      });
+      .catch(() => Observable.of(uploadActions.uploadFailureAction(handle)));
   });
 };
 
-const checkUploadProgress = (action$, store) => {
-  return action$.ofType(uploadActions.UPLOAD_SUCCESS).switchMap(action => {
-    const { numberOfChunks, handle } = action.payload;
-    const datamap = Datamap.generate(handle, numberOfChunks);
-    const addresses = _.values(datamap).map(trytes =>
-      trytes.substr(0, IOTA_API.ADDRESS_LENGTH)
-    );
-    console.log("POLLING 81 CHARACTER IOTA ADDRESSES: ", addresses);
-
-    return Observable.interval(2000)
-      .takeUntil(
-        action$.ofType(uploadActions.MARK_UPLOAD_AS_COMPLETE).filter(a => {
-          const completedFileHandle = a.payload;
-          return handle === completedFileHandle;
-        })
-      )
-      .mergeMap(action =>
-        Observable.fromPromise(Iota.checkUploadPercentage(addresses))
-          .map(uploadProgress =>
-            uploadActions.updateUploadProgress({ handle, uploadProgress })
-          )
-          .catch(error => Observable.empty())
+const refreshIncompleteUploads = (action$, store) => {
+  return action$
+    .ofType(uploadActions.REFRESH_INCOMPLETE_UPLOADS)
+    .flatMap(action => {
+      const { upload: { history } } = store.getState();
+      const incompleteUploads = history.filter(
+        f => f.status === UPLOAD_STATUSES.SENT && f.uploadProgress < 100
       );
+      return incompleteUploads.map(({ numberOfChunks, handle }) =>
+        uploadActions.pollUploadProgress({ numberOfChunks, handle })
+      );
+    });
+};
+
+const checkUploadProgress = (action$, store) => {
+  return action$.ofType(uploadActions.UPLOAD_SUCCESS).map(action => {
+    const { numberOfChunks, handle } = action.payload;
+    return uploadActions.pollUploadProgress({ numberOfChunks, handle });
   });
+};
+
+const pollUploadProgress = (action$, store) => {
+  return action$
+    .ofType(uploadActions.POLL_UPLOAD_PROGRESS)
+    .switchMap(action => {
+      const { numberOfChunks, handle } = action.payload;
+      const datamap = Datamap.generate(handle, numberOfChunks);
+      const addresses = _.values(datamap).map(trytes =>
+        trytes.substr(0, IOTA_API.ADDRESS_LENGTH)
+      );
+      console.log("POLLING 81 CHARACTER IOTA ADDRESSES: ", addresses);
+
+      return Observable.interval(2000)
+        .takeUntil(
+          action$.ofType(uploadActions.MARK_UPLOAD_AS_COMPLETE).filter(a => {
+            const completedFileHandle = a.payload;
+            return handle === completedFileHandle;
+          })
+        )
+        .mergeMap(action =>
+          Observable.fromPromise(Iota.checkUploadPercentage(addresses))
+            .map(uploadProgress =>
+              uploadActions.updateUploadProgress({ handle, uploadProgress })
+            )
+            .catch(error => Observable.empty())
+        );
+    });
 };
 
 const markUploadAsComplete = (action$, store) => {
@@ -95,5 +115,7 @@ export default combineEpics(
   saveToHistory,
   uploadFile,
   checkUploadProgress,
-  markUploadAsComplete
+  pollUploadProgress,
+  markUploadAsComplete,
+  refreshIncompleteUploads
 );
