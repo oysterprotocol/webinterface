@@ -30,8 +30,8 @@ const uploadFileToBrokerNodes = (file, handle) => {
   return createUploadSession(file.size, genesisHash)
     .then(sessionId =>
       Promise.all([
-        sendToAlphaBroker(sessionId, byteChunks, file, handle, genesisHash),
-        sendToBetaBroker(sessionId, byteChunks, file, handle, genesisHash)
+        sendToAlphaBroker(sessionId, byteChunks, file, handle, genesisHash)
+        // sendToBetaBroker(sessionId, byteChunks, file, handle, genesisHash)
       ])
     )
     .then(() => {
@@ -93,14 +93,21 @@ const createReader = onRead => {
   return reader;
 };
 
-const sendChunkToBroker = (sessionId, chunkIdx, data, handle, genesisHash) =>
+const sendChunkToBroker = (
+  host,
+  sessionId,
+  chunkIdx,
+  data,
+  handle,
+  genesisHash
+) =>
   new Promise((resolve, reject) => {
     console.log("RAW DATA: ", data);
     const encryptedData = encrypt(data, handle);
     console.log("CHUNK IDX: ", chunkIdx);
     console.log("ENCRYPTED DATA: ", encryptedData);
     axios
-      .put(`${API.HOST}${API.V1_UPLOAD_SESSIONS_PATH}/${sessionId}`, {
+      .put(`${host}${API.V1_UPLOAD_SESSIONS_PATH}/${sessionId}`, {
         chunk: chunkGenerator({
           idx: chunkIdx,
           data: encryptedData,
@@ -118,6 +125,7 @@ const sendChunkToBroker = (sessionId, chunkIdx, data, handle, genesisHash) =>
   });
 
 const sendFileContentsToBroker = (
+  host,
   sessionId,
   file,
   handle,
@@ -136,6 +144,7 @@ const sendFileContentsToBroker = (
 
         const reader = createReader(fileSlice => {
           sendChunkToBroker(
+            host,
             sessionId,
             chunkIdx,
             fileSlice,
@@ -150,10 +159,10 @@ const sendFileContentsToBroker = (
   return Promise.all(chunkRequests);
 };
 
-const sendMetaDataToBroker = (sessionId, file, handle, genesisHash) =>
+const sendMetaDataToBroker = (host, sessionId, file, handle, genesisHash) =>
   new Promise((resolve, reject) => {
     axios
-      .put(`${API.HOST}${API.V1_UPLOAD_SESSIONS_PATH}/${sessionId}`, {
+      .put(`${host}${API.V1_UPLOAD_SESSIONS_PATH}/${sessionId}`, {
         chunk: chunkGenerator({
           idx: 0,
           data: buildMetaDataPacket(file, handle),
@@ -172,9 +181,16 @@ const sendMetaDataToBroker = (sessionId, file, handle, genesisHash) =>
 
 const sendToAlphaBroker = (sessionId, byteChunks, file, handle, genesisHash) =>
   new Promise((resolve, reject) => {
-    sendMetaDataToBroker(sessionId, file, handle, genesisHash)
+    sendMetaDataToBroker(
+      API.BROKER_NODE_A,
+      sessionId,
+      file,
+      handle,
+      genesisHash
+    )
       .then(() =>
         sendFileContentsToBroker(
+          API.BROKER_NODE_A,
           sessionId,
           file,
           handle,
@@ -189,6 +205,7 @@ const sendToAlphaBroker = (sessionId, byteChunks, file, handle, genesisHash) =>
 const sendToBetaBroker = (sessionId, byteChunks, file, handle, genesisHash) =>
   new Promise((resolve, reject) => {
     sendFileContentsToBroker(
+      API.BROKER_NODE_B,
       sessionId,
       file,
       handle,
@@ -196,7 +213,15 @@ const sendToBetaBroker = (sessionId, byteChunks, file, handle, genesisHash) =>
       [...byteChunks].reverse(),
       byteLocation => Math.min(file.size, byteLocation + FILE.CHUNK_BYTE_SIZE)
     )
-      .then(() => sendMetaDataToBroker(sessionId, file, handle, genesisHash))
+      .then(() =>
+        sendMetaDataToBroker(
+          API.BROKER_NODE_B,
+          sessionId,
+          file,
+          handle,
+          genesisHash
+        )
+      )
       .then(resolve);
   });
 

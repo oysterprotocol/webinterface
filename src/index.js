@@ -8,6 +8,7 @@ import "index.css";
 import { store, persistor } from "./redux";
 import Root from "./components/root";
 import registerServiceWorker from "./register-service-worker";
+persistor.purge();
 
 const App = () => (
   <Provider store={store}>
