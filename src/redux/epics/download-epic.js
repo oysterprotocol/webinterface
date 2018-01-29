@@ -17,29 +17,19 @@ const initializeDownload = (action$, store) => {
       const handle = action.payload;
       const genesisHash = Encryption.sha256(handle);
       const genesisHashInTrytes = Iota.utils.toTrytes(genesisHash);
-      const iotaAddress = genesisHashInTrytes.substr(
-        0,
-        IOTA_API.ADDRESS_LENGTH
-      );
+      const iotaAddress = Iota.toAddress(genesisHashInTrytes);
       return Observable.fromPromise(Iota.findTransactions([iotaAddress]))
         .map(transactions => {
           if (!transactions.length) {
-            throw Error;
+            throw "NO TRANSACTION FOUND";
           }
 
           const t = transactions[0];
-          console.log("CHUNK 0 FOUND!!!: ", t);
-          const message = t.signatureMessageFragment;
-          // IOTA responds with 2187 characters, even though fromTrytes only takes even numbers...
-          const evenChars =
-            message.length % 2 === 0
-              ? message
-              : message.substr(0, message.length - 1);
-          const data = Iota.utils.fromTrytes(evenChars);
-          const decryptedData = Encryption.decrypt(data, handle);
-          console.log("decrypteddddddddddddd: ", decryptedData);
+          const encryptedData = Iota.parseMessage(t.signatureMessageFragment);
+          const decryptedData = Encryption.decrypt(encryptedData, handle);
           const metaData = JSON.parse(decryptedData);
           const { numberOfChunks, fileName } = metaData;
+
           return downloadActions.beginDownloadAction({
             handle,
             numberOfChunks,
@@ -57,24 +47,15 @@ const beginDownload = (action$, store) => {
   return action$.ofType(downloadActions.BEGIN_DOWNLOAD).mergeMap(action => {
     const { handle, fileName, numberOfChunks } = action.payload;
     const datamap = Datamap.generate(handle, numberOfChunks);
-    const addresses = _.values(datamap).map(trytes =>
-      trytes.substr(0, IOTA_API.ADDRESS_LENGTH)
-    );
+    const addresses = _.values(datamap).map(Iota.toAddress);
     return Observable.fromPromise(Iota.findTransactions(addresses))
       .map(transactions => {
-        const decryptedChunks = transactions
-          .slice(1, transactions.length)
-          .map(t => {
-            const message = t.signatureMessageFragment;
-            // IOTA responds with 2187 characters, even though fromTrytes only takes even numbers...
-            const evenChars =
-              message.length % 2 === 0
-                ? message
-                : message.substr(0, message.length - 1);
-            const data = Iota.utils.fromTrytes(evenChars);
-            const encodedData = Encryption.decrypt(data, handle);
-            return Base64.decode(encodedData);
-          });
+        const contentChunks = transactions.slice(1, transactions.length);
+        const decryptedChunks = contentChunks.map(t => {
+          const encryptedData = Iota.parseMessage(t.signatureMessageFragment);
+          const encodedData = Encryption.decrypt(encryptedData, handle);
+          return Base64.decode(encodedData);
+        });
 
         const arrayBuffer = _.flatten(decryptedChunks);
         const blob = new Blob(arrayBuffer);
