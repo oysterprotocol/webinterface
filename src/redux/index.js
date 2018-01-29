@@ -7,6 +7,7 @@ import storage from "redux-persist/lib/storage";
 import { UPLOAD_STATUSES } from "config";
 import epics from "redux/epics";
 import reducer from "redux/reducers";
+import uploadActions from "redux/actions/upload-actions";
 
 const composeFn = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 const middleware = [
@@ -36,4 +37,6 @@ export const store = createStore(
   composeFn(applyMiddleware(...middleware))
 );
 
-export const persistor = persistStore(store);
+export const persistor = persistStore(store, {}, () => {
+  store.dispatch(uploadActions.refreshIncompleteUploads());
+});
