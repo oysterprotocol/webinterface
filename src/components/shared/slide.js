@@ -2,7 +2,7 @@ import React from "react";
 import ICON_TANGLE_UP from "assets/images/icon_tangle_up.png";
 import ICON_DOWNLOAD from "assets/images/icon_download.png";
 
-const Slide = ({ children, title }) => {
+const Slide = ({ children, title, image }) => {
   return (
     <section className="slide">
       <div className="container bordered indented-container">
@@ -13,7 +13,7 @@ const Slide = ({ children, title }) => {
         </div>
         <div className="slide-image-wrapper">
           <div class="slide-custom-image">
-            <img src={ICON_DOWNLOAD} className="slide-icon" />
+            <img src={image} className="slide-icon" />
           </div>
           <div>
             <img src={ICON_TANGLE_UP} className="slide-tangle-image" />
