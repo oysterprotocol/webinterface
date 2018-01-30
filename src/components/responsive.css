@@ -1,0 +1,194 @@
+@media (min-width: 1200px) {
+	/*margins*/
+	main {margin: 5rem 0;}
+	section {margin: 5rem 0;}
+	main [class^="col-"] {margin-top: 5rem;margin-bottom: 5rem;}
+}
+
+@media (min-width: 992px) and (max-width: 1199px) {
+	/*margins*/
+	main {margin: 4rem 0;}
+	section {margin: 4rem 0;}
+	main [class^="col-"] {margin-top: 4rem;margin-bottom: 4rem;}
+}
+
+
+/* Medium Devices, Desktops */
+@media (max-width: 1024px) {
+ 
+}
+
+/* Small Devices, Tablets */
+@media (min-width : 768px) and (max-width: 991px) { 
+
+	/*margins*/
+	main {margin: 3rem 0;}
+	section {margin: 3rem 0;}
+	main [class^="col-"] {margin-top: 3rem;margin-bottom: 3rem;}
+
+	.upload_img {
+		display: none;
+	} 
+	 
+	.slicknav_menu {
+	    display: block;
+	}
+
+	 ul#manu {
+		margin: 0;
+		padding: 0;
+		list-style: none;
+		display: none;
+	}
+	 
+	.slicknav_menu {
+	    font-size: 16px;
+	    box-sizing: border-box;
+	    background: #0068ea;
+	    padding: 8px 0;
+	    position: absolute;
+	    right: 0;
+	}
+}
+
+/* Small Devices Potrait */
+@media (max-width : 767px){
+
+	.form_title {
+		margin-bottom: 3em;
+	}
+
+	.logo span {display:none;}
+	.logo img {max-height: 50px;position: absolute;margin: auto;left:0;right: 0;}
+	button.btn-upload {width: 100%;display: block;}
+	/*margins*/
+	main {margin: 0 0 2rem 0;}
+	section {margin: 2rem 0;}
+	main [class^="col-"] {margin-top: 2rem;margin-bottom: 2rem;}
+
+	.upload_img {
+		display: none;
+	}
+	  
+	.slicknav_menu {
+	    display: block;
+	}
+	ul#manu {
+		margin: 0;
+		padding: 0;
+		list-style: none;
+		display: none;
+	}
+	.slicknav_menu {
+	    font-size: 16px;
+	    box-sizing: border-box;
+	    background: #0068ea;
+	    padding: 8px 0;
+	    position: absolute;
+	    right: 0;
+		z-index:9999;
+	}
+
+	.logo_img {
+	    width: 46%;
+	}
+  
+} 
+
+/* Extra Small Devices, Phones */ 
+@media (max-width : 479px) {
+	 .upload_img {
+		display: none;
+	}
+	 
+	 .rights {
+		width: 100%;
+		float: left;
+	}
+	 
+	 .lefts {
+		width: 100%;
+		float: left;
+	}
+	 
+	 .years {
+		float: right;
+		text-align: left;
+		width: 71%;
+	}
+	 
+	 input[type="range"] { 
+		margin-bottom: 25px;
+	}
+	 button.btn-uplaod {
+		width: 100%;
+	 
+	}
+
+	input[type=range] {
+		width: 100%;
+	}
+
+	select, input:not([type=range]){
+		width: 100%;
+	}
+
+	.btn.btn-default.image-preview-input {
+		margin-right: 0;
+	}
+
+	.slicknav_menu {
+	    display: block;
+	}
+	ul#manu {
+		margin: 0;
+		padding: 0;
+		list-style: none;
+		display: none;
+	}
+	.slicknav_menu {
+	    font-size: 16px;
+	    box-sizing: border-box;
+	    background: #0068ea;
+	    padding: 8px 0;
+	    position: absolute;
+	    right: 0;
+		z-index:9999;
+	}
+
+	.logo_img img {
+		width: 124%;
+	}
+	.border_img img {
+		width: 105%;
+	}
+
+	.form_title h2 {
+		color: #0068ea;
+		font-weight: 400;
+		font-size: 30px;
+		line-height: 45px;
+	}
+	.disclaimer p {
+		font-size: 10px;
+		line-height: 15px;
+	}
+}
+
+/* Custom, iPhone Retina */ 
+@media (min-width: 320px) and (max-width: 478px)  {  	
+}
+
+/* additions after fiverr */
+@media (min-width: 768px) {
+	#upload .container {
+	    border-left: 2rem solid transparent;;
+	    border-right: 2rem solid transparent;
+	    border-left-color: #0267ea;
+	    border-radius: 1rem;
+	-webkit-box-shadow: 0px 0px 20px -3px rgba(50, 50, 50, 0.5);
+	-moz-box-shadow:    0px 0px 20px -3px rgba(50, 50, 50, 0.5);
+	box-shadow:         0px 0px 20px -3px rgba(50, 50, 50, 0.5);
+	}
+
+}

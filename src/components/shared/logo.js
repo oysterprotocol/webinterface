@@ -1,7 +1,7 @@
 import React from "react";
 
-import logo from "assets/images/logo.png";
+import logo from "assets/images/icon.png";
 
-const Logo = () => <img style={{ width: 50 }} src={logo} alt="logo" />;
+const Logo = () => <img src={logo} className="icon img-responsive" alt="Oyster's icon" />;
 
 export default Logo;
