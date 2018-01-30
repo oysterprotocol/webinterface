@@ -35,10 +35,14 @@ class Form extends Component {
                 </div>
                 <div className="rights">
                   <div className="book_list">
-                    <label for="broker-node-1">Broker Node 1</label>
-                    <select name="broker-node-1" id="broker-node-1">
+                    <label htmlFor="broker-node-1">Broker Node 1</label>
+                    <select
+                      name="broker-node-1"
+                      id="broker-node-1"
+                      defaultValue="broker-1.oysternodes.com"
+                    >
                       <option disabled="">Select broker node</option>
-                      <option selected="" value="broker-1.oysternodes.com">
+                      <option value="broker-1.oysternodes.com">
                         broker-1.oysternodes.com
                       </option>
                     </select>
@@ -46,10 +50,14 @@ class Form extends Component {
                 </div>
                 <div className="lefts">
                   <div className="book_list">
-                    <label for="broker-node-2">Broker Node 2</label>
-                    <select name="broker-node-2" id="broker-node-2">
+                    <label htmlFor="broker-node-2">Broker Node 2</label>
+                    <select
+                      name="broker-node-2"
+                      id="broker-node-2"
+                      defaultValue="broker-2.oysternodes.com"
+                    >
                       <option disabled="">Select broker node</option>
-                      <option selected="" value="broker-2.oysternodes.com">
+                      <option value="broker-2.oysternodes.com">
                         broker-2.oysternodes.com
                       </option>
                     </select>
@@ -60,15 +68,7 @@ class Form extends Component {
                 <p>Select Retention File</p>
                 <form id="demo">
                   <div className="rights">
-                    <input
-                      data-fix-max-value="10"
-                      data-bound-select-id="sel"
-                      data-orientation="horizontal"
-                      value="0"
-                      type="range"
-                      min="0"
-                      max="10"
-                    />
+                    <input type="range" min="0" max="10" defaultValue="0" />
                   </div>
                   <div className="lefts">
                     <select id="sel">
