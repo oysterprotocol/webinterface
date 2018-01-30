@@ -646,3 +646,7 @@ header a:focus {
 .spinner-wrapper {
   padding-left: 100px;
 }
+
+.transaction-confirmed-instructions {
+  padding-bottom: 20px;
+}
