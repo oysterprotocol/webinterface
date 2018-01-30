@@ -497,6 +497,10 @@ main {
   outline: 0;
 }
 
+.navbar-toggle {
+  display:none;
+}
+
 header a:hover,
 header a:focus {
   color: white;
@@ -505,7 +509,6 @@ header a:focus {
 
 .slide .container {
   overflow: hidden;
-  padding: 50px 0 50px 50px;
   border-right: none;
 }
 
