@@ -9,12 +9,14 @@ import ICON_DOWNLOAD from "assets/images/icon_download.png";
 
 const RetrieveFileSlide = () => (
   <Slide title="Retrieve a File">
-    <p>
+    <p className="handle-instructions">
       Enter your Oyster handle below to access your stored file from the Tangle.
     </p>
     <div>
-      Oyster Handle:
-      <input type="text" />
+      <label>
+        <span className="handle-label">Oyster Handle:</span>
+        <input name="handle" type="text" />
+      </label>
     </div>
     <div>
       <PrimaryButton>Retrieve File</PrimaryButton>

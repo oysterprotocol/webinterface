@@ -539,6 +539,31 @@ header a:focus {
   text-decoration: none;
 }
 
+.slide .container {
+  flex: 1;
+  display: flex;
+}
+
+.slide-body {
+  flex: 0.75;
+}
+
+.slide-custom-image {
+  position: absolute;
+  margin-left: auto;
+  margin-right: auto;
+  left: 0;
+  right: 0;
+}
+
+.slide-image-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  flex: 0.25;
+}
+
 .slide .indented-container {
   overflow: hidden;
   padding: 50px 0 50px 50px;
@@ -574,6 +599,11 @@ header a:focus {
   top: -60px;
 }
 
+/* .slide-tangle-image { */
+/* position: absolute; */
+/* top: -60px; */
+/* } */
+
 .upload-image {
   width: 100px;
   height: 100px;
@@ -591,4 +621,20 @@ header a:focus {
 
 .instructions {
   margin-top: 20px;
+}
+
+.title-underline {
+  border-color: #6ea0de;
+  border-width: 4px;
+  width: 44px;
+}
+
+.handle-label {
+  color: #6ea0de;
+  font-size: 20px;
+  margin-right: 15px;
+}
+
+.handle-instructions {
+  padding-bottom: 200px;
 }
