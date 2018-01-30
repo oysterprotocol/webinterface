@@ -5,11 +5,11 @@ import "components/shared/slicknav.css";
 import "components/root.css";
 import "components/responsive.css";
 
-import RetrieveFile from "components/retrieve-file";
+import RetrieveInProgress from "components/retrieve-in-progress";
 
 const Root = () => (
   <div className="App">
-    <RetrieveFile />
+    <RetrieveInProgress />
   </div>
 );
 

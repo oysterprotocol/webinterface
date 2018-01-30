@@ -171,9 +171,9 @@ button.btn-hidden {
 }
 
 .btn-primary:hover {
-    color: #fff;
-    background: #0068ea;
-    border-color: #0068ea;
+  color: #fff;
+  background: #0068ea;
+  border-color: #0068ea;
 }
 
 button.btn-upload {
@@ -637,4 +637,12 @@ header a:focus {
 
 .handle-instructions {
   padding-bottom: 200px;
+}
+
+.retrieval-instructions {
+  padding-bottom: 50px;
+}
+
+.spinner-wrapper {
+  padding-left: 100px;
 }
