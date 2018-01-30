@@ -215,10 +215,7 @@
 
 /* additions after fiverr */
 @media (min-width: 768px) {
-  section .container {
-    border-left: 2rem solid transparent;
-    border-right: 2rem solid transparent;
-    border-left-color: #0267ea;
+  .slide .container {
     border-radius: 1rem;
     -webkit-box-shadow: 0px 0px 20px -3px rgba(50, 50, 50, 0.5);
     -moz-box-shadow: 0px 0px 20px -3px rgba(50, 50, 50, 0.5);

@@ -1,9 +1,9 @@
 import React from "react";
 
-const SlideContainer = ({ children, title }) => {
+const Slide = ({ children, title }) => {
   return (
-    <section className="slide">
-      <div className="container">
+    <section className="slide bordered-slide">
+      <div className="container indented-container">
         <h1 className="slide-title">{title}</h1>
         {children}
       </div>
@@ -11,4 +11,4 @@ const SlideContainer = ({ children, title }) => {
   );
 };
 
-export default SlideContainer;
+export default Slide;

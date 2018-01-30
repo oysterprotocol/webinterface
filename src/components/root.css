@@ -507,11 +507,58 @@ header a:focus {
   text-decoration: none;
 }
 
-.slide .container {
+.slide .indented-container {
   overflow: hidden;
   border-right: none;
 }
 
 .slide-title {
   color: #0068ea;
+}
+
+.bordered-slide {
+  border-left: 2rem solid transparent;
+  border-right: 2rem solid transparent;
+  border-left-color: #0267ea;
+}
+
+.choice-wrapper {
+  display: flex;
+  min-height: 500px;
+  overflow: hidden;
+  padding: 50px 0 50px 50px;
+  border-right: none;
+}
+
+.choice-section {
+  flex: 1;
+  display: flex;
+  position: relative;
+  padding-top: 185px;
+  align-items: center;
+  flex-direction: column;
+}
+
+.tangle-image {
+  position: absolute;
+  top: -60px;
+}
+
+.upload-image {
+  width: 100px;
+  height: 100px;
+}
+
+.primary-button {
+  background: #0068ea;
+  width: 290px;
+  border-radius: 10px;
+  color: white;
+  height: 60px;
+  font-size: 20px;
+  margin-top: 50px;
+}
+
+.instructions {
+  margin-top: 20px;
 }
