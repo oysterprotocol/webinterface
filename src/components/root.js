@@ -5,11 +5,11 @@ import "components/shared/slicknav.css";
 import "components/root.css";
 import "components/responsive.css";
 
-import PathChoice from "components/path-choice";
+import RetrieveFile from "components/retrieve-file";
 
 const Root = () => (
   <div className="App">
-    <PathChoice />
+    <RetrieveFile />
   </div>
 );
 

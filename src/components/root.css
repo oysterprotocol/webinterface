@@ -498,7 +498,7 @@ main {
 }
 
 .navbar-toggle {
-  display:none;
+  display: none;
 }
 
 header a:hover,
@@ -509,6 +509,7 @@ header a:focus {
 
 .slide .indented-container {
   overflow: hidden;
+  padding: 50px 0 50px 50px;
   border-right: none;
 }
 
@@ -516,7 +517,7 @@ header a:focus {
   color: #0068ea;
 }
 
-.bordered-slide {
+.bordered {
   border-left: 2rem solid transparent;
   border-right: 2rem solid transparent;
   border-left-color: #0267ea;
@@ -525,9 +526,6 @@ header a:focus {
 .choice-wrapper {
   display: flex;
   min-height: 500px;
-  overflow: hidden;
-  padding: 50px 0 50px 50px;
-  border-right: none;
 }
 
 .choice-section {
