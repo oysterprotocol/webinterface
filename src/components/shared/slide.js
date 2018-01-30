@@ -1,11 +1,14 @@
 import React from "react";
 
-const Slide = ({ children }) => {
+const SlideContainer = ({ children, title }) => {
   return (
     <section className="slide">
-      <div className="container">{children}</div>
+      <div className="container">
+        <h1 className="slide-title">{title}</h1>
+        {children}
+      </div>
     </section>
   );
 };
 
-export default Slide;
+export default SlideContainer;

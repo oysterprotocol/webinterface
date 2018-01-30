@@ -8,8 +8,8 @@ import { Route } from "react-router";
 import { store, persistor } from "./redux";
 import history from "redux/history";
 import Root from "components/root";
-import Header from "components/header";
-import Example from "components/example";
+import Header from "components/shared/header";
+import DownloadReady from "components/download-ready";
 import registerServiceWorker from "./register-service-worker";
 
 const App = () => (
@@ -19,7 +19,7 @@ const App = () => (
         <div>
           <Header />
           <Route exact path="/" component={Root} />
-          <Route path="/upload-started" component={Example} />
+          <Route path="/upload-started" component={DownloadReady} />
         </div>
       </ConnectedRouter>
     </PersistGate>

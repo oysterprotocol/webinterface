@@ -5,11 +5,11 @@ import "components/shared/slicknav.css";
 import "components/root.css";
 import "components/responsive.css";
 
-import Main from "components/main";
+import UploadForm from "components/upload-form";
 
 const Root = () => (
   <div className="App">
-    <Main />
+    <UploadForm />
   </div>
 );
 

@@ -1,29 +1,12 @@
 import React, { Component } from "react";
-import { connect } from "react-redux";
 
-import { UPLOAD_STATUSES } from "config";
-
-import uploadActions from "redux/actions/upload-actions";
-import downloadActions from "redux/actions/download-actions";
 import IconFolder from "components/shared/icon_folder";
 import IconSidebar from "components/shared/icon_sidebar";
 import Slide from "components/shared/slide";
 
-const mapStateToProps = state => ({
-  uploadHistory: state.upload.history
-});
-const mapDispatchToProps = dispatch => ({
-  beginDownloadFn: ({ fileName, handle, numberOfChunks }) =>
-    dispatch(
-      downloadActions.beginDownloadAction({ fileName, handle, numberOfChunks })
-    ),
-  initializeUploadFn: file =>
-    dispatch(uploadActions.initializeUploadAction(file))
-});
-
-class Form extends Component {
+class UploadSlide extends Component {
   render() {
-    const { initializeUploadFn, uploadHistory, beginDownloadFn } = this.props;
+    const { upload } = this.props;
     return (
       <Slide>
         <div className="row">
@@ -138,7 +121,7 @@ class Form extends Component {
                   if (!file) {
                     alert("Please select a file.");
                   } else {
-                    initializeUploadFn(file);
+                    upload(file);
                   }
                 }}
               >
@@ -165,4 +148,4 @@ class Form extends Component {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Form);
+export default UploadSlide;
