@@ -139,7 +139,11 @@ class Form extends Component {
                   type="button"
                   onClick={() => {
                     const file = this.refs.fileInput.files[0];
-                    initializeUploadFn(file);
+                    if (!file) {
+                      alert("Please select a file.");
+                    } else {
+                      initializeUploadFn(file);
+                    }
                   }}
                 >
                   Start Upload

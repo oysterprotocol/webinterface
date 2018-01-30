@@ -111,7 +111,7 @@ const markUploadAsComplete = (action$, store) => {
 };
 
 export default combineEpics(
-  // initializeUpload,
+  initializeUpload,
   saveToHistory,
   uploadFile,
   checkUploadProgress,
