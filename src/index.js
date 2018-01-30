@@ -4,19 +4,21 @@ import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/lib/integration/react";
 import { ConnectedRouter } from "react-router-redux";
 import { Route } from "react-router";
-import createHistory from "history/createBrowserHistory";
 
 import { store, persistor } from "./redux";
-import Root from "./components/root";
+import history from "redux/history";
+import Root from "components/root";
+import Example from "components/example";
 import registerServiceWorker from "./register-service-worker";
-// persistor.purge();
-const history = createHistory();
 
 const App = () => (
   <Provider store={store}>
     <PersistGate loading={null} persistor={persistor}>
       <ConnectedRouter history={history}>
-        <Route exact path="/" component={Root} />
+        <div>
+          <Route exact path="/" component={Root} />
+          <Route path="/upload-started" component={Example} />
+        </div>
       </ConnectedRouter>
     </PersistGate>
   </Provider>
