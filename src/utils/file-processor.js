@@ -33,7 +33,7 @@ const uploadFileToBrokerNodes = (file, handle) => {
   const genesisHash = sha256(handle);
 
   return createUploadSession(file.size, genesisHash)
-    .then((alphaSessionId, betaSessionId) =>
+    .then(({ alphaSessionId, betaSessionId }) =>
       Promise.all([
         sendToAlphaBroker(
           alphaSessionId,
@@ -84,7 +84,7 @@ const createUploadSession = (fileSizeBytes, genesisHash) =>
       .then(({ data }) => {
         console.log("UPLOAD SESSION SUCCESS: ", data);
         const { id: alphaSessionId, beta_session_id: betaSessionId } = data;
-        resolve(alphaSessionId, betaSessionId);
+        resolve({ alphaSessionId, betaSessionId });
       })
       .catch(error => {
         console.log("UPLOAD SESSION ERROR: ", error);
