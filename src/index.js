@@ -8,6 +8,7 @@ import { Route } from "react-router";
 import { store, persistor } from "./redux";
 import history from "redux/history";
 import Root from "components/root";
+import Header from "components/header";
 import Example from "components/example";
 import registerServiceWorker from "./register-service-worker";
 
@@ -16,6 +17,7 @@ const App = () => (
     <PersistGate loading={null} persistor={persistor}>
       <ConnectedRouter history={history}>
         <div>
+          <Header />
           <Route exact path="/" component={Root} />
           <Route path="/upload-started" component={Example} />
         </div>

@@ -5,13 +5,10 @@ import "components/shared/slicknav.css";
 import "components/root.css";
 import "components/responsive.css";
 
-import Header from "components/header";
 import Main from "components/main";
-
 
 const Root = () => (
   <div className="App">
-    <Header />
     <Main />
   </div>
 );

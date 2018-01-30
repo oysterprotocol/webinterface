@@ -97,12 +97,8 @@ class Form extends Component {
                     name="upload"
                     placeholder="Select a file"
                     className="form-control image-preview-filename input"
-                    accept="image/png, image/jpeg, image/gif"
                     ref="fileInput"
                     type="file"
-                    onClick={event => {
-                      event.target.value = null;
-                    }}
                     required
                   />
                   <span className="input-group-btn">
