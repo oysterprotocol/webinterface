@@ -144,11 +144,6 @@ class Form extends Component {
                 >
                   Start Upload
                 </button>
-                <div>
-                  {uploadHistory.map(upload =>
-                    this.renderUploadRow(upload, beginDownloadFn)
-                  )}
-                </div>
               </div>
             </div>
             <div className="col-md-3 space">
