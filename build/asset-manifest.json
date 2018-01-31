@@ -1,7 +1,17 @@
 {
-  "main.css": "static/css/main.c17080f1.css",
-  "main.css.map": "static/css/main.c17080f1.css.map",
-  "main.js": "static/js/main.8a3c560e.js",
-  "main.js.map": "static/js/main.8a3c560e.js.map",
-  "static/media/logo.png": "static/media/logo.c198f915.png"
+  "main.css": "static/css/main.fe99d954.css",
+  "main.css.map": "static/css/main.fe99d954.css.map",
+  "main.js": "static/js/main.573f3cdd.js",
+  "main.js.map": "static/js/main.573f3cdd.js.map",
+  "static/media/glyphicons-halflings-regular.eot": "static/media/glyphicons-halflings-regular.f4769f9b.eot",
+  "static/media/glyphicons-halflings-regular.svg": "static/media/glyphicons-halflings-regular.89889688.svg",
+  "static/media/glyphicons-halflings-regular.ttf": "static/media/glyphicons-halflings-regular.e18bbf61.ttf",
+  "static/media/glyphicons-halflings-regular.woff": "static/media/glyphicons-halflings-regular.fa277232.woff",
+  "static/media/glyphicons-halflings-regular.woff2": "static/media/glyphicons-halflings-regular.448c34a5.woff2",
+  "static/media/icon_ready.png": "static/media/icon_ready.8ef7c025.png",
+  "static/media/icon_sidebar.png": "static/media/icon_sidebar.f6fa34d1.png",
+  "static/media/icon_spinner.png": "static/media/icon_spinner.796ce26b.png",
+  "static/media/icon_tangle_left.png": "static/media/icon_tangle_left.4c0c5476.png",
+  "static/media/icon_tangle_right.png": "static/media/icon_tangle_right.d3f05b72.png",
+  "static/media/icon_tangle_up.png": "static/media/icon_tangle_up.8b9cdce9.png"
 }
