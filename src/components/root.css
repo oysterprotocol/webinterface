@@ -563,6 +563,7 @@ header a:focus {
 
 .slide-body {
   flex: 0.75;
+  padding: 50px;
 }
 
 .slide-custom-image {
@@ -667,4 +668,10 @@ header a:focus {
 
 .transaction-confirmed-instructions {
   padding-bottom: 20px;
+}
+
+.upload-progress-bar {
+  margin-bottom: 10px;
+  border-radius: 4px;
+  width: 50%;
 }

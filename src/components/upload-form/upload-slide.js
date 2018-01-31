@@ -1,21 +1,18 @@
 import React, { Component } from "react";
 
 import IconFolder from "components/shared/icon_folder";
-import IconSidebar from "components/shared/icon_sidebar";
+import ICON_UPLOAD from "assets/images/icon_upload.png";
 import Slide from "components/shared/slide";
+import PrimaryButton from "components/shared/primary-button";
 
 class UploadSlide extends Component {
   render() {
     const { upload } = this.props;
     return (
-      <Slide>
+      <Slide title="Upload a File" image={ICON_UPLOAD}>
         <div className="row">
           <div className="col-md-8 col-md-offset-1">
             <div className="body_form">
-              <div className="form_title">
-                <h2>Upload a File</h2>
-                <span />
-              </div>
               <div className="rights">
                 <div className="book_list">
                   <label htmlFor="broker-node-1">Broker Node 1</label>
@@ -113,7 +110,7 @@ class UploadSlide extends Component {
               </h3>
             </div>
             <div className="upload_button">
-              <button
+              <PrimaryButton
                 className="btn btn-upload"
                 type="button"
                 onClick={() => {
@@ -126,12 +123,7 @@ class UploadSlide extends Component {
                 }}
               >
                 Start Upload
-              </button>
-            </div>
-          </div>
-          <div className="col-md-3 space">
-            <div className="upload_img">
-              <IconSidebar />
+              </PrimaryButton>
             </div>
           </div>
         </div>
