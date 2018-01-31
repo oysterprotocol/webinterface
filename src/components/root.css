@@ -659,7 +659,7 @@ header a:focus {
 }
 
 .handle-instructions {
-  padding-bottom: 200px;
+  padding-bottom: 150px;
 }
 
 .retrieval-instructions {
@@ -678,4 +678,24 @@ header a:focus {
   margin-bottom: 10px;
   border-radius: 4px;
   width: 50%;
+}
+
+h2 {
+  color: #afcbfe;
+  font-size: 20px;
+}
+
+.oyster-handle {
+  color: #0068ea;
+  font-size: 15px;
+}
+
+.handle-text-input {
+  border: none;
+  border-bottom: #0068ea 1px solid;
+  width: 40%;
+}
+
+input:focus {
+  box-shadow: none;
 }

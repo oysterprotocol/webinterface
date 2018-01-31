@@ -11,7 +11,12 @@ const UploadCompleteSlide = ({ handle }) => (
       has been generated below. This handle is the only way to access your file
       on the Tangle. Please store this handle in a safe place.
     </p>
-    <div>Oyster Handle: {handle}</div>
+    <div>
+      <h2>Oyster Handle:</h2>
+      <p className="oyster-handle">
+        adkjfaskljfafdkhjaslfasjhdkfkjlhadfshkjasfdhkjaf
+      </p>
+    </div>
   </Slide>
 );
 

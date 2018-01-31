@@ -16,7 +16,12 @@ class DownloadFormSlide extends Component {
         <div>
           <label>
             <span className="handle-label">Oyster Handle:</span>
-            <input name="handle" type="text" ref="handleInput" />
+            <input
+              name="handle"
+              type="text"
+              ref="handleInput"
+              className="handle-text-input"
+            />
           </label>
         </div>
         <div>

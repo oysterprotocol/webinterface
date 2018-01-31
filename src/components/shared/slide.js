@@ -8,6 +8,7 @@ const Slide = ({ children, title, image }) => {
       <div className="container bordered indented-container">
         <div className="slide-body">
           <h1 className="slide-title">{title}</h1>
+          <hr />
           {children}
         </div>
         <div className="slide-image-wrapper">
