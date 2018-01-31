@@ -1,7 +1,7 @@
 import React from "react";
 import SlideContainer from "components/shared/slide";
 
-const DownloadReadySlide = () => (
+const DownloadCompleteSlide = () => (
   <SlideContainer title="Your download is ready">
     <div>
       <p>Click the button below to begin downloading your file.</p>
@@ -10,4 +10,4 @@ const DownloadReadySlide = () => (
   </SlideContainer>
 );
 
-export default DownloadReadySlide;
+export default DownloadCompleteSlide;

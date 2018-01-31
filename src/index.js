@@ -9,9 +9,9 @@ import { store, persistor } from "./redux";
 import history from "redux/history";
 import Root from "components/root";
 import Header from "components/shared/header";
-import RetrieveFile from "components/retrieve-file";
+import DownloadForm from "components/download-form";
 import DownloadStarted from "components/download-started";
-import DownloadReady from "components/download-ready";
+import DownloadComplete from "components/download-complete";
 import UploadForm from "components/upload-form";
 import UploadStarted from "components/upload-started";
 import UploadComplete from "components/upload-complete";
@@ -24,10 +24,12 @@ const App = () => (
         <div>
           <Header />
           <Route exact path="/" component={Root} />
-          <Route path="/download-form" component={RetrieveFile} />
+          <Route path="/download-form" component={DownloadForm} />
           <Route path="/download-started" component={DownloadStarted} />
+          <Route path="/download-complete" component={DownloadComplete} />
           <Route path="/upload-form" component={UploadForm} />
           <Route path="/upload-started" component={UploadStarted} />
+          <Route path="/upload-complete" component={UploadComplete} />
         </div>
       </ConnectedRouter>
     </PersistGate>

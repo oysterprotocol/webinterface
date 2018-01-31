@@ -4,7 +4,7 @@ import Slide from "components/shared/slide";
 import PrimaryButton from "components/shared/primary-button";
 import ICON_DOWNLOAD from "assets/images/icon_download.png";
 
-const RetrieveFileSlide = () => (
+const DownloadFormSlide = () => (
   <Slide title="Retrieve a File" image={ICON_DOWNLOAD}>
     <p className="handle-instructions">
       Enter your Oyster handle below to access your stored file from the Tangle.
@@ -21,4 +21,4 @@ const RetrieveFileSlide = () => (
   </Slide>
 );
 
-export default RetrieveFileSlide;
+export default DownloadFormSlide;
