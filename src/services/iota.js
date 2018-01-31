@@ -1,4 +1,5 @@
 import IOTA from "iota.lib.js";
+import _ from "lodash";
 import { IOTA_API } from "config";
 
 const Iota = new IOTA({
@@ -8,24 +9,22 @@ const Iota = new IOTA({
 const toAddress = string => string.substr(0, IOTA_API.ADDRESS_LENGTH);
 
 const parseMessage = message => {
+  var splitString = message.split("");
+  var reverseArray = splitString.reverse();
 
-    var splitString = message.split("");
-    var reverseArray = splitString.reverse();
+  var notNineIndex = reverseArray.findIndex(function(element) {
+    return element != 9;
+  });
 
-    var notNineIndex = reverseArray.findIndex(function(element) {
-        return element != 9;
-    });
+  reverseArray = reverseArray.slice(notNineIndex, reverseArray.length);
 
-    reverseArray = reverseArray.slice(notNineIndex, reverseArray.length);
+  var newArray = reverseArray.reverse();
 
-    var newArray = reverseArray.reverse();
+  var joined = newArray.join("");
 
-    var joined = newArray.join("");
+  const evenChars = joined.length % 2 === 0 ? joined : joined + "9";
 
-    const evenChars =
-        joined.length % 2 === 0 ? joined : joined + '9';
-
-    return Iota.utils.fromTrytes(evenChars);
+  return Iota.utils.fromTrytes(evenChars);
 };
 
 const checkUploadPercentage = addresses =>
@@ -52,11 +51,13 @@ const findTransactions = addresses =>
           console.log("IOTA ERROR: ", error);
         }
         const settledTransactions = transactionObjects || [];
-        resolve(settledTransactions);
+        const uniqTransactions = _.uniqBy(settledTransactions, "address");
+        resolve(uniqTransactions);
       }
     );
   });
 
+global.blah = _;
 export default {
   toAddress,
   parseMessage,
