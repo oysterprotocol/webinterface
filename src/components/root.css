@@ -113,6 +113,9 @@ p {
 .disclaimer {
   text-align: center;
   padding-top: 40px;
+  position: absolute;
+  left: 0;
+  right: 0;
 }
 
 .myfiler span {
@@ -559,10 +562,12 @@ header a:focus {
 .slide .container {
   flex: 1;
   display: flex;
+  padding-bottom: 50px;
 }
 
 .slide-body {
   flex: 0.75;
+  padding: 50px;
 }
 
 .slide-custom-image {
@@ -654,7 +659,7 @@ header a:focus {
 }
 
 .handle-instructions {
-  padding-bottom: 200px;
+  padding-bottom: 150px;
 }
 
 .retrieval-instructions {
@@ -667,4 +672,72 @@ header a:focus {
 
 .transaction-confirmed-instructions {
   padding-bottom: 20px;
+}
+
+.upload-progress-bar {
+  margin-bottom: 10px;
+  border-radius: 4px;
+  width: 50%;
+}
+
+h2 {
+  color: #afcbfe;
+  font-size: 20px;
+}
+
+.oyster-handle {
+  color: #0068ea;
+  font-size: 15px;
+}
+
+.handle-text-input {
+  border: none;
+  border-bottom: #0068ea 1px solid;
+  width: 40%;
+}
+
+.handle-text-input:focus {
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+.underline {
+  width: 50px;
+  border-color: #afcbfe;
+  border-width: 5px;
+}
+
+input.retention-slider,
+input.retention-slider:hover,
+input.retention-slider:focus {
+  background: #afcbfe;
+}
+
+.file-input-label {
+  display: flex;
+}
+
+.upload-filename {
+  flex: 0.8;
+  padding: 3px;
+  border: 1px solid #ecedef;
+  border-radius: 10px 0 0 10px;
+  text-align: center;
+}
+
+#upload-input {
+  display: none;
+}
+
+.upload-folder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 50px;
+  background: #0068ea;
+  border-radius: 0 10px 10px 0;
+}
+
+.years-retention {
+  margin-left: 10px;
 }

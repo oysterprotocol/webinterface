@@ -1,4 +1,5 @@
 import React from "react";
+import { Line } from "rc-progress";
 
 import Slide from "components/shared/slide";
 import PrimaryButton from "components/shared/primary-button";
@@ -10,8 +11,19 @@ const UploadStartedSlide = ({ uploadProgress }) => (
       Transaction Confirmed. Your file is now being uploaded to the Tangle.
     </p>
     <div>
-      PROGRESS BAR {uploadProgress}% - File is being broken into chunks and each
-      chunk encrypted…
+      <Line
+        percent={uploadProgress}
+        trailWidth="4"
+        strokeWidth="4"
+        strokeColor="#4B80FC"
+        trailColor="#afcbfe"
+        strokeLinecap="square"
+        className="upload-progress-bar"
+      />
+      <p>
+        {Math.min(100, uploadProgress)}% - File is being broken into chunks and
+        each chunk encrypted…
+      </p>
     </div>
   </Slide>
 );
