@@ -13,6 +13,44 @@ const {
   encrypt
 } = Encryption;
 
+const metaDataToIotaFormat = (object, handle) => {
+  const metaDataString = JSON.stringify(object);
+  const encryptedData = Encryption.encrypt(metaDataString, handle);
+  const trytes = Iota.utils.toTrytes(encryptedData);
+
+  return trytes;
+};
+
+const metaDataFromIotaFormat = (trytes, handle) => {
+  const encryptedData = Iota.parseMessage(trytes);
+  const decryptedData = Encryption.decrypt(encryptedData, handle);
+  const metaDataObject = JSON.parse(decryptedData);
+
+  return metaDataObject;
+};
+
+const chunkToIotaFormat = (arrayBuffer, handle) => {
+  const encodedData = Base64.encode(arrayBuffer);
+  const encryptedData = Encryption.encrypt(encodedData, handle);
+  const trytes = Iota.utils.toTrytes(encryptedData);
+
+  console.log("[UPLOAD] ORIGINAL DATA: ", arrayBuffer);
+  console.log("[UPLOAD] ENCODED DATA: ", encodedData);
+  console.log("[UPLOAD] ENCRYPTED DATA: ", encryptedData);
+  return trytes;
+};
+
+const chunkFromIotaFormat = (trytes, handle) => {
+  const encryptedData = Iota.parseMessage(trytes);
+  const encodedData = Encryption.decrypt(encryptedData, handle);
+  const arrayBuffer = Base64.decode(encodedData);
+
+  console.log("[DOWNLOAD] ENCRYPTED DATA: ", encryptedData);
+  console.log("[DOWNLOAD] ENCODED DATA: ", encodedData);
+  console.log("[DOWNLOAD] ORIGINAL DATA: ", arrayBuffer);
+  return arrayBuffer;
+};
+
 const axiosInstance = axios.create({
   timeout: 100000,
   headers: {
@@ -95,9 +133,7 @@ const createReader = onRead => {
   reader.onloadend = function(evt) {
     if (evt.target.readyState === FileReader.DONE) {
       const arrayBuffer = evt.target.result;
-      console.log("UPLOADING ARRAY BUFFER: ", arrayBuffer);
-      const encoded = Base64.encode(arrayBuffer);
-      onRead(encoded);
+      onRead(arrayBuffer);
     }
   };
   return reader;
@@ -107,20 +143,16 @@ const sendChunkToBroker = (
   host,
   sessionId,
   chunkIdx,
-  data,
+  arrayBuffer,
   handle,
   genesisHash
 ) =>
   new Promise((resolve, reject) => {
-    console.log("RAW DATA: ", data);
-    const encryptedData = encrypt(data, handle);
-    console.log("CHUNK IDX: ", chunkIdx);
-    console.log("ENCRYPTED DATA: ", encryptedData);
     axiosInstance
       .put(`${host}${API.V1_UPLOAD_SESSIONS_PATH}/${sessionId}`, {
         chunk: chunkGenerator({
           idx: chunkIdx,
-          data: encryptedData,
+          data: chunkToIotaFormat(arrayBuffer, handle),
           hash: genesisHash
         })
       })
@@ -152,12 +184,12 @@ const sendFileContentsToBroker = (
           sliceCutOffFn(chunkStartingPoint)
         );
 
-        const reader = createReader(fileSlice => {
+        const reader = createReader(arrayBuffer => {
           sendChunkToBroker(
             host,
             sessionId,
             chunkIdx,
-            fileSlice,
+            arrayBuffer,
             handle,
             genesisHash
           ).then(resolve);
@@ -171,11 +203,12 @@ const sendFileContentsToBroker = (
 
 const sendMetaDataToBroker = (host, sessionId, file, handle, genesisHash) =>
   new Promise((resolve, reject) => {
+    const metaDataObject = buildMetaDataPacket(file);
     axiosInstance
       .put(`${host}${API.V1_UPLOAD_SESSIONS_PATH}/${sessionId}`, {
         chunk: chunkGenerator({
           idx: 0,
-          data: buildMetaDataPacket(file, handle),
+          data: metaDataToIotaFormat(metaDataObject, handle),
           hash: genesisHash
         })
       })
@@ -235,19 +268,15 @@ const sendToBetaBroker = (sessionId, byteChunks, file, handle, genesisHash) =>
       .then(resolve);
   });
 
-const buildMetaDataPacket = (file, handle) => {
+const buildMetaDataPacket = file => {
   const fileExtension = file.name.split(".").pop();
-  const metaData = assembleMetaData(file.name, fileExtension, file.size);
-  const encryptedMetaData = encrypt(metaData, handle);
-
-  return encryptedMetaData;
+  return assembleMetaData(file.name, fileExtension, file.size);
 };
 
 const assembleMetaData = (name, extension, fileSizeBytes) => {
   const shortenedName = name.substr(0, 500);
   const numberOfChunks = createByteLocations(fileSizeBytes).length;
-  const metaData = { fileName: shortenedName, ext: extension, numberOfChunks };
-  return JSON.stringify(metaData);
+  return { fileName: shortenedName, ext: extension, numberOfChunks };
 };
 
 export default {
@@ -256,5 +285,8 @@ export default {
   sendChunkToBroker,
   createByteChunks,
   createUploadSession,
-  buildMetaDataPacket
+  metaDataToIotaFormat,
+  metaDataFromIotaFormat,
+  chunkToIotaFormat,
+  chunkFromIotaFormat
 };
