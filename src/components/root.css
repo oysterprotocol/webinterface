@@ -696,6 +696,7 @@ h2 {
   width: 40%;
 }
 
-input:focus {
-  box-shadow: none;
+.handle-text-input:focus {
+  outline: none !important;
+  box-shadow: none !important;
 }
