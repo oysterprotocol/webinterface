@@ -39,14 +39,8 @@ const uploadFileToBrokerNodes = (file, handle) => {
   return createUploadSession(file.size, genesisHash)
     .then(({ alphaSessionId, betaSessionId }) =>
       Promise.all([
-        sendToAlphaBroker(
-          alphaSessionId,
-          byteChunks,
-          file,
-          handle,
-          genesisHash
-        ),
-        sendToBetaBroker(betaSessionId, byteChunks, file, handle, genesisHash)
+        sendToAlphaBroker(alphaSessionId, byteChunks, file, handle, genesisHash)
+        // sendToBetaBroker(betaSessionId, byteChunks, file, handle, genesisHash)
       ])
     )
     .then(() => {

@@ -13,9 +13,7 @@ const UploadCompleteSlide = ({ handle }) => (
     </p>
     <div>
       <h2>Oyster Handle:</h2>
-      <p className="oyster-handle">
-        adkjfaskljfafdkhjaslfasjhdkfkjlhadfshkjasfdhkjaf
-      </p>
+      <p className="oyster-handle">{handle}</p>
     </div>
   </Slide>
 );
