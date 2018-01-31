@@ -46,7 +46,13 @@ class UploadSlide extends Component {
           <p>Select Retention File</p>
           <form id="demo">
             <div className="rights">
-              <input type="range" min="0" max="10" defaultValue="0" />
+              <input
+                className="retention-slider"
+                type="range"
+                min="0"
+                max="10"
+                defaultValue="0"
+              />
             </div>
             <div className="lefts">
               <select id="sel">

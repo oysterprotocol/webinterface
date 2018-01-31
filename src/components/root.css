@@ -700,3 +700,15 @@ h2 {
   outline: none !important;
   box-shadow: none !important;
 }
+
+.underline {
+  width: 50px;
+  border-color: #afcbfe;
+  border-width: 5px;
+}
+
+input.retention-slider,
+input.retention-slider:hover,
+input.retention-slider:focus {
+  background: #afcbfe;
+}
