@@ -6,7 +6,7 @@ import Logo from "components/shared/logo";
 const Header = () => (
   <header className="App-header">
     <nav role="navigation" className="navbar navbar-default">
-      <div className="container-fluid">
+      <div className="container">
         <div className="navbar-header">
           <button
             type="button"
@@ -23,7 +23,7 @@ const Header = () => (
           </button>
           <a href="" className="logo" title="Oyster Storage's Logo">
             <Logo />
-            <span className="App-title">Oyster Storage</span>
+            <span className="App-title wordmark">Oyster Storage</span>
           </a>
         </div>
         <div id="navbar" className="navbar-collapse collapse">

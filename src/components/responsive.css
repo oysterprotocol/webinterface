@@ -75,6 +75,10 @@
     margin-bottom: 3em;
   }
 
+  .bordered {
+    border: 0;
+  }
+
   .logo span {
     display: none;
   }
@@ -211,6 +215,14 @@
 
 /* Custom, iPhone Retina */
 @media (min-width: 320px) and (max-width: 478px) {
+
+  .slide-body {
+    flex: 1;
+  }
+
+    .slide-image-wrapper {
+      display: none;
+    }
 }
 
 /* additions after fiverr */
@@ -220,5 +232,9 @@
     -webkit-box-shadow: 0px 0px 20px -3px rgba(50, 50, 50, 0.5);
     -moz-box-shadow: 0px 0px 20px -3px rgba(50, 50, 50, 0.5);
     box-shadow: 0px 0px 20px -3px rgba(50, 50, 50, 0.5);
+  }
+
+  .slide-image-wrapper {
+    margin-right: -15px;
   }
 }
