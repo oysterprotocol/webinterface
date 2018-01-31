@@ -1,4 +1,5 @@
 import React from "react";
+import { push } from "react-router-redux";
 
 import Slide from "components/shared/slide";
 import PrimaryButton from "components/shared/primary-button";
@@ -7,7 +8,7 @@ import ICON_TANGLE_RIGHT from "assets/images/icon_tangle_right.png";
 import ICON_UPLOAD from "assets/images/icon_upload.png";
 import ICON_DOWNLOAD from "assets/images/icon_download.png";
 
-const ChoiceSlide = () => (
+const ChoiceSlide = ({ visitUploadFormFn, visitDownloadFormFn }) => (
   <section className="slide">
     <div className="container choice-wrapper">
       <div className="choice-section">
@@ -16,7 +17,9 @@ const ChoiceSlide = () => (
           <img src={ICON_UPLOAD} className="upload-image" />
         </div>
         <div>
-          <PrimaryButton>Upload a File</PrimaryButton>
+          <PrimaryButton onClick={visitUploadFormFn}>
+            Upload a File
+          </PrimaryButton>
         </div>
         <p className="instructions">Use Oyster to host a file on the Tangle.</p>
       </div>

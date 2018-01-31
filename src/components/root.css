@@ -598,6 +598,7 @@ header a:focus {
 }
 
 .choice-wrapper {
+  overflow: hidden;
   display: flex;
   min-height: 500px;
 }

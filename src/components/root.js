@@ -5,11 +5,11 @@ import "components/shared/slicknav.css";
 import "components/root.css";
 import "components/responsive.css";
 
-import UploadComplete from "components/upload-complete";
+import PathChoice from "components/path-choice";
 
 const Root = () => (
   <div className="App">
-    <UploadComplete />
+    <PathChoice />
   </div>
 );
 

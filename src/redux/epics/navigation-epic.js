@@ -3,6 +3,7 @@ import { combineEpics } from "redux-observable";
 import { push } from "react-router-redux";
 
 import uploadActions from "redux/actions/upload-actions";
+import navigationActions from "redux/actions/navigation-actions";
 
 const goToUploadStarted = (action$, store) => {
   return action$
@@ -10,4 +11,10 @@ const goToUploadStarted = (action$, store) => {
     .map(action => push("/upload-started"));
 };
 
-export default combineEpics(goToUploadStarted);
+const goToUploadForm = (action$, store) => {
+  return action$
+    .ofType(navigationActions.VISIT_UPLOAD_FORM)
+    .map(action => push("/upload-form"));
+};
+
+export default combineEpics(goToUploadStarted, goToUploadForm);

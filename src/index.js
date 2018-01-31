@@ -10,6 +10,7 @@ import history from "redux/history";
 import Root from "components/root";
 import Header from "components/shared/header";
 import DownloadReady from "components/download-ready";
+import UploadForm from "components/upload-form";
 import registerServiceWorker from "./register-service-worker";
 
 const App = () => (
@@ -19,6 +20,7 @@ const App = () => (
         <div>
           <Header />
           <Route exact path="/" component={Root} />
+          <Route path="/upload-form" component={UploadForm} />
           <Route path="/upload-started" component={DownloadReady} />
         </div>
       </ConnectedRouter>
