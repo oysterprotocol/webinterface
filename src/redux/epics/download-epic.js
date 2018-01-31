@@ -9,6 +9,7 @@ import { IOTA_API } from "config";
 import Iota from "services/iota";
 import Datamap from "utils/datamap";
 import Encryption from "utils/encryption";
+import FileProcessor from "utils/file-processor";
 
 const initializeDownload = (action$, store) => {
   return action$
@@ -25,10 +26,13 @@ const initializeDownload = (action$, store) => {
           }
 
           const t = transactions[0];
-          const encryptedData = Iota.parseMessage(t.signatureMessageFragment);
-          const decryptedData = Encryption.decrypt(encryptedData, handle);
-          const metaData = JSON.parse(decryptedData);
-          const { numberOfChunks, fileName } = metaData;
+          const {
+            numberOfChunks,
+            fileName
+          } = FileProcessor.metaDataFromIotaFormat(
+            t.signatureMessageFragment,
+            handle
+          );
 
           return downloadActions.beginDownloadAction({
             handle,
@@ -52,9 +56,10 @@ const beginDownload = (action$, store) => {
       .map(transactions => {
         const contentChunks = transactions.slice(1, transactions.length);
         const decryptedChunks = contentChunks.map(t => {
-          const encryptedData = Iota.parseMessage(t.signatureMessageFragment);
-          const encodedData = Encryption.decrypt(encryptedData, handle);
-          return Base64.decode(encodedData);
+          return FileProcessor.chunkFromIotaFormat(
+            t.signatureMessageFragment,
+            handle
+          );
         });
 
         const arrayBuffer = _.flatten(decryptedChunks);
