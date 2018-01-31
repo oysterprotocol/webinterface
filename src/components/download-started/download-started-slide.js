@@ -5,7 +5,7 @@ import PrimaryButton from "components/shared/primary-button";
 import ICON_SPINNER from "assets/images/icon_spinner.png";
 import ICON_DOWNLOAD from "assets/images/icon_download.png";
 
-const RetrieveFileSlide = () => (
+const DownloadStartedSlide = () => (
   <Slide title="Retrieving file..." image={ICON_DOWNLOAD}>
     <p className="retrieval-instructions">
       Your file is being retrieved from the Tangle.
@@ -16,4 +16,4 @@ const RetrieveFileSlide = () => (
   </Slide>
 );
 
-export default RetrieveFileSlide;
+export default DownloadStartedSlide;

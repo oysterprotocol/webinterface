@@ -3,12 +3,19 @@ import { combineEpics } from "redux-observable";
 import { push } from "react-router-redux";
 
 import uploadActions from "redux/actions/upload-actions";
+import downloadActions from "redux/actions/download-actions";
 import navigationActions from "redux/actions/navigation-actions";
 
 const goToDownloadForm = (action$, store) => {
   return action$
     .ofType(navigationActions.VISIT_DOWNLOAD_FORM)
     .map(action => push("/download-form"));
+};
+
+const goToDownloadStarted = (action$, store) => {
+  return action$
+    .ofType(downloadActions.BEGIN_DOWNLOAD)
+    .map(action => push("/download-started"));
 };
 
 const goToUploadForm = (action$, store) => {
@@ -31,6 +38,7 @@ const goToUploadComplete = (action$, store) => {
 
 export default combineEpics(
   goToDownloadForm,
+  goToDownloadStarted,
   goToUploadForm,
   goToUploadStarted,
   goToUploadComplete

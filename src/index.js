@@ -10,6 +10,7 @@ import history from "redux/history";
 import Root from "components/root";
 import Header from "components/shared/header";
 import RetrieveFile from "components/retrieve-file";
+import DownloadStarted from "components/download-started";
 import DownloadReady from "components/download-ready";
 import UploadForm from "components/upload-form";
 import UploadStarted from "components/upload-started";
@@ -24,6 +25,7 @@ const App = () => (
           <Header />
           <Route exact path="/" component={Root} />
           <Route path="/download-form" component={RetrieveFile} />
+          <Route path="/download-started" component={DownloadStarted} />
           <Route path="/upload-form" component={UploadForm} />
           <Route path="/upload-started" component={UploadStarted} />
         </div>
