@@ -13,9 +13,6 @@ const UploadStartedSlide = () => (
       PROGRESS BAR 32% - File is being broken into chunks and each chunk
       encrypted…
     </div>
-    <div>
-      <PrimaryButton>Retrieve File</PrimaryButton>
-    </div>
   </Slide>
 );
 

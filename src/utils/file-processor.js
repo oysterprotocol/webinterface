@@ -29,6 +29,7 @@ const initializeUpload = file => {
 };
 
 const uploadFileToBrokerNodes = (file, handle) => {
+  console.log("UPLOADING FILE TO BROKER NODES");
   const byteChunks = createByteChunks(file.size);
   const genesisHash = sha256(handle);
 

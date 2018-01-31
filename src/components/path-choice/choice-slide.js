@@ -29,7 +29,9 @@ const ChoiceSlide = ({ visitUploadFormFn, visitDownloadFormFn }) => (
           <img src={ICON_DOWNLOAD} className="upload-image" />
         </div>
         <div>
-          <PrimaryButton>Retrieve a File</PrimaryButton>
+          <PrimaryButton onClick={visitDownloadFormFn}>
+            Retrieve a File
+          </PrimaryButton>
         </div>
         <p className="instructions">
           Use an Oyster handle to retrieve a file from the Tangle.

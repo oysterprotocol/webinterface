@@ -5,10 +5,10 @@ import { push } from "react-router-redux";
 import uploadActions from "redux/actions/upload-actions";
 import navigationActions from "redux/actions/navigation-actions";
 
-const goToUploadStarted = (action$, store) => {
+const goToDownloadForm = (action$, store) => {
   return action$
-    .ofType(uploadActions.INITIALIZE_UPLOAD)
-    .map(action => push("/upload-started"));
+    .ofType(navigationActions.VISIT_DOWNLOAD_FORM)
+    .map(action => push("/download-form"));
 };
 
 const goToUploadForm = (action$, store) => {
@@ -17,4 +17,21 @@ const goToUploadForm = (action$, store) => {
     .map(action => push("/upload-form"));
 };
 
-export default combineEpics(goToUploadStarted, goToUploadForm);
+const goToUploadStarted = (action$, store) => {
+  return action$
+    .ofType(uploadActions.BEGIN_UPLOAD)
+    .map(action => push("/upload-started"));
+};
+
+const goToUploadComplete = (action$, store) => {
+  return action$
+    .ofType(uploadActions.MARK_UPLOAD_AS_COMPLETE)
+    .map(action => push("/upload-complete"));
+};
+
+export default combineEpics(
+  goToDownloadForm,
+  goToUploadForm,
+  goToUploadStarted,
+  goToUploadComplete
+);

@@ -9,8 +9,11 @@ import { store, persistor } from "./redux";
 import history from "redux/history";
 import Root from "components/root";
 import Header from "components/shared/header";
+import RetrieveFile from "components/retrieve-file";
 import DownloadReady from "components/download-ready";
 import UploadForm from "components/upload-form";
+import UploadStarted from "components/upload-started";
+import UploadComplete from "components/upload-complete";
 import registerServiceWorker from "./register-service-worker";
 
 const App = () => (
@@ -20,8 +23,9 @@ const App = () => (
         <div>
           <Header />
           <Route exact path="/" component={Root} />
+          <Route path="/download-form" component={RetrieveFile} />
           <Route path="/upload-form" component={UploadForm} />
-          <Route path="/upload-started" component={DownloadReady} />
+          <Route path="/upload-started" component={UploadStarted} />
         </div>
       </ConnectedRouter>
     </PersistGate>
