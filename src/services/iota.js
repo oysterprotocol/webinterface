@@ -57,7 +57,6 @@ const findTransactions = addresses =>
     );
   });
 
-global.blah = _;
 export default {
   toAddress,
   parseMessage,
