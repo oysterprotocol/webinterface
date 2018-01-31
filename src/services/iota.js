@@ -8,9 +8,24 @@ const Iota = new IOTA({
 const toAddress = string => string.substr(0, IOTA_API.ADDRESS_LENGTH);
 
 const parseMessage = message => {
-  const evenChars =
-    message.length % 2 === 0 ? message : message.substr(0, message.length - 1);
-  return Iota.utils.fromTrytes(evenChars);
+
+    var splitString = message.split("");
+    var reverseArray = splitString.reverse();
+
+    var notNineIndex = reverseArray.findIndex(function(element) {
+        return element != 9;
+    });
+
+    reverseArray = reverseArray.slice(notNineIndex, reverseArray.length);
+
+    var newArray = reverseArray.reverse();
+
+    var joined = newArray.join("");
+
+    const evenChars =
+        joined.length % 2 === 0 ? joined : joined + '9';
+
+    return Iota.utils.fromTrytes(evenChars);
 };
 
 const checkUploadPercentage = addresses =>
