@@ -21,7 +21,7 @@ const Header = () => (
             <span className="icon-bar" />
             <span className="icon-bar" />
           </button>
-          <a href="" className="logo" title="Oyster Storage's Logo">
+          <a href="/" className="logo" title="Oyster Storage's Logo">
             <Logo />
             <span className="App-title wordmark">Oyster Storage</span>
           </a>
@@ -30,7 +30,7 @@ const Header = () => (
           <ul className="nav navbar-nav navbar-right">
             <li className="navbar-row first dropdown">
               <a
-                href=""
+                href="/"
                 role="button"
                 aria-haspopup="true"
                 aria-expanded="false"
