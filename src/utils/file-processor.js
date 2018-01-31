@@ -14,7 +14,10 @@ const {
 } = Encryption;
 
 const axiosInstance = axios.create({
-  timeout: 100000
+  timeout: 100000,
+  headers: {
+    "Access-Control-Allow-Origin": "*"
+  }
 });
 
 const chunkGenerator = ({ idx, data, hash }) => {
