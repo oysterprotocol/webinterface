@@ -712,3 +712,28 @@ input.retention-slider:hover,
 input.retention-slider:focus {
   background: #afcbfe;
 }
+
+.file-input-label {
+  display: flex;
+}
+
+.upload-filename {
+  flex: 0.8;
+  padding: 3px;
+  border: 1px solid #ecedef;
+  border-radius: 10px 0 0 10px;
+  text-align: center;
+}
+
+#upload-input {
+  display: none;
+}
+
+.upload-folder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 50px;
+  background: #0068ea;
+  border-radius: 0 10px 10px 0;
+}

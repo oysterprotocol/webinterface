@@ -5,7 +5,17 @@ import ICON_FOLDER from "assets/images/icon_folder.png";
 import Slide from "components/shared/slide";
 import PrimaryButton from "components/shared/primary-button";
 
+const DEFAULT_FILE_INPUT_TEXT = "No file selected";
+
 class UploadSlide extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      fileName: DEFAULT_FILE_INPUT_TEXT
+    };
+  }
+
   render() {
     const { upload } = this.props;
     return (
@@ -76,33 +86,29 @@ class UploadSlide extends Component {
         </div>
         <div className="lefts myfile">
           <p>Select a file</p>
-          <div className="input-group image-preview">
-            <input
-              name="upload"
-              id="upload-input"
-              placeholder="Select a file"
-              className="form-control image-preview-filename input"
-              ref="fileInput"
-              type="file"
-              required
-            />
-            <span className="input-group-btn">
-              <button
-                type="button"
-                className="btn btn-default image-preview-clear btn-hidden"
-              >
-                <span className="glyphicon glyphicon-remove" /> Clear
-              </button>
-              <div className="btn btn-default image-preview-input">
-                <label
-                  htmlFor="upload-input"
-                  className="image-preview-input-title"
-                >
-                  <img src={ICON_FOLDER} width="20" />
-                </label>
-              </div>
-            </span>
+          <div className="file-input-wrapper">
+            <label htmlFor="upload-input" className="file-input-label">
+              <span className="upload-filename">{this.state.fileName}</span>
+              <span className="upload-folder">
+                <img src={ICON_FOLDER} width="25" />
+              </span>
+            </label>
           </div>
+          <input
+            name="upload"
+            id="upload-input"
+            ref="fileInput"
+            onChange={event => {
+              const file = event.target.files[0];
+              if (!!file) {
+                this.setState({ fileName: file.name });
+              } else {
+                this.setState({ fileName: DEFAULT_FILE_INPUT_TEXT });
+              }
+            }}
+            type="file"
+            required
+          />
         </div>
         <div className="rights myfiler">
           <p>Cost</p>
