@@ -12,11 +12,17 @@ const goToDownloadForm = (action$, store) => {
     .map(action => push("/download-form"));
 };
 
-const goToDownloadStarted = (action$, store) => {
-  return action$
-    .ofType(downloadActions.BEGIN_DOWNLOAD)
-    .map(action => push("/download-started"));
-};
+// const goToDownloadStarted = (action$, store) => {
+// return action$
+// .ofType(downloadActions.BEGIN_DOWNLOAD)
+// .map(action => push("/download-started"));
+// };
+
+// const goToDownloadComplete = (action$, store) => {
+// return action$
+// .ofType(downloadActions.DOWNLOAD_SUCCESS)
+// .map(action => push("/download-started"));
+// };
 
 const goToUploadForm = (action$, store) => {
   return action$
@@ -38,7 +44,6 @@ const goToUploadComplete = (action$, store) => {
 
 export default combineEpics(
   goToDownloadForm,
-  goToDownloadStarted,
   goToUploadForm,
   goToUploadStarted,
   goToUploadComplete
