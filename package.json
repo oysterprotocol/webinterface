@@ -37,7 +37,6 @@
     "identity-obj-proxy": "^3.0.0",
     "jest-enzyme": "^4.0.2",
     "nock": "^9.1.6",
-    "react-bootstrap": "^0.32.1",
     "react-scripts": "1.0.17",
     "regenerator-runtime": "^0.11.1"
   },
