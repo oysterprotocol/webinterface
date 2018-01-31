@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 
-import IconFolder from "components/shared/icon_folder";
 import ICON_UPLOAD from "assets/images/icon_upload.png";
+import ICON_FOLDER from "assets/images/icon_folder.png";
 import Slide from "components/shared/slide";
 import PrimaryButton from "components/shared/primary-button";
 
@@ -73,6 +73,7 @@ class UploadSlide extends Component {
           <div className="input-group image-preview">
             <input
               name="upload"
+              id="upload-input"
               placeholder="Select a file"
               className="form-control image-preview-filename input"
               ref="fileInput"
@@ -87,16 +88,12 @@ class UploadSlide extends Component {
                 <span className="glyphicon glyphicon-remove" /> Clear
               </button>
               <div className="btn btn-default image-preview-input">
-                <span className="image-preview-input-title">
-                  <IconFolder />
-                </span>
-                <input
-                  className="input"
-                  type="file"
-                  accept="image/png, image/jpeg, image/gif"
-                  name="input-file-preview"
-                  required
-                />
+                <label
+                  htmlFor="upload-input"
+                  className="image-preview-input-title"
+                >
+                  <img src={ICON_FOLDER} width="20" />
+                </label>
               </div>
             </span>
           </div>
