@@ -737,3 +737,7 @@ input.retention-slider:focus {
   background: #0068ea;
   border-radius: 0 10px 10px 0;
 }
+
+.years-retention {
+  margin-left: 10px;
+}

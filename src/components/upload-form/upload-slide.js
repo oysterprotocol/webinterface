@@ -25,6 +25,7 @@ class UploadSlide extends Component {
             <div className="book_list">
               <label htmlFor="broker-node-1">Broker Node 1</label>
               <select
+                disabled
                 name="broker-node-1"
                 id="broker-node-1"
                 defaultValue="broker-1.oysternodes.com"
@@ -40,6 +41,7 @@ class UploadSlide extends Component {
             <div className="book_list">
               <label htmlFor="broker-node-2">Broker Node 2</label>
               <select
+                disabled
                 name="broker-node-2"
                 id="broker-node-2"
                 defaultValue="broker-2.oysternodes.com"
@@ -54,7 +56,7 @@ class UploadSlide extends Component {
         </div>
         <div className="select_list">
           <p>Select Retention File</p>
-          <form id="demo">
+          <form>
             <div className="rights">
               <input
                 className="retention-slider"
@@ -65,7 +67,7 @@ class UploadSlide extends Component {
               />
             </div>
             <div className="lefts">
-              <select id="sel">
+              <select id="sel" disabled>
                 <option>0</option>
                 <option>1</option>
                 <option>2</option>
@@ -78,9 +80,7 @@ class UploadSlide extends Component {
                 <option>9</option>
                 <option>10</option>
               </select>
-              <div className="years">
-                <h3>Years of retention</h3>
-              </div>
+              <span className="years-retention">Years of retention</span>
             </div>
           </form>
         </div>
