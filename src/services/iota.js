@@ -53,7 +53,13 @@ const findTransactions = addresses =>
         }
         const settledTransactions = transactionObjects || [];
         const uniqTransactions = _.uniqBy(settledTransactions, "address");
-        resolve(uniqTransactions);
+
+        console.log("IOTA TRANSACTIONS FOUND: ", uniqTransactions);
+        if (uniqTransactions.length === addresses.length) {
+          resolve(uniqTransactions);
+        } else {
+          reject();
+        }
       }
     );
   });
