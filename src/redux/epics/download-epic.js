@@ -50,10 +50,14 @@ const beginDownload = (action$, store) => {
     const { handle, fileName, numberOfChunks } = action.payload;
     const datamap = Datamap.generate(handle, numberOfChunks);
     const addresses = _.values(datamap).map(Iota.toAddress);
-    return Observable.fromPromise(Iota.findTransactions(addresses))
+    const nonMetaDataAddresses = addresses.slice(1, addresses.length);
+
+    return Observable.fromPromise(Iota.findTransactions(nonMetaDataAddresses))
       .map(transactions => {
-        const contentChunks = transactions.slice(1, transactions.length);
-        const chunksArrayBuffers = contentChunks.map(t => {
+        const orderedTransactions = _.sortBy(transactions, t =>
+          nonMetaDataAddresses.indexOf(t.address)
+        );
+        const chunksArrayBuffers = orderedTransactions.map(t => {
           return FileProcessor.chunkFromIotaFormat(
             t.signatureMessageFragment,
             handle
