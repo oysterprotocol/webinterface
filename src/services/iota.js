@@ -36,7 +36,8 @@ const checkUploadPercentage = addresses =>
           console.log("IOTA ERROR: ", error);
         }
         const settledTransactions = transactionObjects || [];
-        const percentage = settledTransactions.length / addresses.length * 100;
+        const uniqTransactions = _.uniqBy(settledTransactions, "address");
+        const percentage = uniqTransactions.length / addresses.length * 100;
         resolve(percentage);
       }
     );
