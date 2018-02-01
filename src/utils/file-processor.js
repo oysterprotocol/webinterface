@@ -288,5 +288,6 @@ export default {
   metaDataToIotaFormat,
   metaDataFromIotaFormat,
   chunkToIotaFormat,
-  chunkFromIotaFormat
+  chunkFromIotaFormat,
+  createReader
 };

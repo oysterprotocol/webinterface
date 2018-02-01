@@ -15,7 +15,10 @@ import DownloadComplete from "components/download-complete";
 import UploadForm from "components/upload-form";
 import UploadStarted from "components/upload-started";
 import UploadComplete from "components/upload-complete";
+import Playground from "components/playground";
 import registerServiceWorker from "./register-service-worker";
+
+const __DEV__ = !process.env || process.env.NODE_ENV === "development";
 
 const App = () => (
   <Provider store={store}>
@@ -29,6 +32,7 @@ const App = () => (
           <Route path="/download-complete" component={DownloadComplete} />
           <Route path="/upload-form" component={UploadForm} />
           <Route path="/upload-started" component={UploadStarted} />
+          {__DEV__ ? <Route path="/playground" component={Playground} /> : null}
           <Route path="/upload-complete" component={UploadComplete} />
         </div>
       </ConnectedRouter>
