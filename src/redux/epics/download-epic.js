@@ -63,7 +63,8 @@ const beginDownload = (action$, store) => {
         const completeFileArrayBuffer = FileProcessor.mergeArrayBuffers(
           chunksArrayBuffers
         );
-        const blob = new Blob(completeFileArrayBuffer);
+
+        const blob = new Blob([new Uint8Array(completeFileArrayBuffer)]);
         FileSaver.saveAs(blob, fileName);
 
         return downloadActions.downloadSuccessAction();
