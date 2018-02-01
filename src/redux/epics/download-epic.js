@@ -1,7 +1,6 @@
 import { Observable } from "rxjs";
 import { combineEpics } from "redux-observable";
 import _ from "lodash";
-import Base64 from "base64-arraybuffer";
 import FileSaver from "file-saver";
 
 import downloadActions from "redux/actions/download-actions";

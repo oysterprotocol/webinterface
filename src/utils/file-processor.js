@@ -34,9 +34,9 @@ const chunkToIotaFormat = (arrayBuffer, handle) => {
   const encryptedData = Encryption.encrypt(encodedData, handle);
   const trytes = Iota.utils.toTrytes(encryptedData);
 
-  console.log("[UPLOAD] ORIGINAL DATA: ", arrayBuffer);
-  console.log("[UPLOAD] ENCODED DATA: ", encodedData);
-  console.log("[UPLOAD] ENCRYPTED DATA: ", encryptedData);
+  // console.log("[UPLOAD] ORIGINAL DATA: ", new Uint8Array(arrayBuffer));
+  // console.log("[UPLOAD] ENCODED DATA: ", encodedData);
+  // console.log("[UPLOAD] ENCRYPTED DATA: ", encryptedData);
   return trytes;
 };
 
@@ -45,9 +45,9 @@ const chunkFromIotaFormat = (trytes, handle) => {
   const encodedData = Encryption.decrypt(encryptedData, handle);
   const arrayBuffer = Base64.decode(encodedData);
 
-  console.log("[DOWNLOAD] ENCRYPTED DATA: ", encryptedData);
-  console.log("[DOWNLOAD] ENCODED DATA: ", encodedData);
-  console.log("[DOWNLOAD] ORIGINAL DATA: ", arrayBuffer);
+  // console.log("[DOWNLOAD] ENCRYPTED DATA: ", encryptedData);
+  // console.log("[DOWNLOAD] ENCODED DATA: ", encodedData);
+  // console.log("[DOWNLOAD] ORIGINAL DATA: ", new Uint8Array(arrayBuffer));
   return arrayBuffer;
 };
 

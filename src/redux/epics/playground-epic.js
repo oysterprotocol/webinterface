@@ -27,9 +27,10 @@ const testUpload = (action$, store) => {
           const { chunkIdx, chunkStartingPoint } = byte;
           const blob = file.slice(
             chunkStartingPoint,
-            chunkStartingPoint + FILE.CHUNK_BYTE_SIZE
+            chunkStartingPoint + FILE.CHUNK_BYTE_SIZE + 1
           );
           const reader = FileProcessor.createReader(arrayBuffer => {
+            // console.log("SCURRRR: ", arrayBuffer);
             const chunkInTrytes = FileProcessor.chunkToIotaFormat(
               arrayBuffer,
               handle
@@ -40,9 +41,19 @@ const testUpload = (action$, store) => {
         })
     );
 
-    return Observable.fromPromise(Promise.all(chunkReads))
+    const sanityCheck = new Promise((resolve, reject) => {
+      const blob = file.slice(0, file.size);
+      const reader = FileProcessor.createReader(arrayBuffer => {
+        console.log("UPLOADED ARRAY BUFFER: ", new Uint8Array(arrayBuffer));
+        resolve();
+      });
+      reader.readAsArrayBuffer(blob);
+    });
+
+    return Observable.fromPromise(sanityCheck)
+      .mergeMap(() => Observable.fromPromise(Promise.all(chunkReads)))
       .map(chunksInTrytes => {
-        console.log("CHUNKS IN TRYTES: ", chunksInTrytes);
+        // console.log("CHUNKS IN TRYTES: ", chunksInTrytes);
         return playgroundActions.testDownloadAction({
           chunksInTrytes,
           handle,
@@ -63,8 +74,24 @@ const testDownload = (action$, store) => {
       return FileProcessor.chunkFromIotaFormat(trytes, handle);
     });
 
-    const arrayBuffer = _.flatten(decryptedChunks);
-    const blob = new Blob(arrayBuffer);
+    const completeFileArrayBuffer = _.reduce(
+      decryptedChunks,
+      (ab, chunk) => {
+        const appendedArrayBuffer = new Uint8Array(
+          ab.byteLength + chunk.byteLength
+        );
+        appendedArrayBuffer.set(new Uint8Array(ab), 0);
+        appendedArrayBuffer.set(new Uint8Array(chunk), ab.byteLength);
+        return appendedArrayBuffer.buffer;
+      },
+      new ArrayBuffer()
+    );
+
+    console.log(
+      "DOWNLOADED ARRAY BUFFER: ",
+      new Uint8Array(completeFileArrayBuffer)
+    );
+    const blob = new Blob([new Uint8Array(completeFileArrayBuffer)]);
     FileSaver.saveAs(blob, fileName);
 
     return downloadActions.downloadSuccessAction();
