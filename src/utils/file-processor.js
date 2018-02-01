@@ -13,6 +13,13 @@ const {
   encrypt
 } = Encryption;
 
+const axiosInstance = axios.create({
+  timeout: 100000,
+  headers: {
+    "Access-Control-Allow-Origin": "*"
+  }
+});
+
 const metaDataToIotaFormat = (object, handle) => {
   const metaDataString = JSON.stringify(object);
   const encryptedData = Encryption.encrypt(metaDataString, handle);
@@ -51,12 +58,20 @@ const chunkFromIotaFormat = (trytes, handle) => {
   return arrayBuffer;
 };
 
-const axiosInstance = axios.create({
-  timeout: 100000,
-  headers: {
-    "Access-Control-Allow-Origin": "*"
-  }
-});
+const mergeArrayBuffers = arrayBuffers => {
+  return _.reduce(
+    arrayBuffers,
+    (result, arrayBuffer) => {
+      const appendedArrayBuffer = new Uint8Array(
+        result.byteLength + arrayBuffer.byteLength
+      );
+      appendedArrayBuffer.set(new Uint8Array(result), 0);
+      appendedArrayBuffer.set(new Uint8Array(arrayBuffer), result.byteLength);
+      return appendedArrayBuffer.buffer;
+    },
+    new ArrayBuffer()
+  );
+};
 
 const chunkGenerator = ({ idx, data, hash }) => {
   return { idx, data, hash };
@@ -96,7 +111,7 @@ const createHandle = fileName => {
 };
 
 const createByteLocations = fileSizeBytes =>
-  _.range(0, fileSizeBytes, FILE.CHUNK_BYTE_SIZE + 1);
+  _.range(0, fileSizeBytes, FILE.CHUNK_BYTE_SIZE);
 
 const createByteChunks = fileSizeBytes => {
   // This returns an array with the starting byte pointers
@@ -289,5 +304,6 @@ export default {
   metaDataFromIotaFormat,
   chunkToIotaFormat,
   chunkFromIotaFormat,
-  createReader
+  createReader,
+  mergeArrayBuffers
 };

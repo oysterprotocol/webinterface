@@ -27,10 +27,9 @@ const testUpload = (action$, store) => {
           const { chunkIdx, chunkStartingPoint } = byte;
           const blob = file.slice(
             chunkStartingPoint,
-            chunkStartingPoint + FILE.CHUNK_BYTE_SIZE + 1
+            chunkStartingPoint + FILE.CHUNK_BYTE_SIZE
           );
           const reader = FileProcessor.createReader(arrayBuffer => {
-            // console.log("SCURRRR: ", arrayBuffer);
             const chunkInTrytes = FileProcessor.chunkToIotaFormat(
               arrayBuffer,
               handle
@@ -53,7 +52,6 @@ const testUpload = (action$, store) => {
     return Observable.fromPromise(sanityCheck)
       .mergeMap(() => Observable.fromPromise(Promise.all(chunkReads)))
       .map(chunksInTrytes => {
-        // console.log("CHUNKS IN TRYTES: ", chunksInTrytes);
         return playgroundActions.testDownloadAction({
           chunksInTrytes,
           handle,
@@ -74,23 +72,14 @@ const testDownload = (action$, store) => {
       return FileProcessor.chunkFromIotaFormat(trytes, handle);
     });
 
-    const completeFileArrayBuffer = _.reduce(
-      decryptedChunks,
-      (ab, chunk) => {
-        const appendedArrayBuffer = new Uint8Array(
-          ab.byteLength + chunk.byteLength
-        );
-        appendedArrayBuffer.set(new Uint8Array(ab), 0);
-        appendedArrayBuffer.set(new Uint8Array(chunk), ab.byteLength);
-        return appendedArrayBuffer.buffer;
-      },
-      new ArrayBuffer()
+    const completeFileArrayBuffer = FileProcessor.mergeArrayBuffers(
+      decryptedChunks
     );
-
     console.log(
       "DOWNLOADED ARRAY BUFFER: ",
       new Uint8Array(completeFileArrayBuffer)
     );
+
     const blob = new Blob([new Uint8Array(completeFileArrayBuffer)]);
     FileSaver.saveAs(blob, fileName);
 

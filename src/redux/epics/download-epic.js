@@ -4,7 +4,6 @@ import _ from "lodash";
 import FileSaver from "file-saver";
 
 import downloadActions from "redux/actions/download-actions";
-import { IOTA_API } from "config";
 import Iota from "services/iota";
 import Datamap from "utils/datamap";
 import Encryption from "utils/encryption";
@@ -21,7 +20,7 @@ const initializeDownload = (action$, store) => {
       return Observable.fromPromise(Iota.findTransactions([iotaAddress]))
         .map(transactions => {
           if (!transactions.length) {
-            throw "NO TRANSACTION FOUND";
+            throw Error("NO TRANSACTION FOUND");
           }
 
           const t = transactions[0];
@@ -54,15 +53,17 @@ const beginDownload = (action$, store) => {
     return Observable.fromPromise(Iota.findTransactions(addresses))
       .map(transactions => {
         const contentChunks = transactions.slice(1, transactions.length);
-        const decryptedChunks = contentChunks.map(t => {
+        const chunksArrayBuffers = contentChunks.map(t => {
           return FileProcessor.chunkFromIotaFormat(
             t.signatureMessageFragment,
             handle
           );
         });
 
-        const arrayBuffer = _.flatten(decryptedChunks);
-        const blob = new Blob(arrayBuffer);
+        const completeFileArrayBuffer = FileProcessor.mergeArrayBuffers(
+          chunksArrayBuffers
+        );
+        const blob = new Blob(completeFileArrayBuffer);
         FileSaver.saveAs(blob, fileName);
 
         return downloadActions.downloadSuccessAction();
