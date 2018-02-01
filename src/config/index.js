@@ -9,7 +9,9 @@ export const API = Object.freeze({
 });
 
 export const IOTA_API = Object.freeze({
-  PROVIDER: "http://eugene.iota.community:14265",
+  PROVIDER_A: "http://eugene.iota.community:14265",
+  PROVIDER_B: "http://eugene.iotasupport.com:14999",
+  PROVIDER_C: "http://eugeneoldisoft.iotasupport.com:14265",
   ADDRESS_LENGTH: 81
 });
 
