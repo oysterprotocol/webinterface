@@ -22,5 +22,5 @@ export const UPLOAD_STATUSES = Object.freeze({
 });
 
 export const FILE = Object.freeze({
-  CHUNK_BYTE_SIZE: 1000
+  CHUNK_BYTE_SIZE: 500
 });

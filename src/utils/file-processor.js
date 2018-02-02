@@ -14,7 +14,7 @@ const {
 } = Encryption;
 
 const axiosInstance = axios.create({
-  timeout: 100000,
+  timeout: 200000,
   headers: {
     "Access-Control-Allow-Origin": "*"
   }
@@ -92,19 +92,13 @@ const uploadFileToBrokerNodes = (file, handle) => {
   const genesisHash = sha256(handle);
 
   return Promise.all([
-    createUploadSession(API.BROKER_NODE_A, file.size, genesisHash),
-    createUploadSession(API.BROKER_NODE_B, file.size, genesisHash)
+    createUploadSession(API.BROKER_NODE_A, file.size, genesisHash)
+    // createUploadSession(API.BROKER_NODE_B, file.size, genesisHash)
   ])
     .then(([alphaSessionId, betaSessionId]) =>
       Promise.all([
-        sendToAlphaBroker(
-          alphaSessionId,
-          byteChunks,
-          file,
-          handle,
-          genesisHash
-        ),
-        sendToBetaBroker(betaSessionId, byteChunks, file, handle, genesisHash)
+        sendToAlphaBroker(alphaSessionId, byteChunks, file, handle, genesisHash)
+        // sendToBetaBroker(betaSessionId, byteChunks, file, handle, genesisHash)
       ])
     )
     .then(() => {
