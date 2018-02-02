@@ -1,0 +1,166 @@
+react-dom.development.js:15374 Download the React DevTools for a better development experience: https://fb.me/react-devtools
+redux-logger.js:1
+action persist/PERSIST @ 09:10:56.495
+redux-logger.js:1  prev state {upload: {…}, router: {…}}
+redux-logger.js:1  action     {type: "persist/PERSIST",
+register: ƒ, rehydrate: ƒ}
+redux-logger.js:1  next state {upload: {…}, router: {…}, _persist: {…}}
+redux-logger.js:1  action persist/REHYDRATE @ 09:10:56.522
+redux-logger.js:1  prev state {upload: {…}, router: {…}, _persist: {…}}
+redux-logger.js:1  action     {type: "persist/REHYDRATE", payload: {…}, err: undefined, key: "oyster"}
+redux-logger.js:1  next state {upload: {…}, router: {…}, _persist: {…}}
+redux-logger.js:1  action @@router/LOCATION_CHANGE @ 09:10:56.527
+redux-logger.js:1  prev state {upload: {…}, router: {…}, _persist: {…}}
+redux-logger.js:1  action     {type: "@@router/LOCATION_CHANGE", payload: {…}}
+redux-logger.js:1  next state {upload: {…}, router: {…}, _persist: {…}}
+redux-logger.js:1  action oyster/upload/refresh_incomplete_uploads @ 09:10:56.549
+redux-logger.js:1  prev state {upload: {…}, router: {…}, _persist: {…}}
+redux-logger.js:1  action     {type: "oyster/upload/refresh_incomplete_uploads"}
+redux-logger.js:1  next state {upload: {…}, router: {…}, _persist: {…}}
+webpackHotDevClient.js:136 ./src/utils/file-processor.js
+  Line 13:  'encrypt' is assigned a value but never used  no-unused-vars
+printWarnings @ webpackHotDevClient.js:136
+handleWarnings @ webpackHotDevClient.js:153
+./node_modules/react-dev-utils/webpackHotDevClient.js.connection.onmessage @ webpackHotDevClient.js:206
+./node_modules/sockjs-client/lib/event/eventtarget.js.EventTarget.dispatchEvent @ eventtarget.js:51
+(anonymous) @ main.js:274
+./node_modules/sockjs-client/lib/main.js.SockJS._transportMessage @ main.js:272
+./node_modules/sockjs-client/lib/event/emitter.js.EventEmitter.emit @ emitter.js:50
+WebSocketTransport.ws.onmessage @ websocket.js:35
+webpackHotDevClient.js:136 ./src/redux/epics/navigation-epic.js
+  Line 1:  'Observable' is defined but never used       no-unused-vars
+  Line 6:  'downloadActions' is defined but never used  no-unused-vars
+printWarnings @ webpackHotDevClient.js:136
+handleWarnings @ webpackHotDevClient.js:153
+./node_modules/react-dev-utils/webpackHotDevClient.js.connection.onmessage @ webpackHotDevClient.js:206
+./node_modules/sockjs-client/lib/event/eventtarget.js.EventTarget.dispatchEvent @ eventtarget.js:51
+(anonymous) @ main.js:274
+./node_modules/sockjs-client/lib/main.js.SockJS._transportMessage @ main.js:272
+./node_modules/sockjs-client/lib/event/emitter.js.EventEmitter.emit @ emitter.js:50
+WebSocketTransport.ws.onmessage @ websocket.js:35
+webpackHotDevClient.js:136 ./src/services/iota.js
+  Line 26:  Expected '!==' and instead saw '!='  eqeqeq
+printWarnings @ webpackHotDevClient.js:136
+handleWarnings @ webpackHotDevClient.js:153
+./node_modules/react-dev-utils/webpackHotDevClient.js.connection.onmessage @ webpackHotDevClient.js:206
+./node_modules/sockjs-client/lib/event/eventtarget.js.EventTarget.dispatchEvent @ eventtarget.js:51
+(anonymous) @ main.js:274
+./node_modules/sockjs-client/lib/main.js.SockJS._transportMessage @ main.js:272
+./node_modules/sockjs-client/lib/event/emitter.js.EventEmitter.emit @ emitter.js:50
+WebSocketTransport.ws.onmessage @ websocket.js:35
+webpackHotDevClient.js:136 ./src/components/path-choice/choice-slide.js
+  Line 2:   'push' is defined but never used                                                                           no-unused-vars
+  Line 4:   'Slide' is defined but never used                                                                          no-unused-vars
+  Line 15:  img elements must have an alt prop, either with meaningful text, or an empty string for decorative images  jsx-a11y/alt-text
+  Line 17:  img elements must have an alt prop, either with meaningful text, or an empty string for decorative images  jsx-a11y/alt-text
+  Line 27:  img elements must have an alt prop, either with meaningful text, or an empty string for decorative images  jsx-a11y/alt-text
+  Line 29:  img elements must have an alt prop, either with meaningful text, or an empty string for decorative images  jsx-a11y/alt-text
+printWarnings @ webpackHotDevClient.js:136
+handleWarnings @ webpackHotDevClient.js:153
+./node_modules/react-dev-utils/webpackHotDevClient.js.connection.onmessage @ webpackHotDevClient.js:206
+./node_modules/sockjs-client/lib/event/eventtarget.js.EventTarget.dispatchEvent @ eventtarget.js:51
+(anonymous) @ main.js:274
+./node_modules/sockjs-client/lib/main.js.SockJS._transportMessage @ main.js:272
+./node_modules/sockjs-client/lib/event/emitter.js.EventEmitter.emit @ emitter.js:50
+WebSocketTransport.ws.onmessage @ websocket.js:35
+webpackHotDevClient.js:136 ./src/components/shared/slide.js
+  Line 3:   'ICON_DOWNLOAD' is defined but never used                                                                  no-unused-vars
+  Line 16:  img elements must have an alt prop, either with meaningful text, or an empty string for decorative images  jsx-a11y/alt-text
+  Line 19:  img elements must have an alt prop, either with meaningful text, or an empty string for decorative images  jsx-a11y/alt-text
+printWarnings @ webpackHotDevClient.js:136
+handleWarnings @ webpackHotDevClient.js:153
+./node_modules/react-dev-utils/webpackHotDevClient.js.connection.onmessage @ webpackHotDevClient.js:206
+./node_modules/sockjs-client/lib/event/eventtarget.js.EventTarget.dispatchEvent @ eventtarget.js:51
+(anonymous) @ main.js:274
+./node_modules/sockjs-client/lib/main.js.SockJS._transportMessage @ main.js:272
+./node_modules/sockjs-client/lib/event/emitter.js.EventEmitter.emit @ emitter.js:50
+WebSocketTransport.ws.onmessage @ websocket.js:35
+webpackHotDevClient.js:130 There were more warnings in other files.
+You can find a complete log in the terminal.
+printWarnings @ webpackHotDevClient.js:130
+handleWarnings @ webpackHotDevClient.js:153
+./node_modules/react-dev-utils/webpackHotDevClient.js.connection.onmessage @ webpackHotDevClient.js:206
+./node_modules/sockjs-client/lib/event/eventtarget.js.EventTarget.dispatchEvent @ eventtarget.js:51
+(anonymous) @ main.js:274
+./node_modules/sockjs-client/lib/main.js.SockJS._transportMessage @ main.js:272
+./node_modules/sockjs-client/lib/event/emitter.js.EventEmitter.emit @ emitter.js:50
+WebSocketTransport.ws.onmessage @ websocket.js:35
+redux-logger.js:1  action oyster/navigation/visit_upload_form @ 09:15:04.347
+redux-logger.js:1  prev state {upload: {…}, router: {…}, _persist: {…}}
+redux-logger.js:1  action     {type: "oyster/navigation/visit_upload_form"}
+redux-logger.js:1  next state {upload: {…}, router: {…}, _persist: {…}}
+redux-logger.js:1  action @@router/CALL_HISTORY_METHOD @ 09:15:04.348
+redux-logger.js:1  prev state {upload: {…}, router: {…}, _persist: {…}}
+redux-logger.js:1  action     {type: "@@router/CALL_HISTORY_METHOD", payload: {…}}
+redux-logger.js:1  next state {upload: {…}, router: {…}, _persist: {…}}
+redux-logger.js:1  action @@router/LOCATION_CHANGE @ 09:15:04.349
+redux-logger.js:1  prev state {upload: {…}, router: {…}, _persist: {…}}
+redux-logger.js:1  action     {type: "@@router/LOCATION_CHANGE", payload: {…}}
+redux-logger.js:1  next state {upload: {…}, router: {…}, _persist: {…}}
+redux-logger.js:1  action oyster/upload/initialize_upload @ 09:15:21.163
+redux-logger.js:1  prev state {upload: {…}, router: {…}, _persist: {…}}
+redux-logger.js:1  action     {type: "oyster/upload/initialize_upload", payload: File(4648)}
+redux-logger.js:1  next state {upload: {…}, router: {…}, _persist: {…}}
+redux-logger.js:1  action oyster/upload/begin_upload @ 09:15:21.165
+redux-logger.js:1  prev state {upload: {…}, router: {…}, _persist: {…}}
+redux-logger.js:1  action     {type: "oyster/upload/begin_upload", payload: {…}}
+redux-logger.js:1  next state {upload: {…}, router: {…}, _persist: {…}}
+redux-logger.js:1  action oyster/upload/add_to_history @ 09:15:21.165
+redux-logger.js:1  prev state {upload: {…}, router: {…}, _persist: {…}}
+redux-logger.js:1  action     {type: "oyster/upload/add_to_history", payload: {…}}
+redux-logger.js:1  next state {upload: {…}, router: {…}, _persist: {…}}
+redux-logger.js:1  action @@router/CALL_HISTORY_METHOD @ 09:15:21.186
+redux-logger.js:1  prev state {upload: {…}, router: {…}, _persist: {…}}
+redux-logger.js:1  action     {type: "@@router/CALL_HISTORY_METHOD", payload: {…}}
+redux-logger.js:1  next state {upload: {…}, router: {…}, _persist: {…}}
+redux-logger.js:1  action @@router/LOCATION_CHANGE @ 09:15:21.187
+redux-logger.js:1  prev state {upload: {…}, router: {…}, _persist: {…}}
+redux-logger.js:1  action     {type: "@@router/LOCATION_CHANGE", payload: {…}}
+redux-logger.js:1  next state {upload: {…}, router: {…}, _persist: {…}}
+upload-epic.js:45 UPLOADED ARRAY BUFFER:  Uint8Array(4648) [70, 105, 114, 115, 116, 32, 108, 105, 110, 101, 13, 10, 70, 105, 114, 115, 116, 32, 108, 105, 110, 101, 13, 10, 70, 105, 114, 115, 116, 32, 108, 105, 110, 101, 32, 50, 13, 10, 76, 111, 114, 101, 109, 32, 105, 112, 115, 117, 109, 32, 100, 111, 108, 111, 114, 32, 115, 105, 116, 32, 97, 109, 101, 116, 44, 32, 99, 111, 110, 115, 101, 99, 116, 101, 116, 117, 114, 32, 97, 100, 105, 112, 105, 115, 99, 105, 110, 103, 32, 101, 108, 105, 116, 46, 32, 83, 101, 100, 32, 117, …]
+file-processor.js:90 UPLOADING FILE TO BROKER NODES
+file-processor.js:147 UPLOAD SESSION SUCCESS:  {type: "alpha", genesis_hash: "cc8e4817a0655e599004afb8abbf360d50caaabdd619d3bfd430cffac1488a40", file_size_bytes: 4648, id: "7799ebbb-9238-4fd8-aad6-600d5ec4239e", updated_at: "2018-02-02 14:15:20", …}
+file-processor.js:147 UPLOAD SESSION SUCCESS:  {type: "alpha", genesis_hash: "cc8e4817a0655e599004afb8abbf360d50caaabdd619d3bfd430cffac1488a40", file_size_bytes: 4648, id: "09692d8e-e0d8-4927-ba3b-2d25791d4def", updated_at: "2018-02-02 14:15:20", …}
+file-processor.js:186 SENT CHUNK TO BROKER:  {data: "", status: 204, statusText: "No Content", headers: {…}, config: {…}, …}
+file-processor.js:186 SENT CHUNK TO BROKER:  {data: "", status: 204, statusText: "No Content", headers: {…}, config: {…}, …}
+file-processor.js:186 SENT CHUNK TO BROKER:  {data: "", status: 204, statusText: "No Content", headers: {…}, config: {…}, …}
+file-processor.js:242 METADATA TO BROKER SUCCESS:
+file-processor.js:186 SENT CHUNK TO BROKER:  {data: "", status: 204, statusText: "No Content", headers: {…}, config: {…}, …}
+file-processor.js:186 SENT CHUNK TO BROKER:  {data: "", status: 204, statusText: "No Content", headers: {…}, config: {…}, …}
+file-processor.js:186 SENT CHUNK TO BROKER:  {data: "", status: 204, statusText: "No Content", headers: {…}, config: {…}, …}
+file-processor.js:186 SENT CHUNK TO BROKER:  {data: "", status: 204, statusText: "No Content", headers: {…}, config: {…}, …}
+file-processor.js:186 SENT CHUNK TO BROKER:  {data: "", status: 204, statusText: "No Content", headers: {…}, config: {…}, …}
+file-processor.js:186 SENT CHUNK TO BROKER:  {data: "", status: 204, statusText: "No Content", headers: {…}, config: {…}, …}
+file-processor.js:186 SENT CHUNK TO BROKER:  {data: "", status: 204, statusText: "No Content", headers: {…}, config: {…}, …}
+file-processor.js:242 METADATA TO BROKER SUCCESS:
+datamap.js:9 TRYTES REPRESENTATION FOR CHUNK 0: RCRCBBTCYABBVAABPCUA9BZAZATCZACBCBUAUAYAPCUCQCBBPCQCQCUCXA9BUASCZAUARCPCPCPCQCSCSC9BVACBSCXAQCUCSCYAXAUARCUCUCPCRCVAYABBBBPCYAUA
+datamap.js:22 TRYTES REPRESENTATION FOR CHUNK 1: 9BCBYAVATCUAWARCXAWAVABBBBQCXAPC9BWAUAYAWATCABQCABVATCUCABYAVATCUASCCBPCYABBPCYAYARCXAUAYATCRCCBBBZAZATCXARC9BTCVAUCVAZABBVAQCCB
+datamap.js:22 TRYTES REPRESENTATION FOR CHUNK 2: CBWAABVAUAXAYAQCUAVARCQCQC9BPCYAVABBVAABVASC9BYAABVABBYAVAQCUA9BBBUCRCUA9BCBQCPCPCWAUCUAUATCBBABUCABRCCBVAPCCBXAZAUCVASCZABBSCWA
+datamap.js:22 TRYTES REPRESENTATION FOR CHUNK 3: ABYAABPCUAUAWAUAWACBUAXAABWAZA9BRCQCRCXASC9BTC9BBBRCWAWASCPCRCXAUAUCAB9BBBUAZAUCABXAPCTCRCCBRCPCCBYABBQCVARCUABBTCUCXACBABBBUAWA
+datamap.js:22 TRYTES REPRESENTATION FOR CHUNK 4: UCPC9BVAUCSCCBCBBBWAABBBABCBTCVABBBBCBUAYAYAUAPCABZAWAABXAUCTCCBSCABVAVABBQCYAWACBTCBBTCUCBBWA9BZAQCBBYAXARCZABBWAPCCBCBABYARCXA
+datamap.js:22 TRYTES REPRESENTATION FOR CHUNK 5: TCVARCPCQCZATCXABBZAZARC9BXAABRCUAXAUAUCYARCQCUCWAXAUCCBZASCXA9BRC9BZACBQCSCPCZAVAQCCBXAPCUCXASCWAUCCBRC9BABXARCZAZARCVACB9BCBCB
+upload-epic.js:94 POLLING 81 CHARACTER IOTA ADDRESSES:  (6) ["RCRCBBTCYABBVAABPCUA9BZAZATCZACBCBUAUAYAPCUCQCBBPCQCQCUCXA9BUASCZAUARCPCPCPCQCSCS", "9BCBYAVATCUAWARCXAWAVABBBBQCXAPC9BWAUAYAWATCABQCABVATCUCABYAVATCUASCCBPCYABBPCYAY", "CBWAABVAUAXAYAQCUAVARCQCQC9BPCYAVABBVAABVASC9BYAABVABBYAVAQCUA9BBBUCRCUA9BCBQCPCP", "ABYAABPCUAUAWAUAWACBUAXAABWAZA9BRCQCRCXASC9BTC9BBBRCWAWASCPCRCXAUAUCAB9BBBUAZAUCA", "UCPC9BVAUCSCCBCBBBWAABBBABCBTCVABBBBCBUAYAYAUAPCABZAWAABXAUCTCCBSCABVAVABBQCYAWAC", "TCVARCPCQCZATCXABBZAZARC9BXAABRCUAXAUAUCYARCQCUCWAXAUCCBZASCXA9BRC9BZACBQCSCPCZAV"]
+redux-logger.js:1  action oyster/upload/upload_success @ 09:17:26.436
+redux-logger.js:1  prev state {upload: {…}, router: {…}, _persist: {…}}
+redux-logger.js:1  action     {type: "oyster/upload/upload_success", payload: {…}}
+redux-logger.js:1  next state {upload: {…}, router: {…}, _persist: {…}}
+redux-logger.js:1  action oyster/upload/poll_upload_progress @ 09:17:26.439
+redux-logger.js:1  prev state {upload: {…}, router: {…}, _persist: {…}}
+redux-logger.js:1  action     {type: "oyster/upload/poll_upload_progress", payload: {…}}
+redux-logger.js:1  next state {upload: {…}, router: {…}, _persist: {…}}
+redux-logger.js:1  action oyster/upload/update_upload_progress @ 09:17:30.323
+redux-logger.js:1  prev state {upload: {…}, router: {…}, _persist: {…}}
+redux-logger.js:1  action     {type: "oyster/upload/update_upload_progress", payload: {…}}
+redux-logger.js:1  next state {upload: {…}, router: {…}, _persist: {…}}
+redux-logger.js:1  action oyster/upload/mark_upload_as_complete @ 09:17:30.325
+redux-logger.js:1  prev state {upload: {…}, router: {…}, _persist: {…}}
+redux-logger.js:1  action     {type: "oyster/upload/mark_upload_as_complete", payload: "message5381d7e16344cb457502bb25e69f2f91079f70f0b4f3da0a46f0ae7f839ffa53dptvfsi6x"}
+redux-logger.js:1  next state {upload: {…}, router: {…}, _persist: {…}}
+redux-logger.js:1  action @@router/CALL_HISTORY_METHOD @ 09:17:30.325
+redux-logger.js:1  prev state {upload: {…}, router: {…}, _persist: {…}}
+redux-logger.js:1  action     {type: "@@router/CALL_HISTORY_METHOD", payload: {…}}
+redux-logger.js:1  next state {upload: {…}, router: {…}, _persist: {…}}
+redux-logger.js:1  action @@router/LOCATION_CHANGE @ 09:17:30.325
+redux-logger.js:1  prev state {upload: {…}, router: {…}, _persist: {…}}
+redux-logger.js:1  action     {type: "@@router/LOCATION_CHANGE", payload: {…}}
+redux-logger.js:1  next state {upload: {…}, router: {…}, _persist: {…}}

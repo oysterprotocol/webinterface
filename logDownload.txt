@@ -1,0 +1,104 @@
+react-dom.development.js:15374 Download the React DevTools for a better development experience: https://fb.me/react-devtools
+redux-logger.js:1  action persist/PERSIST @ 09:20:24.963
+redux-logger.js:1  prev state {upload: {…}, router: {…}}
+redux-logger.js:1  action     {type: "persist/PERSIST", register: ƒ, rehydrate: ƒ}
+redux-logger.js:1  next state {upload: {…}, router: {…}, _persist: {…}}
+redux-logger.js:1  action persist/REHYDRATE @ 09:20:25.004
+redux-logger.js:1  prev state {upload: {…}, router: {…}, _persist: {…}}
+redux-logger.js:1  action     {type: "persist/REHYDRATE", payload: {…}, err: undefined, key: "oyster"}
+redux-logger.js:1  next state {upload: {…}, router: {…}, _persist: {…}}
+redux-logger.js:1  action @@router/LOCATION_CHANGE @ 09:20:25.008
+redux-logger.js:1  prev state {upload: {…}, router: {…}, _persist: {…}}
+redux-logger.js:1  action     {type: "@@router/LOCATION_CHANGE", payload: {…}}
+redux-logger.js:1  next state {upload: {…}, router: {…}, _persist: {…}}
+redux-logger.js:1  action oyster/upload/refresh_incomplete_uploads @ 09:20:25.033
+redux-logger.js:1  prev state {upload: {…}, router: {…}, _persist: {…}}
+redux-logger.js:1  action     {type: "oyster/upload/refresh_incomplete_uploads"}
+redux-logger.js:1  next state {upload: {…}, router: {…}, _persist: {…}}
+webpackHotDevClient.js:136 ./src/utils/file-processor.js
+  Line 13:  'encrypt' is assigned a value but never used  no-unused-vars
+printWarnings @ webpackHotDevClient.js:136
+handleWarnings @ webpackHotDevClient.js:153
+./node_modules/react-dev-utils/webpackHotDevClient.js.connection.onmessage @ webpackHotDevClient.js:206
+./node_modules/sockjs-client/lib/event/eventtarget.js.EventTarget.dispatchEvent @ eventtarget.js:51
+(anonymous) @ main.js:274
+./node_modules/sockjs-client/lib/main.js.SockJS._transportMessage @ main.js:272
+./node_modules/sockjs-client/lib/event/emitter.js.EventEmitter.emit @ emitter.js:50
+WebSocketTransport.ws.onmessage @ websocket.js:35
+webpackHotDevClient.js:136 ./src/redux/epics/navigation-epic.js
+  Line 1:  'Observable' is defined but never used       no-unused-vars
+  Line 6:  'downloadActions' is defined but never used  no-unused-vars
+printWarnings @ webpackHotDevClient.js:136
+handleWarnings @ webpackHotDevClient.js:153
+./node_modules/react-dev-utils/webpackHotDevClient.js.connection.onmessage @ webpackHotDevClient.js:206
+./node_modules/sockjs-client/lib/event/eventtarget.js.EventTarget.dispatchEvent @ eventtarget.js:51
+(anonymous) @ main.js:274
+./node_modules/sockjs-client/lib/main.js.SockJS._transportMessage @ main.js:272
+./node_modules/sockjs-client/lib/event/emitter.js.EventEmitter.emit @ emitter.js:50
+WebSocketTransport.ws.onmessage @ websocket.js:35
+webpackHotDevClient.js:136 ./src/services/iota.js
+  Line 26:  Expected '!==' and instead saw '!='  eqeqeq
+printWarnings @ webpackHotDevClient.js:136
+handleWarnings @ webpackHotDevClient.js:153
+./node_modules/react-dev-utils/webpackHotDevClient.js.connection.onmessage @ webpackHotDevClient.js:206
+./node_modules/sockjs-client/lib/event/eventtarget.js.EventTarget.dispatchEvent @ eventtarget.js:51
+(anonymous) @ main.js:274
+./node_modules/sockjs-client/lib/main.js.SockJS._transportMessage @ main.js:272
+./node_modules/sockjs-client/lib/event/emitter.js.EventEmitter.emit @ emitter.js:50
+WebSocketTransport.ws.onmessage @ websocket.js:35
+webpackHotDevClient.js:136 ./src/components/path-choice/choice-slide.js
+  Line 2:   'push' is defined but never used                                                                           no-unused-vars
+  Line 4:   'Slide' is defined but never used                                                                          no-unused-vars
+  Line 15:  img elements must have an alt prop, either with meaningful text, or an empty string for decorative images  jsx-a11y/alt-text
+  Line 17:  img elements must have an alt prop, either with meaningful text, or an empty string for decorative images  jsx-a11y/alt-text
+  Line 27:  img elements must have an alt prop, either with meaningful text, or an empty string for decorative images  jsx-a11y/alt-text
+  Line 29:  img elements must have an alt prop, either with meaningful text, or an empty string for decorative images  jsx-a11y/alt-text
+printWarnings @ webpackHotDevClient.js:136
+handleWarnings @ webpackHotDevClient.js:153
+./node_modules/react-dev-utils/webpackHotDevClient.js.connection.onmessage @ webpackHotDevClient.js:206
+./node_modules/sockjs-client/lib/event/eventtarget.js.EventTarget.dispatchEvent @ eventtarget.js:51
+(anonymous) @ main.js:274
+./node_modules/sockjs-client/lib/main.js.SockJS._transportMessage @ main.js:272
+./node_modules/sockjs-client/lib/event/emitter.js.EventEmitter.emit @ emitter.js:50
+WebSocketTransport.ws.onmessage @ websocket.js:35
+webpackHotDevClient.js:136 ./src/components/shared/slide.js
+  Line 3:   'ICON_DOWNLOAD' is defined but never used                                                                  no-unused-vars
+  Line 16:  img elements must have an alt prop, either with meaningful text, or an empty string for decorative images  jsx-a11y/alt-text
+  Line 19:  img elements must have an alt prop, either with meaningful text, or an empty string for decorative images  jsx-a11y/alt-text
+printWarnings @ webpackHotDevClient.js:136
+handleWarnings @ webpackHotDevClient.js:153
+./node_modules/react-dev-utils/webpackHotDevClient.js.connection.onmessage @ webpackHotDevClient.js:206
+./node_modules/sockjs-client/lib/event/eventtarget.js.EventTarget.dispatchEvent @ eventtarget.js:51
+(anonymous) @ main.js:274
+./node_modules/sockjs-client/lib/main.js.SockJS._transportMessage @ main.js:272
+./node_modules/sockjs-client/lib/event/emitter.js.EventEmitter.emit @ emitter.js:50
+WebSocketTransport.ws.onmessage @ websocket.js:35
+webpackHotDevClient.js:130 There were more warnings in other files.
+You can find a complete log in the terminal.
+printWarnings @ webpackHotDevClient.js:130
+handleWarnings @ webpackHotDevClient.js:153
+./node_modules/react-dev-utils/webpackHotDevClient.js.connection.onmessage @ webpackHotDevClient.js:206
+./node_modules/sockjs-client/lib/event/eventtarget.js.EventTarget.dispatchEvent @ eventtarget.js:51
+(anonymous) @ main.js:274
+./node_modules/sockjs-client/lib/main.js.SockJS._transportMessage @ main.js:272
+./node_modules/sockjs-client/lib/event/emitter.js.EventEmitter.emit @ emitter.js:50
+WebSocketTransport.ws.onmessage @ websocket.js:35
+redux-logger.js:1  action oyster/upload/initialize_download @ 09:20:34.032
+redux-logger.js:1  prev state {upload: {…}, router: {…}, _persist: {…}}
+redux-logger.js:1  action     {type: "oyster/upload/initialize_download", payload: "message5381d7e16344cb457502bb25e69f2f91079f70f0b4f3da0a46f0ae7f839ffa53dptvfsi6x"}
+redux-logger.js:1  next state {upload: {…}, router: {…}, _persist: {…}}
+datamap.js:9 TRYTES REPRESENTATION FOR CHUNK 0: RCRCBBTCYABBVAABPCUA9BZAZATCZACBCBUAUAYAPCUCQCBBPCQCQCUCXA9BUASCZAUARCPCPCPCQCSCSC9BVACBSCXAQCUCSCYAXAUARCUCUCPCRCVAYABBBBPCYAUA
+datamap.js:22 TRYTES REPRESENTATION FOR CHUNK 1: 9BCBYAVATCUAWARCXAWAVABBBBQCXAPC9BWAUAYAWATCABQCABVATCUCABYAVATCUASCCBPCYABBPCYAYARCXAUAYATCRCCBBBZAZATCXARC9BTCVAUCVAZABBVAQCCB
+datamap.js:22 TRYTES REPRESENTATION FOR CHUNK 2: CBWAABVAUAXAYAQCUAVARCQCQC9BPCYAVABBVAABVASC9BYAABVABBYAVAQCUA9BBBUCRCUA9BCBQCPCPCWAUCUAUATCBBABUCABRCCBVAPCCBXAZAUCVASCZABBSCWA
+datamap.js:22 TRYTES REPRESENTATION FOR CHUNK 3: ABYAABPCUAUAWAUAWACBUAXAABWAZA9BRCQCRCXASC9BTC9BBBRCWAWASCPCRCXAUAUCAB9BBBUAZAUCABXAPCTCRCCBRCPCCBYABBQCVARCUABBTCUCXACBABBBUAWA
+datamap.js:22 TRYTES REPRESENTATION FOR CHUNK 4: UCPC9BVAUCSCCBCBBBWAABBBABCBTCVABBBBCBUAYAYAUAPCABZAWAABXAUCTCCBSCABVAVABBQCYAWACBTCBBTCUCBBWA9BZAQCBBYAXARCZABBWAPCCBCBABYARCXA
+datamap.js:22 TRYTES REPRESENTATION FOR CHUNK 5: TCVARCPCQCZATCXABBZAZARC9BXAABRCUAXAUAUCYARCQCUCWAXAUCCBZASCXA9BRC9BZACBQCSCPCZAVAQCCBXAPCUCXASCWAUCCBRC9BABXARCZAZARCVACB9BCBCB
+redux-logger.js:1  action oyster/upload/begin_download @ 09:20:35.519
+redux-logger.js:1  prev state {upload: {…}, router: {…}, _persist: {…}}
+redux-logger.js:1  action     {type: "oyster/upload/begin_download", payload: {…}}
+redux-logger.js:1  next state {upload: {…}, router: {…}, _persist: {…}}
+download-epic.js:70 DOWNLOADED ARRAY BUFFER:  Uint8Array(2404) [70, 105, 114, 115, 116, 32, 108, 105, 110, 101, 13, 10, 70, 105, 114, 115, 116, 32, 108, 105, 110, 101, 13, 10, 70, 105, 114, 115, 116, 32, 108, 105, 110, 101, 32, 50, 13, 10, 76, 111, 114, 101, 109, 32, 105, 112, 115, 117, 109, 32, 100, 111, 108, 111, 114, 32, 115, 105, 116, 32, 97, 109, 101, 116, 44, 32, 99, 111, 110, 115, 101, 99, 116, 101, 116, 117, 114, 32, 97, 100, 105, 112, 105, 115, 99, 105, 110, 103, 32, 101, 108, 105, 116, 46, 32, 83, 101, 100, 32, 117, …]
+redux-logger.js:1  action oyster/upload/download_success @ 09:20:36.756
+redux-logger.js:1  prev state {upload: {…}, router: {…}, _persist: {…}}
+redux-logger.js:1  action     {type: "oyster/upload/download_success"}
+redux-logger.js:1  next state {upload: {…}, router: {…}, _persist: {…}}
