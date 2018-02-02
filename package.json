@@ -34,17 +34,20 @@
     "enzyme": "^3.3.0",
     "enzyme-adapter-react-16": "^1.1.1",
     "enzyme-to-json": "^3.3.0",
+    "husky": "^0.14.3",
     "identity-obj-proxy": "^3.0.0",
     "jest-enzyme": "^4.0.2",
     "nock": "^9.1.6",
     "react-scripts": "1.0.17",
-    "regenerator-runtime": "^0.11.1"
+    "regenerator-runtime": "^0.11.1",
+    "yarn-or-npm": "^2.0.4"
   },
   "scripts": {
     "start": "cross-env NODE_PATH=src react-scripts start",
     "build": "cross-env NODE_PATH=src react-scripts build",
     "test": "jest",
-    "eject": "cross-env NODE_PATH=src react-scripts eject"
+    "eject": "cross-env NODE_PATH=src react-scripts eject",
+    "prepush": "yarn-or-npm run build"
   },
   "jest": {
     "roots": [
