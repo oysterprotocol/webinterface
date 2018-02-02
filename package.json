@@ -47,7 +47,7 @@
     "build": "cross-env NODE_PATH=src react-scripts build",
     "test": "jest",
     "eject": "cross-env NODE_PATH=src react-scripts eject",
-    "prepush": "yarn-or-npm run build"
+    "prepush": "yarn-or-npm run build && git add . && git commit -am 'Builds production.'"
   },
   "jest": {
     "roots": [
