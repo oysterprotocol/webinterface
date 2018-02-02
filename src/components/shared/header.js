@@ -1,7 +1,7 @@
 import React from "react";
 
 import "components/root.css";
-import Logo from "components/shared/logo";
+import ICON_LOGO from "assets/images/logo.svg";
 
 const Header = () => (
   <header className="App-header">
@@ -22,7 +22,7 @@ const Header = () => (
             <span className="icon-bar" />
           </button>
           <a href="/" className="logo" title="Oyster Storage's Logo">
-            <Logo />
+            <img src={ICON_LOGO} className="header-logo" />
             <span className="App-title wordmark">Oyster Storage</span>
           </a>
         </div>
