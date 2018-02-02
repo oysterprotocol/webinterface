@@ -1,11 +1,10 @@
 import { Observable } from "rxjs";
 import { combineEpics } from "redux-observable";
 import _ from "lodash";
-import Base64 from "base64-arraybuffer";
 import FileSaver from "file-saver";
 
-import downloadActions from "redux/actions/download-actions";
 import { IOTA_API } from "config";
+import downloadActions from "redux/actions/download-actions";
 import Iota from "services/iota";
 import Datamap from "utils/datamap";
 import Encryption from "utils/encryption";
@@ -22,7 +21,7 @@ const initializeDownload = (action$, store) => {
       return Observable.fromPromise(Iota.findTransactions([iotaAddress]))
         .map(transactions => {
           if (!transactions.length) {
-            throw "NO TRANSACTION FOUND";
+            throw Error("NO TRANSACTION FOUND");
           }
 
           const t = transactions[0];
@@ -51,19 +50,32 @@ const beginDownload = (action$, store) => {
   return action$.ofType(downloadActions.BEGIN_DOWNLOAD).mergeMap(action => {
     const { handle, fileName, numberOfChunks } = action.payload;
     const datamap = Datamap.generate(handle, numberOfChunks);
-    const addresses = _.values(datamap).map(Iota.toAddress);
-    return Observable.fromPromise(Iota.findTransactions(addresses))
+    const addresses = _.values(datamap).map(trytes =>
+      trytes.substr(0, IOTA_API.ADDRESS_LENGTH)
+    );
+    const nonMetaDataAddresses = addresses.slice(1, addresses.length);
+
+    return Observable.fromPromise(Iota.findTransactions(nonMetaDataAddresses))
       .map(transactions => {
-        const contentChunks = transactions.slice(1, transactions.length);
-        const decryptedChunks = contentChunks.map(t => {
+        const orderedTransactions = _.sortBy(transactions, t =>
+          nonMetaDataAddresses.indexOf(t.address)
+        );
+        const chunksArrayBuffers = orderedTransactions.map(t => {
           return FileProcessor.chunkFromIotaFormat(
             t.signatureMessageFragment,
             handle
           );
         });
 
-        const arrayBuffer = _.flatten(decryptedChunks);
-        const blob = new Blob(arrayBuffer);
+        const completeFileArrayBuffer = FileProcessor.mergeArrayBuffers(
+          chunksArrayBuffers
+        );
+        console.log(
+          "DOWNLOADED ARRAY BUFFER: ",
+          new Uint8Array(completeFileArrayBuffer)
+        );
+
+        const blob = new Blob([new Uint8Array(completeFileArrayBuffer)]);
         FileSaver.saveAs(blob, fileName);
 
         return downloadActions.downloadSuccessAction();

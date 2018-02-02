@@ -38,9 +38,22 @@ const saveToHistory = (action$, store) => {
 const uploadFile = (action$, store) => {
   return action$.ofType(uploadActions.BEGIN_UPLOAD).mergeMap(action => {
     const { file, handle } = action.payload;
-    return Observable.fromPromise(
-      FileProcessor.uploadFileToBrokerNodes(file, handle)
-    )
+
+    const sanityCheck = new Promise((resolve, reject) => {
+      const blob = file.slice(0, file.size);
+      const reader = FileProcessor.createReader(arrayBuffer => {
+        console.log("UPLOADED ARRAY BUFFER: ", new Uint8Array(arrayBuffer));
+        resolve();
+      });
+      reader.readAsArrayBuffer(blob);
+    });
+
+    return Observable.fromPromise(sanityCheck)
+      .mergeMap(() =>
+        Observable.fromPromise(
+          FileProcessor.uploadFileToBrokerNodes(file, handle)
+        )
+      )
       .map(({ numberOfChunks, handle, fileName }) =>
         uploadActions.uploadSuccessAction({ numberOfChunks, handle, fileName })
       )

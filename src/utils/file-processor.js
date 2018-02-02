@@ -13,6 +13,13 @@ const {
   encrypt
 } = Encryption;
 
+const axiosInstance = axios.create({
+  timeout: 200000,
+  headers: {
+    "Access-Control-Allow-Origin": "*"
+  }
+});
+
 const metaDataToIotaFormat = (object, handle) => {
   const metaDataString = JSON.stringify(object);
   const encryptedData = Encryption.encrypt(metaDataString, handle);
@@ -34,9 +41,10 @@ const chunkToIotaFormat = (arrayBuffer, handle) => {
   const encryptedData = Encryption.encrypt(encodedData, handle);
   const trytes = Iota.utils.toTrytes(encryptedData);
 
-  console.log("[UPLOAD] ORIGINAL DATA: ", arrayBuffer);
-  console.log("[UPLOAD] ENCODED DATA: ", encodedData);
-  console.log("[UPLOAD] ENCRYPTED DATA: ", encryptedData);
+  // console.log("[UPLOAD] ORIGINAL DATA: ", new Uint8Array(arrayBuffer));
+  // console.log("[UPLOAD] ENCODED DATA: ", encodedData);
+  // console.log("[UPLOAD] ENCRYPTED DATA: ", encryptedData);
+  // console.log("[UPLOAD] TRYTES: ", trytes);
   return trytes;
 };
 
@@ -45,18 +53,27 @@ const chunkFromIotaFormat = (trytes, handle) => {
   const encodedData = Encryption.decrypt(encryptedData, handle);
   const arrayBuffer = Base64.decode(encodedData);
 
-  console.log("[DOWNLOAD] ENCRYPTED DATA: ", encryptedData);
-  console.log("[DOWNLOAD] ENCODED DATA: ", encodedData);
-  console.log("[DOWNLOAD] ORIGINAL DATA: ", arrayBuffer);
+  // console.log("[DOWNLOAD] TRYTES: ", trytes);
+  // console.log("[DOWNLOAD] ENCRYPTED DATA: ", encryptedData);
+  // console.log("[DOWNLOAD] ENCODED DATA: ", encodedData);
+  // console.log("[DOWNLOAD] ORIGINAL DATA: ", new Uint8Array(arrayBuffer));
   return arrayBuffer;
 };
 
-const axiosInstance = axios.create({
-  timeout: 100000,
-  headers: {
-    "Access-Control-Allow-Origin": "*"
-  }
-});
+const mergeArrayBuffers = arrayBuffers => {
+  return _.reduce(
+    arrayBuffers,
+    (result, arrayBuffer) => {
+      const appendedArrayBuffer = new Uint8Array(
+        result.byteLength + arrayBuffer.byteLength
+      );
+      appendedArrayBuffer.set(new Uint8Array(result), 0);
+      appendedArrayBuffer.set(new Uint8Array(arrayBuffer), result.byteLength);
+      return appendedArrayBuffer.buffer;
+    },
+    new ArrayBuffer()
+  );
+};
 
 const chunkGenerator = ({ idx, data, hash }) => {
   return { idx, data, hash };
@@ -74,8 +91,11 @@ const uploadFileToBrokerNodes = (file, handle) => {
   const byteChunks = createByteChunks(file.size);
   const genesisHash = sha256(handle);
 
-  return createUploadSession(file.size, genesisHash)
-    .then(({ alphaSessionId, betaSessionId }) =>
+  return Promise.all([
+    createUploadSession(API.BROKER_NODE_A, file.size, genesisHash)
+    // createUploadSession(API.BROKER_NODE_B, file.size, genesisHash)
+  ])
+    .then(([alphaSessionId, betaSessionId]) =>
       Promise.all([
         sendToAlphaBroker(alphaSessionId, byteChunks, file, handle, genesisHash)
         // sendToBetaBroker(betaSessionId, byteChunks, file, handle, genesisHash)
@@ -96,7 +116,7 @@ const createHandle = fileName => {
 };
 
 const createByteLocations = fileSizeBytes =>
-  _.range(0, fileSizeBytes, FILE.CHUNK_BYTE_SIZE + 1);
+  _.range(0, fileSizeBytes, FILE.CHUNK_BYTE_SIZE);
 
 const createByteChunks = fileSizeBytes => {
   // This returns an array with the starting byte pointers
@@ -109,18 +129,18 @@ const createByteChunks = fileSizeBytes => {
   return byteChunks;
 };
 
-const createUploadSession = (fileSizeBytes, genesisHash) =>
+const createUploadSession = (host, fileSizeBytes, genesisHash) =>
   new Promise((resolve, reject) => {
     axiosInstance
-      .post(`${API.HOST}${API.V1_UPLOAD_SESSIONS_PATH}`, {
+      .post(`${host}${API.V1_UPLOAD_SESSIONS_PATH}`, {
         file_size_bytes: fileSizeBytes,
         genesis_hash: genesisHash,
         beta_brokernode_ip: API.BROKER_NODE_B
       })
       .then(({ data }) => {
         console.log("UPLOAD SESSION SUCCESS: ", data);
-        const { id: alphaSessionId, beta_session_id: betaSessionId } = data;
-        resolve({ alphaSessionId, betaSessionId });
+        const { id: sessionId } = data;
+        resolve(sessionId);
       })
       .catch(error => {
         console.log("UPLOAD SESSION ERROR: ", error);
@@ -288,5 +308,7 @@ export default {
   metaDataToIotaFormat,
   metaDataFromIotaFormat,
   chunkToIotaFormat,
-  chunkFromIotaFormat
+  chunkFromIotaFormat,
+  createReader,
+  mergeArrayBuffers
 };
