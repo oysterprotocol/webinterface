@@ -120,7 +120,7 @@ const createByteLocations = fileSizeBytes =>
 
 const createByteChunks = fileSizeBytes => {
   // This returns an array with the starting byte pointers
-  // ex: For a 150 byte file it would return: [0, 1001, 2002, 3003, 4004]
+  // ex: For a 2300 byte file it would return: [0, 500, 1000, 1500, 2000]
   const byteLocations = createByteLocations(fileSizeBytes);
   const byteChunks = _.map(byteLocations, (byte, index) => {
     return { chunkIdx: index + 1, chunkStartingPoint: byte };
@@ -223,7 +223,7 @@ const sendFileContentsToBroker = (
 
 const sendMetaDataToBroker = (host, sessionId, file, handle, genesisHash) =>
   new Promise((resolve, reject) => {
-    const metaDataObject = buildMetaDataPacket(file);
+    const metaDataObject = createMetaDataObject(file);
     axiosInstance
       .put(`${host}${API.V1_UPLOAD_SESSIONS_PATH}/${sessionId}`, {
         chunk: chunkGenerator({
@@ -288,15 +288,17 @@ const sendToBetaBroker = (sessionId, byteChunks, file, handle, genesisHash) =>
       .then(resolve);
   });
 
-const buildMetaDataPacket = file => {
+const createMetaDataObject = file => {
   const fileExtension = file.name.split(".").pop();
-  return assembleMetaData(file.name, fileExtension, file.size);
-};
+  const fileName = file.name;
+  const fileSizeBytes = file.size;
 
-const assembleMetaData = (name, extension, fileSizeBytes) => {
-  const shortenedName = name.substr(0, 500);
   const numberOfChunks = createByteLocations(fileSizeBytes).length;
-  return { fileName: shortenedName, ext: extension, numberOfChunks };
+  return {
+    fileName: fileName.substr(0, 500),
+    ext: fileExtension,
+    numberOfChunks
+  };
 };
 
 export default {
