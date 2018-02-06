@@ -41,11 +41,10 @@ const uploadFile = (action$, store) => {
 
     const sanityCheck = new Promise((resolve, reject) => {
       const blob = file.slice(0, file.size);
-      const reader = FileProcessor.createReader(arrayBuffer => {
+      FileProcessor.readBlob(blob).then(arrayBuffer => {
         console.log("UPLOADED ARRAY BUFFER: ", new Uint8Array(arrayBuffer));
         resolve();
       });
-      reader.readAsArrayBuffer(blob);
     });
 
     return Observable.fromPromise(sanityCheck)
@@ -57,7 +56,7 @@ const uploadFile = (action$, store) => {
       .map(({ numberOfChunks, handle, fileName }) =>
         uploadActions.uploadSuccessAction({ numberOfChunks, handle, fileName })
       )
-      .catch(() => Observable.of(uploadActions.uploadFailureAction(handle)));
+      .catch(error => Observable.of(uploadActions.uploadFailureAction(error)));
   });
 };
 

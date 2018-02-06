@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 
+import { FILE } from "config";
 import ICON_UPLOAD from "assets/images/icon_upload.png";
 import ICON_FOLDER from "assets/images/icon_folder.png";
 import Slide from "components/shared/slide";
@@ -122,8 +123,10 @@ class UploadSlide extends Component {
             type="button"
             onClick={() => {
               const file = this.refs.fileInput.files[0];
-              if (!file) {
-                alert("Please select a file.");
+              if (!file || file.size > FILE.MAX_FILE_SIZE) {
+                alert(
+                  `Please select a file under ${FILE.MAX_FILE_SIZE / 1000} KB.`
+                );
               } else {
                 upload(file);
               }
