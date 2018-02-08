@@ -183,7 +183,7 @@ const createChunk = (blob, idx, handle, genesisHash) =>
 const sendChunksToBroker = (host, sessionId, chunks) =>
   new Promise((resolve, reject) => {
     axiosInstance
-      .put(`${host}${API.V2_UPLOAD_SESSIONS_PATH}/${sessionId}`, { chunks })
+      .put(`${host}${API.V1_UPLOAD_SESSIONS_PATH}/${sessionId}`, { chunks })
       .then(response => {
         console.log("SENT CHUNK TO BROKER: ", response);
         resolve(response);
@@ -229,7 +229,7 @@ const sendMetaDataToBroker = (host, sessionId, file, handle, genesisHash) =>
   new Promise((resolve, reject) => {
     const metaDataObject = createMetaDataObject(file);
     axiosInstance
-      .put(`${host}${API.V2_UPLOAD_SESSIONS_PATH}/${sessionId}`, {
+      .put(`${host}${API.V1_UPLOAD_SESSIONS_PATH}/${sessionId}`, {
         chunks: [
           chunkGenerator({
             idx: 0,
