@@ -42,11 +42,10 @@ const testUpload = (action$, store) => {
 
     const sanityCheck = new Promise((resolve, reject) => {
       const blob = file.slice(0, file.size);
-      const reader = FileProcessor.createReader(arrayBuffer => {
+      FileProcessor.readBlob(blob).then(arrayBuffer => {
         console.log("UPLOADED ARRAY BUFFER: ", new Uint8Array(arrayBuffer));
         resolve();
       });
-      reader.readAsArrayBuffer(blob);
     });
 
     return Observable.fromPromise(sanityCheck)

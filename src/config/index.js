@@ -5,7 +5,8 @@ export const API = Object.freeze({
   HOST: "https://broker-1.oysternodes.com",
   BROKER_NODE_A: "https://broker-1.oysternodes.com",
   BROKER_NODE_B: "https://broker-2.oysternodes.com",
-  V1_UPLOAD_SESSIONS_PATH: "/api/v1/upload-sessions"
+  V1_UPLOAD_SESSIONS_PATH: "/api/v1/upload-sessions",
+  CHUNKS_PER_REQUEST: 10
 });
 
 export const IOTA_API = Object.freeze({
@@ -22,5 +23,6 @@ export const UPLOAD_STATUSES = Object.freeze({
 });
 
 export const FILE = Object.freeze({
-  CHUNK_BYTE_SIZE: 500
+  CHUNK_BYTE_SIZE: 500,
+  MAX_FILE_SIZE: 100 * 1000
 });
