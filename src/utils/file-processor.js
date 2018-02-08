@@ -61,18 +61,26 @@ const chunkFromIotaFormat = (trytes, handle) => {
 };
 
 const mergeArrayBuffers = arrayBuffers => {
-  return _.reduce(
+  const totalLength = _.reduce(
     arrayBuffers,
-    (result, arrayBuffer) => {
-      const appendedArrayBuffer = new Uint8Array(
-        result.byteLength + arrayBuffer.byteLength
-      );
-      appendedArrayBuffer.set(new Uint8Array(result), 0);
-      appendedArrayBuffer.set(new Uint8Array(arrayBuffer), result.byteLength);
-      return appendedArrayBuffer.buffer;
+    (acc, buff) => {
+      return acc + buff.byteLength;
     },
-    new ArrayBuffer()
+    0
   );
+  const mergedBuffer = new Uint8Array(totalLength);
+
+  // This mutates mergedBuffer for efficiency.
+  _.reduce(
+    arrayBuffers,
+    ({ mergedBuffer, idx }, buff) => {
+      mergedBuffer.set(new Uint8Array(buff), idx);
+      return { mergedBuffer, idx: idx + buff.byteLength };
+    },
+    { mergedBuffer, idx: 0 }
+  );
+
+  return mergedBuffer.buffer;
 };
 
 const chunkGenerator = ({ idx, data, hash }) => {
