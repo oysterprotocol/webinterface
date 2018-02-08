@@ -6,7 +6,7 @@ const generate = (handle, size) => {
   const keys = _.range(1, size + 1);
   const genesisHash = Encryption.sha256(handle);
   const genesisHashInTrytes = iota.utils.toTrytes(genesisHash);
-  console.log(`TRYTES REPRESENTATION FOR CHUNK 0: ${genesisHashInTrytes}`);
+  // console.log(`TRYTES REPRESENTATION FOR CHUNK 0: ${genesisHashInTrytes}`);
 
   return _.reduce(
     keys,
@@ -19,9 +19,9 @@ const generate = (handle, size) => {
       const encryptedHash = Encryption.sha256(previousEncryptedChunk);
       const encryptedHashInTrytes = iota.utils.toTrytes(encryptedHash);
 
-      console.log(
-        `TRYTES REPRESENTATION FOR CHUNK ${n}: ${encryptedHashInTrytes}`
-      );
+      // console.log(
+      // `TRYTES REPRESENTATION FOR CHUNK ${n}: ${encryptedHashInTrytes}`
+      // );
 
       hash[n] = encryptedHashInTrytes;
 
