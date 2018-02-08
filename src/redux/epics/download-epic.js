@@ -57,12 +57,21 @@ const beginDownload = (action$, store) => {
 
     return Observable.fromPromise(Iota.findTransactions(nonMetaDataAddresses))
       .map(transactions => {
-        const orderedTransactions = _.sortBy(transactions, t =>
-          nonMetaDataAddresses.indexOf(t.address)
+        const addrToIdx = _.reduce(
+          nonMetaDataAddresses,
+          (acc, addr, idx) => {
+            acc[addr] = idx;
+            return acc;
+          },
+          {}
         );
-        const chunksArrayBuffers = orderedTransactions.map(t => {
+        const orderedTransactions = _.sortBy(
+          transactions,
+          tx => addrToIdx[tx.address]
+        );
+        const chunksArrayBuffers = orderedTransactions.map(tx => {
           return FileProcessor.chunkFromIotaFormat(
-            t.signatureMessageFragment,
+            tx.signatureMessageFragment,
             handle
           );
         });
@@ -70,10 +79,7 @@ const beginDownload = (action$, store) => {
         const completeFileArrayBuffer = FileProcessor.mergeArrayBuffers(
           chunksArrayBuffers
         );
-        console.log(
-          "DOWNLOADED ARRAY BUFFER: ",
-          new Uint8Array(completeFileArrayBuffer)
-        );
+        console.log("DOWNLOADED ARRAY BUFFER");
 
         const blob = new Blob([new Uint8Array(completeFileArrayBuffer)]);
         FileSaver.saveAs(blob, fileName);
