@@ -75,39 +75,30 @@ const refreshIncompleteUploads = (action$, store) => {
     });
 };
 
-const checkUploadProgress = (action$, store) => {
-  return action$.ofType(uploadActions.UPLOAD_SUCCESS).map(action => {
-    const { numberOfChunks, handle } = action.payload;
-    return uploadActions.pollUploadProgress({ numberOfChunks, handle });
-  });
-};
-
 const pollUploadProgress = (action$, store) => {
-  return action$
-    .ofType(uploadActions.POLL_UPLOAD_PROGRESS)
-    .switchMap(action => {
-      const { numberOfChunks, handle } = action.payload;
-      const datamap = Datamap.generate(handle, numberOfChunks);
-      const addresses = _.values(datamap).map(trytes =>
-        trytes.substr(0, IOTA_API.ADDRESS_LENGTH)
-      );
-      console.log("POLLING 81 CHARACTER IOTA ADDRESSES: ", addresses);
+  return action$.ofType(uploadActions.BEGIN_UPLOAD).switchMap(action => {
+    const { numberOfChunks, handle } = action.payload;
+    const datamap = Datamap.generate(handle, numberOfChunks);
+    const addresses = _.values(datamap).map(trytes =>
+      trytes.substr(0, IOTA_API.ADDRESS_LENGTH)
+    );
+    console.log("POLLING 81 CHARACTER IOTA ADDRESSES: ", addresses);
 
-      return Observable.interval(2000)
-        .takeUntil(
-          action$.ofType(uploadActions.MARK_UPLOAD_AS_COMPLETE).filter(a => {
-            const completedFileHandle = a.payload;
-            return handle === completedFileHandle;
-          })
-        )
-        .mergeMap(action =>
-          Observable.fromPromise(Iota.checkUploadPercentage(addresses))
-            .map(uploadProgress =>
-              uploadActions.updateUploadProgress({ handle, uploadProgress })
-            )
-            .catch(error => Observable.empty())
-        );
-    });
+    return Observable.interval(2000)
+      .takeUntil(
+        action$.ofType(uploadActions.MARK_UPLOAD_AS_COMPLETE).filter(a => {
+          const completedFileHandle = a.payload;
+          return handle === completedFileHandle;
+        })
+      )
+      .mergeMap(action =>
+        Observable.fromPromise(Iota.checkUploadPercentage(addresses))
+          .map(uploadProgress =>
+            uploadActions.updateUploadProgress({ handle, uploadProgress })
+          )
+          .catch(error => Observable.empty())
+      );
+  });
 };
 
 const markUploadAsComplete = (action$, store) => {
@@ -127,7 +118,6 @@ export default combineEpics(
   initializeUpload,
   saveToHistory,
   uploadFile,
-  checkUploadProgress,
   pollUploadProgress,
   markUploadAsComplete,
   refreshIncompleteUploads
