@@ -54,7 +54,11 @@ const uploadFile = (action$, store) => {
         )
       )
       .map(({ numberOfChunks, handle, fileName }) =>
-        uploadActions.uploadSuccessAction({ numberOfChunks, handle, fileName })
+        uploadActions.uploadSuccessAction({
+          numberOfChunks,
+          handle,
+          fileName
+        })
       )
       .catch(error => Observable.of(uploadActions.uploadFailureAction(error)));
   });
@@ -85,10 +89,13 @@ const pollUploadProgress = (action$, store) => {
 
     return Observable.interval(5000)
       .takeUntil(
-        action$.ofType(uploadActions.MARK_UPLOAD_AS_COMPLETE).filter(a => {
-          const completedFileHandle = a.payload;
-          return handle === completedFileHandle;
-        })
+        Observable.merge(
+          action$.ofType(uploadActions.MARK_UPLOAD_AS_COMPLETE).filter(a => {
+            const completedFileHandle = a.payload;
+            return handle === completedFileHandle;
+          }),
+          action$.ofType(uploadActions.UPLOAD_FAILURE)
+        )
       )
       .mergeMap(action =>
         Observable.fromPromise(Iota.checkUploadPercentage(addresses))
