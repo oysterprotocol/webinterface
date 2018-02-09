@@ -83,7 +83,7 @@ const pollUploadProgress = (action$, store) => {
     );
     console.log("POLLING 81 CHARACTER IOTA ADDRESSES: ", addresses);
 
-    return Observable.interval(2000)
+    return Observable.interval(5000)
       .takeUntil(
         action$.ofType(uploadActions.MARK_UPLOAD_AS_COMPLETE).filter(a => {
           const completedFileHandle = a.payload;
