@@ -6,7 +6,7 @@ import ICON_DOWNLOAD from "assets/images/icon_download.png";
 
 class DownloadFormSlide extends Component {
   render() {
-    const { download } = this.props;
+    const { download, status } = this.props;
     return (
       <Slide title="Retrieve a File" image={ICON_DOWNLOAD}>
         <p className="handle-instructions">
@@ -25,6 +25,7 @@ class DownloadFormSlide extends Component {
           </label>
         </div>
         <div>
+          {status}
           <PrimaryButton
             onClick={() => {
               const handle = this.refs.handleInput.value;
