@@ -12,6 +12,7 @@ import Header from "components/shared/header";
 import DownloadForm from "components/download-form";
 import DownloadStarted from "components/download-started";
 import DownloadComplete from "components/download-complete";
+import DownloadUploadHistory from "components/download-upload-history";
 import UploadForm from "components/upload-form";
 import UploadStarted from "components/upload-started";
 import UploadComplete from "components/upload-complete";
@@ -28,6 +29,7 @@ const App = () => (
           <Route path="/download-form" component={DownloadForm} />
           <Route path="/download-started" component={DownloadStarted} />
           <Route path="/download-complete" component={DownloadComplete} />
+          <Route path="/download-upload-history" component={DownloadUploadHistory} />
           <Route path="/upload-form" component={UploadForm} />
           <Route path="/upload-started" component={UploadStarted} />
           <Route path="/upload-complete" component={UploadComplete} />
