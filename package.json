@@ -46,19 +46,15 @@
     "start": "cross-env NODE_PATH=src react-scripts start",
     "build": "cross-env NODE_PATH=src react-scripts build",
     "test": "jest",
-    "eject": "cross-env NODE_PATH=src react-scripts eject",
-    "prepush": "yarn-or-npm run build && git add . && git commit -am 'Builds production.'"
+    "eject": "cross-env NODE_PATH=src react-scripts eject"
   },
   "jest": {
-    "roots": [
-      "<rootDir>/src"
-    ],
-    "modulePaths": [
-      "<rootDir>/src"
-    ],
+    "roots": ["<rootDir>/src"],
+    "modulePaths": ["<rootDir>/src"],
     "setupTestFrameworkScriptFile": "<rootDir>/src/setup-tests.js",
     "moduleNameMapper": {
-      ".+\\.(css|styl|less|sass|scss|png|jpg|ttf|woff|woff2)$": "identity-obj-proxy"
+      ".+\\.(css|styl|less|sass|scss|png|jpg|ttf|woff|woff2)$":
+        "identity-obj-proxy"
     }
   }
 }
