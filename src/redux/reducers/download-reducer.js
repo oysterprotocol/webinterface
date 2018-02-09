@@ -7,7 +7,7 @@ const initState = {
 
 const downloadReducer = (state = initState, action) => {
   switch (action.type) {
-    case downloadActions.BEGIN_DOWNLOAD:
+    case downloadActions.INITIALIZE_DOWNLOAD:
       return {
         ...state,
         status: DOWNLOAD_STATUSES.PENDING

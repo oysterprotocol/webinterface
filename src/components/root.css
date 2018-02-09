@@ -646,6 +646,12 @@ header a:focus {
   margin-top: 50px;
 }
 
+.primary-button:disabled {
+  background: #ededed;
+  color: grey;
+  border: 1px solid #ededed;
+}
+
 .instructions {
   margin-top: 20px;
 }
@@ -761,4 +767,8 @@ input.retention-slider:focus {
   color: #afcbfe;
   font-size: 20px;
   font-weight: 500;
+}
+
+.download-spinner {
+  margin-left: 10px;
 }
