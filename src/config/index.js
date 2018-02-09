@@ -22,6 +22,13 @@ export const UPLOAD_STATUSES = Object.freeze({
   FAILED: "FAILED"
 });
 
+export const DOWNLOAD_STATUSES = Object.freeze({
+  STANDBY: "STANDBY",
+  PENDING: "PENDING",
+  RECEIVED: "RECEIVED",
+  FAILED: "FAILED"
+});
+
 export const FILE = Object.freeze({
   CHUNK_BYTE_SIZE: 500,
   MAX_FILE_SIZE: 100 * 1000

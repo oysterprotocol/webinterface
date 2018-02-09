@@ -1,4 +1,5 @@
 import React from "react";
+import { CopyToClipboard } from "react-copy-to-clipboard";
 
 import Slide from "components/shared/slide";
 import PrimaryButton from "components/shared/primary-button";
@@ -12,7 +13,12 @@ const UploadCompleteSlide = ({ handle }) => (
       on the Tangle. Please store this handle in a safe place.
     </p>
     <div>
-      <h2>Oyster Handle:</h2>
+      <p>
+        <span className="handle-header">Oyster Handle:</span>
+        <CopyToClipboard text={handle}>
+          <button className="clipboard-button">Copy to clipboard</button>
+        </CopyToClipboard>
+      </p>
       <p className="oyster-handle">{handle}</p>
     </div>
   </Slide>

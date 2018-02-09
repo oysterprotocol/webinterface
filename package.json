@@ -13,7 +13,9 @@
     "lodash": "^4.17.5",
     "rc-progress": "^2.2.5",
     "react": "^16.2.0",
+    "react-copy-to-clipboard": "^5.0.1",
     "react-dom": "^16.2.0",
+    "react-md-spinner": "^0.2.5",
     "react-redux": "^5.0.6",
     "react-router-redux": "next",
     "redux": "^3.7.2",
@@ -46,8 +48,7 @@
     "start": "cross-env NODE_PATH=src react-scripts start",
     "build": "cross-env NODE_PATH=src react-scripts build",
     "test": "jest",
-    "eject": "cross-env NODE_PATH=src react-scripts eject",
-    "prepush": "yarn-or-npm run build && git add . && git commit -am 'Builds production.'"
+    "eject": "cross-env NODE_PATH=src react-scripts eject"
   },
   "jest": {
     "roots": [

@@ -1,12 +1,14 @@
 import React, { Component } from "react";
 
+import { DOWNLOAD_STATUSES } from "config";
 import Slide from "components/shared/slide";
 import PrimaryButton from "components/shared/primary-button";
+import Spinner from "components/shared/spinner";
 import ICON_DOWNLOAD from "assets/images/icon_download.png";
 
 class DownloadFormSlide extends Component {
   render() {
-    const { download } = this.props;
+    const { download, status } = this.props;
     return (
       <Slide title="Retrieve a File" image={ICON_DOWNLOAD}>
         <p className="handle-instructions">
@@ -26,6 +28,7 @@ class DownloadFormSlide extends Component {
         </div>
         <div>
           <PrimaryButton
+            disabled={status === DOWNLOAD_STATUSES.PENDING}
             onClick={() => {
               const handle = this.refs.handleInput.value;
               if (!handle) {
@@ -35,8 +38,14 @@ class DownloadFormSlide extends Component {
               }
             }}
           >
-            Retrieve File
+            {status === DOWNLOAD_STATUSES.PENDING
+              ? "Retrieving file..."
+              : "Retrieve File"}
           </PrimaryButton>
+          <Spinner
+            isActive={status === DOWNLOAD_STATUSES.PENDING}
+            className="download-spinner"
+          />
         </div>
       </Slide>
     );

@@ -14,10 +14,7 @@ const {
 } = Encryption;
 
 const axiosInstance = axios.create({
-  timeout: 200000,
-  headers: {
-    "Access-Control-Allow-Origin": "*"
-  }
+  timeout: 200000
 });
 
 const metaDataToIotaFormat = (object, handle) => {

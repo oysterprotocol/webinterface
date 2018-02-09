@@ -39,10 +39,9 @@ const initializeDownload = (action$, store) => {
             fileName
           });
         })
-        .catch(error => {
-          console.log("DOWNLOAD ERROR: ", error);
-          return Observable.empty();
-        });
+        .catch(error =>
+          Observable.of(downloadActions.downloadFailureAction(error))
+        );
     });
 };
 
@@ -86,10 +85,9 @@ const beginDownload = (action$, store) => {
 
         return downloadActions.downloadSuccessAction();
       })
-      .catch(error => {
-        console.log("DOWNLOAD ERROR: ", error);
-        return Observable.empty();
-      });
+      .catch(error =>
+        Observable.of(downloadActions.downloadFailureAction(error))
+      );
   });
 };
 
