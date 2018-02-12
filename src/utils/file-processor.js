@@ -80,8 +80,12 @@ const mergeArrayBuffers = arrayBuffers => {
   return mergedBuffer.buffer;
 };
 
-const chunkGenerator = ({ idx, data, hash }) => {
+const chunkParamsGenerator = ({ idx, data, hash }) => {
   return { idx, data, hash };
+};
+
+const chunkGenerator = ({ idx, startingPoint, type }) => {
+  return { idx, startingPoint, type };
 };
 
 const initializeUpload = file => {
@@ -124,14 +128,24 @@ const createByteLocations = fileSizeBytes =>
   _.range(0, fileSizeBytes, FILE.CHUNK_BYTE_SIZE);
 
 const createByteChunks = fileSizeBytes => {
+  const metaDataChunk = chunkGenerator({
+    idx: 0,
+    startingPoint: null,
+    type: FILE.CHUNK_TYPES.METADATA
+  });
+
   // This returns an array with the starting byte pointers
   // ex: For a 2300 byte file it would return: [0, 500, 1000, 1500, 2000]
   const byteLocations = createByteLocations(fileSizeBytes);
-  const byteChunks = _.map(byteLocations, (byte, index) => {
-    return { chunkIdx: index + 1, chunkStartingPoint: byte };
+  const fileContentChunks = _.map(byteLocations, (byte, index) => {
+    return chunkGenerator({
+      idx: index + 1,
+      startingPoint: byte,
+      type: FILE.CHUNK_TYPES.FILE_CONTENTS
+    });
   });
 
-  return byteChunks;
+  return [metaDataChunk, ...fileContentChunks];
 };
 
 const createUploadSession = (host, fileSizeBytes, genesisHash) =>
@@ -165,10 +179,10 @@ const readBlob = blob =>
     reader.readAsArrayBuffer(blob);
   });
 
-const createChunk = (blob, idx, handle, genesisHash) =>
+const blobToChunkParams = (blob, idx, handle, genesisHash) =>
   new Promise((resolve, reject) => {
     readBlob(blob).then(arrayBuffer => {
-      const chunk = chunkGenerator({
+      const chunk = chunkParamsGenerator({
         idx,
         data: chunkToIotaFormat(arrayBuffer, handle),
         hash: genesisHash
@@ -191,7 +205,7 @@ const sendChunksToBroker = (host, sessionId, chunks) =>
       });
   });
 
-const sendFileContentsToBroker = (
+const sendFileToBroker = (
   host,
   sessionId,
   file,
@@ -200,17 +214,27 @@ const sendFileContentsToBroker = (
   byteChunks,
   sliceCutOffFn
 ) => {
-  const batchedChunks = _.chunk(byteChunks, API.CHUNKS_PER_REQUEST);
-  const chunkRequests = batchedChunks.map(
-    byteChunkBatch =>
+  const batches = _.chunk(byteChunks, API.CHUNKS_PER_REQUEST);
+  const chunkRequests = batches.map(
+    batch =>
       new Promise((resolve, reject) => {
-        const chunks = byteChunkBatch.map(byte => {
-          const { chunkIdx, chunkStartingPoint } = byte;
-          const blob = file.slice(
-            chunkStartingPoint,
-            sliceCutOffFn(chunkStartingPoint)
-          );
-          return createChunk(blob, chunkIdx, handle, genesisHash);
+        const chunks = batch.map(chunk => {
+          const { idx, startingPoint, type } = chunk;
+          switch (type) {
+            case FILE.CHUNK_TYPES.METADATA:
+              const metaDataObject = createMetaDataObject(file);
+              return chunkParamsGenerator({
+                idx: idx,
+                data: metaDataToIotaFormat(metaDataObject, handle),
+                hash: genesisHash
+              });
+            case FILE.CHUNK_TYPES.FILE_CONTENTS:
+              const blob = file.slice(
+                startingPoint,
+                sliceCutOffFn(startingPoint)
+              );
+              return blobToChunkParams(blob, idx, handle, genesisHash);
+          }
         });
 
         Promise.all(chunks).then(arrayOfChunks => {
@@ -222,55 +246,22 @@ const sendFileContentsToBroker = (
   return Promise.all(chunkRequests);
 };
 
-const sendMetaDataToBroker = (host, sessionId, file, handle, genesisHash) =>
-  new Promise((resolve, reject) => {
-    const metaDataObject = createMetaDataObject(file);
-    axiosInstance
-      .put(`${host}${API.V1_UPLOAD_SESSIONS_PATH}/${sessionId}`, {
-        chunks: [
-          chunkGenerator({
-            idx: 0,
-            data: metaDataToIotaFormat(metaDataObject, handle),
-            hash: genesisHash
-          })
-        ]
-      })
-      .then(({ data }) => {
-        console.log("METADATA TO BROKER SUCCESS: ", data);
-        resolve(data);
-      })
-      .catch(error => {
-        console.log("METADATA TO BROKER ERROR: ", error);
-        reject(error);
-      });
-  });
-
 const sendToAlphaBroker = (sessionId, byteChunks, file, handle, genesisHash) =>
   new Promise((resolve, reject) => {
-    sendMetaDataToBroker(
+    sendFileToBroker(
       API.BROKER_NODE_A,
       sessionId,
       file,
       handle,
-      genesisHash
-    )
-      .then(() =>
-        sendFileContentsToBroker(
-          API.BROKER_NODE_A,
-          sessionId,
-          file,
-          handle,
-          genesisHash,
-          byteChunks,
-          byteLocation => byteLocation + FILE.CHUNK_BYTE_SIZE
-        )
-      )
-      .then(resolve);
+      genesisHash,
+      byteChunks,
+      byteLocation => byteLocation + FILE.CHUNK_BYTE_SIZE
+    ).then(resolve);
   });
 
 const sendToBetaBroker = (sessionId, byteChunks, file, handle, genesisHash) =>
   new Promise((resolve, reject) => {
-    sendFileContentsToBroker(
+    sendFileToBroker(
       API.BROKER_NODE_B,
       sessionId,
       file,
@@ -278,17 +269,7 @@ const sendToBetaBroker = (sessionId, byteChunks, file, handle, genesisHash) =>
       genesisHash,
       [...byteChunks].reverse(),
       byteLocation => Math.min(file.size, byteLocation + FILE.CHUNK_BYTE_SIZE)
-    )
-      .then(() =>
-        sendMetaDataToBroker(
-          API.BROKER_NODE_B,
-          sessionId,
-          file,
-          handle,
-          genesisHash
-        )
-      )
-      .then(resolve);
+    ).then(resolve);
   });
 
 const createMetaDataObject = file => {
