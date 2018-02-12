@@ -1,8 +1,9 @@
 import _ from "lodash";
 import Encryption from "utils/encryption";
-import Iota from "services/iota";
-import { API, FILE } from "config";
 import Base64 from "base64-arraybuffer";
+
+import Iota from "services/iota";
+import { FILE } from "config";
 
 const {
   parseEightCharsOfFilename,
@@ -135,6 +136,13 @@ const readBlob = blob =>
     reader.readAsArrayBuffer(blob);
   });
 
+const metaDataToChunkParams = (metaDataObject, idx, handle, genesisHash) =>
+  chunkParamsGenerator({
+    idx: idx,
+    data: metaDataToIotaFormat(metaDataObject, handle),
+    hash: genesisHash
+  });
+
 const blobToChunkParams = (blob, idx, handle, genesisHash) =>
   new Promise((resolve, reject) => {
     readBlob(blob).then(arrayBuffer => {
@@ -146,6 +154,18 @@ const blobToChunkParams = (blob, idx, handle, genesisHash) =>
       resolve(chunk);
     });
   });
+
+const createChunkParams = (chunk, sliceCutOffFn, file, handle, genesisHash) => {
+  const { idx, startingPoint, type } = chunk;
+  switch (type) {
+    case FILE.CHUNK_TYPES.FILE_CONTENTS:
+      const blob = file.slice(startingPoint, sliceCutOffFn(startingPoint));
+      return blobToChunkParams(blob, idx, handle, genesisHash);
+    default:
+      const metaDataObject = createMetaDataObject(file);
+      return metaDataToChunkParams(metaDataObject, idx, handle, genesisHash);
+  }
+};
 
 const createMetaDataObject = file => {
   const fileExtension = file.name.split(".").pop();
@@ -166,7 +186,7 @@ export default {
   chunkParamsGenerator,
   chunkToIotaFormat,
   createByteChunks,
-  createMetaDataObject,
+  createChunkParams,
   initializeUpload,
   mergeArrayBuffers,
   metaDataFromIotaFormat,

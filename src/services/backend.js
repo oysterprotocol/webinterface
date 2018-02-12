@@ -72,43 +72,25 @@ const sendFileToBroker = (
   sliceCutOffFn
 ) => {
   const batches = _.chunk(byteChunks, API.CHUNKS_PER_REQUEST);
-  const chunkRequests = batches.map(
+  const batchRequests = batches.map(
     batch =>
       new Promise((resolve, reject) => {
-        const chunks = batch.map(chunk => {
-          const { idx, startingPoint, type } = chunk;
-          switch (type) {
-            case FILE.CHUNK_TYPES.METADATA:
-              const metaDataObject = FileProcessor.createMetaDataObject(file);
-              return FileProcessor.chunkParamsGenerator({
-                idx: idx,
-                data: FileProcessor.metaDataToIotaFormat(
-                  metaDataObject,
-                  handle
-                ),
-                hash: genesisHash
-              });
-            case FILE.CHUNK_TYPES.FILE_CONTENTS:
-              const blob = file.slice(
-                startingPoint,
-                sliceCutOffFn(startingPoint)
-              );
-              return FileProcessor.blobToChunkParams(
-                blob,
-                idx,
-                handle,
-                genesisHash
-              );
-          }
-        });
-
-        Promise.all(chunks).then(arrayOfChunks => {
+        const chunksToParams = batch.map(chunk =>
+          FileProcessor.createChunkParams(
+            chunk,
+            sliceCutOffFn,
+            file,
+            handle,
+            genesisHash
+          )
+        );
+        Promise.all(chunksToParams).then(arrayOfChunks => {
           sendChunksToBroker(host, sessionId, arrayOfChunks).then(resolve);
         });
       })
   );
 
-  return Promise.all(chunkRequests);
+  return Promise.all(batchRequests);
 };
 
 const sendToAlphaBroker = (sessionId, byteChunks, file, handle, genesisHash) =>
