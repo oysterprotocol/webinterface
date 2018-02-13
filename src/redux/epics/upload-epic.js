@@ -6,6 +6,7 @@ import uploadActions from "redux/actions/upload-actions";
 
 import { IOTA_API, UPLOAD_STATUSES } from "config";
 import Iota from "services/iota";
+import Backend from "services/backend";
 import Datamap from "utils/datamap";
 import FileProcessor from "utils/file-processor";
 
@@ -39,20 +40,15 @@ const uploadFile = (action$, store) => {
   return action$.ofType(uploadActions.BEGIN_UPLOAD).mergeMap(action => {
     const { file, handle } = action.payload;
 
-    const sanityCheck = new Promise((resolve, reject) => {
-      const blob = file.slice(0, file.size);
-      FileProcessor.readBlob(blob).then(arrayBuffer => {
-        console.log("UPLOADED ARRAY BUFFER: ", new Uint8Array(arrayBuffer));
-        resolve();
-      });
-    });
+    // const sanityCheck = new Promise((resolve, reject) => {
+    // const blob = file.slice(0, file.size);
+    // FileProcessor.readBlob(blob).then(arrayBuffer => {
+    // console.log("UPLOADED ARRAY BUFFER: ", new Uint8Array(arrayBuffer));
+    // resolve();
+    // });
+    // });
 
-    return Observable.fromPromise(sanityCheck)
-      .mergeMap(() =>
-        Observable.fromPromise(
-          FileProcessor.uploadFileToBrokerNodes(file, handle)
-        )
-      )
+    return Observable.fromPromise(Backend.uploadFile(file, handle))
       .map(({ numberOfChunks, handle, fileName }) =>
         uploadActions.uploadSuccessAction({
           numberOfChunks,
