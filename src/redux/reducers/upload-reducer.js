@@ -1,7 +1,9 @@
 import uploadActions from "redux/actions/upload-actions";
-import { UPLOAD_STATUSES } from "config";
+import { API, UPLOAD_STATUSES } from "config";
 
 const initState = {
+  alphaBroker: API.BROKER_NODE_A,
+  betaBroker: API.BROKER_NODE_B,
   history: [
     // object returned by uploadedFileGenerator()
   ]
