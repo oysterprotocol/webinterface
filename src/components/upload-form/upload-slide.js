@@ -1,4 +1,6 @@
 import React, { Component } from "react";
+import Select from "react-select";
+// import 'react-select/dist/react-select.css';
 
 import { FILE } from "config";
 import ICON_UPLOAD from "assets/images/icon_upload.png";
@@ -18,7 +20,7 @@ class UploadSlide extends Component {
   }
 
   render() {
-    const { upload } = this.props;
+    const { upload, selectAlphaBroker, selectBetaBroker } = this.props;
     return (
       <Slide title="Upload a File" image={ICON_UPLOAD}>
         <div className="body_form">
