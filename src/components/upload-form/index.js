@@ -6,12 +6,24 @@ import UploadSlide from "components/upload-form/upload-slide";
 
 const mapStateToProps = state => ({});
 const mapDispatchToProps = dispatch => ({
+  selectAlphaBrokerFn: url =>
+    dispatch(uploadActions.selectAlphaBrokerAction(url)),
+  selectBetaBrokerFn: url =>
+    dispatch(uploadActions.selectBetaBrokerAction(url)),
   initializeUploadFn: file =>
     dispatch(uploadActions.initializeUploadAction(file))
 });
 
-const UploadForm = ({ initializeUploadFn }) => (
-  <UploadSlide upload={initializeUploadFn} />
+const UploadForm = ({
+  initializeUploadFn,
+  selectAlphaBrokerFn,
+  selectBetaBrokerFn
+}) => (
+  <UploadSlide
+    upload={initializeUploadFn}
+    selectAlphaBroker={selectAlphaBrokerFn}
+    selectBetaBroker={selectBetaBrokerFn}
+  />
 );
 
 export default connect(mapStateToProps, mapDispatchToProps)(UploadForm);
