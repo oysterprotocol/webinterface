@@ -8,6 +8,8 @@ const UPDATE_UPLOAD_PROGRESS = "oyster/upload/update_upload_progress";
 const MARK_UPLOAD_AS_COMPLETE = "oyster/upload/mark_upload_as_complete";
 const REFRESH_INCOMPLETE_UPLOADS = "oyster/upload/refresh_incomplete_uploads";
 const POLL_UPLOAD_PROGRESS = "oyster/upload/poll_upload_progress";
+const SELECT_ALPHA_BROKER = "oyster/upload/select_alpha_broker";
+const SELECT_BETA_BROKER = "oyster/upload/select_beta_broker";
 
 const ACTIONS = Object.freeze({
   // actions
@@ -21,6 +23,8 @@ const ACTIONS = Object.freeze({
   MARK_UPLOAD_AS_COMPLETE,
   REFRESH_INCOMPLETE_UPLOADS,
   POLL_UPLOAD_PROGRESS,
+  SELECT_ALPHA_BROKER,
+  SELECT_BETA_BROKER,
 
   // actionCreators
   initializeUploadAction: file => ({
@@ -61,6 +65,14 @@ const ACTIONS = Object.freeze({
   pollUploadProgress: ({ handle, numberOfChunks }) => ({
     type: ACTIONS.POLL_UPLOAD_PROGRESS,
     payload: { handle, numberOfChunks }
+  }),
+  selectAlphaBrokerAction: url => ({
+    type: ACTIONS.SELECT_ALPHA_BROKER,
+    payload: url
+  }),
+  selectBetaBrokerAction: url => ({
+    type: ACTIONS.SELECT_BETA_BROKER,
+    payload: url
   })
 });
 

@@ -13,7 +13,6 @@ const uploadFile = (file, handle) => {
   console.log("UPLOADING FILE TO BROKER NODES");
   const byteChunks = FileProcessor.createByteChunks(file.size);
   const genesisHash = Encryption.sha256(handle);
-
   return Promise.all([
     createUploadSession(API.BROKER_NODE_A, file.size, genesisHash)
     // createUploadSession(API.BROKER_NODE_B, file.size, genesisHash)
