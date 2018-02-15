@@ -30,7 +30,7 @@ class UploadSlide extends Component {
     return (
       <Slide title="Upload a File" image={ICON_UPLOAD}>
         <div className="broker-select-wrapper">
-          <div className="half">
+          <div className="upload-column">
             <label htmlFor="broker-node-1">Broker Node 1</label>
             <Select
               name="broker-node-1"
@@ -51,7 +51,7 @@ class UploadSlide extends Component {
               ]}
             />
           </div>
-          <div className="half">
+          <div className="upload-column">
             <label htmlFor="broker-node-2">Broker Node 2</label>
             <Select
               name="broker-node-2"
@@ -76,7 +76,7 @@ class UploadSlide extends Component {
         <div className="upload-section">
           <p>Select Retention File</p>
           <form className="retention-wrapper">
-            <div className="half">
+            <div className="upload-column">
               <input
                 className="retention-slider"
                 type="range"
@@ -85,7 +85,7 @@ class UploadSlide extends Component {
                 defaultValue="0"
               />
             </div>
-            <div className="half">
+            <div className="upload-column">
               <select id="sel" disabled>
                 <option>0</option>
                 <option>1</option>
@@ -104,7 +104,7 @@ class UploadSlide extends Component {
           </form>
         </div>
         <div className="file-select-wrapper upload-section">
-          <div className="half">
+          <div className="upload-column">
             <p>Select a file</p>
             <div className="file-input-wrapper">
               <label htmlFor="upload-input" className="file-input-label">
@@ -130,7 +130,7 @@ class UploadSlide extends Component {
               required
             />
           </div>
-          <div className="half">
+          <div className="upload-column">
             <p>Cost</p>
             <h3 className="storage-fees">
               3 Gb for 10 years: <span> 30 PRL</span>

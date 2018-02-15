@@ -57,10 +57,7 @@ button:focus {
 .logo_img img {
   width: 55%;
 }
-.logo_img img {
-}
-.menu_here {
-}
+
 ul#manu {
   margin: 0;
   padding: 0;
@@ -137,15 +134,9 @@ p {
   display: flex;
 }
 
-.half {
+.upload-column {
   flex: 1;
   padding-right: 10px;
-}
-
-.Select-input:focus {
-  border: none;
-  outline: 0;
-  outline: none;
 }
 
 select#sel {
