@@ -139,6 +139,11 @@ p {
   padding-right: 10px;
 }
 
+div.Select-control {
+  border-radius: 10px;
+  border: 1px solid #ecedef;
+}
+
 select#sel {
   border: 1px solid #ecedef;
   width: 44px;
