@@ -21,6 +21,18 @@ const uploadedFileGenerator = ({ numberOfChunks, fileName, handle }) => {
 
 const uploadReducer = (state = initState, action) => {
   switch (action.type) {
+    case uploadActions.SELECT_ALPHA_BROKER:
+      return {
+        ...state,
+        alphaBroker: action.payload
+      };
+
+    case uploadActions.SELECT_BETA_BROKER:
+      return {
+        ...state,
+        betaBroker: action.payload
+      };
+
     case uploadActions.UPDATE_UPLOAD_PROGRESS:
       const { handle: fileHandle, uploadProgress } = action.payload;
       const updatedHistory = state.history.map(f => {

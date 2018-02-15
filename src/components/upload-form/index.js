@@ -4,7 +4,10 @@ import { connect } from "react-redux";
 import uploadActions from "redux/actions/upload-actions";
 import UploadSlide from "components/upload-form/upload-slide";
 
-const mapStateToProps = state => ({});
+const mapStateToProps = state => ({
+  alphaBroker: state.upload.alphaBroker,
+  betaBroker: state.upload.betaBroker
+});
 const mapDispatchToProps = dispatch => ({
   selectAlphaBrokerFn: url =>
     dispatch(uploadActions.selectAlphaBrokerAction(url)),
@@ -17,12 +20,16 @@ const mapDispatchToProps = dispatch => ({
 const UploadForm = ({
   initializeUploadFn,
   selectAlphaBrokerFn,
-  selectBetaBrokerFn
+  selectBetaBrokerFn,
+  alphaBroker,
+  betaBroker
 }) => (
   <UploadSlide
     upload={initializeUploadFn}
     selectAlphaBroker={selectAlphaBrokerFn}
     selectBetaBroker={selectBetaBrokerFn}
+    alphaBroker={alphaBroker}
+    betaBroker={betaBroker}
   />
 );
 

@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import Select from "react-select";
-// import 'react-select/dist/react-select.css';
+import "react-select/dist/react-select.css";
 
-import { FILE } from "config";
+import { API, FILE } from "config";
 import ICON_UPLOAD from "assets/images/icon_upload.png";
 import ICON_FOLDER from "assets/images/icon_folder.png";
 import Slide from "components/shared/slide";
@@ -20,47 +20,63 @@ class UploadSlide extends Component {
   }
 
   render() {
-    const { upload, selectAlphaBroker, selectBetaBroker } = this.props;
+    const {
+      alphaBroker,
+      betaBroker,
+      upload,
+      selectAlphaBroker,
+      selectBetaBroker
+    } = this.props;
     return (
       <Slide title="Upload a File" image={ICON_UPLOAD}>
-        <div className="body_form">
-          <div className="rights">
-            <div className="book_list">
-              <label htmlFor="broker-node-1">Broker Node 1</label>
-              <select
-                disabled
-                name="broker-node-1"
-                id="broker-node-1"
-                defaultValue="broker-1.oysternodes.com"
-              >
-                <option disabled="">Select broker node</option>
-                <option value="broker-1.oysternodes.com">
-                  broker-1.oysternodes.com
-                </option>
-              </select>
-            </div>
+        <div className="broker-select-wrapper">
+          <div className="half">
+            <label htmlFor="broker-node-1">Broker Node 1</label>
+            <Select
+              name="broker-node-1"
+              disabled
+              clearable={false}
+              searchable={false}
+              value={alphaBroker}
+              onChange={option => selectAlphaBroker(option.value)}
+              options={[
+                {
+                  value: API.BROKER_NODE_A,
+                  label: "broker-1.oysternodes.com"
+                },
+                {
+                  value: API.BROKER_NODE_B,
+                  label: "broker-2.oysternodes.com"
+                }
+              ]}
+            />
           </div>
-          <div className="lefts">
-            <div className="book_list">
-              <label htmlFor="broker-node-2">Broker Node 2</label>
-              <select
-                disabled
-                name="broker-node-2"
-                id="broker-node-2"
-                defaultValue="broker-2.oysternodes.com"
-              >
-                <option disabled="">Select broker node</option>
-                <option value="broker-2.oysternodes.com">
-                  broker-2.oysternodes.com
-                </option>
-              </select>
-            </div>
+          <div className="half">
+            <label htmlFor="broker-node-2">Broker Node 2</label>
+            <Select
+              name="broker-node-2"
+              disabled
+              clearable={false}
+              searchable={false}
+              value={betaBroker}
+              onChange={option => selectBetaBroker(option.value)}
+              options={[
+                {
+                  value: API.BROKER_NODE_A,
+                  label: "broker-1.oysternodes.com"
+                },
+                {
+                  value: API.BROKER_NODE_B,
+                  label: "broker-2.oysternodes.com"
+                }
+              ]}
+            />
           </div>
         </div>
-        <div className="select_list">
+        <div className="upload-section">
           <p>Select Retention File</p>
-          <form>
-            <div className="rights">
+          <form className="retention-wrapper">
+            <div className="half">
               <input
                 className="retention-slider"
                 type="range"
@@ -69,7 +85,7 @@ class UploadSlide extends Component {
                 defaultValue="0"
               />
             </div>
-            <div className="lefts">
+            <div className="half">
               <select id="sel" disabled>
                 <option>0</option>
                 <option>1</option>
@@ -87,37 +103,39 @@ class UploadSlide extends Component {
             </div>
           </form>
         </div>
-        <div className="lefts myfile">
-          <p>Select a file</p>
-          <div className="file-input-wrapper">
-            <label htmlFor="upload-input" className="file-input-label">
-              <span className="upload-filename">{this.state.fileName}</span>
-              <span className="upload-folder">
-                <img src={ICON_FOLDER} width="25" />
-              </span>
-            </label>
+        <div className="file-select-wrapper upload-section">
+          <div className="half">
+            <p>Select a file</p>
+            <div className="file-input-wrapper">
+              <label htmlFor="upload-input" className="file-input-label">
+                <span className="upload-filename">{this.state.fileName}</span>
+                <span className="upload-folder">
+                  <img src={ICON_FOLDER} width="25" />
+                </span>
+              </label>
+            </div>
+            <input
+              name="upload"
+              id="upload-input"
+              ref="fileInput"
+              onChange={event => {
+                const file = event.target.files[0];
+                if (!!file) {
+                  this.setState({ fileName: file.name });
+                } else {
+                  this.setState({ fileName: DEFAULT_FILE_INPUT_TEXT });
+                }
+              }}
+              type="file"
+              required
+            />
           </div>
-          <input
-            name="upload"
-            id="upload-input"
-            ref="fileInput"
-            onChange={event => {
-              const file = event.target.files[0];
-              if (!!file) {
-                this.setState({ fileName: file.name });
-              } else {
-                this.setState({ fileName: DEFAULT_FILE_INPUT_TEXT });
-              }
-            }}
-            type="file"
-            required
-          />
-        </div>
-        <div className="rights myfiler">
-          <p>Cost</p>
-          <h3>
-            3 Gb for 10 years: <span> 30 PRL</span>
-          </h3>
+          <div className="half">
+            <p>Cost</p>
+            <h3 className="storage-fees">
+              3 Gb for 10 years: <span> 30 PRL</span>
+            </h3>
+          </div>
         </div>
         <div className="upload_button">
           <PrimaryButton

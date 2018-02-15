@@ -109,7 +109,8 @@ p {
   font-size: 18px;
   line-height: 0px;
 }
-.myfiler h3 {
+
+.storage-fees {
   color: #778291;
   font-weight: 500;
   font-size: 18px;
@@ -122,26 +123,31 @@ p {
   right: 0;
 }
 
-.myfiler span {
+.storage-fees span {
   color: #0068ea;
 }
 
-.rights {
-  width: 50%;
-  float: left;
+.upload-section {
+  margin-top: 20px;
 }
 
-.lefts {
-  width: 50%;
-  float: left;
+.retention-wrapper,
+.file-select-wrapper,
+.broker-select-wrapper {
+  display: flex;
 }
-.book_list input {
-  width: 90%;
-  border: 1px solid #ecedef;
-  line-height: 35px;
-  border-radius: 10px;
-  margin-bottom: 20px;
+
+.half {
+  flex: 1;
+  padding-right: 10px;
 }
+
+.Select-input:focus {
+  border: none;
+  outline: 0;
+  outline: none;
+}
+
 select#sel {
   border: 1px solid #ecedef;
   width: 44px;
@@ -158,13 +164,6 @@ select#sel {
   float: right;
   text-align: left;
   width: 80%;
-}
-
-.myfile {
-  padding-top: 15px;
-}
-.myfiler {
-  padding-top: 20px;
 }
 
 button.btn {
@@ -643,7 +642,7 @@ header a:focus {
   color: white;
   height: 60px;
   font-size: 20px;
-  margin-top: 50px;
+  margin-top: 40px;
 }
 
 .primary-button:disabled {
