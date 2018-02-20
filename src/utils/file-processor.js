@@ -34,44 +34,28 @@ const encryptFile = (file, handle) =>
     const encodedData = Base64.encode(arrayBuffer);
     const encryptedData = Encryption.encrypt(encodedData, handle);
 
+    console.log("[UPLOAD] ENCRYPTED FILE: ", encryptedData);
     return encryptedData;
   });
 
-const chunkToIotaFormat = encryptedData => Iota.utils.toTrytes(encryptedData);
+const chunkToIotaFormat = encryptedData => {
+  const trytes = Iota.utils.toTrytes(encryptedData);
+  console.log("[UPLOAD] ENCRYPTED DATA: ", encryptedData);
+  return trytes;
+};
 
-const chunkFromIotaFormat = (trytes, handle) => {
+const chunkFromIotaFormat = trytes => {
   const encryptedData = Iota.parseMessage(trytes);
+  console.log("[DOWNLOAD] ENCRYPTED DATA: ", encryptedData);
+  return encryptedData;
+};
+
+const decryptFile = (encryptedData, handle) => {
+  console.log("[DOWNLOAD] DECRYPTED FILE: ", encryptedData);
   const encodedData = Encryption.decrypt(encryptedData, handle);
   const arrayBuffer = Base64.decode(encodedData);
 
-  // console.log("[DOWNLOAD] TRYTES: ", trytes);
-  // console.log("[DOWNLOAD] ENCRYPTED DATA: ", encryptedData);
-  // console.log("[DOWNLOAD] ENCODED DATA: ", encodedData);
-  // console.log("[DOWNLOAD] ORIGINAL DATA: ", new Uint8Array(arrayBuffer));
   return arrayBuffer;
-};
-
-const mergeArrayBuffers = arrayBuffers => {
-  const totalLength = _.reduce(
-    arrayBuffers,
-    (acc, buff) => {
-      return acc + buff.byteLength;
-    },
-    0
-  );
-  const mergedBuffer = new Uint8Array(totalLength);
-
-  // This mutates mergedBuffer for efficiency.
-  _.reduce(
-    arrayBuffers,
-    ({ mergedBuffer, idx }, buff) => {
-      mergedBuffer.set(new Uint8Array(buff), idx);
-      return { mergedBuffer, idx: idx + buff.byteLength };
-    },
-    { mergedBuffer, idx: 0 }
-  );
-
-  return mergedBuffer.buffer;
 };
 
 const chunkParamsGenerator = ({ idx, data, hash }) => {
@@ -169,12 +153,10 @@ const createChunkParams = (
   }
 };
 
-const createMetaData = file => {
-  const fileExtension = file.name.split(".").pop();
-  const fileName = file.name;
-  const fileSizeBytes = file.size;
-
+const createMetaData = (fileName, fileSizeBytes) => {
+  const fileExtension = fileName.split(".").pop();
   const numberOfChunks = createByteLocations(fileSizeBytes).length;
+
   return {
     fileName: fileName.substr(0, 500),
     ext: fileExtension,
@@ -189,9 +171,9 @@ export default {
   createByteChunks,
   createChunkParams,
   createMetaData,
+  decryptFile,
   encryptFile,
   initializeUpload,
-  mergeArrayBuffers,
   metaDataFromIotaFormat,
   metaDataToIotaFormat,
   readBlob

@@ -13,14 +13,17 @@ const uploadFile = (file, handle) => {
   console.log("UPLOADING FILE TO BROKER NODES");
 
   const genesisHash = Encryption.sha256(handle);
-  const metaData = FileProcessor.createMetaData(file);
 
   return FileProcessor.encryptFile(file, handle).then(encryptedFileContents => {
-    const byteChunks = FileProcessor.createByteChunks(
-      encryptedFileContents.length
-    );
+    const encryptedFileSize = encryptedFileContents.length;
+    const metaData = FileProcessor.createMetaData(file.name, encryptedFileSize);
+    const byteChunks = FileProcessor.createByteChunks(encryptedFileSize);
 
-    return createUploadSession(API.BROKER_NODE_A, file.size, genesisHash)
+    return createUploadSession(
+      API.BROKER_NODE_A,
+      encryptedFileSize,
+      genesisHash
+    )
       .then(({ alphaSessionId, betaSessionId }) =>
         Promise.all([
           sendToAlphaBroker(
