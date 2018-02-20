@@ -15,35 +15,33 @@ const uploadFile = (file, handle) => {
   const genesisHash = Encryption.sha256(handle);
   const metaData = FileProcessor.createMetaData(file);
 
-  return FileProcessor.fileContentsToTrytes(file, handle).then(
-    fileContentsInTrytes => {
-      const byteChunks = FileProcessor.createByteChunks(
-        fileContentsInTrytes.length
-      );
+  return FileProcessor.encryptFile(file, handle).then(encryptedFileContents => {
+    const byteChunks = FileProcessor.createByteChunks(
+      encryptedFileContents.length
+    );
 
-      return createUploadSession(API.BROKER_NODE_A, file.size, genesisHash)
-        .then(({ alphaSessionId, betaSessionId }) =>
-          Promise.all([
-            sendToAlphaBroker(
-              alphaSessionId,
-              byteChunks,
-              fileContentsInTrytes,
-              metaData,
-              handle,
-              genesisHash
-            )
-            // sendToBetaBroker(betaSessionId, byteChunks, fileContentsInTrytes, metaData, handle, genesisHash)
-          ])
-        )
-        .then(() => {
-          return {
-            numberOfChunks: byteChunks.length,
+    return createUploadSession(API.BROKER_NODE_A, file.size, genesisHash)
+      .then(({ alphaSessionId, betaSessionId }) =>
+        Promise.all([
+          sendToAlphaBroker(
+            alphaSessionId,
+            byteChunks,
+            encryptedFileContents,
+            metaData,
             handle,
-            fileName: file.name
-          };
-        });
-    }
-  );
+            genesisHash
+          )
+          // sendToBetaBroker(betaSessionId, byteChunks, fileContentsInTrytes, metaData, handle, genesisHash)
+        ])
+      )
+      .then(() => {
+        return {
+          numberOfChunks: byteChunks.length,
+          handle,
+          fileName: file.name
+        };
+      });
+  });
 };
 
 const createUploadSession = (host, fileSizeBytes, genesisHash) =>

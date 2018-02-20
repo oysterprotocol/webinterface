@@ -29,20 +29,15 @@ const metaDataFromIotaFormat = (trytes, handle) => {
   return metaData;
 };
 
-const fileContentsToTrytes = (file, handle) =>
-  readBlob(file).then(arrayBuffer => chunkToIotaFormat(arrayBuffer, handle));
+const encryptFile = (file, handle) =>
+  readBlob(file).then(arrayBuffer => {
+    const encodedData = Base64.encode(arrayBuffer);
+    const encryptedData = Encryption.encrypt(encodedData, handle);
 
-const chunkToIotaFormat = (arrayBuffer, handle) => {
-  const encodedData = Base64.encode(arrayBuffer);
-  const encryptedData = Encryption.encrypt(encodedData, handle);
-  const trytes = Iota.utils.toTrytes(encryptedData);
+    return encryptedData;
+  });
 
-  // console.log("[UPLOAD] ORIGINAL DATA: ", new Uint8Array(arrayBuffer));
-  // console.log("[UPLOAD] ENCODED DATA: ", encodedData);
-  // console.log("[UPLOAD] ENCRYPTED DATA: ", encryptedData);
-  // console.log("[UPLOAD] TRYTES: ", trytes);
-  return trytes;
-};
+const chunkToIotaFormat = encryptedData => Iota.utils.toTrytes(encryptedData);
 
 const chunkFromIotaFormat = (trytes, handle) => {
   const encryptedData = Iota.parseMessage(trytes);
@@ -149,7 +144,7 @@ const metaDataToChunkParams = (metaData, idx, handle, genesisHash) =>
 const fileContentsToChunkParams = (data, idx, genesisHash) =>
   chunkParamsGenerator({
     idx: idx,
-    data,
+    data: chunkToIotaFormat(data),
     hash: genesisHash
   });
 
@@ -194,7 +189,7 @@ export default {
   createByteChunks,
   createChunkParams,
   createMetaData,
-  fileContentsToTrytes,
+  encryptFile,
   initializeUpload,
   mergeArrayBuffers,
   metaDataFromIotaFormat,
