@@ -121,7 +121,7 @@ const sendToAlphaBroker = (
 ) =>
   new Promise((resolve, reject) => {
     sendFileToBroker(
-      `${API.BROKER_NODE_A}/${API.V1_UPLOAD_SESSIONS_PATH}/${sessionId}`,
+      `${API.BROKER_NODE_A}${API.V1_UPLOAD_SESSIONS_PATH}/${sessionId}`,
       fileContents,
       metaData,
       handle,
@@ -141,7 +141,7 @@ const sendToBetaBroker = (
 ) =>
   new Promise((resolve, reject) => {
     sendFileToBroker(
-      `${API.BROKER_NODE_B}/${API.V1_UPLOAD_SESSIONS_PATH}/${sessionId}`,
+      `${API.BROKER_NODE_B}${API.V1_UPLOAD_SESSIONS_PATH}/${sessionId}`,
       fileContents,
       metaData,
       handle,
