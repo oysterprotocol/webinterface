@@ -30,7 +30,7 @@ export const DOWNLOAD_STATUSES = Object.freeze({
 });
 
 export const FILE = Object.freeze({
-  CHUNK_BYTE_SIZE: 500,
+  CHUNK_BYTE_SIZE: 2187,
   MAX_FILE_SIZE: 100 * 1000,
   CHUNK_TYPES: {
     METADATA: "METADATA",

@@ -33,25 +33,23 @@ const encryptFile = (file, handle) =>
   readBlob(file).then(arrayBuffer => {
     const encodedData = Base64.encode(arrayBuffer);
     const encryptedData = Encryption.encrypt(encodedData, handle);
+    const trytes = Iota.utils.toTrytes(encryptedData);
 
-    console.log("[UPLOAD] ENCRYPTED FILE: ", encryptedData);
-    return encryptedData;
+    console.log("[UPLOAD] ENCRYPTED FILE: ", trytes);
+    return trytes;
   });
 
-const chunkToIotaFormat = encryptedData => {
-  const trytes = Iota.utils.toTrytes(encryptedData);
-  console.log("[UPLOAD] ENCRYPTED DATA: ", encryptedData);
+const chunkToIotaFormat = trytes => {
   return trytes;
 };
 
 const chunkFromIotaFormat = trytes => {
-  const encryptedData = Iota.parseMessage(trytes);
-  console.log("[DOWNLOAD] ENCRYPTED DATA: ", encryptedData);
-  return encryptedData;
+  return trytes;
 };
 
-const decryptFile = (encryptedData, handle) => {
-  console.log("[DOWNLOAD] DECRYPTED FILE: ", encryptedData);
+const decryptFile = (trytes, handle) => {
+  console.log("[DOWNLOAD] DECRYPTED FILE: ", trytes);
+  const encryptedData = Iota.parseMessage(trytes);
   const encodedData = Encryption.decrypt(encryptedData, handle);
   const arrayBuffer = Base64.decode(encodedData);
 
