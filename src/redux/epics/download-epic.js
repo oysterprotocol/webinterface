@@ -64,23 +64,26 @@ const beginDownload = (action$, store) => {
           },
           {}
         );
+
         const orderedTransactions = _.sortBy(
           transactions,
           tx => addrToIdx[tx.address]
         );
-        const chunksArrayBuffers = orderedTransactions.map(tx => {
-          return FileProcessor.chunkFromIotaFormat(
-            tx.signatureMessageFragment,
-            handle
-          );
-        });
 
-        const completeFileArrayBuffer = FileProcessor.mergeArrayBuffers(
-          chunksArrayBuffers
+        const encryptedFileContents = orderedTransactions
+          .map(tx =>
+            FileProcessor.chunkFromIotaFormat(tx.signatureMessageFragment)
+          )
+          .join("");
+
+        const decryptedFileArrayBuffer = FileProcessor.decryptFile(
+          encryptedFileContents,
+          handle
         );
-        console.log("DOWNLOADED ARRAY BUFFER");
 
-        const blob = new Blob([new Uint8Array(completeFileArrayBuffer)]);
+        console.log("DOWNLOADED ARRAY BUFFER", decryptedFileArrayBuffer);
+
+        const blob = new Blob([new Uint8Array(decryptedFileArrayBuffer)]);
         FileSaver.saveAs(blob, fileName);
 
         return downloadActions.downloadSuccessAction();
