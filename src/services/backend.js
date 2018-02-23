@@ -27,8 +27,15 @@ const uploadFile = (data, fileName, handle) => {
           metaData,
           handle,
           genesisHash
+        ),
+        sendToBetaBroker(
+          betaSessionId,
+          byteChunks,
+          data,
+          metaData,
+          handle,
+          genesisHash
         )
-        // sendToBetaBroker(betaSessionId, byteChunks, data, metaData, handle, genesisHash)
       ])
     )
     .then(() => {
