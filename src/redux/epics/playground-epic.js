@@ -30,11 +30,7 @@ const testUpload = (action$, store) => {
             chunkStartingPoint + FILE.CHUNK_BYTE_SIZE
           );
           const reader = FileProcessor.createReader(arrayBuffer => {
-            const chunkInTrytes = FileProcessor.chunkToIotaFormat(
-              arrayBuffer,
-              handle
-            );
-            resolve(chunkInTrytes);
+            resolve(arrayBuffer);
           });
           reader.readAsArrayBuffer(blob);
         })
@@ -68,7 +64,7 @@ const testDownload = (action$, store) => {
   return action$.ofType(playgroundActions.TEST_DOWNLOAD).map(action => {
     const { chunksInTrytes, handle, fileName } = action.payload;
     const decryptedChunks = chunksInTrytes.map(trytes => {
-      return FileProcessor.chunkFromIotaFormat(trytes, handle);
+      return trytes;
     });
 
     const completeFileArrayBuffer = FileProcessor.mergeArrayBuffers(

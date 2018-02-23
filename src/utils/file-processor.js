@@ -39,14 +39,6 @@ const encryptFile = (file, handle) =>
     return trytes;
   });
 
-const chunkToIotaFormat = trytes => {
-  return trytes;
-};
-
-const chunkFromIotaFormat = trytes => {
-  return trytes;
-};
-
 const decryptFile = (trytes, handle) => {
   console.log("[DOWNLOAD] DECRYPTED FILE: ", trytes);
   const encryptedData = Iota.parseMessage(trytes);
@@ -126,7 +118,7 @@ const metaDataToChunkParams = (metaData, idx, handle, genesisHash) =>
 const fileContentsToChunkParams = (data, idx, genesisHash) =>
   chunkParamsGenerator({
     idx: idx,
-    data: chunkToIotaFormat(data),
+    data,
     hash: genesisHash
   });
 
@@ -163,9 +155,7 @@ const createMetaData = (fileName, fileSizeBytes) => {
 };
 
 export default {
-  chunkFromIotaFormat,
   chunkParamsGenerator,
-  chunkToIotaFormat,
   createByteChunks,
   createChunkParams,
   createMetaData,
