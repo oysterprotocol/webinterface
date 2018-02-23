@@ -17,13 +17,15 @@ const testUpload = (action$, store) => {
     return Observable.fromPromise(FileProcessor.initializeUpload(file))
       .map(({ numberOfChunks, handle, fileName, data }) => {
         const byteChunks = FileProcessor.createByteChunks(data.length);
-        const chunksInTrytes = byteChunks.map(byte => {
-          const { startingPoint } = byte;
-          return data.slice(
-            startingPoint,
-            startingPoint + FILE.CHUNK_BYTE_SIZE
-          );
-        });
+        const chunksInTrytes = byteChunks
+          .filter(b => b.type === FILE.CHUNK_TYPES.FILE_CONTENTS)
+          .map(byte => {
+            const { startingPoint } = byte;
+            return data.slice(
+              startingPoint,
+              startingPoint + FILE.CHUNK_BYTE_SIZE
+            );
+          });
         return playgroundActions.testDownloadAction({
           chunksInTrytes,
           handle,
