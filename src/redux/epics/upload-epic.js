@@ -11,25 +11,25 @@ import Datamap from "utils/datamap";
 import FileProcessor from "utils/file-processor";
 
 const initializeUpload = (action$, store) => {
-  return action$.ofType(uploadActions.INITIALIZE_UPLOAD).map(action => {
+  return action$.ofType(uploadActions.INITIALIZE_UPLOAD).mergeMap(action => {
     const file = action.payload;
-    const { numberOfChunks, handle, fileName } = FileProcessor.initializeUpload(
-      file
+    return Observable.fromPromise(FileProcessor.initializeUpload(file)).map(
+      ({ numberOfChunks, handle, fileName, data }) => {
+        return uploadActions.beginUploadAction({
+          data,
+          fileName,
+          handle,
+          numberOfChunks
+        });
+      }
     );
-    return uploadActions.beginUploadAction({
-      numberOfChunks,
-      handle,
-      fileName,
-      file
-    });
   });
 };
 
 const saveToHistory = (action$, store) => {
   return action$.ofType(uploadActions.BEGIN_UPLOAD).map(action => {
-    const { numberOfChunks, handle, fileName } = action.payload;
+    const { handle, fileName } = action.payload;
     return uploadActions.addToHistoryAction({
-      numberOfChunks,
       handle,
       fileName
     });
@@ -38,23 +38,11 @@ const saveToHistory = (action$, store) => {
 
 const uploadFile = (action$, store) => {
   return action$.ofType(uploadActions.BEGIN_UPLOAD).mergeMap(action => {
-    const { file, handle } = action.payload;
+    const { data, fileName, handle } = action.payload;
 
-    // const sanityCheck = new Promise((resolve, reject) => {
-    // const blob = file.slice(0, file.size);
-    // FileProcessor.readBlob(blob).then(arrayBuffer => {
-    // console.log("UPLOADED ARRAY BUFFER: ", new Uint8Array(arrayBuffer));
-    // resolve();
-    // });
-    // });
-
-    return Observable.fromPromise(Backend.uploadFile(file, handle))
+    return Observable.fromPromise(Backend.uploadFile(data, fileName, handle))
       .map(({ numberOfChunks, handle, fileName }) =>
-        uploadActions.uploadSuccessAction({
-          numberOfChunks,
-          handle,
-          fileName
-        })
+        uploadActions.uploadSuccessAction(handle)
       )
       .catch(error => Observable.of(uploadActions.uploadFailureAction(error)));
   });
@@ -81,7 +69,7 @@ const pollUploadProgress = (action$, store) => {
     const addresses = _.values(datamap).map(trytes =>
       trytes.substr(0, IOTA_API.ADDRESS_LENGTH)
     );
-    console.log("POLLING 81 CHARACTER IOTA ADDRESSES: ", addresses);
+    // console.log("POLLING 81 CHARACTER IOTA ADDRESSES: ", addresses);
 
     return Observable.interval(5000)
       .takeUntil(

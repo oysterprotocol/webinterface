@@ -31,9 +31,9 @@ const ACTIONS = Object.freeze({
     type: ACTIONS.INITIALIZE_UPLOAD,
     payload: file
   }),
-  beginUploadAction: ({ file, handle, fileName, numberOfChunks }) => ({
+  beginUploadAction: ({ data, handle, fileName, numberOfChunks }) => ({
     type: ACTIONS.BEGIN_UPLOAD,
-    payload: { file, handle, fileName, numberOfChunks }
+    payload: { data, handle, fileName, numberOfChunks }
   }),
   addToHistoryAction: ({ numberOfChunks, fileName, handle }) => ({
     type: ACTIONS.ADD_TO_HISTORY,
@@ -43,9 +43,9 @@ const ACTIONS = Object.freeze({
     type: ACTIONS.UPLOAD,
     payload: { file, handle }
   }),
-  uploadSuccessAction: ({ numberOfChunks, handle, fileName }) => ({
+  uploadSuccessAction: handle => ({
     type: ACTIONS.UPLOAD_SUCCESS,
-    payload: { numberOfChunks, handle, fileName }
+    payload: handle
   }),
   uploadFailureAction: handle => ({
     type: ACTIONS.UPLOAD_FAILURE,

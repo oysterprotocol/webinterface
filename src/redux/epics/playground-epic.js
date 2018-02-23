@@ -15,38 +15,20 @@ const testUpload = (action$, store) => {
   return action$.ofType(playgroundActions.TEST_UPLOAD).mergeMap(action => {
     const file = action.payload;
 
-    const { numberOfChunks, handle, fileName } = FileProcessor.initializeUpload(
-      file
-    );
+    const { handle, fileName } = FileProcessor.initializeUpload(file);
 
-    const byteChunks = FileProcessor.createByteChunks(file.size);
-
-    const chunkReads = byteChunks.map(
-      byte =>
-        new Promise((resolve, reject) => {
-          const { chunkIdx, chunkStartingPoint } = byte;
-          const blob = file.slice(
-            chunkStartingPoint,
-            chunkStartingPoint + FILE.CHUNK_BYTE_SIZE
+    return Observable.fromPromise(FileProcessor.encryptFile(file, handle))
+      .map(encryptedFile => {
+        const byteChunks = FileProcessor.createByteChunks(encryptedFile.length);
+        const chunksInTrytes = byteChunks.map(byte => {
+          const { startingPoint } = byte;
+          const slice = encryptedFile.slice(
+            startingPoint,
+            startingPoint + FILE.CHUNK_BYTE_SIZE
           );
-          const reader = FileProcessor.createReader(arrayBuffer => {
-            resolve(arrayBuffer);
-          });
-          reader.readAsArrayBuffer(blob);
-        })
-    );
+          return slice;
+        });
 
-    const sanityCheck = new Promise((resolve, reject) => {
-      const blob = file.slice(0, file.size);
-      FileProcessor.readBlob(blob).then(arrayBuffer => {
-        console.log("UPLOADED ARRAY BUFFER: ", new Uint8Array(arrayBuffer));
-        resolve();
-      });
-    });
-
-    return Observable.fromPromise(sanityCheck)
-      .mergeMap(() => Observable.fromPromise(Promise.all(chunkReads)))
-      .map(chunksInTrytes => {
         return playgroundActions.testDownloadAction({
           chunksInTrytes,
           handle,
@@ -63,19 +45,16 @@ const testUpload = (action$, store) => {
 const testDownload = (action$, store) => {
   return action$.ofType(playgroundActions.TEST_DOWNLOAD).map(action => {
     const { chunksInTrytes, handle, fileName } = action.payload;
-    const decryptedChunks = chunksInTrytes.map(trytes => {
-      return trytes;
-    });
+    const encryptedFileContents = chunksInTrytes.join("");
 
-    const completeFileArrayBuffer = FileProcessor.mergeArrayBuffers(
-      decryptedChunks
-    );
-    console.log(
-      "DOWNLOADED ARRAY BUFFER: ",
-      new Uint8Array(completeFileArrayBuffer)
+    const decryptedFileArrayBuffer = FileProcessor.decryptFile(
+      encryptedFileContents,
+      handle
     );
 
-    const blob = new Blob([new Uint8Array(completeFileArrayBuffer)]);
+    console.log("DOWNLOADED ARRAY BUFFER", decryptedFileArrayBuffer);
+
+    const blob = new Blob([new Uint8Array(decryptedFileArrayBuffer)]);
     FileSaver.saveAs(blob, fileName);
 
     return downloadActions.downloadSuccessAction();

@@ -35,12 +35,12 @@ const encryptFile = (file, handle) =>
     const encryptedData = Encryption.encrypt(encodedData, handle);
     const trytes = Iota.utils.toTrytes(encryptedData);
 
-    console.log("[UPLOAD] ENCRYPTED FILE: ", trytes);
+    // console.log("[UPLOAD] ENCRYPTED FILE: ", trytes);
     return trytes;
   });
 
 const decryptFile = (trytes, handle) => {
-  console.log("[DOWNLOAD] DECRYPTED FILE: ", trytes);
+  // console.log("[DOWNLOAD] DECRYPTED FILE: ", trytes);
   const encryptedData = Iota.parseMessage(trytes);
   const encodedData = Encryption.decrypt(encryptedData, handle);
   const arrayBuffer = Base64.decode(encodedData);
@@ -57,10 +57,11 @@ const chunkGenerator = ({ idx, startingPoint, type }) => {
 };
 
 const initializeUpload = file => {
-  const numberOfChunks = createByteLocations(file.size).length;
   const handle = createHandle(file.name);
-  const fileName = file.name;
-  return { numberOfChunks, handle, fileName };
+  return encryptFile(file, handle).then(data => {
+    const numberOfChunks = createByteLocations(data.length).length;
+    return { handle, fileName: file.name, numberOfChunks, data };
+  });
 };
 
 const createHandle = fileName => {
