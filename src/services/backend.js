@@ -3,48 +3,48 @@ import axios from "axios";
 
 import FileProcessor from "utils/file-processor";
 import Encryption from "utils/encryption";
-import { API, FILE } from "config";
+import { API, FILE, IOTA_API } from "config";
 
 const axiosInstance = axios.create({
   timeout: 200000
 });
 
-const uploadFile = (file, handle) => {
+const uploadFile = (data, fileName, handle) => {
   console.log("UPLOADING FILE TO BROKER NODES");
 
   const genesisHash = Encryption.sha256(handle);
+  const fileSize = data.length;
+  const metaData = FileProcessor.createMetaData(fileName, fileSize);
+  const byteChunks = FileProcessor.createByteChunks(fileSize);
 
-  return FileProcessor.encryptFile(file, handle).then(encryptedFileContents => {
-    const encryptedFileSize = encryptedFileContents.length;
-    const metaData = FileProcessor.createMetaData(file.name, encryptedFileSize);
-    const byteChunks = FileProcessor.createByteChunks(encryptedFileSize);
-
-    return createUploadSession(
-      API.BROKER_NODE_A,
-      encryptedFileSize,
-      genesisHash
-    )
-      .then(({ alphaSessionId, betaSessionId }) =>
-        Promise.all([
-          sendToAlphaBroker(
-            alphaSessionId,
-            byteChunks,
-            encryptedFileContents,
-            metaData,
-            handle,
-            genesisHash
-          )
-          // sendToBetaBroker(betaSessionId, byteChunks, fileContentsInTrytes, metaData, handle, genesisHash)
-        ])
-      )
-      .then(() => {
-        return {
-          numberOfChunks: byteChunks.length,
+  return createUploadSession(API.BROKER_NODE_A, fileSize, genesisHash)
+    .then(({ alphaSessionId, betaSessionId }) =>
+      Promise.all([
+        sendToAlphaBroker(
+          alphaSessionId,
+          byteChunks,
+          data,
+          metaData,
           handle,
-          fileName: file.name
-        };
-      });
-  });
+          genesisHash
+        ),
+        sendToBetaBroker(
+          betaSessionId,
+          byteChunks,
+          data,
+          metaData,
+          handle,
+          genesisHash
+        )
+      ])
+    )
+    .then(() => {
+      return {
+        numberOfChunks: byteChunks.length,
+        handle,
+        fileName
+      };
+    });
 };
 
 const createUploadSession = (host, fileSizeBytes, genesisHash) =>
@@ -128,7 +128,7 @@ const sendToAlphaBroker = (
       handle,
       genesisHash,
       byteChunks,
-      byteLocation => byteLocation + FILE.CHUNK_BYTE_SIZE
+      byteLocation => byteLocation + IOTA_API.MESSAGE_LENGTH
     ).then(resolve);
   });
 
@@ -149,7 +149,7 @@ const sendToBetaBroker = (
       genesisHash,
       [...byteChunks].reverse(),
       byteLocation =>
-        Math.min(fileContents.length, byteLocation + FILE.CHUNK_BYTE_SIZE)
+        Math.min(fileContents.length, byteLocation + IOTA_API.MESSAGE_LENGTH)
     ).then(resolve);
   });
 

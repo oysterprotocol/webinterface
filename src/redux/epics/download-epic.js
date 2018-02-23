@@ -71,9 +71,7 @@ const beginDownload = (action$, store) => {
         );
 
         const encryptedFileContents = orderedTransactions
-          .map(tx =>
-            FileProcessor.chunkFromIotaFormat(tx.signatureMessageFragment)
-          )
+          .map(tx => tx.signatureMessageFragment)
           .join("");
 
         const decryptedFileArrayBuffer = FileProcessor.decryptFile(

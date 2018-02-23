@@ -6,7 +6,7 @@ import FileSaver from "file-saver";
 import playgroundActions from "redux/actions/playground-actions";
 import downloadActions from "redux/actions/download-actions";
 
-import { FILE } from "config";
+import { FILE, IOTA_API } from "config";
 import Iota from "services/iota";
 import Datamap from "utils/datamap";
 import FileProcessor from "utils/file-processor";
@@ -14,43 +14,18 @@ import FileProcessor from "utils/file-processor";
 const testUpload = (action$, store) => {
   return action$.ofType(playgroundActions.TEST_UPLOAD).mergeMap(action => {
     const file = action.payload;
-
-    const { numberOfChunks, handle, fileName } = FileProcessor.initializeUpload(
-      file
-    );
-
-    const byteChunks = FileProcessor.createByteChunks(file.size);
-
-    const chunkReads = byteChunks.map(
-      byte =>
-        new Promise((resolve, reject) => {
-          const { chunkIdx, chunkStartingPoint } = byte;
-          const blob = file.slice(
-            chunkStartingPoint,
-            chunkStartingPoint + FILE.CHUNK_BYTE_SIZE
-          );
-          const reader = FileProcessor.createReader(arrayBuffer => {
-            const chunkInTrytes = FileProcessor.chunkToIotaFormat(
-              arrayBuffer,
-              handle
+    return Observable.fromPromise(FileProcessor.initializeUpload(file))
+      .map(({ numberOfChunks, handle, fileName, data }) => {
+        const byteChunks = FileProcessor.createByteChunks(data.length);
+        const chunksInTrytes = byteChunks
+          .filter(b => b.type === FILE.CHUNK_TYPES.FILE_CONTENTS)
+          .map(byte => {
+            const { startingPoint } = byte;
+            return data.slice(
+              startingPoint,
+              startingPoint + IOTA_API.MESSAGE_LENGTH
             );
-            resolve(chunkInTrytes);
           });
-          reader.readAsArrayBuffer(blob);
-        })
-    );
-
-    const sanityCheck = new Promise((resolve, reject) => {
-      const blob = file.slice(0, file.size);
-      FileProcessor.readBlob(blob).then(arrayBuffer => {
-        console.log("UPLOADED ARRAY BUFFER: ", new Uint8Array(arrayBuffer));
-        resolve();
-      });
-    });
-
-    return Observable.fromPromise(sanityCheck)
-      .mergeMap(() => Observable.fromPromise(Promise.all(chunkReads)))
-      .map(chunksInTrytes => {
         return playgroundActions.testDownloadAction({
           chunksInTrytes,
           handle,
@@ -67,19 +42,16 @@ const testUpload = (action$, store) => {
 const testDownload = (action$, store) => {
   return action$.ofType(playgroundActions.TEST_DOWNLOAD).map(action => {
     const { chunksInTrytes, handle, fileName } = action.payload;
-    const decryptedChunks = chunksInTrytes.map(trytes => {
-      return FileProcessor.chunkFromIotaFormat(trytes, handle);
-    });
+    const encryptedFileContents = chunksInTrytes.join("");
 
-    const completeFileArrayBuffer = FileProcessor.mergeArrayBuffers(
-      decryptedChunks
-    );
-    console.log(
-      "DOWNLOADED ARRAY BUFFER: ",
-      new Uint8Array(completeFileArrayBuffer)
+    const decryptedFileArrayBuffer = FileProcessor.decryptFile(
+      encryptedFileContents,
+      handle
     );
 
-    const blob = new Blob([new Uint8Array(completeFileArrayBuffer)]);
+    console.log("DOWNLOADED ARRAY BUFFER", decryptedFileArrayBuffer);
+
+    const blob = new Blob([new Uint8Array(decryptedFileArrayBuffer)]);
     FileSaver.saveAs(blob, fileName);
 
     return downloadActions.downloadSuccessAction();

@@ -54,7 +54,7 @@ const uploadReducer = (state = initState, action) => {
       };
 
     case uploadActions.UPLOAD_SUCCESS:
-      const { handle: succeededHandle } = action.payload;
+      const succeededHandle = action.payload;
       const newHistory = state.history.map(f => {
         return f.handle === succeededHandle
           ? { ...f, status: UPLOAD_STATUSES.SENT }
