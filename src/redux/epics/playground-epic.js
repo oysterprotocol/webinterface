@@ -14,21 +14,16 @@ import FileProcessor from "utils/file-processor";
 const testUpload = (action$, store) => {
   return action$.ofType(playgroundActions.TEST_UPLOAD).mergeMap(action => {
     const file = action.payload;
-
-    const { handle, fileName } = FileProcessor.initializeUpload(file);
-
-    return Observable.fromPromise(FileProcessor.encryptFile(file, handle))
-      .map(encryptedFile => {
-        const byteChunks = FileProcessor.createByteChunks(encryptedFile.length);
+    return Observable.fromPromise(FileProcessor.initializeUpload(file))
+      .map(({ numberOfChunks, handle, fileName, data }) => {
+        const byteChunks = FileProcessor.createByteChunks(data.length);
         const chunksInTrytes = byteChunks.map(byte => {
           const { startingPoint } = byte;
-          const slice = encryptedFile.slice(
+          return data.slice(
             startingPoint,
             startingPoint + FILE.CHUNK_BYTE_SIZE
           );
-          return slice;
         });
-
         return playgroundActions.testDownloadAction({
           chunksInTrytes,
           handle,
