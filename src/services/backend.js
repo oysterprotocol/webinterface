@@ -3,7 +3,7 @@ import axios from "axios";
 
 import FileProcessor from "utils/file-processor";
 import Encryption from "utils/encryption";
-import { API, FILE } from "config";
+import { API, FILE, IOTA_API } from "config";
 
 const axiosInstance = axios.create({
   timeout: 200000
@@ -128,7 +128,7 @@ const sendToAlphaBroker = (
       handle,
       genesisHash,
       byteChunks,
-      byteLocation => byteLocation + FILE.CHUNK_BYTE_SIZE
+      byteLocation => byteLocation + IOTA_API.MESSAGE_LENGTH
     ).then(resolve);
   });
 
@@ -149,7 +149,7 @@ const sendToBetaBroker = (
       genesisHash,
       [...byteChunks].reverse(),
       byteLocation =>
-        Math.min(fileContents.length, byteLocation + FILE.CHUNK_BYTE_SIZE)
+        Math.min(fileContents.length, byteLocation + IOTA_API.MESSAGE_LENGTH)
     ).then(resolve);
   });
 

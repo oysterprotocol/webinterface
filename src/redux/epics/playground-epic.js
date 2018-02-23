@@ -6,7 +6,7 @@ import FileSaver from "file-saver";
 import playgroundActions from "redux/actions/playground-actions";
 import downloadActions from "redux/actions/download-actions";
 
-import { FILE } from "config";
+import { FILE, IOTA_API } from "config";
 import Iota from "services/iota";
 import Datamap from "utils/datamap";
 import FileProcessor from "utils/file-processor";
@@ -23,7 +23,7 @@ const testUpload = (action$, store) => {
             const { startingPoint } = byte;
             return data.slice(
               startingPoint,
-              startingPoint + FILE.CHUNK_BYTE_SIZE
+              startingPoint + IOTA_API.MESSAGE_LENGTH
             );
           });
         return playgroundActions.testDownloadAction({

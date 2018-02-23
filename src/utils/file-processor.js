@@ -3,7 +3,7 @@ import Encryption from "utils/encryption";
 import Base64 from "base64-arraybuffer";
 
 import Iota from "services/iota";
-import { FILE } from "config";
+import { FILE, IOTA_API } from "config";
 
 const {
   parseEightCharsOfFilename,
@@ -74,7 +74,7 @@ const createHandle = fileName => {
 };
 
 const createByteLocations = fileSizeBytes =>
-  _.range(0, fileSizeBytes, FILE.CHUNK_BYTE_SIZE);
+  _.range(0, fileSizeBytes, IOTA_API.MESSAGE_LENGTH);
 
 const createByteChunks = fileSizeBytes => {
   const metaDataChunk = chunkGenerator({
