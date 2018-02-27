@@ -18,6 +18,7 @@ import UploadStarted from "components/upload-started";
 import UploadComplete from "components/upload-complete";
 import Playground from "components/playground";
 import registerServiceWorker from "./register-service-worker";
+import analytics from "services/analytics";
 
 const App = () => (
   <Provider store={store}>
@@ -29,7 +30,10 @@ const App = () => (
           <Route path="/download-form" component={DownloadForm} />
           <Route path="/download-started" component={DownloadStarted} />
           <Route path="/download-complete" component={DownloadComplete} />
-          <Route path="/download-upload-history" component={DownloadUploadHistory} />
+          <Route
+            path="/download-upload-history"
+            component={DownloadUploadHistory}
+          />
           <Route path="/upload-form" component={UploadForm} />
           <Route path="/upload-started" component={UploadStarted} />
           <Route path="/upload-complete" component={UploadComplete} />
