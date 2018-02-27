@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "analytics.js": "^2.9.1",
     "axios": "^0.17.1",
     "base64-arraybuffer": "^0.1.5",
     "bootstrap": "^3.3.7",
