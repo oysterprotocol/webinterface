@@ -18,7 +18,9 @@ import UploadStarted from "components/upload-started";
 import UploadComplete from "components/upload-complete";
 import Playground from "components/playground";
 import registerServiceWorker from "./register-service-worker";
-import analytics from "services/analytics";
+
+import Analytics from "services/analytics";
+import ErrorTracker from "services/error-tracker";
 
 const App = () => (
   <Provider store={store}>
@@ -45,5 +47,7 @@ const App = () => (
   </Provider>
 );
 
-ReactDOM.render(<App />, document.getElementById("root"));
-registerServiceWorker();
+ErrorTracker.context(() => {
+  ReactDOM.render(<App />, document.getElementById("root"));
+  registerServiceWorker();
+});
