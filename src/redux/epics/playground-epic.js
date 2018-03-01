@@ -1,14 +1,11 @@
 import { Observable } from "rxjs";
 import { combineEpics } from "redux-observable";
-import _ from "lodash";
 import FileSaver from "file-saver";
 
 import playgroundActions from "redux/actions/playground-actions";
 import downloadActions from "redux/actions/download-actions";
 
 import { FILE, IOTA_API } from "config";
-import Iota from "services/iota";
-import Datamap from "utils/datamap";
 import FileProcessor from "utils/file-processor";
 
 const testUpload = (action$, store) => {

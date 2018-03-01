@@ -2,7 +2,6 @@ import React from "react";
 import { Line } from "rc-progress";
 
 import Slide from "components/shared/slide";
-import PrimaryButton from "components/shared/primary-button";
 import ICON_UPLOAD from "assets/images/icon_upload.png";
 
 const UploadStartedSlide = ({ uploadProgress }) => (

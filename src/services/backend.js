@@ -3,7 +3,7 @@ import axios from "axios";
 
 import FileProcessor from "utils/file-processor";
 import Encryption from "utils/encryption";
-import { API, FILE, IOTA_API } from "config";
+import { API, IOTA_API } from "config";
 
 const axiosInstance = axios.create({
   timeout: 200000

@@ -23,7 +23,7 @@ const parseMessage = message => {
   var reverseArray = splitString.reverse();
 
   var notNineIndex = reverseArray.findIndex(function(element) {
-    return element != 9;
+    return element.toString() !== "9";
   });
 
   reverseArray = reverseArray.slice(notNineIndex, reverseArray.length);
