@@ -22,7 +22,7 @@ const parseMessage = message => {
   const characters = message.split("");
   const notNineIndex = _.findLastIndex(characters, c => c !== "9");
 
-  const choppedArray = characters.slice(notNineIndex, characters.length);
+  const choppedArray = characters.slice(0, notNineIndex + 1);
   const choppedMessage = choppedArray.join("");
 
   const evenChars =
@@ -64,7 +64,7 @@ const findTransactions = addresses =>
       if (transactions.length === addresses.length) {
         resolve(transactions);
       } else {
-        reject();
+        reject(Error("NO TRANSACTION FOUND"));
       }
     });
   });

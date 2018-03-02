@@ -20,10 +20,6 @@ const initializeDownload = (action$, store) => {
       const iotaAddress = Iota.toAddress(genesisHashInTrytes);
       return Observable.fromPromise(Iota.findTransactions([iotaAddress]))
         .map(transactions => {
-          if (!transactions.length) {
-            throw Error("NO TRANSACTION FOUND");
-          }
-
           const t = transactions[0];
           const {
             numberOfChunks,
