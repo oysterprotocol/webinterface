@@ -110,7 +110,7 @@ class UploadSlide extends Component {
               <label htmlFor="upload-input" className="file-input-label">
                 <span className="upload-filename">{this.state.fileName}</span>
                 <span className="upload-folder">
-                  <img src={ICON_FOLDER} width="25" />
+                  <img src={ICON_FOLDER} width="25" alt="folder" />
                 </span>
               </label>
             </div>

@@ -5,14 +5,6 @@ import Base64 from "base64-arraybuffer";
 import Iota from "services/iota";
 import { FILE, IOTA_API } from "config";
 
-const {
-  parseEightCharsOfFilename,
-  getSalt,
-  getPrimordialHash,
-  sha256,
-  encrypt
-} = Encryption;
-
 const metaDataToIotaFormat = (object, handle) => {
   const metaDataString = JSON.stringify(object);
   const encryptedData = Encryption.encrypt(metaDataString, handle);
@@ -65,9 +57,9 @@ const initializeUpload = file => {
 };
 
 const createHandle = fileName => {
-  const fileNameTrimmed = parseEightCharsOfFilename(fileName);
-  const salt = getSalt(8);
-  const primordialHash = getPrimordialHash();
+  const fileNameTrimmed = Encryption.parseEightCharsOfFilename(fileName);
+  const salt = Encryption.getSalt(8);
+  const primordialHash = Encryption.getPrimordialHash();
   const handle = fileNameTrimmed + primordialHash + salt;
 
   return handle;

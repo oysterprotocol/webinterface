@@ -19,20 +19,14 @@ const IotaC = new IOTA({
 const toAddress = string => string.substr(0, IOTA_API.ADDRESS_LENGTH);
 
 const parseMessage = message => {
-  var splitString = message.split("");
-  var reverseArray = splitString.reverse();
+  const characters = message.split("");
+  const notNineIndex = _.findLastIndex(characters, c => c !== "9");
 
-  var notNineIndex = reverseArray.findIndex(function(element) {
-    return element != 9;
-  });
+  const choppedArray = characters.slice(0, notNineIndex + 1);
+  const choppedMessage = choppedArray.join("");
 
-  reverseArray = reverseArray.slice(notNineIndex, reverseArray.length);
-
-  var newArray = reverseArray.reverse();
-
-  var joined = newArray.join("");
-
-  const evenChars = joined.length % 2 === 0 ? joined : joined + "9";
+  const evenChars =
+    choppedMessage.length % 2 === 0 ? choppedMessage : choppedMessage + "9";
 
   return Iota.utils.fromTrytes(evenChars);
 };
@@ -70,7 +64,7 @@ const findTransactions = addresses =>
       if (transactions.length === addresses.length) {
         resolve(transactions);
       } else {
-        reject();
+        reject(Error("NO TRANSACTION FOUND"));
       }
     });
   });

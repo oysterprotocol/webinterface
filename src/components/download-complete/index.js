@@ -6,6 +6,6 @@ import DownloadCompleteSlide from "components/download-complete/download-complet
 const mapStateToProps = state => ({});
 const mapDispatchToProps = dispatch => ({});
 
-const DownloadComplete = ({}) => <DownloadCompleteSlide />;
+const DownloadComplete = () => <DownloadCompleteSlide />;
 
 export default connect(mapStateToProps, mapDispatchToProps)(DownloadComplete);

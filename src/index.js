@@ -19,7 +19,6 @@ import UploadComplete from "components/upload-complete";
 import Playground from "components/playground";
 import registerServiceWorker from "./register-service-worker";
 
-import Analytics from "services/analytics";
 import ErrorTracker from "services/error-tracker";
 
 const App = () => (

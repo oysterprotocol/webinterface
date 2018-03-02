@@ -5,7 +5,7 @@ import ICON_LOGO from "assets/images/logo.svg";
 
 const Header = () => (
   <header className="App-header">
-    <nav role="navigation" className="navbar navbar-default">
+    <div role="navigation" className="navbar navbar-default">
       <div className="container">
         <div className="navbar-header">
           <button
@@ -22,7 +22,7 @@ const Header = () => (
             <span className="icon-bar" />
           </button>
           <a href="/" className="logo" title="Oyster Storage's Logo">
-            <img src={ICON_LOGO} className="header-logo" />
+            <img src={ICON_LOGO} className="header-logo" alt="logo" />
             <span className="App-title wordmark">Oyster Storage</span>
           </a>
         </div>
@@ -42,7 +42,7 @@ const Header = () => (
           </ul>
         </div>
       </div>
-    </nav>
+    </div>
   </header>
 );
 

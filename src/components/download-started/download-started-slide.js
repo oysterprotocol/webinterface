@@ -1,7 +1,6 @@
 import React from "react";
 
 import Slide from "components/shared/slide";
-import PrimaryButton from "components/shared/primary-button";
 import ICON_SPINNER from "assets/images/icon_spinner.png";
 import ICON_DOWNLOAD from "assets/images/icon_download.png";
 
@@ -11,7 +10,7 @@ const DownloadStartedSlide = () => (
       Your file is being retrieved from the Tangle.
     </p>
     <div className="spinner-wrapper">
-      <img src={ICON_SPINNER} className="spinner" />
+      <img src={ICON_SPINNER} className="spinner" alt="spinner" />
     </div>
   </Slide>
 );

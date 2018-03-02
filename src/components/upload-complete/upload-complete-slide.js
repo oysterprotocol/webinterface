@@ -2,7 +2,6 @@ import React from "react";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 
 import Slide from "components/shared/slide";
-import PrimaryButton from "components/shared/primary-button";
 import ICON_READY from "assets/images/icon_ready.png";
 
 const UploadCompleteSlide = ({ handle }) => (
