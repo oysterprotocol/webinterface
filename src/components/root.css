@@ -753,9 +753,14 @@ input.retention-slider:focus {
 }
 
 .clipboard-button {
-  border: none;
-  color: #cdcdcd;
-  font-weight: 500;
+  margin-left: 5px;
+  background: #0068ea;
+  width: 200px;
+  border-radius: 10px;
+  color: white;
+  height: 40px;
+  font-size: 14px;
+  margin-top: 40px;
 }
 
 .handle-header {
