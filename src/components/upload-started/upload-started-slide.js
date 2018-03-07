@@ -2,12 +2,16 @@ import React from "react";
 import { Line } from "rc-progress";
 
 import Slide from "components/shared/slide";
+import Spinner from "components/shared/spinner";
 import ICON_UPLOAD from "assets/images/icon_upload.png";
 
 const UploadStartedSlide = ({ uploadProgress }) => (
   <Slide title="Upload Started" image={ICON_UPLOAD}>
     <p className="transaction-confirmed-instructions">
-      Transaction Confirmed. Your file is now being uploaded to the Tangle.
+      {uploadProgress === 0
+        ? "Sending chunks to brokers..."
+        : "Transaction Confirmed. Your file is now being uploaded to the Tangle."}
+      <Spinner isActive={uploadProgress === 0} className="download-spinner" />
     </p>
     <div>
       <Line
