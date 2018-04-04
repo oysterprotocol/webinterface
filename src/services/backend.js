@@ -50,14 +50,14 @@ const uploadFile = (data, fileName, handle) => {
 const createUploadSession = (host, fileSizeBytes, genesisHash) =>
   new Promise((resolve, reject) => {
     axiosInstance
-      .post(`${host}${API.V1_UPLOAD_SESSIONS_PATH}`, {
-        file_size_bytes: fileSizeBytes,
-        genesis_hash: genesisHash,
-        beta_brokernode_ip: API.BROKER_NODE_B
+      .post(`${host}${API.V2_UPLOAD_SESSIONS_PATH}`, {
+        fileSizeBytes,
+        genesisHash,
+        betaIp: API.BROKER_NODE_B
       })
       .then(({ data }) => {
         console.log("UPLOAD SESSION SUCCESS: ", data);
-        const { id: alphaSessionId, beta_session_id: betaSessionId } = data;
+        const { id: alphaSessionId, betaSessionId: betaSessionId } = data;
         resolve({ alphaSessionId, betaSessionId });
       })
       .catch(error => {
@@ -122,7 +122,7 @@ const sendToAlphaBroker = (
 ) =>
   new Promise((resolve, reject) => {
     sendFileToBroker(
-      `${API.BROKER_NODE_A}${API.V1_UPLOAD_SESSIONS_PATH}/${sessionId}`,
+      `${API.BROKER_NODE_A}${API.V2_UPLOAD_SESSIONS_PATH}/${sessionId}`,
       fileContents,
       metaData,
       handle,
@@ -142,7 +142,7 @@ const sendToBetaBroker = (
 ) =>
   new Promise((resolve, reject) => {
     sendFileToBroker(
-      `${API.BROKER_NODE_B}${API.V1_UPLOAD_SESSIONS_PATH}/${sessionId}`,
+      `${API.BROKER_NODE_B}${API.V2_UPLOAD_SESSIONS_PATH}/${sessionId}`,
       fileContents,
       metaData,
       handle,
