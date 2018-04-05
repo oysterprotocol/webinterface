@@ -16,7 +16,8 @@ const initializeDownload = (action$, store) => {
     .mergeMap(action => {
       const handle = action.payload;
       const genesisHash = Encryption.genesisHash(handle);
-      const genesisHashInTrytes = Iota.utils.toTrytes(genesisHash);
+      const [obfuscatedGenesisHash] = Encryption.hashChain(genesisHash);
+      const genesisHashInTrytes = Iota.utils.toTrytes(obfuscatedGenesisHash);
       const iotaAddress = Iota.toAddress(genesisHashInTrytes);
       return Observable.fromPromise(Iota.findTransactions([iotaAddress]))
         .map(transactions => {
