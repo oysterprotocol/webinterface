@@ -24,7 +24,7 @@ const getPrimordialHash = () => {
 // Returns [obfuscatedHash, nextHash]
 const hashChain = msg => {
   const obfuscatedHash = CryptoJS.SHA384(msg).toString();
-  const nextHash = CryptoJS.SHA256(message).toString();
+  const nextHash = CryptoJS.SHA256(msg).toString();
 
   return [obfuscatedHash, nextHash];
 };
