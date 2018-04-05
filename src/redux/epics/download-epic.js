@@ -3,7 +3,6 @@ import { combineEpics } from "redux-observable";
 import _ from "lodash";
 import FileSaver from "file-saver";
 
-import { IOTA_API } from "config";
 import downloadActions from "redux/actions/download-actions";
 import Iota from "services/iota";
 import Datamap from "utils/datamap";
@@ -46,9 +45,7 @@ const beginDownload = (action$, store) => {
   return action$.ofType(downloadActions.BEGIN_DOWNLOAD).mergeMap(action => {
     const { handle, fileName, numberOfChunks } = action.payload;
     const datamap = Datamap.generate(handle, numberOfChunks);
-    const addresses = _.values(datamap).map(trytes =>
-      trytes.substr(0, IOTA_API.ADDRESS_LENGTH)
-    );
+    const addresses = _.values(datamap);
     const nonMetaDataAddresses = addresses.slice(1, addresses.length);
 
     return Observable.fromPromise(Iota.findTransactions(nonMetaDataAddresses))

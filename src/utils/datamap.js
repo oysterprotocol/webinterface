@@ -9,7 +9,7 @@ const generate = (handle, size) => {
     keys,
     ([dataM, hash], i) => {
       const [obfuscatedHash, nextHash] = Encryption.hashChain(hash);
-      dataM[i] = iota.utils.toTrytes(obfuscatedHash);
+      dataM[i] = iota.toAddress(iota.utils.toTrytes(obfuscatedHash));
 
       return [dataM, nextHash];
     },
