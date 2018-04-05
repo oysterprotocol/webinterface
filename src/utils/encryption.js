@@ -31,7 +31,7 @@ const hashChain = hash => {
 
 // Genesis hash is not yet obfuscated.
 const genesisHash = handle => {
-  const [_, genHash] = hashChain(handle);
+  const [_obfuscatedHash, genHash] = hashChain(handle);
 
   return genHash;
 };

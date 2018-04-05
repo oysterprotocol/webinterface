@@ -5,7 +5,7 @@ import Encryption from "utils/encryption";
 const generate = (handle, size) => {
   const keys = _.range(1, size + 1);
 
-  const [dataMap, _] = _.reduce(
+  const [dataMap, _hash] = _.reduce(
     keys,
     ([dataM, hash], i) => {
       const [obfuscatedHash, nextHash] = Encryption.hashChain(hash);

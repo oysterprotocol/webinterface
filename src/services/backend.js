@@ -57,7 +57,7 @@ const createUploadSession = (host, fileSizeBytes, genesisHash) =>
       })
       .then(({ data }) => {
         console.log("UPLOAD SESSION SUCCESS: ", data);
-        const { id: alphaSessionId, betaSessionId: betaSessionId } = data;
+        const { id: alphaSessionId, betaSessionId } = data;
         resolve({ alphaSessionId, betaSessionId });
       })
       .catch(error => {
