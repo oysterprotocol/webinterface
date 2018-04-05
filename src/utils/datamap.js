@@ -13,7 +13,7 @@ const generate = (handle, size) => {
 
       return [dataM, nextHash];
     },
-    [{}, handle]
+    [{}, Encryption.genesisHash(handle)]
   );
 
   return dataMap;
