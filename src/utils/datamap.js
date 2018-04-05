@@ -7,11 +7,11 @@ const generate = (handle, size) => {
 
   const [dataMap, _] = _.reduce(
     keys,
-    ([dataMap, hash], i) => {
+    ([dataM, hash], i) => {
       const [obfuscatedHash, nextHash] = Encryption.hashChain(hash);
-      dataMap[i] = iota.utils.toTrytes(obfuscatedHash);
+      dataM[i] = iota.utils.toTrytes(obfuscatedHash);
 
-      return [dataMap, nextHash];
+      return [dataM, nextHash];
     },
     [{}, handle]
   );
