@@ -21,7 +21,19 @@ const getPrimordialHash = () => {
   return CryptoJS.SHA256(entropy).toString();
 };
 
-const sha256 = message => CryptoJS.SHA256(message).toString();
+// Returns [obfuscatedHash, nextHash]
+const hashChain = msg => {
+  const obfuscatedHash = CryptoJS.SHA384(msg).toString();
+  const nextHash = CryptoJS.SHA256(message).toString();
+
+  return [obfuscatedHash, nextHash];
+};
+
+const genesisHash = handle => {
+  const [genHash, _] = hashChain(handle);
+
+  return genHash;
+};
 
 const encrypt = (text, secretKey) =>
   CryptoJS.AES.encrypt(text, secretKey).toString();
@@ -33,7 +45,8 @@ export default {
   parseEightCharsOfFilename,
   getSalt,
   getPrimordialHash,
-  sha256,
+  hashChain,
+  genesisHash,
   encrypt,
   decrypt
 };
