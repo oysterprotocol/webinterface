@@ -3,32 +3,20 @@ import iota from "services/iota";
 import Encryption from "utils/encryption";
 
 const generate = (handle, size) => {
-  const keys = _.range(1, size + 1);
-  const genesisHash = Encryption.sha256(handle);
-  const genesisHashInTrytes = iota.utils.toTrytes(genesisHash);
-  // console.log(`TRYTES REPRESENTATION FOR CHUNK 0: ${genesisHashInTrytes}`);
+  const keys = _.range(0, size + 1);
 
-  return _.reduce(
+  const [dataMap, _hash] = _.reduce(
     keys,
-    (hash, n) => {
-      const previousChunkInTrytes = hash[n - 1];
-      const previousEncryptedChunk = iota.utils.fromTrytes(
-        previousChunkInTrytes
-      );
+    ([dataM, hash], i) => {
+      const [obfuscatedHash, nextHash] = Encryption.hashChain(hash);
+      dataM[i] = iota.toAddress(iota.utils.toTrytes(obfuscatedHash));
 
-      const encryptedHash = Encryption.sha256(previousEncryptedChunk);
-      const encryptedHashInTrytes = iota.utils.toTrytes(encryptedHash);
-
-      // console.log(
-      // `TRYTES REPRESENTATION FOR CHUNK ${n}: ${encryptedHashInTrytes}`
-      // );
-
-      hash[n] = encryptedHashInTrytes;
-
-      return hash;
+      return [dataM, nextHash];
     },
-    { 0: genesisHashInTrytes }
+    [{}, Encryption.genesisHash(handle)]
   );
+
+  return dataMap;
 };
 
 export default { generate };

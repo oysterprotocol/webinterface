@@ -4,7 +4,7 @@ import _ from "lodash";
 
 import uploadActions from "redux/actions/upload-actions";
 
-import { IOTA_API, UPLOAD_STATUSES } from "config";
+import { UPLOAD_STATUSES } from "config";
 import Iota from "services/iota";
 import Backend from "services/backend";
 import Datamap from "utils/datamap";
@@ -66,9 +66,7 @@ const pollUploadProgress = (action$, store) => {
   return action$.ofType(uploadActions.BEGIN_UPLOAD).switchMap(action => {
     const { numberOfChunks, handle } = action.payload;
     const datamap = Datamap.generate(handle, numberOfChunks);
-    const addresses = _.values(datamap).map(trytes =>
-      trytes.substr(0, IOTA_API.ADDRESS_LENGTH)
-    );
+    const addresses = _.values(datamap);
     // console.log("POLLING 81 CHARACTER IOTA ADDRESSES: ", addresses);
 
     return Observable.interval(5000)

@@ -12,7 +12,7 @@ const axiosInstance = axios.create({
 const uploadFile = (data, fileName, handle) => {
   console.log("UPLOADING FILE TO BROKER NODES");
 
-  const genesisHash = Encryption.sha256(handle);
+  const genesisHash = Encryption.genesisHash(handle);
   const fileSize = data.length;
   const metaData = FileProcessor.createMetaData(fileName, fileSize);
   const byteChunks = FileProcessor.createByteChunks(fileSize);
@@ -57,7 +57,7 @@ const createUploadSession = (host, fileSizeBytes, genesisHash) =>
       })
       .then(({ data }) => {
         console.log("UPLOAD SESSION SUCCESS: ", data);
-        const { id: alphaSessionId, betaSessionId: betaSessionId } = data;
+        const { id: alphaSessionId, betaSessionId } = data;
         resolve({ alphaSessionId, betaSessionId });
       })
       .catch(error => {
