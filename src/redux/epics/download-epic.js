@@ -68,14 +68,14 @@ const beginDownload = (action$, store) => {
           .map(tx => tx.signatureMessageFragment)
           .join("");
 
-        const decryptedFileArrayBuffer = FileProcessor.decryptFile(
+        const bytesArray = FileProcessor.decryptFile(
           encryptedFileContents,
           handle
         );
 
-        console.log("DOWNLOADED ARRAY BUFFER", decryptedFileArrayBuffer);
+        console.log("DOWNLOADED BYTES ARRAY", bytesArray);
 
-        const blob = new Blob([new Uint8Array(decryptedFileArrayBuffer)]);
+        const blob = new Blob([new Uint8Array(bytesArray)]);
         FileSaver.saveAs(blob, fileName);
 
         return downloadActions.downloadSuccessAction();
