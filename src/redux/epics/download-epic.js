@@ -1,5 +1,5 @@
-import { Observable } from "rxjs";
-import { combineEpics } from "redux-observable";
+import {Observable} from "rxjs";
+import {combineEpics} from "redux-observable";
 import _ from "lodash";
 import FileSaver from "file-saver";
 
@@ -68,14 +68,14 @@ const beginDownload = (action$, store) => {
           .map(tx => tx.signatureMessageFragment)
           .join("");
 
-        const decryptedFileArrayBuffer = FileProcessor.decryptFile(
+        const bytesArray = FileProcessor.decryptFile(
           encryptedFileContents,
           handle
         );
 
-        console.log("DOWNLOADED ARRAY BUFFER", decryptedFileArrayBuffer);
+        console.log("DOWNLOADED BYTES ARRAY", bytesArray);
 
-        const blob = new Blob([new Uint8Array(decryptedFileArrayBuffer)]);
+        const blob = new Blob([new Uint8Array(bytesArray)]);
         FileSaver.saveAs(blob, fileName);
 
         return downloadActions.downloadSuccessAction();

@@ -3,11 +3,11 @@ import Encryption from "utils/encryption";
 import Base64 from "base64-arraybuffer";
 
 import Iota from "services/iota";
-import { FILE, IOTA_API } from "config";
+import {FILE, IOTA_API} from "config";
 
 const metaDataToIotaFormat = (object, handle) => {
   const metaDataString = JSON.stringify(object);
-  const encryptedData = Encryption.encrypt(metaDataString, handle);
+  const encryptedData = Encryption.encryptMetaData(metaDataString, handle);
   const trytes = Iota.utils.toTrytes(encryptedData);
 
   return trytes;
@@ -15,7 +15,7 @@ const metaDataToIotaFormat = (object, handle) => {
 
 const metaDataFromIotaFormat = (trytes, handle) => {
   const encryptedData = Iota.parseMessage(trytes);
-  const decryptedData = Encryption.decrypt(encryptedData, handle);
+  const decryptedData = Encryption.decryptMetaData(encryptedData, handle);
   const metaData = JSON.parse(decryptedData);
 
   return metaData;
@@ -23,8 +23,8 @@ const metaDataFromIotaFormat = (trytes, handle) => {
 
 const encryptFile = (file, handle) =>
   readBlob(file).then(arrayBuffer => {
-    const encodedData = Base64.encode(arrayBuffer);
-    const encryptedData = Encryption.encrypt(encodedData, handle);
+    const bytes = new Uint8Array(arrayBuffer);
+    const encryptedData = Encryption.encrypt(bytes, handle);
     const trytes = Iota.utils.toTrytes(encryptedData);
 
     // console.log("[UPLOAD] ENCRYPTED FILE: ", trytes);
@@ -34,10 +34,9 @@ const encryptFile = (file, handle) =>
 const decryptFile = (trytes, handle) => {
   // console.log("[DOWNLOAD] DECRYPTED FILE: ", trytes);
   const encryptedData = Iota.parseMessage(trytes);
-  const encodedData = Encryption.decrypt(encryptedData, handle);
-  const arrayBuffer = Base64.decode(encodedData);
+  const decryptedData = Encryption.decrypt(encryptedData, handle);
 
-  return arrayBuffer;
+  return decryptedData;
 };
 
 const chunkParamsGenerator = ({ idx, data, hash }) => {
@@ -92,7 +91,7 @@ const createByteChunks = fileSizeBytes => {
 const readBlob = blob =>
   new Promise((resolve, reject) => {
     const reader = new FileReader();
-    reader.onload = function(evt) {
+    reader.onload = function (evt) {
       if (evt.target.readyState === FileReader.DONE) {
         const arrayBuffer = evt.target.result;
         resolve(arrayBuffer);
@@ -115,14 +114,12 @@ const fileContentsToChunkParams = (data, idx, genesisHash) =>
     hash: genesisHash
   });
 
-const createChunkParams = (
-  chunk,
-  sliceCutOffFn,
-  fileContents,
-  metaData,
-  handle,
-  genesisHash
-) => {
+const createChunkParams = (chunk,
+                           sliceCutOffFn,
+                           fileContents,
+                           metaData,
+                           handle,
+                           genesisHash) => {
   const { idx, startingPoint, type } = chunk;
   switch (type) {
     case FILE.CHUNK_TYPES.FILE_CONTENTS:

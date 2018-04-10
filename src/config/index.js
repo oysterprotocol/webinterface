@@ -2,11 +2,11 @@ export const API = Object.freeze({
   // HOST: "http://localhost:8000",
   // BROKER_NODE_A: "http://localhost:8000",
   // BROKER_NODE_B: "http://localhost:8000",
-  HOST: "https://broker-1.oysternodes.com",
-  BROKER_NODE_A: "https://broker-1.oysternodes.com",
-  BROKER_NODE_B: "https://broker-2.oysternodes.com",
-  V1_UPLOAD_SESSIONS_PATH: "/api/v1/upload-sessions",
-  V2_UPLOAD_SESSIONS_PATH: "/api/v2/upload-sessions",
+  HOST: "",
+  BROKER_NODE_A: "",
+  BROKER_NODE_B: "",
+  V1_UPLOAD_SESSIONS_PATH: ":3000/api/v1/upload-sessions",
+  V2_UPLOAD_SESSIONS_PATH: ":3000/api/v2/upload-sessions",
   CHUNKS_PER_REQUEST: 10
 });
 
