@@ -1,5 +1,5 @@
-import { Observable } from "rxjs";
-import { combineEpics } from "redux-observable";
+import {Observable} from "rxjs";
+import {combineEpics} from "redux-observable";
 import _ from "lodash";
 import FileSaver from "file-saver";
 
