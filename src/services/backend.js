@@ -16,8 +16,9 @@ const uploadFile = (data, fileName, handle) => {
   const fileSize = data.length;
   const metaData = FileProcessor.createMetaData(fileName, fileSize);
   const byteChunks = FileProcessor.createByteChunks(fileSize);
+  const storageLengthInYears = 999; /*@TODO make this a real thing*/
 
-  return createUploadSession(API.BROKER_NODE_A, fileSize, genesisHash)
+  return createUploadSession(API.BROKER_NODE_A, fileSize, genesisHash, storageLengthInYears)
     .then(({ alphaSessionId, betaSessionId }) =>
       Promise.all([
         sendToAlphaBroker(
@@ -47,18 +48,20 @@ const uploadFile = (data, fileName, handle) => {
     });
 };
 
-const createUploadSession = (host, fileSizeBytes, genesisHash) =>
+const createUploadSession = (host, fileSizeBytes, genesisHash, storageLengthInYears) =>
   new Promise((resolve, reject) => {
     axiosInstance
       .post(`${host}${API.V2_UPLOAD_SESSIONS_PATH}`, {
         fileSizeBytes,
         genesisHash,
-        betaIp: API.BROKER_NODE_B
+        betaIp: API.BROKER_NODE_B,
+        storageLengthInYears
       })
       .then(({ data }) => {
         console.log("UPLOAD SESSION SUCCESS: ", data);
         const { id: alphaSessionId, betaSessionId } = data;
-        resolve({ alphaSessionId, betaSessionId });
+        const { invoice: invoice } = data;
+        resolve({ alphaSessionId, betaSessionId, invoice});
       })
       .catch(error => {
         console.log("UPLOAD SESSION ERROR: ", error);
