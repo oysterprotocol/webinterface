@@ -2,9 +2,9 @@ export const API = Object.freeze({
   // HOST: "http://localhost:8000",
   // BROKER_NODE_A: "http://localhost:8000",
   // BROKER_NODE_B: "http://localhost:8000",
-  HOST: "http://18.188.113.65",
-  BROKER_NODE_A: "http://18.188.113.65",
-  BROKER_NODE_B: "http://18.219.61.5",
+  HOST: "",
+  BROKER_NODE_A: "",
+  BROKER_NODE_B: "",
   V1_UPLOAD_SESSIONS_PATH: ":3000/api/v1/upload-sessions",
   V2_UPLOAD_SESSIONS_PATH: ":3000/api/v2/upload-sessions",
   CHUNKS_PER_REQUEST: 10
