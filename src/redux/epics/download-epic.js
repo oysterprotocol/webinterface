@@ -5,7 +5,7 @@ import FileSaver from "file-saver";
 
 import downloadActions from "redux/actions/download-actions";
 import Iota from "services/iota";
-import Datamap from "utils/datamap";
+import Datamap from "datamap-generator";
 import Encryption from "utils/encryption";
 import FileProcessor from "utils/file-processor";
 

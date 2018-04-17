@@ -7,7 +7,7 @@ import uploadActions from "redux/actions/upload-actions";
 import { UPLOAD_STATUSES } from "config";
 import Iota from "services/iota";
 import Backend from "services/backend";
-import Datamap from "utils/datamap";
+import Datamap from "datamap-generator";
 import FileProcessor from "utils/file-processor";
 
 const initializeUpload = (action$, store) => {
