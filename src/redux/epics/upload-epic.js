@@ -7,7 +7,7 @@ import uploadActions from "redux/actions/upload-actions";
 import { UPLOAD_STATUSES } from "config";
 import Iota from "services/iota";
 import Backend from "services/backend";
-import Datamap from "datamap-generator";
+import { generate as genDatamap } from "datamap-generator";
 import FileProcessor from "utils/file-processor";
 
 const initializeUpload = (action$, store) => {
@@ -65,7 +65,7 @@ const refreshIncompleteUploads = (action$, store) => {
 const pollUploadProgress = (action$, store) => {
   return action$.ofType(uploadActions.BEGIN_UPLOAD).switchMap(action => {
     const { numberOfChunks, handle } = action.payload;
-    const datamap = Datamap.generate(handle, numberOfChunks);
+    const datamap = genDatamap(handle, numberOfChunks);
     const addresses = _.values(datamap);
     // console.log("POLLING 81 CHARACTER IOTA ADDRESSES: ", addresses);
 
