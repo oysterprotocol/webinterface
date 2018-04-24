@@ -1,6 +1,6 @@
 import IOTA from "iota.lib.js";
 import _ from "lodash";
-import { IOTA_API } from "config";
+import { IOTA_API } from "../config";
 
 const Iota = new IOTA();
 

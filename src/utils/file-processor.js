@@ -2,8 +2,10 @@ import _ from "lodash";
 import Encryption from "utils/encryption";
 import Base64 from "base64-arraybuffer";
 
-import Iota from "services/iota";
-import {FILE, IOTA_API} from "config";
+import Iota from "../services/iota";
+import { FILE, IOTA_API } from "../config";
+
+const CHUNK_SIZE = Math.floor(0.7 * (2187 / 2)); // TODO: Optimize this.
 
 const metaDataToIotaFormat = (object, handle) => {
   const metaDataString = JSON.stringify(object);
@@ -91,13 +93,8 @@ const createByteChunks = fileSizeBytes => {
 const readBlob = blob =>
   new Promise((resolve, reject) => {
     const reader = new FileReader();
-    reader.onload = function (evt) {
-      if (evt.target.readyState === FileReader.DONE) {
-        const arrayBuffer = evt.target.result;
-        resolve(arrayBuffer);
-      }
-    };
-    reader.readAsArrayBuffer(blob);
+    reader.onloadend = evt => resolve(reader.result);
+    reader.readAsText(blob);
   });
 
 const metaDataToChunkParams = (metaData, idx, handle, genesisHash) =>
@@ -114,12 +111,14 @@ const fileContentsToChunkParams = (data, idx, genesisHash) =>
     hash: genesisHash
   });
 
-const createChunkParams = (chunk,
-                           sliceCutOffFn,
-                           fileContents,
-                           metaData,
-                           handle,
-                           genesisHash) => {
+const createChunkParams = (
+  chunk,
+  sliceCutOffFn,
+  fileContents,
+  metaData,
+  handle,
+  genesisHash
+) => {
   const { idx, startingPoint, type } = chunk;
   switch (type) {
     case FILE.CHUNK_TYPES.FILE_CONTENTS:
@@ -144,15 +143,40 @@ const createMetaData = (fileName, fileSizeBytes) => {
   };
 };
 
+const fileToChunks = (file, handle) =>
+  new Promise((resolve, reject) => {
+    // Split into chunks.
+    const chunks = [];
+
+    const chunksCount = Math.ceil(file.size / CHUNK_SIZE, CHUNK_SIZE);
+    let fileOffset = 0;
+    console.log(CHUNK_SIZE);
+    for (var i = 0; i < chunksCount; i++) {
+      chunks.push(file.slice(fileOffset, fileOffset + CHUNK_SIZE));
+      fileOffset += CHUNK_SIZE;
+    }
+
+    Promise.all(chunks.map(readBlob)).then(
+      chunks =>
+        chunks
+          .map(chunk => Encryption.encrypt(chunk, handle))
+          // .map(Iota.utils.toTrytes)
+          // .map(Iota.utils.fromTrytes)
+          .map(chunk => Encryption.decrypt(chunk, handle))
+      // .forEach(console.log)
+    );
+  });
+
 export default {
   chunkParamsGenerator,
   createByteChunks,
   createChunkParams,
   createMetaData,
   decryptFile,
-  encryptFile,
   initializeUpload,
   metaDataFromIotaFormat,
   metaDataToIotaFormat,
-  readBlob
+  readBlob,
+
+  fileToChunks
 };
