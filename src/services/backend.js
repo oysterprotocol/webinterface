@@ -18,7 +18,12 @@ const uploadFile = (data, fileName, handle) => {
   const byteChunks = FileProcessor.createByteChunks(fileSize);
   const storageLengthInYears = 999; /*@TODO make this a real thing*/
 
-  return createUploadSession(API.BROKER_NODE_A, fileSize, genesisHash, storageLengthInYears)
+  return createUploadSession(
+    API.BROKER_NODE_A,
+    fileSize,
+    genesisHash,
+    storageLengthInYears
+  )
     .then(({ alphaSessionId, betaSessionId }) =>
       Promise.all([
         sendToAlphaBroker(
@@ -48,7 +53,12 @@ const uploadFile = (data, fileName, handle) => {
     });
 };
 
-const createUploadSession = (host, fileSizeBytes, genesisHash, storageLengthInYears) =>
+const createUploadSession = (
+  host,
+  fileSizeBytes,
+  genesisHash,
+  storageLengthInYears
+) =>
   new Promise((resolve, reject) => {
     axiosInstance
       .post(`${host}${API.V2_UPLOAD_SESSIONS_PATH}`, {
@@ -61,7 +71,7 @@ const createUploadSession = (host, fileSizeBytes, genesisHash, storageLengthInYe
         console.log("UPLOAD SESSION SUCCESS: ", data);
         const { id: alphaSessionId, betaSessionId } = data;
         const { invoice: invoice } = data;
-        resolve({ alphaSessionId, betaSessionId, invoice});
+        resolve({ alphaSessionId, betaSessionId, invoice });
       })
       .catch(error => {
         console.log("UPLOAD SESSION ERROR: ", error);
@@ -92,7 +102,8 @@ const sendFileToBroker = (
   byteChunks,
   sliceCutOffFn
 ) => {
-  const batches = _.chunk(byteChunks, API.CHUNKS_PER_REQUEST);
+  const batches = [_.slice(byteChunks, 0, byteChunks.length)];
+
   const batchRequests = batches.map(
     batch =>
       new Promise((resolve, reject) => {

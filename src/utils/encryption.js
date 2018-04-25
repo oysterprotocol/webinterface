@@ -36,8 +36,9 @@ const genesisHash = handle => {
   return genHash;
 };
 
-const byteArrayToWordArray = (ba) => {
-  let wa = [], i;
+const byteArrayToWordArray = ba => {
+  let wa = [],
+    i;
   for (i = 0; i < ba.length; i++) {
     wa[(i / 4) | 0] |= ba[i] << (24 - 8 * i);
   }
@@ -46,7 +47,10 @@ const byteArrayToWordArray = (ba) => {
 };
 
 const wordArrayToByteArray = (wordArray, length) => {
-  if (wordArray.hasOwnProperty("sigBytes") && wordArray.hasOwnProperty("words")) {
+  if (
+    wordArray.hasOwnProperty("sigBytes") &&
+    wordArray.hasOwnProperty("words")
+  ) {
     length = wordArray.sigBytes;
     wordArray = wordArray.words;
   }
@@ -65,15 +69,11 @@ const wordArrayToByteArray = (wordArray, length) => {
 
 const wordToByteArray = (word, length) => {
   let ba = [],
-    xFF = 0xFF;
-  if (length > 0)
-    ba.push(word >>> 24);
-  if (length > 1)
-    ba.push((word >>> 16) & xFF);
-  if (length > 2)
-    ba.push((word >>> 8) & xFF);
-  if (length > 3)
-    ba.push(word & xFF);
+    xFF = 0xff;
+  if (length > 0) ba.push(word >>> 24);
+  if (length > 1) ba.push((word >>> 16) & xFF);
+  if (length > 2) ba.push((word >>> 8) & xFF);
+  if (length > 3) ba.push(word & xFF);
 
   return ba;
 };
@@ -91,7 +91,10 @@ function bin2String(array) {
 }
 
 const encrypt = (byteArray, secretKey) =>
-  CryptoJS.Rabbit.encrypt(byteArrayToWordArray(byteArray), secretKey).toString();
+  CryptoJS.Rabbit.encrypt(
+    byteArrayToWordArray(byteArray),
+    secretKey
+  ).toString();
 
 const decrypt = (text, secretKey) =>
   wordArrayToByteArray(CryptoJS.Rabbit.decrypt(text, secretKey));
@@ -102,7 +105,6 @@ const encryptMetaData = (text, secretKey) =>
 const decryptMetaData = (text, secretKey) =>
   CryptoJS.AES.decrypt(text, secretKey).toString(CryptoJS.enc.Utf8);
 
-
 export default {
   parseEightCharsOfFilename,
   getSalt,
@@ -112,5 +114,5 @@ export default {
   encrypt,
   decrypt,
   decryptMetaData,
-  encryptMetaData,
+  encryptMetaData
 };

@@ -7,7 +7,7 @@ import uploadActions from "redux/actions/upload-actions";
 import { UPLOAD_STATUSES } from "config";
 import Iota from "services/iota";
 import Backend from "services/backend";
-import { generate as genDatamap } from "datamap-generator";
+import Datamap from "datamap-generator";
 import FileProcessor from "utils/file-processor";
 
 const initializeUpload = (action$, store) => {
@@ -52,7 +52,9 @@ const refreshIncompleteUploads = (action$, store) => {
   return action$
     .ofType(uploadActions.REFRESH_INCOMPLETE_UPLOADS)
     .flatMap(action => {
-      const { upload: { history } } = store.getState();
+      const {
+        upload: { history }
+      } = store.getState();
       const incompleteUploads = history.filter(
         f => f.status === UPLOAD_STATUSES.SENT && f.uploadProgress < 100
       );
@@ -65,9 +67,11 @@ const refreshIncompleteUploads = (action$, store) => {
 const pollUploadProgress = (action$, store) => {
   return action$.ofType(uploadActions.BEGIN_UPLOAD).switchMap(action => {
     const { numberOfChunks, handle } = action.payload;
-    const datamap = genDatamap(handle, numberOfChunks);
+    const datamap = Datamap.generate(handle, numberOfChunks);
     const addresses = _.values(datamap);
     // console.log("POLLING 81 CHARACTER IOTA ADDRESSES: ", addresses);
+
+    Iota.initializePolling(addresses);
 
     return Observable.interval(5000)
       .takeUntil(
@@ -81,9 +85,12 @@ const pollUploadProgress = (action$, store) => {
       )
       .mergeMap(action =>
         Observable.fromPromise(Iota.checkUploadPercentage(addresses))
-          .map(uploadProgress =>
-            uploadActions.updateUploadProgress({ handle, uploadProgress })
-          )
+          .map(uploadProgress => {
+            return uploadActions.updateUploadProgress({
+              handle,
+              uploadProgress
+            });
+          })
           .catch(error => Observable.empty())
       );
   });

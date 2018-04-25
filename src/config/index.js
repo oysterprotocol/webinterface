@@ -15,7 +15,8 @@ export const IOTA_API = Object.freeze({
   PROVIDER_B: "http://18.220.1.63:14265",
   PROVIDER_C: "http://18.216.90.80:14265",
   ADDRESS_LENGTH: 81,
-  MESSAGE_LENGTH: 2187
+  MESSAGE_LENGTH: 2187,
+  BUNDLE_SIZE: 30
 });
 
 export const UPLOAD_STATUSES = Object.freeze({
@@ -32,9 +33,11 @@ export const DOWNLOAD_STATUSES = Object.freeze({
 });
 
 export const FILE = Object.freeze({
-  MAX_FILE_SIZE: 200 * 1000,
+  MAX_FILE_SIZE: 2000 * 1000,
   CHUNK_TYPES: {
     METADATA: "METADATA",
     FILE_CONTENTS: "FILE_CONTENTS"
   }
 });
+
+export const INCLUDE_TREASURE_OFFSETS = false;
