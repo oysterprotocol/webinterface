@@ -6,7 +6,8 @@ const initState = {
   betaBroker: API.BROKER_NODE_B,
   history: [
     // object returned by uploadedFileGenerator()
-  ]
+  ],
+  retentionYears: 5
 };
 
 const uploadedFileGenerator = ({ numberOfChunks, fileName, handle }) => {
@@ -31,6 +32,12 @@ const uploadReducer = (state = initState, action) => {
       return {
         ...state,
         betaBroker: action.payload
+      };
+
+    case uploadActions.SELECT_RETENTION_YEARS:
+      return {
+        ...state,
+        retentionYears: action.payload,
       };
 
     case uploadActions.UPDATE_UPLOAD_PROGRESS:

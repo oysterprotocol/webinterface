@@ -6,7 +6,8 @@ import UploadSlide from "components/upload-form/upload-slide";
 
 const mapStateToProps = state => ({
   alphaBroker: state.upload.alphaBroker,
-  betaBroker: state.upload.betaBroker
+  betaBroker: state.upload.betaBroker,
+  retentionYears: state.upload.retentionYears
 });
 const mapDispatchToProps = dispatch => ({
   selectAlphaBrokerFn: url =>
@@ -14,7 +15,9 @@ const mapDispatchToProps = dispatch => ({
   selectBetaBrokerFn: url =>
     dispatch(uploadActions.selectBetaBrokerAction(url)),
   initializeUploadFn: file =>
-    dispatch(uploadActions.initializeUploadAction(file))
+    dispatch(uploadActions.initializeUploadAction(file)),
+  selectRetentionYears: value =>
+    dispatch(uploadActions.selectRetentionYears(value))
 });
 
 const UploadForm = ({
@@ -22,7 +25,9 @@ const UploadForm = ({
   selectAlphaBrokerFn,
   selectBetaBrokerFn,
   alphaBroker,
-  betaBroker
+  betaBroker,
+  retentionYears,
+  selectRetentionYears,
 }) => (
   <UploadSlide
     upload={initializeUploadFn}
@@ -30,7 +35,10 @@ const UploadForm = ({
     selectBetaBroker={selectBetaBrokerFn}
     alphaBroker={alphaBroker}
     betaBroker={betaBroker}
+    retentionYears={retentionYears}
+    selectRetentionYears={selectRetentionYears}
   />
 );
+
 
 export default connect(mapStateToProps, mapDispatchToProps)(UploadForm);

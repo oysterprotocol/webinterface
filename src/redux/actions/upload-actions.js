@@ -10,6 +10,7 @@ const REFRESH_INCOMPLETE_UPLOADS = "oyster/upload/refresh_incomplete_uploads";
 const POLL_UPLOAD_PROGRESS = "oyster/upload/poll_upload_progress";
 const SELECT_ALPHA_BROKER = "oyster/upload/select_alpha_broker";
 const SELECT_BETA_BROKER = "oyster/upload/select_beta_broker";
+const SELECT_RETENTION_YEARS = "oyster/upload/select_retention_years";
 
 const ACTIONS = Object.freeze({
   // actions
@@ -25,6 +26,7 @@ const ACTIONS = Object.freeze({
   POLL_UPLOAD_PROGRESS,
   SELECT_ALPHA_BROKER,
   SELECT_BETA_BROKER,
+  SELECT_RETENTION_YEARS,
 
   // actionCreators
   initializeUploadAction: file => ({
@@ -73,6 +75,10 @@ const ACTIONS = Object.freeze({
   selectBetaBrokerAction: url => ({
     type: ACTIONS.SELECT_BETA_BROKER,
     payload: url
+  }),
+  selectRetentionYears: value => ({
+    type: ACTIONS.SELECT_RETENTION_YEARS,
+    payload: value
   })
 });
 

@@ -25,7 +25,9 @@ class UploadSlide extends Component {
       betaBroker,
       upload,
       selectAlphaBroker,
-      selectBetaBroker
+      selectBetaBroker,
+      retentionYears,
+      selectRetentionYears
     } = this.props;
     return (
       <Slide title="Upload a File" image={ICON_UPLOAD}>
@@ -82,11 +84,12 @@ class UploadSlide extends Component {
                 type="range"
                 min="0"
                 max="10"
-                defaultValue="0"
+                value={retentionYears}
+                onChange={slider => selectRetentionYears(slider.target.value)} //is there a better event so it doesnt fire on every tick?
               />
             </div>
             <div className="upload-column">
-              <select id="sel" disabled>
+              <select id="sel" disabled value={retentionYears}>
                 <option>0</option>
                 <option>1</option>
                 <option>2</option>
