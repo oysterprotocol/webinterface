@@ -92,9 +92,13 @@ const createByteChunks = fileSizeBytes => {
 
 const readBlob = blob =>
   new Promise((resolve, reject) => {
-    const reader = new FileReader();
-    reader.onloadend = evt => resolve(reader.result);
-    reader.readAsText(blob);
+    try {
+      const reader = new FileReader();
+      reader.onloadend = ({ target }) => resolve(target.result);
+      reader.readAsText(blob); // this outputs a base64 encoded string
+    } catch (err) {
+      reject(err);
+    }
   });
 
 const metaDataToChunkParams = (metaData, idx, handle, genesisHash) =>
@@ -143,28 +147,53 @@ const createMetaData = (fileName, fileSizeBytes) => {
   };
 };
 
+// Pipeline: file |> splitToChunks |> encrypt |> toTrytes
 const fileToChunks = (file, handle) =>
   new Promise((resolve, reject) => {
-    // Split into chunks.
-    const chunks = [];
+    try {
+      // Split into chunks.
+      const chunks = [];
 
-    const chunksCount = Math.ceil(file.size / CHUNK_SIZE, CHUNK_SIZE);
-    let fileOffset = 0;
-    console.log(CHUNK_SIZE);
-    for (var i = 0; i < chunksCount; i++) {
-      chunks.push(file.slice(fileOffset, fileOffset + CHUNK_SIZE));
-      fileOffset += CHUNK_SIZE;
-    }
+      const chunksCount = Math.ceil(file.size / CHUNK_SIZE, CHUNK_SIZE);
+      let fileOffset = 0;
 
-    Promise.all(chunks.map(readBlob)).then(
-      chunks =>
-        chunks
+      for (var i = 0; i < chunksCount; i++) {
+        chunks.push(file.slice(fileOffset, fileOffset + CHUNK_SIZE));
+        fileOffset += CHUNK_SIZE;
+      }
+
+      Promise.all(chunks.map(readBlob)).then(chunks => {
+        const encryptedChunks = chunks
           .map(chunk => Encryption.encrypt(chunk, handle))
-          // .map(Iota.utils.toTrytes)
-          // .map(Iota.utils.fromTrytes)
-          .map(chunk => Encryption.decrypt(chunk, handle))
-      // .forEach(console.log)
-    );
+          .map(Iota.utils.toTrytes);
+
+        resolve(encryptedChunks);
+      });
+    } catch (err) {
+      reject(err);
+    }
+  });
+
+// Pipeline: chunks |> fromTrytes |> decrypt |> combineChunks
+const chunksToFile = (chunks, handle) =>
+  new Promise((resolve, reject) => {
+    try {
+      console.log("printing chunks");
+      const bytes = chunks
+        .map(Iota.utils.fromTrytes)
+        .map(chunk => Encryption.decrypt(chunk, handle))
+        .map(chunk => {
+          console.log(chunk);
+          return chunk;
+        })
+        // .filter() TODO: Remove treasure chunks
+        .join("");
+      console.log(bytes);
+
+      resolve(new Blob([bytes]));
+    } catch (err) {
+      reject(err);
+    }
   });
 
 export default {
@@ -176,7 +205,8 @@ export default {
   initializeUpload,
   metaDataFromIotaFormat,
   metaDataToIotaFormat,
-  readBlob,
 
-  fileToChunks
+  readBlob,
+  fileToChunks,
+  chunksToFile
 };

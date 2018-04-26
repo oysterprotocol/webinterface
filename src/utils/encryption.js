@@ -90,9 +90,9 @@ function bin2String(array) {
   return String.fromCharCode.apply(String, array);
 }
 
-const encrypt = (data, key) => CryptoJS.Rabbit.encrypt(data, key).toString();
+const encrypt = (data, key) => CryptoJS.AES.encrypt(data, key).toString();
 const decrypt = (data, key) =>
-  CryptoJS.Rabbit.decrypt(data, key).toString(CryptoJS.enc.Utf8);
+  CryptoJS.AES.decrypt(data, key).toString(CryptoJS.enc.Utf8);
 
 // const encrypt = (byteArray, secretKey) =>
 //   CryptoJS.Rabbit.encrypt(
@@ -107,7 +107,7 @@ const encryptMetaData = (text, secretKey) =>
   CryptoJS.AES.encrypt(text, secretKey).toString();
 
 const decryptMetaData = (text, secretKey) =>
-  CryptoJS.AES.decrypt(text, secretKey).toString(CryptoJS.enc.Utf8);
+  CryptoJS.AES.decrypt(text, secretKey).toString(CryptoJS.enc.Base64);
 
 export default {
   parseEightCharsOfFilename,
