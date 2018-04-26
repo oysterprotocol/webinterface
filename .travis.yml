@@ -1,27 +1,28 @@
 language: node_js
 
 node_js:
-  - "8"
+  - '8'
 
 sudo: false
 
 branches:
-   only:
-   - master
+  only:
+    - master
 
 before_install:
-  - curl -o- -L https://yarnpkg.com/install.sh | bash
-  - export PATH="$HOME/.yarn/bin:$PATH"
+  - 'curl -o- -L https://yarnpkg.com/install.sh | bash'
+  - 'export PATH="$HOME/.yarn/bin:$PATH"'
 
 cache:
   yarn: true
   directories:
-    - ".eslintcache"
-    - "node_modules"
+    - .eslintcache
+    - node_modules
 
 script:
   - yarn && yarn test
 
 notifications:
   slack:
-    secure: mS3pPxC7VvODv5GWAcJjVrlpz8SjdjaD0oGEpwhZt4XTanjLh46yZXwvSHCES3U7b/4Ihy5cC8qeIaujOQrJjXynTtR8HBaAVQbUyAbZhMh/ZKkb/FQFkpBr1TKTTcanQA4ip+6SvobcdcLb9UfmXlOvNYJK3pYq/tb8IbYCVk6X1f+oZ19grJ9arJ+LmmJkb0QpEKluiXkfTtqrX4PEDZ5WQzX7XuK+Uv2JSmtSxtB5CgHoY9NG1EKiQ79491+m3HP6Mu7hTO+DUTI10yhnfSn8T8UvUDUOJl4ItdjBxCJGgmz8xE6dJkw+6AGcDd0nfZsMzKQuSR4eXhTDbkDFPMz2wOn4jc9reFLjPFYbkeMCDKbEPdBMyeazvyAK/V3wDIWtM5SRekqpf8F+07DN9c8f8v13FWYUkUgXAetYLJx8M2dJJzcuHDrdastFRrfbhcLsiEvJuV6MLFX3BqS5panvZTn7DCAUbZLmWigGUSRbwkkPAOmBx8a1dCEWkyU7AnOb1GGRVkcEYkJZO6+goLGKa/E86JBdUbpsZBqK9/JOM1BTD1sxaLFmAUWH4U3iNjNyehaEW0PeEzafJW5zSAVtGVX/j8EkXT7L8/XkWp+yQL0Cu8anMaha863b8lypBYOOcFZ3lggwfCzLE/f4vyuFMgrOES9E2tkgGMIcvfI=
+    secure: i0w/EwaMOa729ViAoOU2VMo/2hbiGQSaE6T3YBRR2IpRiYPrvHZ3uYmbyvjGK1RXIPVnLP2Y8Ry9C2GEH/Vuww2mRXbi26A8eFMrDPfLEjS0lJGJlR1kN9sXo9iBUBRQUIn7lhNambLGV3Kz4Xo0kfH/YIdhWRJ8KWfMCtd3qG0Q5qtw9sAsfmIB31D17XZHIHHxUPUgpUVPZxb6mJbTx8Mh0alEATNqt42iSiFDxW2vR0+/tB3p2iODaVC6CeSt5TWiPTn8hod6qPISrG0e6mMjynm9I5Yf0aH0N5EW5Zqlm8ammwEDd9juJZJ/wAqR4E9ubDKgRL4FEoLEp8GOTakyfWZOIVNu/DhXl1Is/xXBDOv+fJZgPEbJ9rc5i0yoPV0cqop4M3nMsexRAq0AE6kPa0ZmT9MeqR+J0edugdvMLn7d4LW06xLqYWavF0jpxqlIVCCOEzvqT36uHSrfy9I5RLJh69ivfW/E7aY2ifYz3wEUwqtWD9H8bCOfnhZgxWL4+f30IqZq8OjURC89kBs/jiP6XrSXgIbMDyU53+5DGJHll4VO3UveUaJrpFz9PNneTrn+A1RE/wNZE3qSMX5iIGhDKH5v85Dn36Tpd2LFwVGcYCqmuzU+r2GOkjpqT0wuUdCl1HV3kx2HJOzRTWj+2h49WRC8DSuk/0F/+vk=
+
