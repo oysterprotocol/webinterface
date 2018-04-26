@@ -5,9 +5,10 @@ import FileSaver from "file-saver";
 
 import downloadActions from "redux/actions/download-actions";
 import Iota from "services/iota";
-import { generate as genDatamap } from "datamap-generator";
+import Datamap from "datamap-generator";
 import Encryption from "utils/encryption";
 import FileProcessor from "utils/file-processor";
+import { INCLUDE_TREASURE_OFFSETS } from "../../config";
 
 const initializeDownload = (action$, store) => {
   return action$
@@ -44,8 +45,8 @@ const initializeDownload = (action$, store) => {
 const beginDownload = (action$, store) => {
   return action$.ofType(downloadActions.BEGIN_DOWNLOAD).mergeMap(action => {
     const { handle, fileName, numberOfChunks } = action.payload;
-    const datamapOpts = { includeTreasureOffsets: true };
-    const datamap = genDatamap(handle, numberOfChunks, datamapOpts);
+    const datamapOpts = { includeTreasureOffsets: INCLUDE_TREASURE_OFFSETS };
+    const datamap = Datamap.generate(handle, numberOfChunks, datamapOpts);
     const addresses = _.values(datamap);
     const nonMetaDataAddresses = addresses.slice(1, addresses.length);
 
@@ -65,11 +66,14 @@ const beginDownload = (action$, store) => {
           tx => addrToIdx[tx.address]
         );
 
-        const bytesArray = orderedTransactions
+        const encryptedFileContents = orderedTransactions
           .map(tx => tx.signatureMessageFragment)
-          .map(msg => FileProcessor.decryptFile(msg, handle))
-          .filter(x => !!x) // Remove nulls
           .join("");
+
+        const bytesArray = FileProcessor.decryptFile(
+          encryptedFileContents,
+          handle
+        );
 
         console.log("DOWNLOADED BYTES ARRAY", bytesArray);
 

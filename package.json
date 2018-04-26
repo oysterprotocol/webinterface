@@ -20,6 +20,7 @@
     "react-dom": "^16.2.0",
     "react-md-spinner": "^0.2.5",
     "react-redux": "^5.0.6",
+    "react-router": "^4.2.0",
     "react-router-redux": "next",
     "react-select": "^1.2.1",
     "redux": "^3.7.2",

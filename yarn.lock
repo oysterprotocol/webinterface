@@ -1931,9 +1931,9 @@ dashdash@^1.12.0:
   dependencies:
     assert-plus "^1.0.0"
 
-"datamap-generator@git+https://github.com/oysterprotocol/datamap-generator.git":
+"datamap-generator@https://github.com/oysterprotocol/datamap-generator.git":
   version "1.0.3"
-  resolved "git+https://github.com/oysterprotocol/datamap-generator.git#1b8865190fee6bc5dc3947f14013db0f656e0e7e"
+  resolved "https://github.com/oysterprotocol/datamap-generator.git#1b8865190fee6bc5dc3947f14013db0f656e0e7e"
 
 date-now@^0.1.4:
   version "0.1.4"
