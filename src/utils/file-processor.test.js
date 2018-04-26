@@ -4,14 +4,14 @@ import FileProcessor from "./file-processor";
 
 test("Creates correct chunks from file", done => {
   const handle = "super-secret-key";
-  const fileContents = "test123-".repeat(2187);
-  const file = new File([fileContents], "testFile.txt");
+  const ogFileContents = "test123-".repeat(2187);
+  const file = new File([ogFileContents], "testFile.txt");
 
   FileProcessor.fileToChunks(file, handle)
-    .then(encrypted => FileProcessor.chunksToFile(encrypted, handle))
+    .then(encryptedChks => FileProcessor.chunksToFile(encryptedChks, handle))
     .then(decryptedBlob => FileProcessor.readBlob(decryptedBlob))
-    .then(fileData => {
-      expect(fileData).toEqual(fileContents);
+    .then(reassembledFileContent => {
+      expect(reassembledFileContent).toEqual(ogFileContents);
       done();
     })
     .catch(err => {
