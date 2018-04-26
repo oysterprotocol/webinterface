@@ -178,17 +178,11 @@ const fileToChunks = (file, handle) =>
 const chunksToFile = (chunks, handle) =>
   new Promise((resolve, reject) => {
     try {
-      console.log("printing chunks");
       const bytes = chunks
         .map(Iota.utils.fromTrytes)
         .map(chunk => Encryption.decrypt(chunk, handle))
-        .map(chunk => {
-          console.log(chunk);
-          return chunk;
-        })
         // .filter() TODO: Remove treasure chunks
         .join("");
-      console.log(bytes);
 
       resolve(new Blob([bytes]));
     } catch (err) {
