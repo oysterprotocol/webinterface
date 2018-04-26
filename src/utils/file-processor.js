@@ -157,7 +157,7 @@ const fileToChunks = (file, handle) =>
       const chunksCount = Math.ceil(file.size / CHUNK_SIZE, CHUNK_SIZE);
       let fileOffset = 0;
 
-      for (var i = 0; i < chunksCount; i++) {
+      for (let i = 0; i < chunksCount; i++) {
         chunks.push(file.slice(fileOffset, fileOffset + CHUNK_SIZE));
         fileOffset += CHUNK_SIZE;
       }
@@ -180,9 +180,8 @@ const chunksToFile = (chunks, handle) =>
     try {
       const bytes = chunks
         .map(Iota.utils.fromTrytes)
-        .map(chunk => Encryption.decrypt(chunk, handle))
-        // .filter() TODO: Remove treasure chunks
-        .join("");
+        .map(chunk => Encryption.decrypt(chunk, handle)) // treasure => null
+        .join(""); // join removes nulls
 
       resolve(new Blob([bytes]));
     } catch (err) {
