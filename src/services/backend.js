@@ -9,18 +9,19 @@ const axiosInstance = axios.create({
   timeout: 200000
 });
 
-const uploadFile = (data, fileName, handle) => {
+const uploadFile = (chunks, fileName, handle) => {
   console.log("UPLOADING FILE TO BROKER NODES");
 
   const genesisHash = Encryption.genesisHash(handle);
-  const fileSize = data.length;
-  const metaData = FileProcessor.createMetaData(fileName, fileSize);
-  const byteChunks = FileProcessor.createByteChunks(fileSize);
+  const numChunks = chunks.length;
+  const metaData = FileProcessor.createMetaData(fileName, numChunks);
+  // ALREADY HAVE CHUNKS!!! Delete this!!!
+  const byteChunks = FileProcessor.createByteChunks(numChunks);
   const storageLengthInYears = 999; /*@TODO make this a real thing*/
 
   return createUploadSession(
     API.BROKER_NODE_A,
-    fileSize,
+    numChunks, // numCHunks
     genesisHash,
     storageLengthInYears
   )
@@ -55,14 +56,15 @@ const uploadFile = (data, fileName, handle) => {
 
 const createUploadSession = (
   host,
-  fileSizeBytes,
+  numChunks,
   genesisHash,
   storageLengthInYears
 ) =>
   new Promise((resolve, reject) => {
     axiosInstance
       .post(`${host}${API.V2_UPLOAD_SESSIONS_PATH}`, {
-        fileSizeBytes,
+        fileSizeBytes: FileProcessor.fileSizeFromNumChunks(numChunks),
+        numChunks,
         genesisHash,
         betaIp: API.BROKER_NODE_B,
         storageLengthInYears

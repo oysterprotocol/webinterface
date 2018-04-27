@@ -7,6 +7,8 @@ import { FILE, IOTA_API } from "../config";
 
 const CHUNK_SIZE = Math.floor(0.7 * (2187 / 2)); // TODO: Optimize this.
 
+const fileSizeFromNumChunks = numChunks => numChunks * CHUNK_SIZE;
+
 const metaDataToIotaFormat = (object, handle) => {
   const metaDataString = JSON.stringify(object);
   const encryptedData = Encryption.encryptMetaData(metaDataString, handle);
@@ -22,16 +24,6 @@ const metaDataFromIotaFormat = (trytes, handle) => {
 
   return metaData;
 };
-
-const encryptFile = (file, handle) =>
-  readBlob(file).then(arrayBuffer => {
-    const bytes = new Uint8Array(arrayBuffer);
-    const encryptedData = Encryption.encrypt(bytes, handle);
-    const trytes = Iota.utils.toTrytes(encryptedData);
-
-    // console.log("[UPLOAD] ENCRYPTED FILE: ", trytes);
-    return trytes;
-  });
 
 const decryptFile = (trytes, handle) => {
   // console.log("[DOWNLOAD] DECRYPTED FILE: ", trytes);
@@ -51,9 +43,10 @@ const chunkGenerator = ({ idx, startingPoint, type }) => {
 
 const initializeUpload = file => {
   const handle = createHandle(file.name);
-  return encryptFile(file, handle).then(data => {
-    const numberOfChunks = createByteLocations(data.length).length;
-    return { handle, fileName: file.name, numberOfChunks, data };
+  return fileToChunks(file, handle).then(chunks => {
+    const fileName = file.name;
+    const numberOfChunks = chunks.length;
+    return { handle, fileName, numberOfChunks, chunks };
   });
 };
 
@@ -136,9 +129,8 @@ const createChunkParams = (
   }
 };
 
-const createMetaData = (fileName, fileSizeBytes) => {
+const createMetaData = (fileName, numberOfChunks) => {
   const fileExtension = fileName.split(".").pop();
-  const numberOfChunks = createByteLocations(fileSizeBytes).length;
 
   return {
     fileName: fileName.substr(0, 500),
@@ -200,6 +192,7 @@ export default {
   metaDataToIotaFormat,
 
   readBlob,
+  fileSizeFromNumChunks,
   fileToChunks,
   chunksToFile
 };
