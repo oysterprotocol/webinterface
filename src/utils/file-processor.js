@@ -11,7 +11,7 @@ const fileSizeFromNumChunks = numChunks => numChunks * CHUNK_SIZE;
 
 const metaDataToIotaFormat = (object, handle) => {
   const metaDataString = JSON.stringify(object);
-  const encryptedData = Encryption.encryptMetaData(metaDataString, handle);
+  const encryptedData = Encryption.encrypt(metaDataString, handle);
   const trytes = Iota.utils.toTrytes(encryptedData);
 
   return trytes;
@@ -19,7 +19,7 @@ const metaDataToIotaFormat = (object, handle) => {
 
 const metaDataFromIotaFormat = (trytes, handle) => {
   const encryptedData = Iota.parseMessage(trytes);
-  const decryptedData = Encryption.decryptMetaData(encryptedData, handle);
+  const decryptedData = Encryption.decrypt(encryptedData, handle);
   const metaData = JSON.parse(decryptedData);
 
   return metaData;
@@ -43,7 +43,7 @@ const chunkGenerator = ({ idx, startingPoint, type }) => {
 
 const initializeUpload = file => {
   const handle = createHandle(file.name);
-  return fileToChunks(file, handle).then(chunks => {
+  return fileToChunks(file, handle, { includeMetaChunk: true }).then(chunks => {
     const fileName = file.name;
     const numberOfChunks = chunks.length;
     return { handle, fileName, numberOfChunks, chunks };
@@ -140,15 +140,16 @@ const createMetaData = (fileName, numberOfChunks) => {
 };
 
 // Pipeline: file |> splitToChunks |> encrypt |> toTrytes
-const fileToChunks = (file, handle) =>
+const fileToChunks = (file, handle, opts = {}) =>
   new Promise((resolve, reject) => {
     try {
       // Split into chunks.
-      const chunks = [];
-
       const chunksCount = Math.ceil(file.size / CHUNK_SIZE, CHUNK_SIZE);
-      let fileOffset = 0;
+      const chunks = opts.includeMetaChunk
+        ? [createMetaData(file.name, chunksCount)]
+        : [];
 
+      let fileOffset = 0;
       for (let i = 0; i < chunksCount; i++) {
         chunks.push(file.slice(fileOffset, fileOffset + CHUNK_SIZE));
         fileOffset += CHUNK_SIZE;
@@ -185,7 +186,6 @@ export default {
   chunkParamsGenerator,
   createByteChunks,
   createChunkParams,
-  createMetaData,
   decryptFile,
   initializeUpload,
   metaDataFromIotaFormat,
@@ -193,6 +193,6 @@ export default {
 
   readBlob,
   fileSizeFromNumChunks,
-  fileToChunks,
+  fileToChunks, // used just for testing.
   chunksToFile
 };

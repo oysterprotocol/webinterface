@@ -40,10 +40,6 @@ const encrypt = (data, key) => CryptoJS.AES.encrypt(data, key).toString();
 const decrypt = (data, key) =>
   CryptoJS.AES.decrypt(data, key).toString(CryptoJS.enc.Utf8);
 
-// TODO: Delete these.
-const encryptMetaData = encrypt;
-const decryptMetaData = decrypt;
-
 export default {
   parseEightCharsOfFilename,
   getSalt,
@@ -51,7 +47,5 @@ export default {
   hashChain,
   genesisHash,
   encrypt,
-  decrypt,
-  decryptMetaData,
-  encryptMetaData
+  decrypt
 };

@@ -14,10 +14,11 @@ const uploadFile = (chunks, fileName, handle) => {
 
   const genesisHash = Encryption.genesisHash(handle);
   const numChunks = chunks.length;
-  const metaData = FileProcessor.createMetaData(fileName, numChunks);
   // ALREADY HAVE CHUNKS!!! Delete this!!!
   const byteChunks = FileProcessor.createByteChunks(numChunks);
   const storageLengthInYears = 999; /*@TODO make this a real thing*/
+
+  // Appends meta chunk
 
   return createUploadSession(
     API.BROKER_NODE_A,
@@ -26,28 +27,15 @@ const uploadFile = (chunks, fileName, handle) => {
     storageLengthInYears
   )
     .then(({ alphaSessionId, betaSessionId }) =>
+      // TODO: REPLACE byteCHunks with chunks
       Promise.all([
-        sendToAlphaBroker(
-          alphaSessionId,
-          byteChunks,
-          data,
-          metaData,
-          handle,
-          genesisHash
-        ),
-        sendToBetaBroker(
-          betaSessionId,
-          byteChunks,
-          data,
-          metaData,
-          handle,
-          genesisHash
-        )
+        sendToAlphaBroker(alphaSessionId, byteChunks, handle, genesisHash),
+        sendToBetaBroker(betaSessionId, byteChunks, handle, genesisHash)
       ])
     )
     .then(() => {
       return {
-        numberOfChunks: byteChunks.length,
+        numberOfChunks: numChunks,
         handle,
         fileName
       };
@@ -95,29 +83,14 @@ const sendChunksToBroker = (brokerUrl, chunks) =>
       });
   });
 
-const sendFileToBroker = (
-  brokerUrl,
-  fileContents,
-  metaData,
-  handle,
-  genesisHash,
-  byteChunks,
-  sliceCutOffFn
-) => {
+const sendFileToBroker = (brokerUrl, handle, genesisHash, byteChunks) => {
   const batches = [_.slice(byteChunks, 0, byteChunks.length)];
 
   const batchRequests = batches.map(
     batch =>
       new Promise((resolve, reject) => {
         const chunksToParams = batch.map(chunk =>
-          FileProcessor.createChunkParams(
-            chunk,
-            sliceCutOffFn,
-            fileContents,
-            metaData,
-            handle,
-            genesisHash
-          )
+          FileProcessor.createChunkParams(chunk, handle, genesisHash)
         );
         Promise.all(chunksToParams).then(chunksParams => {
           sendChunksToBroker(brokerUrl, chunksParams).then(resolve);
@@ -128,44 +101,23 @@ const sendFileToBroker = (
   return Promise.all(batchRequests);
 };
 
-const sendToAlphaBroker = (
-  sessionId,
-  byteChunks,
-  fileContents,
-  metaData,
-  handle,
-  genesisHash
-) =>
+const sendToAlphaBroker = (sessionId, byteChunks, handle, genesisHash) =>
   new Promise((resolve, reject) => {
     sendFileToBroker(
       `${API.BROKER_NODE_A}${API.V2_UPLOAD_SESSIONS_PATH}/${sessionId}`,
-      fileContents,
-      metaData,
       handle,
       genesisHash,
-      byteChunks,
-      byteLocation => byteLocation + IOTA_API.MESSAGE_LENGTH
+      byteChunks
     ).then(resolve);
   });
 
-const sendToBetaBroker = (
-  sessionId,
-  byteChunks,
-  fileContents,
-  metaData,
-  handle,
-  genesisHash
-) =>
+const sendToBetaBroker = (sessionId, byteChunks, handle, genesisHash) =>
   new Promise((resolve, reject) => {
     sendFileToBroker(
       `${API.BROKER_NODE_B}${API.V2_UPLOAD_SESSIONS_PATH}/${sessionId}`,
-      fileContents,
-      metaData,
       handle,
       genesisHash,
-      [...byteChunks].reverse(),
-      byteLocation =>
-        Math.min(fileContents.length, byteLocation + IOTA_API.MESSAGE_LENGTH)
+      [...byteChunks].reverse()
     ).then(resolve);
   });
 
