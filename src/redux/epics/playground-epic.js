@@ -1,11 +1,11 @@
-import {Observable} from "rxjs";
-import {combineEpics} from "redux-observable";
+import { Observable } from "rxjs";
+import { combineEpics } from "redux-observable";
 import FileSaver from "file-saver";
 
 import playgroundActions from "redux/actions/playground-actions";
 import downloadActions from "redux/actions/download-actions";
 
-import {FILE, IOTA_API} from "config";
+import { FILE, IOTA_API } from "config";
 import FileProcessor from "utils/file-processor";
 
 const testUpload = (action$, store) => {
@@ -41,10 +41,7 @@ const testDownload = (action$, store) => {
     const { chunksInTrytes, handle, fileName } = action.payload;
     const encryptedFileContents = chunksInTrytes.join("");
 
-    const bytesArray = FileProcessor.decryptFile(
-      encryptedFileContents,
-      handle
-    );
+    const bytesArray = FileProcessor.decryptFile(encryptedFileContents, handle);
 
     console.log("DOWNLOADED BYTES ARRAY", bytesArray);
 
