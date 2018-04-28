@@ -61,23 +61,12 @@ const beginDownload = (action$, store) => {
           {}
         );
 
-        const orderedTransactions = _.sortBy(
-          transactions,
-          tx => addrToIdx[tx.address]
-        );
+        const chunks = transactions.map(tx => ({
+          idx: addrToIdx[tx.address],
+          data: tx.signatureMessageFragment
+        }));
 
-        const encryptedFileContents = orderedTransactions
-          .map(tx => tx.signatureMessageFragment)
-          .join("");
-
-        const bytesArray = FileProcessor.decryptFile(
-          encryptedFileContents,
-          handle
-        );
-
-        console.log("DOWNLOADED BYTES ARRAY", bytesArray);
-
-        const blob = new Blob([new Uint8Array(bytesArray)]);
+        const blob = FileProcessor.chunksToFile(chunks);
         FileSaver.saveAs(blob, fileName);
 
         return downloadActions.downloadSuccessAction();

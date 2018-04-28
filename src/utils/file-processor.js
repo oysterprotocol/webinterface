@@ -9,14 +9,6 @@ const CHUNK_SIZE = Math.floor(0.7 * (2187 / 2)); // TODO: Optimize this.
 
 const fileSizeFromNumChunks = numChunks => numChunks * CHUNK_SIZE;
 
-const decryptFile = (trytes, handle) => {
-  // console.log("[DOWNLOAD] DECRYPTED FILE: ", trytes);
-  const encryptedData = Iota.parseMessage(trytes);
-  const decryptedData = Encryption.decrypt(encryptedData, handle);
-
-  return decryptedData;
-};
-
 const initializeUpload = file => {
   const handle = createHandle(file.name);
   return fileToChunks(file, handle, { withMeta: true }).then(chunks => {
@@ -24,6 +16,14 @@ const initializeUpload = file => {
     const numberOfChunks = chunks.length;
     return { handle, fileName, numberOfChunks, chunks };
   });
+};
+
+const metaDataFromIotaFormat = (trytes, handle) => {
+  const encryptedData = Iota.parseMessage(trytes);
+  const decryptedData = Encryption.decrypt(encryptedData, handle);
+  const metaData = JSON.parse(decryptedData);
+
+  return metaData;
 };
 
 const createHandle = fileName => {
@@ -95,7 +95,7 @@ const chunksToFile = (chunks, handle, opts = {}) =>
       if (opts.withMeta) chunks.splice(0, 1);
 
       // ASC order.
-      // NOTE: Cannot use `>=` because JS treats 0 as null and doesn't work.
+      // NOTE: Cannot use `>` because JS treats 0 as null and doesn't work.
       chunks.sort((x, y) => x.idx - y.idx);
 
       const bytes = chunks
@@ -112,8 +112,7 @@ const chunksToFile = (chunks, handle, opts = {}) =>
   });
 
 export default {
-  decryptFile,
-
+  metaDataFromIotaFormat,
   initializeUpload,
   readBlob,
   fileSizeFromNumChunks,
