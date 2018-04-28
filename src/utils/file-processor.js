@@ -158,7 +158,8 @@ const fileToChunks = (file, handle, opts = {}) =>
       Promise.all(chunks.map(readBlob)).then(chunks => {
         const encryptedChunks = chunks
           .map(chunk => Encryption.encrypt(chunk, handle))
-          .map(Iota.utils.toTrytes);
+          .map(Iota.utils.toTrytes)
+          .map((data, idx) => ({ idx, data })); // idx because things will get jumbled
 
         resolve(encryptedChunks);
       });
@@ -171,13 +172,19 @@ const fileToChunks = (file, handle, opts = {}) =>
 const chunksToFile = (chunks, handle) =>
   new Promise((resolve, reject) => {
     try {
+      // ASC order.
+      // NOTE: Cannot use `>=` because JS treats 0 as null and doesn't work.
+      chunks.sort((x, y) => x.idx - y.idx);
+
       const bytes = chunks
+        .map(({ data }) => data)
         .map(Iota.utils.fromTrytes)
         .map(chunk => Encryption.decrypt(chunk, handle)) // treasure => null
         .join(""); // join removes nulls
 
       resolve(new Blob([bytes]));
     } catch (err) {
+      console.log("IN HEEERRRR");
       reject(err);
     }
   });
