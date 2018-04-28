@@ -9,28 +9,32 @@ const axiosInstance = axios.create({
   timeout: 200000
 });
 
+const adaptChunkToParams = (chunk, genesisHash) => ({
+  idx: chunk.idx,
+  data: chunk.data,
+  // TODO: Move this up a level so chunks don't have to be addapted.
+  hash: genesisHash
+});
+
 const uploadFile = (chunks, fileName, handle) => {
   console.log("UPLOADING FILE TO BROKER NODES");
 
   const genesisHash = Encryption.genesisHash(handle);
   const numChunks = chunks.length;
-  // ALREADY HAVE CHUNKS!!! Delete this!!!
-  const byteChunks = FileProcessor.createByteChunks(numChunks);
   const storageLengthInYears = 999; /*@TODO make this a real thing*/
 
   // Appends meta chunk
 
   return createUploadSession(
     API.BROKER_NODE_A,
-    numChunks, // numCHunks
+    numChunks,
     genesisHash,
     storageLengthInYears
   )
     .then(({ alphaSessionId, betaSessionId }) =>
-      // TODO: REPLACE byteCHunks with chunks
       Promise.all([
-        sendToAlphaBroker(alphaSessionId, byteChunks, handle, genesisHash),
-        sendToBetaBroker(betaSessionId, byteChunks, handle, genesisHash)
+        sendToAlphaBroker(alphaSessionId, chunks, genesisHash),
+        sendToBetaBroker(betaSessionId, chunks, genesisHash)
       ])
     )
     .then(() => {
@@ -83,14 +87,14 @@ const sendChunksToBroker = (brokerUrl, chunks) =>
       });
   });
 
-const sendFileToBroker = (brokerUrl, handle, genesisHash, byteChunks) => {
-  const batches = [_.slice(byteChunks, 0, byteChunks.length)];
+const sendFileToBroker = (brokerUrl, genesisHash, chunks) => {
+  const batches = [_.slice(chunks, 0, chunks.length)];
 
   const batchRequests = batches.map(
     batch =>
       new Promise((resolve, reject) => {
         const chunksToParams = batch.map(chunk =>
-          FileProcessor.createChunkParams(chunk, handle, genesisHash)
+          adaptChunkToParams(chunk, genesisHash)
         );
         Promise.all(chunksToParams).then(chunksParams => {
           sendChunksToBroker(brokerUrl, chunksParams).then(resolve);
@@ -101,23 +105,21 @@ const sendFileToBroker = (brokerUrl, handle, genesisHash, byteChunks) => {
   return Promise.all(batchRequests);
 };
 
-const sendToAlphaBroker = (sessionId, byteChunks, handle, genesisHash) =>
+const sendToAlphaBroker = (sessionId, chunks, genesisHash) =>
   new Promise((resolve, reject) => {
     sendFileToBroker(
       `${API.BROKER_NODE_A}${API.V2_UPLOAD_SESSIONS_PATH}/${sessionId}`,
-      handle,
       genesisHash,
-      byteChunks
+      chunks
     ).then(resolve);
   });
 
-const sendToBetaBroker = (sessionId, byteChunks, handle, genesisHash) =>
+const sendToBetaBroker = (sessionId, chunks, genesisHash) =>
   new Promise((resolve, reject) => {
     sendFileToBroker(
       `${API.BROKER_NODE_B}${API.V2_UPLOAD_SESSIONS_PATH}/${sessionId}`,
-      handle,
       genesisHash,
-      [...byteChunks].reverse()
+      [...chunks].reverse()
     ).then(resolve);
   });
 
