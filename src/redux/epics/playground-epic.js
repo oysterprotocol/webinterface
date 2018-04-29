@@ -12,7 +12,8 @@ const testUpload = (action$, store) => {
   return action$.ofType(playgroundActions.TEST_UPLOAD).mergeMap(action => {
     const file = action.payload;
     return Observable.fromPromise(FileProcessor.initializeUpload(file))
-      .map(({ numberOfChunks, handle, fileName, data }) => {
+      .map(({ numberOfChunks, handle, fileName, chunks }) => {
+        // ALREADY HAVE CHUNKS!!! Delete this!!!
         const byteChunks = FileProcessor.createByteChunks(data.length);
         const chunksInTrytes = byteChunks
           .filter(b => b.type === FILE.CHUNK_TYPES.FILE_CONTENTS)

@@ -7,54 +7,23 @@ import { FILE, IOTA_API } from "../config";
 
 const CHUNK_SIZE = Math.floor(0.7 * (2187 / 2)); // TODO: Optimize this.
 
-const metaDataToIotaFormat = (object, handle) => {
-  const metaDataString = JSON.stringify(object);
-  const encryptedData = Encryption.encryptMetaData(metaDataString, handle);
-  const trytes = Iota.utils.toTrytes(encryptedData);
+const fileSizeFromNumChunks = numChunks => numChunks * CHUNK_SIZE;
 
-  return trytes;
+const initializeUpload = file => {
+  const handle = createHandle(file.name);
+  return fileToChunks(file, handle, { withMeta: true }).then(chunks => {
+    const fileName = file.name;
+    const numberOfChunks = chunks.length;
+    return { handle, fileName, numberOfChunks, chunks };
+  });
 };
 
 const metaDataFromIotaFormat = (trytes, handle) => {
   const encryptedData = Iota.parseMessage(trytes);
-  const decryptedData = Encryption.decryptMetaData(encryptedData, handle);
+  const decryptedData = Encryption.decrypt(encryptedData, handle);
   const metaData = JSON.parse(decryptedData);
 
   return metaData;
-};
-
-const encryptFile = (file, handle) =>
-  readBlob(file).then(arrayBuffer => {
-    const bytes = new Uint8Array(arrayBuffer);
-    const encryptedData = Encryption.encrypt(bytes, handle);
-    const trytes = Iota.utils.toTrytes(encryptedData);
-
-    // console.log("[UPLOAD] ENCRYPTED FILE: ", trytes);
-    return trytes;
-  });
-
-const decryptFile = (trytes, handle) => {
-  // console.log("[DOWNLOAD] DECRYPTED FILE: ", trytes);
-  const encryptedData = Iota.parseMessage(trytes);
-  const decryptedData = Encryption.decrypt(encryptedData, handle);
-
-  return decryptedData;
-};
-
-const chunkParamsGenerator = ({ idx, data, hash }) => {
-  return { idx, data, hash };
-};
-
-const chunkGenerator = ({ idx, startingPoint, type }) => {
-  return { idx, startingPoint, type };
-};
-
-const initializeUpload = file => {
-  const handle = createHandle(file.name);
-  return encryptFile(file, handle).then(data => {
-    const numberOfChunks = createByteLocations(data.length).length;
-    return { handle, fileName: file.name, numberOfChunks, data };
-  });
 };
 
 const createHandle = fileName => {
@@ -64,30 +33,6 @@ const createHandle = fileName => {
   const handle = fileNameTrimmed + primordialHash + salt;
 
   return handle;
-};
-
-const createByteLocations = fileSizeBytes =>
-  _.range(0, fileSizeBytes, IOTA_API.MESSAGE_LENGTH);
-
-const createByteChunks = fileSizeBytes => {
-  const metaDataChunk = chunkGenerator({
-    idx: 0,
-    startingPoint: null,
-    type: FILE.CHUNK_TYPES.METADATA
-  });
-
-  // This returns an array with the starting byte pointers
-  // ex: For a 2300 byte file it would return: [0, 500, 1000, 1500, 2000]
-  const byteLocations = createByteLocations(fileSizeBytes);
-  const fileContentChunks = _.map(byteLocations, (byte, index) => {
-    return chunkGenerator({
-      idx: index + 1,
-      startingPoint: byte,
-      type: FILE.CHUNK_TYPES.FILE_CONTENTS
-    });
-  });
-
-  return [metaDataChunk, ...fileContentChunks];
 };
 
 const readBlob = blob =>
@@ -101,62 +46,29 @@ const readBlob = blob =>
     }
   });
 
-const metaDataToChunkParams = (metaData, idx, handle, genesisHash) =>
-  chunkParamsGenerator({
-    idx: idx,
-    data: metaDataToIotaFormat(metaData, handle),
-    hash: genesisHash
-  });
-
-const fileContentsToChunkParams = (data, idx, genesisHash) =>
-  chunkParamsGenerator({
-    idx: idx,
-    data,
-    hash: genesisHash
-  });
-
-const createChunkParams = (
-  chunk,
-  sliceCutOffFn,
-  fileContents,
-  metaData,
-  handle,
-  genesisHash
-) => {
-  const { idx, startingPoint, type } = chunk;
-  switch (type) {
-    case FILE.CHUNK_TYPES.FILE_CONTENTS:
-      const slice = fileContents.slice(
-        startingPoint,
-        sliceCutOffFn(startingPoint)
-      );
-      return fileContentsToChunkParams(slice, idx, genesisHash);
-    default:
-      return metaDataToChunkParams(metaData, idx, handle, genesisHash);
-  }
-};
-
-const createMetaData = (fileName, fileSizeBytes) => {
+const createMetaData = (fileName, numberOfChunks) => {
   const fileExtension = fileName.split(".").pop();
-  const numberOfChunks = createByteLocations(fileSizeBytes).length;
 
-  return {
+  const meta = {
     fileName: fileName.substr(0, 500),
     ext: fileExtension,
     numberOfChunks
   };
+
+  return JSON.stringify(meta);
 };
 
 // Pipeline: file |> splitToChunks |> encrypt |> toTrytes
-const fileToChunks = (file, handle) =>
+const fileToChunks = (file, handle, opts = {}) =>
   new Promise((resolve, reject) => {
     try {
       // Split into chunks.
-      const chunks = [];
-
       const chunksCount = Math.ceil(file.size / CHUNK_SIZE, CHUNK_SIZE);
-      let fileOffset = 0;
+      const chunks = opts.withMeta
+        ? [createMetaData(file.name, chunksCount)]
+        : [];
 
+      let fileOffset = 0;
       for (let i = 0; i < chunksCount; i++) {
         chunks.push(file.slice(fileOffset, fileOffset + CHUNK_SIZE));
         fileOffset += CHUNK_SIZE;
@@ -165,7 +77,8 @@ const fileToChunks = (file, handle) =>
       Promise.all(chunks.map(readBlob)).then(chunks => {
         const encryptedChunks = chunks
           .map(chunk => Encryption.encrypt(chunk, handle))
-          .map(Iota.utils.toTrytes);
+          .map(Iota.utils.toTrytes)
+          .map((data, idx) => ({ idx, data })); // idx because things will get jumbled
 
         resolve(encryptedChunks);
       });
@@ -175,31 +88,34 @@ const fileToChunks = (file, handle) =>
   });
 
 // Pipeline: chunks |> fromTrytes |> decrypt |> combineChunks
-const chunksToFile = (chunks, handle) =>
+const chunksToFile = (chunks, handle, opts = {}) =>
   new Promise((resolve, reject) => {
     try {
+      // Remove metachunk
+      if (opts.withMeta) chunks.splice(0, 1);
+
+      // ASC order.
+      // NOTE: Cannot use `>` because JS treats 0 as null and doesn't work.
+      chunks.sort((x, y) => x.idx - y.idx);
+
       const bytes = chunks
+        .map(({ data }) => data)
         .map(Iota.utils.fromTrytes)
         .map(chunk => Encryption.decrypt(chunk, handle)) // treasure => null
         .join(""); // join removes nulls
 
       resolve(new Blob([bytes]));
     } catch (err) {
+      console.log("IN HEEERRRR");
       reject(err);
     }
   });
 
 export default {
-  chunkParamsGenerator,
-  createByteChunks,
-  createChunkParams,
-  createMetaData,
-  decryptFile,
-  initializeUpload,
   metaDataFromIotaFormat,
-  metaDataToIotaFormat,
-
+  initializeUpload,
   readBlob,
-  fileToChunks,
+  fileSizeFromNumChunks,
+  fileToChunks, // used just for testing.
   chunksToFile
 };
