@@ -40,7 +40,7 @@ const readBlob = blob =>
     try {
       const reader = new FileReader();
       reader.onloadend = ({ target }) => resolve(target.result);
-      reader.readAsText(blob); // this outputs a base64 encoded string
+      reader.readAsText(blob);
     } catch (err) {
       reject(err);
     }
@@ -106,7 +106,6 @@ const chunksToFile = (chunks, handle, opts = {}) =>
 
       resolve(new Blob([bytes]));
     } catch (err) {
-      console.log("IN HEEERRRR");
       reject(err);
     }
   });
