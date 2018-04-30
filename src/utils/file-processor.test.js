@@ -2,6 +2,17 @@ import fs from "fs";
 
 import FileProcessor from "./file-processor";
 
+const testFilePath = `${__dirname}/../test-files/file.png`;
+
+const readTestFile = () =>
+  new Promise((resolve, reject) => {
+    fs.readFile(testFilePath, (err, data) => {
+      if (err) return reject(err);
+      const blob = new File(data, "file.png");
+      return resolve(blob);
+    });
+  });
+
 test("file |> fileToChunks |> chunksToFile - Success", done => {
   const handle = "super-secret-key";
 
