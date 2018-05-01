@@ -21,7 +21,7 @@ test("file |> fileToChunks |> chunksToFile - Success", done => {
       .then(encryptedChks => FileProcessor.chunksToFile(encryptedChks, handle))
       .then(decryptedBlob => FileProcessor.readBlob(decryptedBlob))
       .then(reassembledFileContent => {
-        readBlob(file).then(origFile => {
+        FileProcessor.readBlob(file).then(origFile => {
           expect(reassembledFileContent).toEqual(origFile);
           done();
         });
@@ -45,7 +45,7 @@ test("file |> fileToChunks |> chunksToFile - Beta Success", done => {
       })
       .then(decryptedBlob => FileProcessor.readBlob(decryptedBlob))
       .then(reassembledFileContent => {
-        readBlob(file).then(origFile => {
+        FileProcessor.readBlob(file).then(origFile => {
           expect(reassembledFileContent).toEqual(origFile);
           done();
         });
@@ -79,7 +79,7 @@ test("file |> fileToChunks |> chunksToFile - Success w/ treasure", done => {
       })
       .then(decryptedBlob => FileProcessor.readBlob(decryptedBlob))
       .then(reassembledFileContent => {
-        readBlob(file).then(origFile => {
+        FileProcessor.readBlob(file).then(origFile => {
           expect(reassembledFileContent).toEqual(origFile);
           done();
         });
