@@ -1,3 +1,4 @@
+import CryptoJS from "crypto-js";
 import _ from "lodash";
 import Encryption from "utils/encryption";
 import Base64 from "base64-arraybuffer";
@@ -40,7 +41,7 @@ const readBlob = blob =>
     try {
       const reader = new FileReader();
       reader.onloadend = ({ target }) => resolve(target.result);
-      reader.readAsText(blob);
+      reader.readAsArrayBuffer(blob);
     } catch (err) {
       reject(err);
     }
@@ -76,6 +77,7 @@ const fileToChunks = (file, handle, opts = {}) =>
 
       Promise.all(chunks.map(readBlob)).then(chunks => {
         const encryptedChunks = chunks
+          .map(byteArrayToWordArray)
           .map(chunk => Encryption.encrypt(chunk, handle))
           .map(Iota.utils.toTrytes)
           .map((data, idx) => ({ idx, data })); // idx because things will get jumbled
@@ -102,6 +104,7 @@ const chunksToFile = (chunks, handle, opts = {}) =>
         .map(({ data }) => data)
         .map(Iota.utils.fromTrytes)
         .map(chunk => Encryption.decrypt(chunk, handle)) // treasure => null
+        .map(wordArrayToByteArray)
         .join(""); // join removes nulls
 
       resolve(new Blob([bytes]));
@@ -109,6 +112,50 @@ const chunksToFile = (chunks, handle, opts = {}) =>
       reject(err);
     }
   });
+
+// TODO: Switch to a different crypto lib where we don't need these?
+
+const byteArrayToWordArray = ba => {
+  let wa = [],
+    i;
+  for (i = 0; i < ba.length; i++) {
+    wa[(i / 4) | 0] |= ba[i] << (24 - 8 * i);
+  }
+
+  return CryptoJS.lib.WordArray.create(wa, ba.length);
+};
+
+const wordArrayToByteArray = (wordArray, length) => {
+  if (
+    wordArray.hasOwnProperty("sigBytes") &&
+    wordArray.hasOwnProperty("words")
+  ) {
+    length = wordArray.sigBytes;
+    wordArray = wordArray.words;
+  }
+
+  let result = [],
+    bytes,
+    i = 0;
+  while (length > 0) {
+    bytes = wordToByteArray(wordArray[i], Math.min(4, length));
+    length -= bytes.length;
+    result.push(bytes);
+    i++;
+  }
+  return [].concat.apply([], result);
+};
+
+const wordToByteArray = (word, length) => {
+  let ba = [],
+    xFF = 0xff;
+  if (length > 0) ba.push(word >>> 24);
+  if (length > 1) ba.push((word >>> 16) & xFF);
+  if (length > 2) ba.push((word >>> 8) & xFF);
+  if (length > 3) ba.push(word & xFF);
+
+  return ba;
+};
 
 export default {
   metaDataFromIotaFormat,
