@@ -1,9 +1,16 @@
 import uploadActions from "redux/actions/upload-actions";
-import { API, UPLOAD_STATUSES } from "config";
+import { API, UPLOAD_STATUSES, IOTA_API } from "config";
 
 const initState = {
   alphaBroker: API.BROKER_NODE_A,
   betaBroker: API.BROKER_NODE_B,
+  indexes: {
+    startingIdx: 0,
+    endingIdx: 0,
+    frontIdx: 0,
+    backIdx: 0
+  },
+  dataMapLength: 0,
   history: [
     // object returned by uploadedFileGenerator()
   ]
@@ -75,6 +82,40 @@ const uploadReducer = (state = initState, action) => {
       return {
         ...state,
         history: h
+      };
+
+    case uploadActions.INITIALIZE_POLLING_INDEXES:
+      const { frontIdx, backIdx, dataMapLength } = action.payload;
+      const indexes = {
+        ...state.indexes,
+        endingIdx: dataMapLength - 1,
+        frontIdx,
+        backIdx
+      };
+      return {
+        ...state,
+        indexes: indexes,
+        dataMapLength
+      };
+
+    case uploadActions.UPDATE_FRONT_INDEX:
+      const frontIndexes = {
+        ...state.indexes,
+        frontIdx: action.payload
+      };
+      return {
+        ...state,
+        indexes: frontIndexes
+      };
+
+    case uploadActions.UPDATE_BACK_INDEX:
+      const backIndexes = {
+        ...state.indexes,
+        backIdx: action.payload
+      };
+      return {
+        ...state,
+        indexes: backIndexes
       };
 
     default:

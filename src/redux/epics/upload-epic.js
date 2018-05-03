@@ -52,7 +52,9 @@ const refreshIncompleteUploads = (action$, store) => {
   return action$
     .ofType(uploadActions.REFRESH_INCOMPLETE_UPLOADS)
     .flatMap(action => {
-      const { upload: { history } } = store.getState();
+      const {
+        upload: { history }
+      } = store.getState();
       const incompleteUploads = history.filter(
         f => f.status === UPLOAD_STATUSES.SENT && f.uploadProgress < 100
       );
@@ -69,23 +71,40 @@ const pollUploadProgress = (action$, store) => {
     const addresses = _.values(datamap);
     // console.log("POLLING 81 CHARACTER IOTA ADDRESSES: ", addresses);
 
-    return Observable.interval(5000)
-      .takeUntil(
-        Observable.merge(
-          action$.ofType(uploadActions.MARK_UPLOAD_AS_COMPLETE).filter(a => {
-            const completedFileHandle = a.payload;
-            return handle === completedFileHandle;
-          }),
-          action$.ofType(uploadActions.UPLOAD_FAILURE)
-        )
-      )
-      .mergeMap(action =>
-        Observable.fromPromise(Iota.checkUploadPercentage(addresses))
-          .map(uploadProgress =>
-            uploadActions.updateUploadProgress({ handle, uploadProgress })
+    return Observable.merge(
+      Observable.of(
+        uploadActions.initializePollingIndexes({
+          dataMapLength: addresses.length,
+          frontIdx: 0,
+          backIdx: addresses.length - 1
+        })
+      ),
+      Observable.interval(5000)
+        .takeUntil(
+          Observable.merge(
+            action$.ofType(uploadActions.MARK_UPLOAD_AS_COMPLETE).filter(a => {
+              const completedFileHandle = a.payload;
+              return handle === completedFileHandle;
+            }),
+            action$.ofType(uploadActions.UPLOAD_FAILURE)
           )
-          .catch(error => Observable.empty())
-      );
+        )
+        .mergeMap(action =>
+          Observable.fromPromise(Iota.checkUploadPercentage(addresses))
+            .map(({ uploadProgress, updateFrontIndex, updateBackIndex }) => {
+              if (updateFrontIndex) {
+              }
+              if (updateBackIndex) {
+              }
+              debugger;
+              // return uploadActions.updateUploadProgress({
+              //   handle,
+              //   uploadProgress
+              // });
+            })
+            .catch(error => Observable.empty())
+        )
+    );
   });
 };
 
