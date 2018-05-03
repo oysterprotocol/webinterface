@@ -90,3 +90,46 @@ test("file |> fileToChunks |> chunksToFile - Success w/ treasure", done => {
       });
   });
 });
+
+test("file |> fileToChunks |> chunksToFile - Success w/ Meta", done => {
+  const handle = "super-secret-key";
+
+  readTestFile().then(file => {
+    FileProcessor.fileToChunks(file, handle, { withMeta: true })
+      .then(encryptedChks => FileProcessor.chunksToFile(encryptedChks, handle))
+      .then(decryptedBlob => FileProcessor.readBlob(decryptedBlob))
+      .then(reassembledFileContent => {
+        FileProcessor.readBlob(file).then(origFile => {
+          expect(reassembledFileContent).toEqual(origFile);
+          done();
+        });
+      })
+      .catch(err => {
+        expect(err).toBeFalsy();
+        done();
+      });
+  });
+});
+
+test("file |> fileToChunks |> chunksToFile - correct meta", done => {
+  const handle = "super-secret-key";
+
+  readTestFile().then(file => {
+    FileProcessor.fileToChunks(file, handle, { withMeta: true })
+      .then(encryptedChks => {
+        const metaChunk = encryptedChks[0];
+        const metaData = FileProcessor.parseMetaChunk(metaChunk, handle);
+
+        expect(metaData).toEqual({
+          fileName: "file.png",
+          ext: "png",
+          numberOfChunks: 21
+        });
+        done();
+      })
+      .catch(err => {
+        expect(err).toBeFalsy();
+        done();
+      });
+  });
+});
