@@ -41,9 +41,9 @@ const saveToHistory = (action$, store) => {
 
 const uploadFile = (action$, store) => {
   return action$.ofType(uploadActions.BEGIN_UPLOAD).mergeMap(action => {
-    const { chunks, handle } = action.payload;
+    const { chunks, fileName, handle } = action.payload;
 
-    return Observable.fromPromise(Backend.uploadFile(chunks, handle))
+    return Observable.fromPromise(Backend.uploadFile(chunks, fileName, handle))
       .map(({ numberOfChunks, handle }) =>
         uploadActions.uploadSuccessAction(handle)
       )
