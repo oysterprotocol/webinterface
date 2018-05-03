@@ -10,6 +10,9 @@ const REFRESH_INCOMPLETE_UPLOADS = "oyster/upload/refresh_incomplete_uploads";
 const POLL_UPLOAD_PROGRESS = "oyster/upload/poll_upload_progress";
 const SELECT_ALPHA_BROKER = "oyster/upload/select_alpha_broker";
 const SELECT_BETA_BROKER = "oyster/upload/select_beta_broker";
+const INITIALIZE_POLLING_INDEXES = "oyster/upload/initialize_polling_indexes";
+const UPDATE_FRONT_INDEX = "oyster/upload/update_front_index";
+const UPDATE_BACK_INDEX = "oyster/upload/update_back_index";
 
 const ACTIONS = Object.freeze({
   // actions
@@ -25,6 +28,9 @@ const ACTIONS = Object.freeze({
   POLL_UPLOAD_PROGRESS,
   SELECT_ALPHA_BROKER,
   SELECT_BETA_BROKER,
+  INITIALIZE_POLLING_INDEXES,
+  UPDATE_FRONT_INDEX,
+  UPDATE_BACK_INDEX,
 
   // actionCreators
   initializeUploadAction: file => ({
@@ -73,6 +79,18 @@ const ACTIONS = Object.freeze({
   selectBetaBrokerAction: url => ({
     type: ACTIONS.SELECT_BETA_BROKER,
     payload: url
+  }),
+  initializePollingIndexes: ({ frontIdx, backIdx, dataMapLength }) => ({
+    type: ACTIONS.INITIALIZE_POLLING_INDEXES,
+    payload: { frontIdx, backIdx, dataMapLength }
+  }),
+  updateFrontIndex: frontIndex => ({
+    type: ACTIONS.UPDATE_FRONT_INDEX,
+    payload: frontIndex
+  }),
+  updateBackIndex: backIndex => ({
+    type: ACTIONS.UPDATE_BACK_INDEX,
+    payload: backIndex
   })
 });
 

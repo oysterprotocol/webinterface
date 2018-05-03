@@ -1,6 +1,6 @@
 import IOTA from "iota.lib.js";
 import _ from "lodash";
-import { IOTA_API } from "../config";
+import { IOTA_API } from "config";
 
 const Iota = new IOTA();
 
@@ -15,19 +15,6 @@ const IotaB = new IOTA({
 const IotaC = new IOTA({
   provider: IOTA_API.PROVIDER_C
 });
-
-const BUNDLE_SIZE = IOTA_API.BUNDLE_SIZE;
-
-let totalLength = 0;
-
-let indexes = {
-  startingIdx: 0,
-  endingIdx: 0,
-  frontIdx: 0,
-  backIdx: 0,
-  latestFoundFrontIdx: 0,
-  latestFoundBackIdx: 0
-};
 
 const toAddress = string => string.substr(0, IOTA_API.ADDRESS_LENGTH);
 
@@ -72,69 +59,40 @@ const skinnyQueryTransactions = (iotaProvider, addresses) =>
     );
   });
 
-const initializePolling = addresses => {
-  totalLength = addresses.length;
-
-  indexes.startingIdx = 0;
-  indexes.endingIdx = addresses.length - 1;
-  indexes.latestFoundBackIdx = indexes.endingIdx;
-
-  indexes.frontIdx =
-    indexes.startingIdx + Math.floor(Math.random() * BUNDLE_SIZE);
-  indexes.backIdx = indexes.endingIdx - Math.floor(Math.random() * BUNDLE_SIZE);
-};
-
-const checkUploadPercentage = addresses => {
+const checkUploadPercentage = (addresses, frontIndex, backIndex) => {
   let backOfFile = new Promise((resolve, reject) => {
-    skinnyQueryTransactions(IotaA, [addresses[indexes.backIdx]]).then(
+    skinnyQueryTransactions(IotaA, [addresses[backIndex]]).then(
       transactions => {
-        if (transactions.length > 0) {
-          indexes.latestFoundBackIdx = indexes.backIdx;
-          updateBackIndex(indexes.backIdx);
-        }
-        resolve();
+        resolve({
+          backIndex: backIndex,
+          updateIndex: transactions.length > 0
+        });
       }
     );
   });
 
   let frontOfFile = new Promise((resolve, reject) => {
-    skinnyQueryTransactions(IotaA, [addresses[indexes.frontIdx]]).then(
+    skinnyQueryTransactions(IotaA, [addresses[frontIndex]]).then(
       transactions => {
-        if (transactions.length > 0) {
-          indexes.latestFoundFrontIdx = indexes.frontIdx;
-          updateFrontIndex(indexes.frontIdx);
-        }
-        resolve();
+        resolve({
+          frontIndex: frontIndex,
+          updateIndex: transactions.length > 0
+        });
       }
     );
   });
 
-  return Promise.all([frontOfFile, backOfFile]).then(() => {
-    return recalculatePercentage(indexes);
+  return Promise.all([frontOfFile, backOfFile]).then(updateIndexes => {
+    return {
+      frontIndex: updateIndexes[0].frontIndex,
+      updateFrontIndex: updateIndexes[0].updateIndex,
+      backIndex: updateIndexes[1].backIndex,
+      updateBackIndex: updateIndexes[1].updateIndex
+    };
   });
 };
 
-const recalculatePercentage = indexes => {
-  if (indexes.latestFoundFrontIdx >= indexes.latestFoundBackIdx - 1) {
-    return 100;
-  }
-  return (
-    (indexes.latestFoundFrontIdx +
-      (indexes.endingIdx - indexes.latestFoundBackIdx)) /
-    (totalLength - 2) *
-    100
-  );
-};
-
-const updateFrontIndex = frontIndex => {
-  indexes.frontIdx = frontIndex + Math.floor(Math.random() * BUNDLE_SIZE);
-};
-
-const updateBackIndex = backIndex => {
-  indexes.backIdx = backIndex - Math.floor(Math.random() * BUNDLE_SIZE);
-};
-
-const findTransactions = addresses =>
+const findTransactionObjects = addresses =>
   new Promise((resolve, reject) => {
     Promise.race([
       queryTransactions(IotaA, addresses),
@@ -150,10 +108,9 @@ const findTransactions = addresses =>
   });
 
 export default {
-  initializePolling,
   toAddress,
   parseMessage,
   checkUploadPercentage,
-  findTransactions,
+  findTransactionObjects,
   utils: Iota.utils
 };
