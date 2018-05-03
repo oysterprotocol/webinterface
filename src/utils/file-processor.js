@@ -59,15 +59,20 @@ const createMetaData = (fileName, numberOfChunks) => {
   return JSON.stringify(meta);
 };
 
+const parseMetaChunk = (chunk, handle) => {
+  const chunkBytes = Iota.utils.fromTrytes(chunk.data);
+  const metaJson = Encryption.decrypt(chunkBytes, handle);
+
+  return JSON.parse(metaJson);
+};
+
 // Pipeline: file |> splitToChunks |> encrypt |> toTrytes
 const fileToChunks = (file, handle, opts = {}) =>
   new Promise((resolve, reject) => {
     try {
       // Split into chunks.
       const chunksCount = Math.ceil(file.size / CHUNK_SIZE, CHUNK_SIZE);
-      const chunks = opts.withMeta
-        ? [createMetaData(file.name, chunksCount)]
-        : [];
+      const chunks = [];
 
       let fileOffset = 0;
       for (let i = 0; i < chunksCount; i++) {
@@ -76,12 +81,19 @@ const fileToChunks = (file, handle, opts = {}) =>
       }
 
       Promise.all(chunks.map(readBlob)).then(chunks => {
-        const encryptedChunks = chunks
+        let encryptedChunks = chunks
           .map(byteArrayToWordArray)
           .map(chunk => Encryption.encrypt(chunk, handle))
           .map(Iota.utils.toTrytes)
-          .map((data, idx) => ({ idx, data })); // idx because things will get jumbled
+          .map((data, idx) => ({ idx: idx + 1, data })); // idx because things will get jumbled
 
+        if (opts.withMeta) {
+          const metaChunk = createMetaData(file.name, chunksCount);
+          const encryptedMeta = Encryption.encrypt(metaChunk, handle);
+          const metaData = Iota.utils.toTrytes(encryptedMeta);
+
+          encryptedChunks = [{ idx: 0, data: metaData }, ...encryptedChunks];
+        }
         resolve(encryptedChunks);
       });
     } catch (err) {
@@ -90,12 +102,9 @@ const fileToChunks = (file, handle, opts = {}) =>
   });
 
 // Pipeline: chunks |> fromTrytes |> decrypt |> combineChunks
-const chunksToFile = (chunks, handle, opts = {}) =>
+const chunksToFile = (chunks, handle) =>
   new Promise((resolve, reject) => {
     try {
-      // Remove metachunk
-      if (opts.withMeta) chunks.splice(0, 1);
-
       // ASC order.
       // NOTE: Cannot use `>` because JS treats 0 as null and doesn't work.
       chunks.sort((x, y) => x.idx - y.idx);
@@ -163,5 +172,6 @@ export default {
   readBlob,
   fileSizeFromNumChunks,
   fileToChunks, // used just for testing.
+  parseMetaChunk,
   chunksToFile
 };
