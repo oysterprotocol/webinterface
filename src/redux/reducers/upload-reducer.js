@@ -105,7 +105,7 @@ const uploadReducer = (state = initState, action) => {
       };
       return {
         ...state,
-        indexes: indexes,
+        indexes,
         dataMapLength
       };
 

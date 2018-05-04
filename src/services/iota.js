@@ -83,11 +83,12 @@ const checkUploadPercentage = (addresses, frontIndex, backIndex) => {
   });
 
   return Promise.all([frontOfFile, backOfFile]).then(indexResults => {
+    const [front, back] = indexResults;
     return {
-      frontIndex: indexResults[0].frontIndex,
-      updateFrontIndex: indexResults[0].updateIndex,
-      backIndex: indexResults[1].backIndex,
-      updateBackIndex: indexResults[1].updateIndex
+      frontIndex: front.frontIndex,
+      updateFrontIndex: front.updateIndex,
+      backIndex: back.backIndex,
+      updateBackIndex: back.updateIndex
     };
   });
 };
