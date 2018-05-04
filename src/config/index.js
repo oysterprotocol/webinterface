@@ -1,19 +1,16 @@
 export const API = Object.freeze({
-  // HOST: "http://localhost:8000",
-  // BROKER_NODE_A: "http://localhost:8000",
-  // BROKER_NODE_B: "http://localhost:8000",
-  HOST: "",
-  BROKER_NODE_A: "",
-  BROKER_NODE_B: "",
+  HOST: "http://18.188.64.13",
+  BROKER_NODE_A: "http://18.188.64.13",
+  BROKER_NODE_B: "http://18.188.230.212",
   V1_UPLOAD_SESSIONS_PATH: ":3000/api/v1/upload-sessions",
   V2_UPLOAD_SESSIONS_PATH: ":3000/api/v2/upload-sessions",
   CHUNKS_PER_REQUEST: 10
 });
 
 export const IOTA_API = Object.freeze({
-  PROVIDER_A: "http://18.188.17.130:14265",
-  PROVIDER_B: "http://18.220.1.63:14265",
-  PROVIDER_C: "http://18.216.90.80:14265",
+  PROVIDER_A: "http://18.188.64.13:14265",
+  PROVIDER_B: "http://18.188.64.13:14265",
+  PROVIDER_C: "http://18.188.64.13:14265",
   ADDRESS_LENGTH: 81,
   MESSAGE_LENGTH: 2187,
   BUNDLE_SIZE: 30

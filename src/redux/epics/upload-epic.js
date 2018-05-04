@@ -9,6 +9,9 @@ import Iota from "services/iota";
 import Backend from "services/backend";
 import Datamap from "datamap-generator";
 import FileProcessor from "utils/file-processor";
+import { IOTA_API } from "config";
+
+const BUNDLE_SIZE = IOTA_API.BUNDLE_SIZE;
 
 const initializeUpload = (action$, store) => {
   return action$.ofType(uploadActions.INITIALIZE_UPLOAD).mergeMap(action => {
@@ -71,28 +74,72 @@ const pollUploadProgress = (action$, store) => {
     const addresses = _.values(datamap);
     // console.log("POLLING 81 CHARACTER IOTA ADDRESSES: ", addresses);
 
-    Iota.initializePolling(addresses);
-
-    return Observable.interval(5000)
-      .takeUntil(
-        Observable.merge(
-          action$.ofType(uploadActions.MARK_UPLOAD_AS_COMPLETE).filter(a => {
-            const completedFileHandle = a.payload;
-            return handle === completedFileHandle;
-          }),
-          action$.ofType(uploadActions.UPLOAD_FAILURE)
+    return Observable.merge(
+      Observable.of(
+        uploadActions.initializePollingIndexes({
+          dataMapLength: addresses.length,
+          frontIdx: 0,
+          backIdx: addresses.length - 1
+        })
+      ),
+      Observable.interval(5000)
+        .takeUntil(
+          Observable.merge(
+            action$.ofType(uploadActions.MARK_UPLOAD_AS_COMPLETE).filter(a => {
+              const completedFileHandle = a.payload;
+              return handle === completedFileHandle;
+            }),
+            action$.ofType(uploadActions.UPLOAD_FAILURE)
+          )
         )
-      )
-      .mergeMap(action =>
-        Observable.fromPromise(Iota.checkUploadPercentage(addresses))
-          .map(uploadProgress => {
-            return uploadActions.updateUploadProgress({
-              handle,
-              uploadProgress
-            });
-          })
-          .catch(error => Observable.empty())
-      );
+        .mergeMap(action => {
+          let { frontIdx, backIdx } = store.getState().upload.indexes;
+          return Observable.fromPromise(
+            Iota.checkUploadPercentage(addresses, frontIdx, backIdx)
+          )
+            .map(
+              ({
+                updateFrontIndex,
+                updateBackIndex,
+                frontIndex,
+                backIndex
+              }) => {
+                let uploadProgress =
+                  frontIndex >= backIndex - 1
+                    ? 100
+                    : (frontIndex + (addresses.length - 1 - backIndex)) /
+                      (addresses.length - 2) *
+                      100;
+
+                frontIndex = updateFrontIndex
+                  ? Math.min(
+                      ...[
+                        frontIndex + Math.floor(Math.random() * BUNDLE_SIZE),
+                        addresses.length - 1
+                      ]
+                    )
+                  : frontIndex;
+
+                backIndex = updateBackIndex
+                  ? Math.max(
+                      ...[
+                        backIndex - Math.floor(Math.random() * BUNDLE_SIZE),
+                        0
+                      ]
+                    )
+                  : backIndex;
+
+                return uploadActions.updateUploadProgress({
+                  handle,
+                  uploadProgress,
+                  frontIndex,
+                  backIndex
+                });
+              }
+            )
+            .catch(error => Observable.empty());
+        })
+    );
   });
 };
 
