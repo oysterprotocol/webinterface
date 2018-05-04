@@ -93,14 +93,9 @@ const pollUploadProgress = (action$, store) => {
           )
         )
         .mergeMap(action => {
-          let indexes = store.getState().upload.indexes;
-
+          let { frontIdx, backIdx } = store.getState().upload.indexes;
           return Observable.fromPromise(
-            Iota.checkUploadPercentage(
-              addresses,
-              indexes.frontIdx,
-              indexes.backIdx
-            )
+            Iota.checkUploadPercentage(addresses, frontIdx, backIdx)
           )
             .map(
               ({
@@ -109,36 +104,36 @@ const pollUploadProgress = (action$, store) => {
                 frontIndex,
                 backIndex
               }) => {
-                if (updateFrontIndex) {
-                  uploadActions.updateFrontIndex(
-                    Math.min(
-                      ...[
-                        frontIndex + Math.floor(Math.random() * BUNDLE_SIZE),
-                        addresses.length - 1
-                      ]
-                    )
-                  );
-                }
-                if (updateBackIndex) {
-                  uploadActions.updateBackIndex(
-                    Math.max(
-                      ...[
-                        backIndex - Math.floor(Math.random() * BUNDLE_SIZE),
-                        0
-                      ]
-                    )
-                  );
-                }
-
                 let uploadProgress =
                   frontIndex >= backIndex - 1
                     ? 100
                     : (frontIndex + (addresses.length - 1 - backIndex)) /
                       (addresses.length - 2) *
                       100;
+
+                frontIndex = updateFrontIndex
+                  ? Math.min(
+                      ...[
+                        frontIndex + Math.floor(Math.random() * BUNDLE_SIZE),
+                        addresses.length - 1
+                      ]
+                    )
+                  : frontIndex;
+
+                backIndex = updateBackIndex
+                  ? Math.max(
+                      ...[
+                        backIndex - Math.floor(Math.random() * BUNDLE_SIZE),
+                        0
+                      ]
+                    )
+                  : backIndex;
+
                 return uploadActions.updateUploadProgress({
                   handle,
-                  uploadProgress
+                  uploadProgress,
+                  frontIndex,
+                  backIndex
                 });
               }
             )

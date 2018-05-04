@@ -41,13 +41,24 @@ const uploadReducer = (state = initState, action) => {
       };
 
     case uploadActions.UPDATE_UPLOAD_PROGRESS:
-      const { handle: fileHandle, uploadProgress } = action.payload;
+      const {
+        handle: fileHandle,
+        uploadProgress,
+        frontIndex,
+        backIndex
+      } = action.payload;
       const updatedHistory = state.history.map(f => {
         return f.handle === fileHandle ? { ...f, uploadProgress } : f;
       });
+      const newIndexes = {
+        ...state.indexes,
+        frontIdx: frontIndex,
+        backIdx: backIndex
+      };
       return {
         ...state,
-        history: updatedHistory
+        history: updatedHistory,
+        indexes: newIndexes
       };
 
     case uploadActions.ADD_TO_HISTORY:
@@ -96,26 +107,6 @@ const uploadReducer = (state = initState, action) => {
         ...state,
         indexes: indexes,
         dataMapLength
-      };
-
-    case uploadActions.UPDATE_FRONT_INDEX:
-      const frontIndexes = {
-        ...state.indexes,
-        frontIdx: action.payload
-      };
-      return {
-        ...state,
-        indexes: frontIndexes
-      };
-
-    case uploadActions.UPDATE_BACK_INDEX:
-      const backIndexes = {
-        ...state.indexes,
-        backIdx: action.payload
-      };
-      return {
-        ...state,
-        indexes: backIndexes
       };
 
     default:

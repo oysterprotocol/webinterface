@@ -64,7 +64,7 @@ const checkUploadPercentage = (addresses, frontIndex, backIndex) => {
     skinnyQueryTransactions(IotaA, [addresses[backIndex]]).then(
       transactions => {
         resolve({
-          backIndex: backIndex,
+          backIndex,
           updateIndex: transactions.length > 0
         });
       }
@@ -75,19 +75,19 @@ const checkUploadPercentage = (addresses, frontIndex, backIndex) => {
     skinnyQueryTransactions(IotaA, [addresses[frontIndex]]).then(
       transactions => {
         resolve({
-          frontIndex: frontIndex,
+          frontIndex,
           updateIndex: transactions.length > 0
         });
       }
     );
   });
 
-  return Promise.all([frontOfFile, backOfFile]).then(updateIndexes => {
+  return Promise.all([frontOfFile, backOfFile]).then(indexResults => {
     return {
-      frontIndex: updateIndexes[0].frontIndex,
-      updateFrontIndex: updateIndexes[0].updateIndex,
-      backIndex: updateIndexes[1].backIndex,
-      updateBackIndex: updateIndexes[1].updateIndex
+      frontIndex: indexResults[0].frontIndex,
+      updateFrontIndex: indexResults[0].updateIndex,
+      backIndex: indexResults[1].backIndex,
+      updateBackIndex: indexResults[1].updateIndex
     };
   });
 };
