@@ -43,6 +43,7 @@ const readBlob = blob =>
     try {
       const reader = new FileReader();
       reader.onloadend = ({ target }) => resolve(target.result);
+
       reader.readAsArrayBuffer(blob);
     } catch (err) {
       reject(err);
@@ -97,6 +98,7 @@ const fileToChunks = (file, handle, opts = {}) =>
 
           encryptedChunks = [{ idx: 0, data: metaData }, ...encryptedChunks];
         }
+
         resolve(encryptedChunks);
       });
     } catch (err) {
@@ -117,13 +119,25 @@ const chunksToFile = (chunks, handle) =>
         .map(Iota.parseMessage)
         .map(chunk => Encryption.decrypt(chunk, handle)) // treasure => null
         .map(wordArrayToByteArray)
+        .map(bin2String)
         .join(""); // join removes nulls
 
-      resolve(new Blob([bytes]));
+      resolve(new Blob([new Uint8Array(string2Bin(bytes))]));
     } catch (err) {
       reject(err);
     }
   });
+
+// TODO:  This seems like it could be better, do something different
+const bin2String = byteArray => String.fromCharCode.apply(String, byteArray);
+
+const string2Bin = str => {
+  let result = [];
+  for (let i = 0; i < str.length; i++) {
+    result.push(str.charCodeAt(i));
+  }
+  return result;
+};
 
 // TODO: Switch to a different crypto lib where we don't need these?
 
