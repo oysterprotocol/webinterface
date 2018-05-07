@@ -9,13 +9,18 @@ import Slide from "components/shared/slide";
 import PrimaryButton from "components/shared/primary-button";
 
 const DEFAULT_FILE_INPUT_TEXT = "No file selected";
+const DEFAULT_FILE_INPUT_SIZE = 0;
+const DEFAULT_FILE_INPUT_COST = 0;
+const BYTES_IN_GIGABYTE = 1073741824;
 
 class UploadSlide extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      fileName: DEFAULT_FILE_INPUT_TEXT
+      fileName: DEFAULT_FILE_INPUT_TEXT,
+      fileSize: DEFAULT_FILE_INPUT_SIZE,
+      storageCost: DEFAULT_FILE_INPUT_COST
     };
   }
 
@@ -85,7 +90,7 @@ class UploadSlide extends Component {
                 min="0"
                 max="10"
                 value={retentionYears}
-                onChange={slider => selectRetentionYears(slider.target.value)} //is there a better event so it doesnt fire on every tick?
+                onChange={slider => selectRetentionYears(slider.target.value)}
               />
             </div>
             <div className="upload-column">
@@ -124,9 +129,17 @@ class UploadSlide extends Component {
               onChange={event => {
                 const file = event.target.files[0];
                 if (!!file) {
-                  this.setState({ fileName: file.name });
+                  this.setState({ //this should probably go in global. We will want to manipulate storage cost on slider change too (if file is present)
+                    fileName: file.name,
+                    fileSize: file.size,
+                    storageCost: (file.size / BYTES_IN_GIGABYTE) * retentionYears
+                  });
                 } else {
-                  this.setState({ fileName: DEFAULT_FILE_INPUT_TEXT });
+                  this.setState({
+                    fileName: DEFAULT_FILE_INPUT_TEXT,
+                    fileSize: DEFAULT_FILE_INPUT_SIZE,
+                    storageCost: DEFAULT_FILE_INPUT_COST
+                  });
                 }
               }}
               type="file"
@@ -136,7 +149,8 @@ class UploadSlide extends Component {
           <div className="upload-column">
             <p>Cost</p>
             <h3 className="storage-fees">
-              3 Gb for 10 years: <span> 30 PRL</span>
+              {this.state.fileSize / BYTES_IN_GIGABYTE} GB for {retentionYears} years:
+              <span> {this.state.storageCost} PRL</span>
             </h3>
           </div>
         </div>
