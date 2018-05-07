@@ -22,7 +22,9 @@ const initializeUpload = file => {
 const metaDataFromIotaFormat = (trytes, handle) => {
   const encryptedData = Iota.parseMessage(trytes);
   const decryptedData = Encryption.decrypt(encryptedData, handle);
-  const metaData = JSON.parse(decryptedData);
+  const stringData = wordArrayToUtf(decryptedData);
+
+  const metaData = JSON.parse(stringData);
 
   return metaData;
 };
@@ -82,6 +84,7 @@ const fileToChunks = (file, handle, opts = {}) =>
 
       Promise.all(chunks.map(readBlob)).then(chunks => {
         let encryptedChunks = chunks
+          .map(chunk => new Uint8Array(chunk))
           .map(byteArrayToWordArray)
           .map(chunk => Encryption.encrypt(chunk, handle))
           .map(Iota.utils.toTrytes)
@@ -111,7 +114,7 @@ const chunksToFile = (chunks, handle) =>
 
       const bytes = chunks
         .map(({ data }) => data)
-        .map(Iota.utils.fromTrytes)
+        .map(Iota.parseMessage)
         .map(chunk => Encryption.decrypt(chunk, handle)) // treasure => null
         .map(wordArrayToByteArray)
         .join(""); // join removes nulls
@@ -133,6 +136,8 @@ const byteArrayToWordArray = ba => {
 
   return CryptoJS.lib.WordArray.create(wa, ba.length);
 };
+
+const wordArrayToUtf = wordArray => wordArray.toString(CryptoJS.enc.Utf8);
 
 const wordArrayToByteArray = (wordArray, length) => {
   if (

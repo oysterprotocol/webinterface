@@ -19,7 +19,7 @@ const initializeDownload = (action$, store) => {
       const [obfuscatedGenesisHash] = Encryption.hashChain(genesisHash);
       const genesisHashInTrytes = Iota.utils.toTrytes(obfuscatedGenesisHash);
       const iotaAddress = Iota.toAddress(genesisHashInTrytes);
-      return Observable.fromPromise(Iota.findTransactions([iotaAddress]))
+      return Observable.fromPromise(Iota.findTransactionObjects([iotaAddress]))
         .map(transactions => {
           const t = transactions[0];
           const {
@@ -50,7 +50,9 @@ const beginDownload = (action$, store) => {
     const addresses = _.values(datamap);
     const nonMetaDataAddresses = addresses.slice(1, addresses.length);
 
-    return Observable.fromPromise(Iota.findTransactions(nonMetaDataAddresses))
+    return Observable.fromPromise(
+      Iota.findTransactionObjects(nonMetaDataAddresses)
+    )
       .map(transactions => {
         const addrToIdx = _.reduce(
           nonMetaDataAddresses,
@@ -66,9 +68,13 @@ const beginDownload = (action$, store) => {
           data: tx.signatureMessageFragment
         }));
 
-        const blob = FileProcessor.chunksToFile(chunks);
-        FileSaver.saveAs(blob, fileName);
+        FileProcessor.chunksToFile(chunks, handle).then(blob => {
+          // had to move this in here, so the promise would be resolved
+          FileSaver.saveAs(blob, fileName);
+        });
 
+        // need to call this only after FileSave.saveAs has happened but putting it
+        // inside the .then() block caused an error
         return downloadActions.downloadSuccessAction();
       })
       .catch(error =>

@@ -37,8 +37,8 @@ const genesisHash = handle => {
 };
 
 const encrypt = (data, key) => CryptoJS.AES.encrypt(data, key).toString();
-const decrypt = (data, key) =>
-  CryptoJS.AES.decrypt(data, key).toString(CryptoJS.enc.Utf8);
+
+const decrypt = (data, key) => CryptoJS.AES.decrypt(data, key);
 
 export default {
   parseEightCharsOfFilename,
