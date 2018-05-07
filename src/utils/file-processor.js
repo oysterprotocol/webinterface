@@ -1,10 +1,7 @@
 import CryptoJS from "crypto-js";
-import _ from "lodash";
 import Encryption from "utils/encryption";
-import Base64 from "base64-arraybuffer";
 
 import Iota from "../services/iota";
-import { FILE, IOTA_API } from "../config";
 
 const CHUNK_SIZE = Math.floor(0.7 * (2187 / 2)); // TODO: Optimize this.
 
