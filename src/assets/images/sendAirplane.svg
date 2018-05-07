@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="100px" height="100px" viewBox="0 0 140 140" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 49.3 (51167) - http://www.bohemiancoding.com/sketch -->
+    <title>Group 4</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Welcome" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Desktop-1440---Upload-File-Stage-3" transform="translate(-1014.000000, -435.000000)">
+            <g id="Stage-3-Upload" transform="translate(135.000000, 177.000000)">
+                <g id="Send-Graphic" transform="translate(810.000000, 75.000000)">
+                    <g id="Group-4" transform="translate(70.000000, 183.000000)">
+                        <polygon id="Path-5" fill="#D1E5FF" points="136.477987 3.52201258 77.570799 139.119497 51.0691824 88.0414626"></polygon>
+                        <polygon id="Path-4" fill="#FFFFFF" points="2.50700923 61.2671023 138.933348 0.210168439 51.1482426 88.0553216"></polygon>
+                        <g id="send" transform="translate(0.000000, 1.921540)" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+                            <path d="M136.813649,0 L50.7286563,86.0849925" id="Stroke-962"></path>
+                            <polygon id="Stroke-963" points="77.3294537 136.813649 50.5615659 86.252083 0 59.4841951 136.813649 0"></polygon>
+                        </g>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>
