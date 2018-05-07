@@ -164,6 +164,10 @@ class UploadSlide extends Component {
                 alert(
                   `Please select a file under ${FILE.MAX_FILE_SIZE / 1000} KB.`
                 );
+              } else if (retentionYears == 0) {
+                alert(
+                  `Please select retention years`
+                );
               } else {
                 upload(file);
               }
