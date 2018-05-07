@@ -124,6 +124,10 @@ p {
   color: #0068ea;
 }
 
+.payment-request span {
+  color: #0068ea;
+}
+
 .upload-section {
   margin-top: 20px;
 }
