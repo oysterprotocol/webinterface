@@ -118,8 +118,7 @@ const chunksToFile = (chunks, handle) =>
         .map(({ data }) => data)
         .map(Iota.parseMessage)
         .map(chunk => Encryption.decrypt(chunk, handle)) // treasure => null
-        .map(wordArrayToByteArray)
-        .map(bin2String)
+        .map(wordArrayToString)
         .join(""); // join removes nulls
 
       resolve(new Blob([new Uint8Array(string2Bin(bytes))]));
@@ -152,6 +151,7 @@ const byteArrayToWordArray = ba => {
 };
 
 const wordArrayToUtf = wordArray => wordArray.toString(CryptoJS.enc.Utf8);
+const wordArrayToString = chunk => bin2String(wordArrayToByteArray(chunk));
 
 const wordArrayToByteArray = (wordArray, length) => {
   if (
