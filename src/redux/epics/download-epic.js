@@ -8,7 +8,7 @@ import Iota from "services/iota";
 import Datamap from "datamap-generator";
 import Encryption from "utils/encryption";
 import FileProcessor from "utils/file-processor";
-import { INCLUDE_TREASURE_OFFSETS } from "../../config";
+import { INCLUDE_TREASURE_OFFSETS, MAX_ADDRESSES } from "../../config";
 
 const initializeDownload = (action$, store) => {
   return action$
@@ -50,34 +50,42 @@ const beginDownload = (action$, store) => {
     const addresses = _.values(datamap);
     const nonMetaDataAddresses = addresses.slice(1, addresses.length);
 
+    const addressBatches = _.chunk(nonMetaDataAddresses, MAX_ADDRESSES);
+
     return Observable.fromPromise(
-      Iota.findTransactionObjects(nonMetaDataAddresses)
-    )
-      .mergeMap(transactions => {
-        const addrToIdx = _.reduce(
-          nonMetaDataAddresses,
-          (acc, addr, idx) => {
-            acc[addr] = idx;
-            return acc;
-          },
-          {}
-        );
-
-        const chunks = transactions.map(tx => ({
-          idx: addrToIdx[tx.address],
-          data: tx.signatureMessageFragment
-        }));
-
-        return Observable.fromPromise(
-          FileProcessor.chunksToFile(chunks, handle)
-        ).map(blob => {
-          FileSaver.saveAs(blob, fileName);
-          return downloadActions.downloadSuccessAction();
-        });
-      })
-      .catch(error =>
-        Observable.of(downloadActions.downloadFailureAction(error))
-      );
+      Promise.all(
+        addressBatches.map(addresses => {
+          return new Promise((resolve, reject) =>
+            Iota.findTransactionObjects(addresses)
+              .then(transactions => {
+                const addrToIdx = _.reduce(
+                  nonMetaDataAddresses,
+                  (acc, addr, idx) => {
+                    acc[addr] = idx;
+                    return acc;
+                  },
+                  {}
+                );
+                resolve(
+                  transactions.map(tx => ({
+                    idx: addrToIdx[tx.address],
+                    data: tx.signatureMessageFragment
+                  }))
+                );
+              })
+              .catch(error => reject(error))
+          );
+        })
+      )
+    ).mergeMap(chunkArrays => {
+      const chunks = [].concat(...chunkArrays);
+      return Observable.fromPromise(
+        FileProcessor.chunksToFile(chunks, handle)
+      ).map(blob => {
+        FileSaver.saveAs(blob, fileName);
+        return downloadActions.downloadSuccessAction();
+      });
+    });
   });
 };
 
