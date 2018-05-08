@@ -1,9 +1,16 @@
 import uploadActions from "redux/actions/upload-actions";
-import { API, UPLOAD_STATUSES } from "config";
+import { API, UPLOAD_STATUSES, IOTA_API } from "config";
 
 const initState = {
   alphaBroker: API.BROKER_NODE_A,
   betaBroker: API.BROKER_NODE_B,
+  indexes: {
+    startingIdx: 0,
+    endingIdx: 0,
+    frontIdx: 0,
+    backIdx: 0
+  },
+  dataMapLength: 0,
   history: [
     // object returned by uploadedFileGenerator()
   ],
@@ -41,13 +48,24 @@ const uploadReducer = (state = initState, action) => {
       };
 
     case uploadActions.UPDATE_UPLOAD_PROGRESS:
-      const { handle: fileHandle, uploadProgress } = action.payload;
+      const {
+        handle: fileHandle,
+        uploadProgress,
+        frontIndex,
+        backIndex
+      } = action.payload;
       const updatedHistory = state.history.map(f => {
         return f.handle === fileHandle ? { ...f, uploadProgress } : f;
       });
+      const newIndexes = {
+        ...state.indexes,
+        frontIdx: frontIndex,
+        backIdx: backIndex
+      };
       return {
         ...state,
-        history: updatedHistory
+        history: updatedHistory,
+        indexes: newIndexes
       };
 
     case uploadActions.ADD_TO_HISTORY:
@@ -82,6 +100,20 @@ const uploadReducer = (state = initState, action) => {
       return {
         ...state,
         history: h
+      };
+
+    case uploadActions.INITIALIZE_POLLING_INDEXES:
+      const { frontIdx, backIdx, dataMapLength } = action.payload;
+      const indexes = {
+        ...state.indexes,
+        endingIdx: dataMapLength - 1,
+        frontIdx,
+        backIdx
+      };
+      return {
+        ...state,
+        indexes,
+        dataMapLength
       };
 
     default:

@@ -1,6 +1,6 @@
 import IOTA from "iota.lib.js";
 import _ from "lodash";
-import { IOTA_API } from "config";
+import { IOTA_API } from "../../src/config";
 
 const Iota = new IOTA();
 
@@ -46,15 +46,54 @@ const queryTransactions = (iotaProvider, addresses) =>
     );
   });
 
-const checkUploadPercentage = addresses =>
+const skinnyQueryTransactions = (iotaProvider, addresses) =>
   new Promise((resolve, reject) => {
-    queryTransactions(IotaA, addresses).then(transactions => {
-      const percentage = transactions.length / addresses.length * 100;
-      resolve(percentage);
-    });
+    iotaProvider.api.findTransactions(
+      { addresses },
+      (error, transactionHashes) => {
+        if (error) {
+          console.log("IOTA ERROR: ", error);
+        }
+        resolve(transactionHashes);
+      }
+    );
   });
 
-const findTransactions = addresses =>
+const checkUploadPercentage = (addresses, frontIndex, backIndex) => {
+  let backOfFile = new Promise((resolve, reject) => {
+    skinnyQueryTransactions(IotaA, [addresses[backIndex]]).then(
+      transactions => {
+        resolve({
+          backIndex,
+          updateIndex: transactions.length > 0
+        });
+      }
+    );
+  });
+
+  let frontOfFile = new Promise((resolve, reject) => {
+    skinnyQueryTransactions(IotaA, [addresses[frontIndex]]).then(
+      transactions => {
+        resolve({
+          frontIndex,
+          updateIndex: transactions.length > 0
+        });
+      }
+    );
+  });
+
+  return Promise.all([frontOfFile, backOfFile]).then(indexResults => {
+    const [front, back] = indexResults;
+    return {
+      frontIndex: front.frontIndex,
+      updateFrontIndex: front.updateIndex,
+      backIndex: back.backIndex,
+      updateBackIndex: back.updateIndex
+    };
+  });
+};
+
+const findTransactionObjects = addresses =>
   new Promise((resolve, reject) => {
     Promise.race([
       queryTransactions(IotaA, addresses),
@@ -73,6 +112,6 @@ export default {
   toAddress,
   parseMessage,
   checkUploadPercentage,
-  findTransactions,
+  findTransactionObjects,
   utils: Iota.utils
 };

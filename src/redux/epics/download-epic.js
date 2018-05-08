@@ -1,5 +1,5 @@
-import {Observable} from "rxjs";
-import {combineEpics} from "redux-observable";
+import { Observable } from "rxjs";
+import { combineEpics } from "redux-observable";
 import _ from "lodash";
 import FileSaver from "file-saver";
 
@@ -8,6 +8,7 @@ import Iota from "services/iota";
 import Datamap from "datamap-generator";
 import Encryption from "utils/encryption";
 import FileProcessor from "utils/file-processor";
+import { INCLUDE_TREASURE_OFFSETS } from "../../config";
 
 const initializeDownload = (action$, store) => {
   return action$
@@ -18,7 +19,7 @@ const initializeDownload = (action$, store) => {
       const [obfuscatedGenesisHash] = Encryption.hashChain(genesisHash);
       const genesisHashInTrytes = Iota.utils.toTrytes(obfuscatedGenesisHash);
       const iotaAddress = Iota.toAddress(genesisHashInTrytes);
-      return Observable.fromPromise(Iota.findTransactions([iotaAddress]))
+      return Observable.fromPromise(Iota.findTransactionObjects([iotaAddress]))
         .map(transactions => {
           const t = transactions[0];
           const {
@@ -44,12 +45,15 @@ const initializeDownload = (action$, store) => {
 const beginDownload = (action$, store) => {
   return action$.ofType(downloadActions.BEGIN_DOWNLOAD).mergeMap(action => {
     const { handle, fileName, numberOfChunks } = action.payload;
-    const datamap = Datamap.generate(handle, numberOfChunks);
+    const datamapOpts = { includeTreasureOffsets: INCLUDE_TREASURE_OFFSETS };
+    const datamap = Datamap.generate(handle, numberOfChunks, datamapOpts);
     const addresses = _.values(datamap);
     const nonMetaDataAddresses = addresses.slice(1, addresses.length);
 
-    return Observable.fromPromise(Iota.findTransactions(nonMetaDataAddresses))
-      .map(transactions => {
+    return Observable.fromPromise(
+      Iota.findTransactionObjects(nonMetaDataAddresses)
+    )
+      .mergeMap(transactions => {
         const addrToIdx = _.reduce(
           nonMetaDataAddresses,
           (acc, addr, idx) => {
@@ -59,26 +63,17 @@ const beginDownload = (action$, store) => {
           {}
         );
 
-        const orderedTransactions = _.sortBy(
-          transactions,
-          tx => addrToIdx[tx.address]
-        );
+        const chunks = transactions.map(tx => ({
+          idx: addrToIdx[tx.address],
+          data: tx.signatureMessageFragment
+        }));
 
-        const encryptedFileContents = orderedTransactions
-          .map(tx => tx.signatureMessageFragment)
-          .join("");
-
-        const bytesArray = FileProcessor.decryptFile(
-          encryptedFileContents,
-          handle
-        );
-
-        console.log("DOWNLOADED BYTES ARRAY", bytesArray);
-
-        const blob = new Blob([new Uint8Array(bytesArray)]);
-        FileSaver.saveAs(blob, fileName);
-
-        return downloadActions.downloadSuccessAction();
+        return Observable.fromPromise(
+          FileProcessor.chunksToFile(chunks, handle)
+        ).map(blob => {
+          FileSaver.saveAs(blob, fileName);
+          return downloadActions.downloadSuccessAction();
+        });
       })
       .catch(error =>
         Observable.of(downloadActions.downloadFailureAction(error))

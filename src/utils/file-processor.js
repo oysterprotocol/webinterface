@@ -1,58 +1,27 @@
-import _ from "lodash";
+import CryptoJS from "crypto-js";
 import Encryption from "utils/encryption";
-import Base64 from "base64-arraybuffer";
 
-import Iota from "services/iota";
-import {FILE, IOTA_API} from "config";
+import Iota from "../services/iota";
 
-const metaDataToIotaFormat = (object, handle) => {
-  const metaDataString = JSON.stringify(object);
-  const encryptedData = Encryption.encryptMetaData(metaDataString, handle);
-  const trytes = Iota.utils.toTrytes(encryptedData);
+const CHUNK_SIZE = Math.floor(0.7 * (2187 / 2)); // TODO: Optimize this.
 
-  return trytes;
+const fileSizeFromNumChunks = numChunks => numChunks * CHUNK_SIZE;
+
+const initializeUpload = file => {
+  const handle = createHandle(file.name);
+  return fileToChunks(file, handle, { withMeta: true }).then(chunks => {
+    const fileName = file.name;
+    const numberOfChunks = chunks.length;
+    return { handle, fileName, numberOfChunks, chunks };
+  });
 };
 
 const metaDataFromIotaFormat = (trytes, handle) => {
   const encryptedData = Iota.parseMessage(trytes);
-  const decryptedData = Encryption.decryptMetaData(encryptedData, handle);
-  const metaData = JSON.parse(decryptedData);
-
-  return metaData;
-};
-
-const encryptFile = (file, handle) =>
-  readBlob(file).then(arrayBuffer => {
-    const bytes = new Uint8Array(arrayBuffer);
-    const encryptedData = Encryption.encrypt(bytes, handle);
-    const trytes = Iota.utils.toTrytes(encryptedData);
-
-    // console.log("[UPLOAD] ENCRYPTED FILE: ", trytes);
-    return trytes;
-  });
-
-const decryptFile = (trytes, handle) => {
-  // console.log("[DOWNLOAD] DECRYPTED FILE: ", trytes);
-  const encryptedData = Iota.parseMessage(trytes);
   const decryptedData = Encryption.decrypt(encryptedData, handle);
+  const stringData = wordArrayToUtf(decryptedData);
 
-  return decryptedData;
-};
-
-const chunkParamsGenerator = ({ idx, data, hash }) => {
-  return { idx, data, hash };
-};
-
-const chunkGenerator = ({ idx, startingPoint, type }) => {
-  return { idx, startingPoint, type };
-};
-
-const initializeUpload = file => {
-  const handle = createHandle(file.name);
-  return encryptFile(file, handle).then(data => {
-    const numberOfChunks = createByteLocations(data.length).length;
-    return { handle, fileName: file.name, numberOfChunks, data };
-  });
+  return JSON.parse(stringData);
 };
 
 const createHandle = fileName => {
@@ -64,95 +33,151 @@ const createHandle = fileName => {
   return handle;
 };
 
-const createByteLocations = fileSizeBytes =>
-  _.range(0, fileSizeBytes, IOTA_API.MESSAGE_LENGTH);
-
-const createByteChunks = fileSizeBytes => {
-  const metaDataChunk = chunkGenerator({
-    idx: 0,
-    startingPoint: null,
-    type: FILE.CHUNK_TYPES.METADATA
-  });
-
-  // This returns an array with the starting byte pointers
-  // ex: For a 2300 byte file it would return: [0, 500, 1000, 1500, 2000]
-  const byteLocations = createByteLocations(fileSizeBytes);
-  const fileContentChunks = _.map(byteLocations, (byte, index) => {
-    return chunkGenerator({
-      idx: index + 1,
-      startingPoint: byte,
-      type: FILE.CHUNK_TYPES.FILE_CONTENTS
-    });
-  });
-
-  return [metaDataChunk, ...fileContentChunks];
-};
-
 const readBlob = blob =>
   new Promise((resolve, reject) => {
-    const reader = new FileReader();
-    reader.onload = function (evt) {
-      if (evt.target.readyState === FileReader.DONE) {
-        const arrayBuffer = evt.target.result;
-        resolve(arrayBuffer);
-      }
-    };
-    reader.readAsArrayBuffer(blob);
+    try {
+      const reader = new FileReader();
+      reader.onloadend = ({ target }) => resolve(target.result);
+
+      reader.readAsArrayBuffer(blob);
+    } catch (err) {
+      reject(err);
+    }
   });
 
-const metaDataToChunkParams = (metaData, idx, handle, genesisHash) =>
-  chunkParamsGenerator({
-    idx: idx,
-    data: metaDataToIotaFormat(metaData, handle),
-    hash: genesisHash
-  });
-
-const fileContentsToChunkParams = (data, idx, genesisHash) =>
-  chunkParamsGenerator({
-    idx: idx,
-    data,
-    hash: genesisHash
-  });
-
-const createChunkParams = (chunk,
-                           sliceCutOffFn,
-                           fileContents,
-                           metaData,
-                           handle,
-                           genesisHash) => {
-  const { idx, startingPoint, type } = chunk;
-  switch (type) {
-    case FILE.CHUNK_TYPES.FILE_CONTENTS:
-      const slice = fileContents.slice(
-        startingPoint,
-        sliceCutOffFn(startingPoint)
-      );
-      return fileContentsToChunkParams(slice, idx, genesisHash);
-    default:
-      return metaDataToChunkParams(metaData, idx, handle, genesisHash);
-  }
-};
-
-const createMetaData = (fileName, fileSizeBytes) => {
+const createMetaData = (fileName, numberOfChunks) => {
   const fileExtension = fileName.split(".").pop();
-  const numberOfChunks = createByteLocations(fileSizeBytes).length;
 
-  return {
+  const meta = {
     fileName: fileName.substr(0, 500),
     ext: fileExtension,
     numberOfChunks
   };
+
+  return JSON.stringify(meta);
+};
+
+// Pipeline: file |> splitToChunks |> encrypt |> toTrytes
+const fileToChunks = (file, handle, opts = {}) =>
+  new Promise((resolve, reject) => {
+    try {
+      // Split into chunks.
+      const chunksCount = Math.ceil(file.size / CHUNK_SIZE, CHUNK_SIZE);
+      const chunks = [];
+
+      let fileOffset = 0;
+      for (let i = 0; i < chunksCount; i++) {
+        chunks.push(file.slice(fileOffset, fileOffset + CHUNK_SIZE));
+        fileOffset += CHUNK_SIZE;
+      }
+
+      Promise.all(chunks.map(readBlob)).then(chunks => {
+        let encryptedChunks = chunks
+          .map(chunk => new Uint8Array(chunk))
+          .map(byteArrayToWordArray)
+          .map(chunk => Encryption.encrypt(chunk, handle))
+          .map(Iota.utils.toTrytes)
+          .map((data, idx) => ({ idx: idx + 1, data })); // idx because things will get jumbled
+
+        if (opts.withMeta) {
+          const metaChunk = createMetaData(file.name, chunksCount);
+          const encryptedMeta = Encryption.encrypt(metaChunk, handle);
+          const metaData = Iota.utils.toTrytes(encryptedMeta);
+
+          encryptedChunks = [{ idx: 0, data: metaData }, ...encryptedChunks];
+        }
+
+        resolve(encryptedChunks);
+      });
+    } catch (err) {
+      reject(err);
+    }
+  });
+
+// Pipeline: chunks |> fromTrytes |> decrypt |> combineChunks
+const chunksToFile = (chunks, handle) =>
+  new Promise((resolve, reject) => {
+    try {
+      // ASC order.
+      // NOTE: Cannot use `>` because JS treats 0 as null and doesn't work.
+      chunks.sort((x, y) => x.idx - y.idx);
+
+      const bytes = chunks
+        .map(({ data }) => data)
+        .map(Iota.parseMessage)
+        .map(chunk => Encryption.decrypt(chunk, handle)) // treasure => null
+        .map(wordArrayToString)
+        .join(""); // join removes nulls
+
+      resolve(new Blob([new Uint8Array(string2Bin(bytes))]));
+    } catch (err) {
+      reject(err);
+    }
+  });
+
+// TODO:  This seems like it could be better, do something different
+const bin2String = byteArray => String.fromCharCode.apply(String, byteArray);
+
+const string2Bin = str => {
+  let result = [];
+  for (let i = 0; i < str.length; i++) {
+    result.push(str.charCodeAt(i));
+  }
+  return result;
+};
+
+// TODO: Switch to a different crypto lib where we don't need these?
+
+const byteArrayToWordArray = ba => {
+  let wa = [],
+    i;
+  for (i = 0; i < ba.length; i++) {
+    wa[(i / 4) | 0] |= ba[i] << (24 - 8 * i);
+  }
+
+  return CryptoJS.lib.WordArray.create(wa, ba.length);
+};
+
+const wordArrayToUtf = wordArray => wordArray.toString(CryptoJS.enc.Utf8);
+const wordArrayToString = chunk => bin2String(wordArrayToByteArray(chunk));
+
+const wordArrayToByteArray = (wordArray, length) => {
+  if (
+    wordArray.hasOwnProperty("sigBytes") &&
+    wordArray.hasOwnProperty("words")
+  ) {
+    length = wordArray.sigBytes;
+    wordArray = wordArray.words;
+  }
+
+  let result = [],
+    bytes,
+    i = 0;
+  while (length > 0) {
+    bytes = wordToByteArray(wordArray[i], Math.min(4, length));
+    length -= bytes.length;
+    result.push(bytes);
+    i++;
+  }
+  return [].concat.apply([], result);
+};
+
+const wordToByteArray = (word, length) => {
+  let ba = [],
+    xFF = 0xff;
+  if (length > 0) ba.push(word >>> 24);
+  if (length > 1) ba.push((word >>> 16) & xFF);
+  if (length > 2) ba.push((word >>> 8) & xFF);
+  if (length > 3) ba.push(word & xFF);
+
+  return ba;
 };
 
 export default {
-  chunkParamsGenerator,
-  createByteChunks,
-  createChunkParams,
-  createMetaData,
-  decryptFile,
-  encryptFile,
-  initializeUpload,
   metaDataFromIotaFormat,
-  metaDataToIotaFormat,
-  readBlob
+  initializeUpload,
+  readBlob,
+  fileSizeFromNumChunks,
+  fileToChunks, // used just for testing.
+  chunksToFile
 };

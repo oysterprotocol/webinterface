@@ -1,11 +1,11 @@
-import {Observable} from "rxjs";
-import {combineEpics} from "redux-observable";
+import { Observable } from "rxjs";
+import { combineEpics } from "redux-observable";
 import FileSaver from "file-saver";
 
 import playgroundActions from "redux/actions/playground-actions";
 import downloadActions from "redux/actions/download-actions";
 
-import {FILE, IOTA_API} from "config";
+import { FILE, IOTA_API } from "config";
 import FileProcessor from "utils/file-processor";
 
 const testUpload = (action$, store) => {
@@ -13,6 +13,7 @@ const testUpload = (action$, store) => {
     const file = action.payload;
     return Observable.fromPromise(FileProcessor.initializeUpload(file))
       .map(({ numberOfChunks, handle, fileName, data }) => {
+        // ALREADY HAVE CHUNKS!!! Delete this!!!
         const byteChunks = FileProcessor.createByteChunks(data.length);
         const chunksInTrytes = byteChunks
           .filter(b => b.type === FILE.CHUNK_TYPES.FILE_CONTENTS)
@@ -41,10 +42,7 @@ const testDownload = (action$, store) => {
     const { chunksInTrytes, handle, fileName } = action.payload;
     const encryptedFileContents = chunksInTrytes.join("");
 
-    const bytesArray = FileProcessor.decryptFile(
-      encryptedFileContents,
-      handle
-    );
+    const bytesArray = FileProcessor.decryptFile(encryptedFileContents, handle);
 
     console.log("DOWNLOADED BYTES ARRAY", bytesArray);
 
