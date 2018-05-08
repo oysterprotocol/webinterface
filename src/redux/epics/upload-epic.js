@@ -15,6 +15,9 @@ import { SECONDS_PER_CHUNK } from "config";
 
 const BUNDLE_SIZE = IOTA_API.BUNDLE_SIZE;
 
+const UPLOAD_POLL_FREQUENCY =
+  BUNDLE_SIZE * SECONDS_PER_CHUNK / NUM_BROKER_CHANNELS * 1000;
+
 const initializeUpload = (action$, store) => {
   return action$.ofType(uploadActions.INITIALIZE_UPLOAD).mergeMap(action => {
     const file = action.payload;
@@ -84,9 +87,7 @@ const pollUploadProgress = (action$, store) => {
           backIdx: addresses.length - 1
         })
       ),
-      Observable.interval(
-        BUNDLE_SIZE * SECONDS_PER_CHUNK / NUM_BROKER_CHANNELS * 1000
-      )
+      Observable.interval(UPLOAD_POLL_FREQUENCY)
         .takeUntil(
           Observable.merge(
             action$.ofType(uploadActions.MARK_UPLOAD_AS_COMPLETE).filter(a => {
