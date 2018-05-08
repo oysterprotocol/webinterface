@@ -10,8 +10,13 @@ import Backend from "services/backend";
 import Datamap from "datamap-generator";
 import FileProcessor from "utils/file-processor";
 import { IOTA_API } from "config";
+import { NUM_BROKER_CHANNELS } from "config";
+import { SECONDS_PER_CHUNK } from "config";
 
 const BUNDLE_SIZE = IOTA_API.BUNDLE_SIZE;
+
+const UPLOAD_POLL_FREQUENCY =
+  BUNDLE_SIZE * SECONDS_PER_CHUNK / NUM_BROKER_CHANNELS * 1000;
 
 const initializeUpload = (action$, store) => {
   return action$.ofType(uploadActions.INITIALIZE_UPLOAD).mergeMap(action => {
@@ -82,7 +87,7 @@ const pollUploadProgress = (action$, store) => {
           backIdx: addresses.length - 1
         })
       ),
-      Observable.interval(3000)
+      Observable.interval(UPLOAD_POLL_FREQUENCY)
         .takeUntil(
           Observable.merge(
             action$.ofType(uploadActions.MARK_UPLOAD_AS_COMPLETE).filter(a => {

@@ -13,7 +13,7 @@ export const IOTA_API = Object.freeze({
   PROVIDER_C: "http://18.188.64.13:14265",
   ADDRESS_LENGTH: 81,
   MESSAGE_LENGTH: 2187,
-  BUNDLE_SIZE: 30
+  BUNDLE_SIZE: 100
 });
 
 export const UPLOAD_STATUSES = Object.freeze({
@@ -38,3 +38,5 @@ export const FILE = Object.freeze({
 });
 
 export const INCLUDE_TREASURE_OFFSETS = false;
+export const NUM_BROKER_CHANNELS = 3; // number of broker cores - 1
+export const SECONDS_PER_CHUNK = 0.035; // if MWM is changed this will be incorrect
