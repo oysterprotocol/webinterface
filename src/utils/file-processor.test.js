@@ -118,7 +118,11 @@ test("file |> fileToChunks |> chunksToFile - correct meta", done => {
     FileProcessor.fileToChunks(file, handle, { withMeta: true })
       .then(encryptedChks => {
         const metaChunk = encryptedChks[0];
-        const metaData = FileProcessor.parseMetaChunk(metaChunk, handle);
+
+        const metaData = FileProcessor.metaDataFromIotaFormat(
+          metaChunk.data,
+          handle
+        );
 
         expect(metaData).toEqual({
           fileName: "file.png",

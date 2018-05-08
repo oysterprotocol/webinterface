@@ -21,9 +21,7 @@ const metaDataFromIotaFormat = (trytes, handle) => {
   const decryptedData = Encryption.decrypt(encryptedData, handle);
   const stringData = wordArrayToUtf(decryptedData);
 
-  const metaData = JSON.parse(stringData);
-
-  return metaData;
+  return JSON.parse(stringData);
 };
 
 const createHandle = fileName => {
@@ -57,13 +55,6 @@ const createMetaData = (fileName, numberOfChunks) => {
   };
 
   return JSON.stringify(meta);
-};
-
-const parseMetaChunk = (chunk, handle) => {
-  const chunkBytes = Iota.utils.fromTrytes(chunk.data);
-  const metaJson = Encryption.decrypt(chunkBytes, handle);
-
-  return JSON.parse(metaJson);
 };
 
 // Pipeline: file |> splitToChunks |> encrypt |> toTrytes
@@ -188,6 +179,5 @@ export default {
   readBlob,
   fileSizeFromNumChunks,
   fileToChunks, // used just for testing.
-  parseMetaChunk,
   chunksToFile
 };

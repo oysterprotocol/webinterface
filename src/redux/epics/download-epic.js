@@ -53,7 +53,7 @@ const beginDownload = (action$, store) => {
     return Observable.fromPromise(
       Iota.findTransactionObjects(nonMetaDataAddresses)
     )
-      .map(transactions => {
+      .mergeMap(transactions => {
         const addrToIdx = _.reduce(
           nonMetaDataAddresses,
           (acc, addr, idx) => {
@@ -68,14 +68,12 @@ const beginDownload = (action$, store) => {
           data: tx.signatureMessageFragment
         }));
 
-        FileProcessor.chunksToFile(chunks, handle).then(blob => {
-          // had to move this in here, so the promise would be resolved
+        return Observable.fromPromise(
+          FileProcessor.chunksToFile(chunks, handle)
+        ).map(blob => {
           FileSaver.saveAs(blob, fileName);
+          return downloadActions.downloadSuccessAction();
         });
-
-        // need to call this only after FileSave.saveAs has happened but putting it
-        // inside the .then() block caused an error
-        return downloadActions.downloadSuccessAction();
       })
       .catch(error =>
         Observable.of(downloadActions.downloadFailureAction(error))

@@ -64,7 +64,7 @@ const createUploadSession = (
       .then(({ data }) => {
         console.log("UPLOAD SESSION SUCCESS: ", data);
         const { id: alphaSessionId, betaSessionId } = data;
-        const { invoice: invoice } = data;
+        const { invoice } = data;
         resolve({ alphaSessionId, betaSessionId, invoice });
       })
       .catch(error => {
