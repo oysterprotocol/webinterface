@@ -31,19 +31,48 @@ const parseMessage = message => {
   return Iota.utils.fromTrytes(evenChars);
 };
 
+const lightTxObjects = trytes => {
+  return _.map(trytes, trytes => {
+    if (!trytes) return;
+
+    // validity check
+    for (var i = 2279; i < 2295; i++) {
+      if (trytes.charAt(i) !== "9") return;
+    }
+
+    return {
+      signatureMessageFragment: trytes.slice(0, 2187),
+      address: trytes.slice(2187, 2268)
+    };
+  });
+};
+
+const queryTrytes = (iotaProvider, transactions) =>
+  new Promise((resolve, reject) => {
+    iotaProvider.api.getTrytes(transactions, (error, trytes) => {
+      if (error) {
+        return reject(error);
+      }
+
+      resolve(trytes);
+    });
+  });
+
 const queryTransactions = (iotaProvider, addresses) =>
   new Promise((resolve, reject) => {
-    iotaProvider.api.findTransactionObjects(
-      { addresses },
-      (error, transactionObjects) => {
-        if (error) {
-          console.log("IOTA ERROR: ", error);
-        }
+    iotaProvider.api.findTransactions({ addresses }, (error, transactions) => {
+      if (error) {
+        console.log("IOTA ERROR: ", error);
+        return reject(error);
+      }
+
+      queryTrytes(iotaProvider, transactions).then(trytes => {
+        const transactionObjects = lightTxObjects(trytes);
         const settledTransactions = transactionObjects || [];
         const uniqTransactions = _.uniqBy(settledTransactions, "address");
         resolve(uniqTransactions);
-      }
-    );
+      }, reject);
+    });
   });
 
 const skinnyQueryTransactions = (iotaProvider, addresses) =>
