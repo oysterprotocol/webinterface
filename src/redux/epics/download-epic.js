@@ -19,7 +19,7 @@ const initializeDownload = (action$, store) => {
       const [obfuscatedGenesisHash] = Encryption.hashChain(genesisHash);
       const genesisHashInTrytes = Iota.utils.toTrytes(obfuscatedGenesisHash);
       const iotaAddress = Iota.toAddress(genesisHashInTrytes);
-      return Observable.fromPromise(Iota.findTransactions([iotaAddress]))
+      return Observable.fromPromise(Iota.findTransactionObjects([iotaAddress]))
         .map(transactions => {
           const t = transactions[0];
           const {
@@ -50,8 +50,10 @@ const beginDownload = (action$, store) => {
     const addresses = _.values(datamap);
     const nonMetaDataAddresses = addresses.slice(1, addresses.length);
 
-    return Observable.fromPromise(Iota.findTransactions(nonMetaDataAddresses))
-      .map(transactions => {
+    return Observable.fromPromise(
+      Iota.findTransactionObjects(nonMetaDataAddresses)
+    )
+      .mergeMap(transactions => {
         const addrToIdx = _.reduce(
           nonMetaDataAddresses,
           (acc, addr, idx) => {
@@ -66,10 +68,12 @@ const beginDownload = (action$, store) => {
           data: tx.signatureMessageFragment
         }));
 
-        const blob = FileProcessor.chunksToFile(chunks);
-        FileSaver.saveAs(blob, fileName);
-
-        return downloadActions.downloadSuccessAction();
+        return Observable.fromPromise(
+          FileProcessor.chunksToFile(chunks, handle)
+        ).map(blob => {
+          FileSaver.saveAs(blob, fileName);
+          return downloadActions.downloadSuccessAction();
+        });
       })
       .catch(error =>
         Observable.of(downloadActions.downloadFailureAction(error))

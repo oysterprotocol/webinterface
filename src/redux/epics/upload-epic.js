@@ -70,7 +70,7 @@ const refreshIncompleteUploads = (action$, store) => {
 const pollUploadProgress = (action$, store) => {
   return action$.ofType(uploadActions.BEGIN_UPLOAD).switchMap(action => {
     const { numberOfChunks, handle } = action.payload;
-    const datamap = Datamap.generate(handle, numberOfChunks);
+    const datamap = Datamap.generate(handle, numberOfChunks - 1);
     const addresses = _.values(datamap);
     // console.log("POLLING 81 CHARACTER IOTA ADDRESSES: ", addresses);
 
@@ -82,7 +82,7 @@ const pollUploadProgress = (action$, store) => {
           backIdx: addresses.length - 1
         })
       ),
-      Observable.interval(5000)
+      Observable.interval(3000)
         .takeUntil(
           Observable.merge(
             action$.ofType(uploadActions.MARK_UPLOAD_AS_COMPLETE).filter(a => {
@@ -114,7 +114,9 @@ const pollUploadProgress = (action$, store) => {
                 frontIndex = updateFrontIndex
                   ? Math.min(
                       ...[
-                        frontIndex + Math.floor(Math.random() * BUNDLE_SIZE),
+                        frontIndex +
+                          Math.floor(Math.random() * (BUNDLE_SIZE / 2)) +
+                          BUNDLE_SIZE / 2,
                         addresses.length - 1
                       ]
                     )
@@ -123,7 +125,9 @@ const pollUploadProgress = (action$, store) => {
                 backIndex = updateBackIndex
                   ? Math.max(
                       ...[
-                        backIndex - Math.floor(Math.random() * BUNDLE_SIZE),
+                        backIndex -
+                          Math.floor(Math.random() * (BUNDLE_SIZE / 2)) -
+                          BUNDLE_SIZE / 2,
                         0
                       ]
                     )

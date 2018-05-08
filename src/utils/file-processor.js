@@ -1,10 +1,8 @@
 import CryptoJS from "crypto-js";
-import _ from "lodash";
 import Encryption from "utils/encryption";
-import Base64 from "base64-arraybuffer";
+import _ from "lodash";
 
 import Iota from "../services/iota";
-import { FILE, IOTA_API } from "../config";
 
 const CHUNK_SIZE = Math.floor(0.7 * (2187 / 2)); // TODO: Optimize this.
 
@@ -22,9 +20,9 @@ const initializeUpload = file => {
 const metaDataFromIotaFormat = (trytes, handle) => {
   const encryptedData = Iota.parseMessage(trytes);
   const decryptedData = Encryption.decrypt(encryptedData, handle);
-  const metaData = JSON.parse(decryptedData);
+  const stringData = wordArrayToUtf(decryptedData);
 
-  return metaData;
+  return JSON.parse(stringData);
 };
 
 const createHandle = fileName => {
@@ -41,6 +39,7 @@ const readBlob = blob =>
     try {
       const reader = new FileReader();
       reader.onloadend = ({ target }) => resolve(target.result);
+
       reader.readAsArrayBuffer(blob);
     } catch (err) {
       reject(err);
@@ -59,13 +58,6 @@ const createMetaData = (fileName, numberOfChunks) => {
   return JSON.stringify(meta);
 };
 
-const parseMetaChunk = (chunk, handle) => {
-  const chunkBytes = Iota.utils.fromTrytes(chunk.data);
-  const metaJson = Encryption.decrypt(chunkBytes, handle);
-
-  return JSON.parse(metaJson);
-};
-
 // Pipeline: file |> splitToChunks |> encrypt |> toTrytes
 const fileToChunks = (file, handle, opts = {}) =>
   new Promise((resolve, reject) => {
@@ -82,6 +74,7 @@ const fileToChunks = (file, handle, opts = {}) =>
 
       Promise.all(chunks.map(readBlob)).then(chunks => {
         let encryptedChunks = chunks
+          .map(chunk => new Uint8Array(chunk))
           .map(byteArrayToWordArray)
           .map(chunk => Encryption.encrypt(chunk, handle))
           .map(Iota.utils.toTrytes)
@@ -94,6 +87,7 @@ const fileToChunks = (file, handle, opts = {}) =>
 
           encryptedChunks = [{ idx: 0, data: metaData }, ...encryptedChunks];
         }
+
         resolve(encryptedChunks);
       });
     } catch (err) {
@@ -111,16 +105,21 @@ const chunksToFile = (chunks, handle) =>
 
       const bytes = chunks
         .map(({ data }) => data)
-        .map(Iota.utils.fromTrytes)
+        .map(Iota.parseMessage)
         .map(chunk => Encryption.decrypt(chunk, handle)) // treasure => null
-        .map(wordArrayToByteArray)
+        .map(wordArrayToString)
         .join(""); // join removes nulls
 
-      resolve(new Blob([bytes]));
+      resolve(new Blob([new Uint8Array(string2Bin(bytes))]));
     } catch (err) {
       reject(err);
     }
   });
+
+// TODO:  This seems like it could be better, do something different
+const bin2String = byteArray => String.fromCharCode.apply(String, byteArray);
+
+const string2Bin = str => _.map(str, c => c.charCodeAt(0));
 
 // TODO: Switch to a different crypto lib where we don't need these?
 
@@ -133,6 +132,9 @@ const byteArrayToWordArray = ba => {
 
   return CryptoJS.lib.WordArray.create(wa, ba.length);
 };
+
+const wordArrayToUtf = wordArray => wordArray.toString(CryptoJS.enc.Utf8);
+const wordArrayToString = chunk => bin2String(wordArrayToByteArray(chunk));
 
 const wordArrayToByteArray = (wordArray, length) => {
   if (
@@ -172,6 +174,5 @@ export default {
   readBlob,
   fileSizeFromNumChunks,
   fileToChunks, // used just for testing.
-  parseMetaChunk,
   chunksToFile
 };
