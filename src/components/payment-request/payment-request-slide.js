@@ -1,7 +1,7 @@
 import React from "react";
 
 import Slide from "components/shared/slide";
-import ICON_PlANE from "assets/images/sendAirplane.svg"; //replace with plane icon
+import ICON_PlANE from "assets/images/sendAirplane.svg";
 
 const PaymentRequestSlide = () => (
   <Slide title="Send PRL" image={ICON_PlANE}>
