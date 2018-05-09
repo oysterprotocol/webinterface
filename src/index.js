@@ -17,6 +17,7 @@ import UploadForm from "components/upload-form";
 import UploadStarted from "components/upload-started";
 import UploadComplete from "components/upload-complete";
 import PaymentRequest from "components/payment-request";
+import TransactionReceived from "components/transaction-received";
 import Playground from "components/playground";
 import registerServiceWorker from "./register-service-worker";
 
@@ -41,6 +42,7 @@ const App = () => (
           <Route path="/upload-complete" component={UploadComplete} />
 
           <Route path="/payment-request" component={PaymentRequest} />
+          <Route path="/transaction-received" component={TransactionReceived} />
 
           <Route path="/playground" component={Playground} />
         </div>
