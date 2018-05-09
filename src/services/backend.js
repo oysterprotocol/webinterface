@@ -34,7 +34,8 @@ const uploadFile = (chunks, fileName, handle) => {
     .then(({ alphaSessionId, betaSessionId }) =>
       Promise.all([
         sendToAlphaBroker(alphaSessionId, chunks, genesisHash),
-        sendToBetaBroker(betaSessionId, chunks, genesisHash)
+        sendToBetaBroker(betaSessionId, chunks, genesisHash),
+        getPaymentStatus(API.BROKER_NODE_A, alphaSessionId)
       ])
     )
     .then(() => {
@@ -122,6 +123,29 @@ const sendToBetaBroker = (sessionId, chunks, genesisHash) =>
       [...chunks].reverse()
     ).then(resolve);
   });
+
+const getPaymentStatus = (host, id) => {
+  console.log("GETTING PAYMENT STATUS")
+  new Promise((resolve, reject) => {
+    axiosInstance
+      .get(`${host}${API.V2_UPLOAD_SESSIONS_PATH}/${id}`)
+      .then(response => {
+        if(response.data.paymentStatus !== "paid") {
+          setTimeout(() => {
+            console.log("PAYMENT UNPAID");
+            getPaymentStatus(host, id);
+          }, 2000)
+        } else {
+          console.log("PAYMENT PAID:", response);
+          resolve(response);
+        }
+      })
+      .catch(error => {
+        console.log("PAYMENT REQUEST FAILED:", error);
+        reject();
+      });
+  });
+};
 
 export default {
   uploadFile
