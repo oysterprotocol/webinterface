@@ -16,9 +16,15 @@ const BUNDLE_SIZE = IOTA_API.BUNDLE_SIZE;
 const initializeUpload = (action$, store) => {
   return action$.ofType(uploadActions.INITIALIZE_UPLOAD).mergeMap(action => {
     const file = action.payload;
+    //create the session here
+
+
+    // trigger poll payment status
+    //verify payment status
+
     return Observable.fromPromise(FileProcessor.initializeUpload(file)).map(
-      ({ numberOfChunks, handle, fileName, chunks }) => {
-        return uploadActions.beginUploadAction({
+      ({numberOfChunks, handle, fileName, chunks}) => {
+        return uploadActions.initializeSession({
           chunks,
           fileName,
           handle,
@@ -26,6 +32,23 @@ const initializeUpload = (action$, store) => {
         });
       }
     );
+  });
+};
+
+const initializeSession = (action$, store) => {
+  return action$.ofType(uploadActions.INITIALIZE_SESSION).mergeMap(action => {
+    const {chunks, fileName, handle} = action.payload;
+
+    return Observable.fromPromise(Backend.initializeUploadSession(chunks, fileName, handle)).map(
+      ({alphaSessionId, betaSessionId, invoice, numberOfChunks, handle, fileName}) => {
+          return uploadActions.beginUploadAction({
+            chunks,
+            fileName,
+            handle,
+            numberOfChunks
+          });
+        }
+      );
   });
 };
 
@@ -162,6 +185,7 @@ const markUploadAsComplete = (action$, store) => {
 
 export default combineEpics(
   initializeUpload,
+  initializeSession,
   saveToHistory,
   uploadFile,
   pollUploadProgress,

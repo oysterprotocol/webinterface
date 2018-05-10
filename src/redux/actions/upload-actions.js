@@ -12,6 +12,7 @@ const SELECT_ALPHA_BROKER = "oyster/upload/select_alpha_broker";
 const SELECT_BETA_BROKER = "oyster/upload/select_beta_broker";
 const SELECT_RETENTION_YEARS = "oyster/upload/select_retention_years";
 const INITIALIZE_POLLING_INDEXES = "oyster/upload/initialize_polling_indexes";
+const INITIALIZE_SESSION = "oyster/upload/initialize_session";
 
 const ACTIONS = Object.freeze({
   // actions
@@ -29,11 +30,16 @@ const ACTIONS = Object.freeze({
   SELECT_BETA_BROKER,
   SELECT_RETENTION_YEARS,
   INITIALIZE_POLLING_INDEXES,
+  INITIALIZE_SESSION,
 
   // actionCreators
   initializeUploadAction: file => ({
     type: ACTIONS.INITIALIZE_UPLOAD,
     payload: file
+  }),
+  initializeSession: ({ chunks, handle, fileName, numberOfChunks }) => ({
+    type: ACTIONS.INITIALIZE_SESSION,
+    payload: { chunks, handle, fileName, numberOfChunks }
   }),
   beginUploadAction: ({ chunks, handle, fileName, numberOfChunks }) => ({
     type: ACTIONS.BEGIN_UPLOAD,
