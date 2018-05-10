@@ -16,32 +16,20 @@ const adaptChunkToParams = (chunk, genesisHash) => ({
   hash: genesisHash
 });
 
-const uploadFile = (chunks, fileName, handle) => {
+const uploadFile = (chunks, fileName, handle, alphaSessionId, betaSessionId, genesisHash) => {
   console.log("UPLOADING FILE TO BROKER NODES");
-
-  const genesisHash = Encryption.genesisHash(handle);
-  const numChunks = chunks.length;
 
   // Appends meta chunk
 
-  /*return createUploadSession( //abstract this out
-    API.BROKER_NODE_A,
-    numChunks,
-    genesisHash,
-    storageLengthInYears
-  )*/
-  //.then(({ alphaSessionId, betaSessionId }) =>
-  Promise.all([
-    //sendToAlphaBroker(alphaSessionId, chunks, genesisHash),
-    //sendToBetaBroker(betaSessionId, chunks, genesisHash),
-    //getPaymentStatus(API.BROKER_NODE_A, alphaSessionId)
+  return Promise.all([
+    sendToAlphaBroker(alphaSessionId, chunks, genesisHash),
+    sendToBetaBroker(betaSessionId, chunks, genesisHash),
   ])
-  //)
     .then(() => {
       return {
-        numberOfChunks: numChunks,
-        handle,
-        fileName
+        numberOfChunks: chunks.length,
+        fileName,
+        handle
       };
     });
 };
@@ -145,7 +133,7 @@ const initializeUploadSession = (chunks, fileName, handle) => {
   const numChunks = chunks.length;
   const storageLengthInYears = 999; //TODO make this a real thing
 
-  createUploadSession( //abstract this out
+  return createUploadSession(
     host,
     numChunks,
     genesisHash,
@@ -159,6 +147,8 @@ const initializeUploadSession = (chunks, fileName, handle) => {
         numberOfChunks: numChunks,
         handle,
         fileName,
+        genesisHash,
+        storageLengthInYears
       };
     });
 };

@@ -27,8 +27,7 @@ const initializeUpload = (action$, store) => {
         return uploadActions.initializeSession({
           chunks,
           fileName,
-          handle,
-          numberOfChunks
+          handle
         });
       }
     );
@@ -40,12 +39,15 @@ const initializeSession = (action$, store) => {
     const {chunks, fileName, handle} = action.payload;
 
     return Observable.fromPromise(Backend.initializeUploadSession(chunks, fileName, handle)).map(
-      ({alphaSessionId, betaSessionId, invoice, numberOfChunks, handle, fileName}) => {
+      ({alphaSessionId, betaSessionId, invoice, numberOfChunks, handle, fileName, genesisHash, storageLengthInYears}) => {
           return uploadActions.beginUploadAction({
             chunks,
             fileName,
             handle,
-            numberOfChunks
+            numberOfChunks,
+            alphaSessionId,
+            betaSessionId,
+            genesisHash
           });
         }
       );
@@ -64,9 +66,9 @@ const saveToHistory = (action$, store) => {
 
 const uploadFile = (action$, store) => {
   return action$.ofType(uploadActions.BEGIN_UPLOAD).mergeMap(action => {
-    const { chunks, fileName, handle } = action.payload;
+    const { chunks, fileName, handle, numberOfChunks,  alphaSessionId, betaSessionId, genesisHash } = action.payload;
 
-    return Observable.fromPromise(Backend.uploadFile(chunks, fileName, handle))
+    return Observable.fromPromise(Backend.uploadFile(chunks, fileName, handle, alphaSessionId, betaSessionId, genesisHash))
       .map(({ numberOfChunks, handle }) =>
         uploadActions.uploadSuccessAction(handle)
       )

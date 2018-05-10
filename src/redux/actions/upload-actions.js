@@ -41,9 +41,9 @@ const ACTIONS = Object.freeze({
     type: ACTIONS.INITIALIZE_SESSION,
     payload: { chunks, handle, fileName, numberOfChunks }
   }),
-  beginUploadAction: ({ chunks, handle, fileName, numberOfChunks }) => ({
+  beginUploadAction: ({ chunks, fileName, handle, numberOfChunks, alphaSessionId, betaSessionId, genesisHash }) => ({
     type: ACTIONS.BEGIN_UPLOAD,
-    payload: { chunks, handle, fileName, numberOfChunks }
+    payload: { chunks, fileName, handle, numberOfChunks, alphaSessionId, betaSessionId, genesisHash }
   }),
   addToHistoryAction: ({ numberOfChunks, fileName, handle }) => ({
     type: ACTIONS.ADD_TO_HISTORY,
