@@ -19,7 +19,7 @@ const goToUploadForm = (action$, store) => {
 const goToUploadStarted = (action$, store) => {
   return action$
     .ofType(uploadActions.BEGIN_UPLOAD)
-    .map(action => push("/upload-started"));
+    .map(action => push("/payment-request"));
 };
 
 const goToUploadComplete = (action$, store) => {

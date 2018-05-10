@@ -27,7 +27,8 @@ const initializeUpload = (action$, store) => {
         return uploadActions.initializeSession({
           chunks,
           fileName,
-          handle
+          handle,
+          numberOfChunks
         });
       }
     );
@@ -47,7 +48,8 @@ const initializeSession = (action$, store) => {
             numberOfChunks,
             alphaSessionId,
             betaSessionId,
-            genesisHash
+            genesisHash,
+            invoice
           });
         }
       );

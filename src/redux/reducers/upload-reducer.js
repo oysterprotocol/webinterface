@@ -14,7 +14,11 @@ const initState = {
   history: [
     // object returned by uploadedFileGenerator()
   ],
-  retentionYears: 5
+  retentionYears: 5,
+  invoice: {
+    cost: 0,
+    ethAddress: "asdf"
+  }
 };
 
 const uploadedFileGenerator = ({ numberOfChunks, fileName, handle }) => {
@@ -45,6 +49,12 @@ const uploadReducer = (state = initState, action) => {
       return {
         ...state,
         retentionYears: action.payload,
+      };
+
+    case uploadActions.BEGIN_UPLOAD:
+      return {
+        ...state,
+        invoice: action.payload.invoice
       };
 
     case uploadActions.UPDATE_UPLOAD_PROGRESS:
