@@ -9,12 +9,15 @@ import Iota from "services/iota";
 import Backend from "services/backend";
 import Datamap from "datamap-generator";
 import FileProcessor from "utils/file-processor";
+import IndexSelector from "utils/index-selector";
 import { IOTA_API } from "config";
 import { NUM_BROKER_CHANNELS } from "config";
 import { SECONDS_PER_CHUNK } from "config";
+import { NUM_POLLING_ADDRESSES } from "../../config";
 
 const BUNDLE_SIZE = IOTA_API.BUNDLE_SIZE;
 
+// Todo:  remove this once we're sure we don't want it anymore
 const UPLOAD_POLL_FREQUENCY =
   BUNDLE_SIZE * SECONDS_PER_CHUNK / NUM_BROKER_CHANNELS * 1000;
 
@@ -83,11 +86,14 @@ const pollUploadProgress = (action$, store) => {
       Observable.of(
         uploadActions.initializePollingIndexes({
           dataMapLength: addresses.length,
-          frontIdx: 0,
-          backIdx: addresses.length - 1
+          indexes: IndexSelector.selectPollingIndexes(
+            addresses,
+            NUM_POLLING_ADDRESSES,
+            BUNDLE_SIZE
+          )
         })
       ),
-      Observable.interval(UPLOAD_POLL_FREQUENCY)
+      Observable.interval(1000)
         .takeUntil(
           Observable.merge(
             action$.ofType(uploadActions.MARK_UPLOAD_AS_COMPLETE).filter(a => {
@@ -98,54 +104,20 @@ const pollUploadProgress = (action$, store) => {
           )
         )
         .mergeMap(action => {
-          let { frontIdx, backIdx } = store.getState().upload.indexes;
+          let { indexes, startingLength } = store.getState().upload.indexes;
           return Observable.fromPromise(
-            Iota.checkUploadPercentage(addresses, frontIdx, backIdx)
+            Iota.checkUploadPercentage(addresses, indexes)
           )
-            .map(
-              ({
-                updateFrontIndex,
-                updateBackIndex,
-                frontIndex,
-                backIndex
-              }) => {
-                let uploadProgress =
-                  frontIndex >= backIndex - 1
-                    ? 100
-                    : (frontIndex + (addresses.length - 1 - backIndex)) /
-                      (addresses.length - 2) *
-                      100;
+            .map(({ updatedIndexes }) => {
+              let uploadProgress =
+                (startingLength - updatedIndexes.length) / startingLength * 100;
 
-                frontIndex = updateFrontIndex
-                  ? Math.min(
-                      ...[
-                        frontIndex +
-                          Math.floor(Math.random() * (BUNDLE_SIZE / 2)) +
-                          BUNDLE_SIZE / 2,
-                        addresses.length - 1
-                      ]
-                    )
-                  : frontIndex;
-
-                backIndex = updateBackIndex
-                  ? Math.max(
-                      ...[
-                        backIndex -
-                          Math.floor(Math.random() * (BUNDLE_SIZE / 2)) -
-                          BUNDLE_SIZE / 2,
-                        0
-                      ]
-                    )
-                  : backIndex;
-
-                return uploadActions.updateUploadProgress({
-                  handle,
-                  uploadProgress,
-                  frontIndex,
-                  backIndex
-                });
-              }
-            )
+              return uploadActions.updateUploadProgress({
+                handle,
+                uploadProgress,
+                indexes: updatedIndexes
+              });
+            })
             .catch(error => Observable.empty());
         })
     );

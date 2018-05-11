@@ -88,36 +88,46 @@ const skinnyQueryTransactions = (iotaProvider, addresses) =>
     );
   });
 
-const checkUploadPercentage = (addresses, frontIndex, backIndex) => {
-  let backOfFile = new Promise((resolve, reject) => {
-    skinnyQueryTransactions(IotaA, [addresses[backIndex]]).then(
-      transactions => {
-        resolve({
-          backIndex,
-          updateIndex: transactions.length > 0
-        });
-      }
-    );
-  });
+const checkUploadPercentage = (addresses, indexes) => {
+  let promises = [];
 
-  let frontOfFile = new Promise((resolve, reject) => {
-    skinnyQueryTransactions(IotaA, [addresses[frontIndex]]).then(
-      transactions => {
-        resolve({
-          frontIndex,
-          updateIndex: transactions.length > 0
-        });
-      }
-    );
-  });
+  promises.push(
+    new Promise((resolve, reject) => {
+      skinnyQueryTransactions(IotaA, [addresses[indexes[0]]]).then(
+        transactions => {
+          resolve({
+            removeIndex: transactions.length > 0
+          });
+        }
+      );
+    })
+  );
 
-  return Promise.all([frontOfFile, backOfFile]).then(indexResults => {
+  if (indexes.length > 1) {
+    promises.push(
+      new Promise((resolve, reject) => {
+        skinnyQueryTransactions(IotaA, [
+          addresses[indexes[indexes.length - 1]]
+        ]).then(transactions => {
+          resolve({
+            removeIndex: transactions.length > 0
+          });
+        });
+      })
+    );
+  }
+
+  return Promise.all(promises).then(indexResults => {
     const [front, back] = indexResults;
+
+    if (front.removeIndex) {
+      indexes.shift();
+    }
+    if (back && back.removeIndex) {
+      indexes.pop();
+    }
     return {
-      frontIndex: front.frontIndex,
-      updateFrontIndex: front.updateIndex,
-      backIndex: back.backIndex,
-      updateBackIndex: back.updateIndex
+      updatedIndexes: indexes
     };
   });
 };
