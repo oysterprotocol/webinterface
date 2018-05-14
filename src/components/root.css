@@ -128,6 +128,21 @@ p {
   color: #0068ea;
 }
 
+.payment-confirm-spinner {
+
+  margin: 75px auto 0 auto;
+  display: block;
+}
+
+.spin-2s {
+  animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
 .upload-section {
   margin-top: 20px;
 }
