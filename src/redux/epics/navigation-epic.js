@@ -28,9 +28,23 @@ const goToUploadComplete = (action$, store) => {
     .map(action => push("/upload-complete"));
 };
 
+const goToPaymentInvoice = (action$, store) => {
+  return action$
+    .ofType(uploadActions.POLL_PAYMENT_STATUS)
+    .map(action => push("/payment-invoice"));
+};
+
+const goToPaymentConfirmation = (action$, store) => {
+  return action$
+    .ofType(uploadActions.PAYMENT_PENDING)
+    .map(action => push("/payment-confirm"));
+};
+
 export default combineEpics(
   goToDownloadForm,
   goToUploadForm,
   goToUploadStarted,
-  goToUploadComplete
+  goToUploadComplete,
+  goToPaymentInvoice,
+  goToPaymentConfirmation
 );

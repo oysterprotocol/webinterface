@@ -9,13 +9,18 @@ import Slide from "components/shared/slide";
 import PrimaryButton from "components/shared/primary-button";
 
 const DEFAULT_FILE_INPUT_TEXT = "No file selected";
+const DEFAULT_FILE_INPUT_SIZE = 0;
+const DEFAULT_FILE_INPUT_COST = 0;
+const BYTES_IN_GIGABYTE = 1073741824;
 
 class UploadSlide extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      fileName: DEFAULT_FILE_INPUT_TEXT
+      fileName: DEFAULT_FILE_INPUT_TEXT,
+      fileSize: DEFAULT_FILE_INPUT_SIZE,
+      storageCost: DEFAULT_FILE_INPUT_COST
     };
   }
 
@@ -25,7 +30,9 @@ class UploadSlide extends Component {
       betaBroker,
       upload,
       selectAlphaBroker,
-      selectBetaBroker
+      selectBetaBroker,
+      retentionYears,
+      selectRetentionYears
     } = this.props;
     return (
       <Slide title="Upload a File" image={ICON_UPLOAD}>
@@ -82,11 +89,28 @@ class UploadSlide extends Component {
                 type="range"
                 min="0"
                 max="10"
-                defaultValue="0"
+                value={retentionYears}
+                onChange={event => {
+                  let retentionYears = event.target.value;
+                  selectRetentionYears(retentionYears);
+                  this.setState({
+                    storageCost: this.calculateStorageCost(this.state.fileSize, retentionYears)
+                  });
+                }}
               />
             </div>
             <div className="upload-column">
-              <select id="sel" disabled>
+              <select
+                id="sel"
+                value={retentionYears}
+                onChange={event => {
+                  let retentionYears = event.target.value;
+                  selectRetentionYears(retentionYears);
+                  this.setState({
+                    storageCost: this.calculateStorageCost(this.state.fileSize, retentionYears)
+                  });
+                }}
+              >
                 <option>0</option>
                 <option>1</option>
                 <option>2</option>
@@ -121,9 +145,19 @@ class UploadSlide extends Component {
               onChange={event => {
                 const file = event.target.files[0];
                 if (!!file) {
-                  this.setState({ fileName: file.name });
+                  this.setState({
+                    fileName: file.name,
+                    fileSize: file.size,
+                    humanFileSize: this.humanFileSize(file.size, true),
+                    storageCost: this.calculateStorageCost(file.size, retentionYears)
+                  });
                 } else {
-                  this.setState({ fileName: DEFAULT_FILE_INPUT_TEXT });
+                  this.setState({
+                    fileName: DEFAULT_FILE_INPUT_TEXT,
+                    fileSize: DEFAULT_FILE_INPUT_SIZE,
+                    humanFileSize: this.humanFileSize(DEFAULT_FILE_INPUT_SIZE, true),
+                    storageCost: this.calculateStorageCost(file.size, retentionYears)
+                  });
                 }
               }}
               type="file"
@@ -133,7 +167,8 @@ class UploadSlide extends Component {
           <div className="upload-column">
             <p>Cost</p>
             <h3 className="storage-fees">
-              3 Gb for 10 years: <span> 30 PRL</span>
+              {this.state.humanFileSize} for {retentionYears} years:
+              <span> {this.state.storageCost} PRL</span>
             </h3>
           </div>
         </div>
@@ -147,8 +182,12 @@ class UploadSlide extends Component {
                 alert(
                   `Please select a file under ${FILE.MAX_FILE_SIZE / 1000} KB.`
                 );
+              } else if (retentionYears === '0') {
+                alert(
+                  `Please select retention years`
+                );
               } else {
-                upload(file);
+                upload(file, retentionYears);
               }
             }}
           >
@@ -161,6 +200,26 @@ class UploadSlide extends Component {
         </aside>
       </Slide>
     );
+  }
+
+  calculateStorageCost(fileSize, years) {
+    return ((fileSize / BYTES_IN_GIGABYTE) * years).toFixed(8)
+  }
+
+  humanFileSize(bytes, si) {
+    let thresh = si ? 1000 : 1024;
+    if(Math.abs(bytes) < thresh) {
+      return bytes + ' B';
+    }
+    let units = si
+      ? ['kB','MB','GB','TB','PB','EB','ZB','YB']
+      : ['KiB','MiB','GiB','TiB','PiB','EiB','ZiB','YiB'];
+    let u = -1;
+    do {
+      bytes /= thresh;
+      ++u;
+    } while(Math.abs(bytes) >= thresh && u < units.length - 1);
+    return bytes.toFixed(1)+' '+units[u];
   }
 }
 

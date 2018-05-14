@@ -10,7 +10,11 @@ const REFRESH_INCOMPLETE_UPLOADS = "oyster/upload/refresh_incomplete_uploads";
 const POLL_UPLOAD_PROGRESS = "oyster/upload/poll_upload_progress";
 const SELECT_ALPHA_BROKER = "oyster/upload/select_alpha_broker";
 const SELECT_BETA_BROKER = "oyster/upload/select_beta_broker";
+const SELECT_RETENTION_YEARS = "oyster/upload/select_retention_years";
 const INITIALIZE_POLLING_INDEXES = "oyster/upload/initialize_polling_indexes";
+const INITIALIZE_SESSION = "oyster/upload/initialize_session";
+const POLL_PAYMENT_STATUS = "oyster/upload/poll_payment_status";
+const PAYMENT_PENDING = "oyster/upload/payment_pending";
 
 const ACTIONS = Object.freeze({
   // actions
@@ -26,16 +30,31 @@ const ACTIONS = Object.freeze({
   POLL_UPLOAD_PROGRESS,
   SELECT_ALPHA_BROKER,
   SELECT_BETA_BROKER,
+  SELECT_RETENTION_YEARS,
   INITIALIZE_POLLING_INDEXES,
+  INITIALIZE_SESSION,
+  POLL_PAYMENT_STATUS,
+  PAYMENT_PENDING,
 
   // actionCreators
-  initializeUploadAction: file => ({
+  initializeUploadAction: ({ file, retentionYears }) => ({
     type: ACTIONS.INITIALIZE_UPLOAD,
-    payload: file
+    payload: { file, retentionYears }
   }),
-  beginUploadAction: ({ chunks, handle, fileName, numberOfChunks }) => ({
+  initializeSession: ({ chunks, handle, fileName, numberOfChunks, retentionYears }) => ({
+    type: ACTIONS.INITIALIZE_SESSION,
+    payload: { chunks, handle, fileName, numberOfChunks, retentionYears }
+  }),
+  pollPaymentStatus: ({ host, alphaSessionId, chunks, fileName, handle, numberOfChunks, betaSessionId, genesisHash, invoice}) => ({
+    type: ACTIONS.POLL_PAYMENT_STATUS,
+    payload: { host, alphaSessionId, chunks, fileName, handle, numberOfChunks, betaSessionId, genesisHash, invoice }
+  }),
+  paymentPending: () => ({
+    type: ACTIONS.PAYMENT_PENDING,
+  }),
+  beginUploadAction: ({ chunks, fileName, handle, numberOfChunks, alphaSessionId, betaSessionId, genesisHash, invoice, host }) => ({
     type: ACTIONS.BEGIN_UPLOAD,
-    payload: { chunks, handle, fileName, numberOfChunks }
+    payload: { chunks, fileName, handle, numberOfChunks, alphaSessionId, betaSessionId, genesisHash, invoice, host }
   }),
   addToHistoryAction: ({ numberOfChunks, fileName, handle }) => ({
     type: ACTIONS.ADD_TO_HISTORY,
@@ -75,6 +94,10 @@ const ACTIONS = Object.freeze({
   selectBetaBrokerAction: url => ({
     type: ACTIONS.SELECT_BETA_BROKER,
     payload: url
+  }),
+  selectRetentionYears: value => ({
+    type: ACTIONS.SELECT_RETENTION_YEARS,
+    payload: value
   }),
   initializePollingIndexes: ({ indexes, dataMapLength }) => ({
     type: ACTIONS.INITIALIZE_POLLING_INDEXES,

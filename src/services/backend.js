@@ -16,32 +16,20 @@ const adaptChunkToParams = (chunk, genesisHash) => ({
   hash: genesisHash
 });
 
-const uploadFile = (chunks, fileName, handle) => {
+const uploadFile = (chunks, fileName, handle, alphaSessionId, betaSessionId, genesisHash) => {
   console.log("UPLOADING FILE TO BROKER NODES");
-
-  const genesisHash = Encryption.genesisHash(handle);
-  const numChunks = chunks.length;
-  const storageLengthInYears = 999; /*@TODO make this a real thing*/
 
   // Appends meta chunk
 
-  return createUploadSession(
-    API.BROKER_NODE_A,
-    numChunks,
-    genesisHash,
-    storageLengthInYears
-  )
-    .then(({ alphaSessionId, betaSessionId }) =>
-      Promise.all([
-        sendToAlphaBroker(alphaSessionId, chunks, genesisHash),
-        sendToBetaBroker(betaSessionId, chunks, genesisHash)
-      ])
-    )
+  return Promise.all([
+    sendToAlphaBroker(alphaSessionId, chunks, genesisHash),
+    sendToBetaBroker(betaSessionId, chunks, genesisHash),
+  ])
     .then(() => {
       return {
-        numberOfChunks: numChunks,
-        handle,
-        fileName
+        numberOfChunks: chunks.length,
+        fileName,
+        handle
       };
     });
 };
@@ -61,14 +49,12 @@ const createUploadSession = (
         betaIp: API.BROKER_NODE_B,
         storageLengthInYears
       })
-      .then(({ data }) => {
-        console.log("UPLOAD SESSION SUCCESS: ", data);
-        const { id: alphaSessionId, betaSessionId } = data;
-        const { invoice } = data;
-        resolve({ alphaSessionId, betaSessionId, invoice });
+      .then(({data}) => {
+        const {id: alphaSessionId, betaSessionId} = data;
+        const {invoice} = data;
+        resolve({alphaSessionId, betaSessionId, invoice});
       })
       .catch(error => {
-        console.log("UPLOAD SESSION ERROR: ", error);
         reject(error);
       });
   });
@@ -76,7 +62,7 @@ const createUploadSession = (
 const sendChunksToBroker = (brokerUrl, chunks) =>
   new Promise((resolve, reject) => {
     axiosInstance
-      .put(brokerUrl, { chunks })
+      .put(brokerUrl, {chunks})
       .then(response => {
         console.log("SENT CHUNK TO BROKER: ", response);
         resolve(response);
@@ -123,6 +109,48 @@ const sendToBetaBroker = (sessionId, chunks, genesisHash) =>
     ).then(resolve);
   });
 
+const confirmPaid = (host, id) => { //change to confirmPaid
+  return new Promise((resolve, reject) => {
+    axiosInstance
+      .get(`${host}${API.V2_UPLOAD_SESSIONS_PATH}/${id}`)
+      .then(response => {
+        resolve(response.data.paymentStatus);
+      })
+      .catch(error => {
+        reject(error);
+      });
+  });
+};
+
+const initializeUploadSession = (chunks, fileName, handle, retentionYears) => {
+  const host = API.BROKER_NODE_A;
+  const genesisHash = Encryption.genesisHash(handle);
+  const numChunks = chunks.length;
+  const storageLengthInYears = retentionYears;
+
+  return createUploadSession(
+    host,
+    numChunks,
+    genesisHash,
+    storageLengthInYears
+  )
+    .then(({ alphaSessionId, betaSessionId, invoice }) => {
+      return {
+        alphaSessionId,
+        betaSessionId,
+        invoice,
+        numberOfChunks: numChunks,
+        handle,
+        fileName,
+        genesisHash,
+        storageLengthInYears,
+        host
+      };
+    });
+};
+
 export default {
-  uploadFile
+  uploadFile,
+  confirmPaid,
+  initializeUploadSession
 };

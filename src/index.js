@@ -16,6 +16,8 @@ import DownloadUploadHistory from "components/download-upload-history";
 import UploadForm from "components/upload-form";
 import UploadStarted from "components/upload-started";
 import UploadComplete from "components/upload-complete";
+import PaymentInvoice from "components/payment-invoice";
+import PaymentConfirm from "components/payment-confirm";
 import Playground from "components/playground";
 import registerServiceWorker from "./register-service-worker";
 
@@ -38,6 +40,9 @@ const App = () => (
           <Route path="/upload-form" component={UploadForm} />
           <Route path="/upload-started" component={UploadStarted} />
           <Route path="/upload-complete" component={UploadComplete} />
+
+          <Route path="/payment-invoice" component={PaymentInvoice} />
+          <Route path="/payment-confirm" component={PaymentConfirm} />
 
           <Route path="/playground" component={Playground} />
         </div>
