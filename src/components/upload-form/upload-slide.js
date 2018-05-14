@@ -90,7 +90,12 @@ class UploadSlide extends Component {
                 min="0"
                 max="10"
                 value={retentionYears}
-                onChange={slider => selectRetentionYears(slider.target.value)}
+                onChange={slider => {
+                  selectRetentionYears(slider.target.value);
+                  this.setState({
+                    storageCost: ((this.state.fileSize / BYTES_IN_GIGABYTE) * slider.target.value).toFixed(8)
+                  });
+                }}
               />
             </div>
             <div className="upload-column">
@@ -129,15 +134,17 @@ class UploadSlide extends Component {
               onChange={event => {
                 const file = event.target.files[0];
                 if (!!file) {
-                  this.setState({ //this should probably go in global. We will want to manipulate storage cost on slider change too (if file is present)
+                  this.setState({
                     fileName: file.name,
                     fileSize: file.size,
-                    storageCost: (file.size / BYTES_IN_GIGABYTE) * retentionYears
+                    humanFileSize: this.humanFileSize(file.size, true),
+                    storageCost: ((file.size / BYTES_IN_GIGABYTE) * retentionYears).toFixed(8)
                   });
                 } else {
                   this.setState({
                     fileName: DEFAULT_FILE_INPUT_TEXT,
                     fileSize: DEFAULT_FILE_INPUT_SIZE,
+                    humanFileSize: this.humanFileSize(DEFAULT_FILE_INPUT_SIZE, true),
                     storageCost: DEFAULT_FILE_INPUT_COST
                   });
                 }
@@ -149,7 +156,7 @@ class UploadSlide extends Component {
           <div className="upload-column">
             <p>Cost</p>
             <h3 className="storage-fees">
-              {this.state.fileSize / BYTES_IN_GIGABYTE} GB for {retentionYears} years:
+              {this.state.humanFileSize} for {retentionYears} years:
               <span> {this.state.storageCost} PRL</span>
             </h3>
           </div>
@@ -182,6 +189,22 @@ class UploadSlide extends Component {
         </aside>
       </Slide>
     );
+  }
+
+  humanFileSize(bytes, si) {
+    let thresh = si ? 1000 : 1024;
+    if(Math.abs(bytes) < thresh) {
+      return bytes + ' B';
+    }
+    let units = si
+      ? ['kB','MB','GB','TB','PB','EB','ZB','YB']
+      : ['KiB','MiB','GiB','TiB','PiB','EiB','ZiB','YiB'];
+    let u = -1;
+    do {
+      bytes /= thresh;
+      ++u;
+    } while(Math.abs(bytes) >= thresh && u < units.length - 1);
+    return bytes.toFixed(1)+' '+units[u];
   }
 }
 

@@ -12,7 +12,7 @@ const initState = {
   history: [
     // object returned by uploadedFileGenerator()
   ],
-  retentionYears: 5,
+  retentionYears: 1,
   invoice: {
     cost: 0,
     ethAddress: "asdf"

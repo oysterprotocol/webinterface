@@ -4,7 +4,6 @@ import { connect } from "react-redux";
 import PaymentInvoiceSlide from "components/payment-invoice/payment-invoice-slide";
 
 const mapStateToProps = state => ({
-  history: state.upload.history,
   cost: state.upload.invoice.cost,
   ethAddress: state.upload.invoice.ethAddress
 });
