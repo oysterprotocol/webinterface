@@ -14,8 +14,8 @@ const mapDispatchToProps = dispatch => ({
     dispatch(uploadActions.selectAlphaBrokerAction(url)),
   selectBetaBrokerFn: url =>
     dispatch(uploadActions.selectBetaBrokerAction(url)),
-  initializeUploadFn: file =>
-    dispatch(uploadActions.initializeUploadAction(file)),
+  initializeUploadFn: (file, retentionYears) =>
+    dispatch(uploadActions.initializeUploadAction({file, retentionYears})),
   selectRetentionYears: value =>
     dispatch(uploadActions.selectRetentionYears(value))
 });

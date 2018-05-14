@@ -37,13 +37,13 @@ const ACTIONS = Object.freeze({
   PAYMENT_PENDING,
 
   // actionCreators
-  initializeUploadAction: file => ({
+  initializeUploadAction: ({ file, retentionYears }) => ({
     type: ACTIONS.INITIALIZE_UPLOAD,
-    payload: file
+    payload: { file, retentionYears }
   }),
-  initializeSession: ({ chunks, handle, fileName, numberOfChunks }) => ({
+  initializeSession: ({ chunks, handle, fileName, numberOfChunks, retentionYears }) => ({
     type: ACTIONS.INITIALIZE_SESSION,
-    payload: { chunks, handle, fileName, numberOfChunks }
+    payload: { chunks, handle, fileName, numberOfChunks, retentionYears }
   }),
   pollPaymentStatus: ({ host, alphaSessionId, chunks, fileName, handle, numberOfChunks, betaSessionId, genesisHash, invoice}) => ({
     type: ACTIONS.POLL_PAYMENT_STATUS,

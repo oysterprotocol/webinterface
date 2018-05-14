@@ -122,11 +122,11 @@ const confirmPaid = (host, id) => { //change to confirmPaid
   });
 };
 
-const initializeUploadSession = (chunks, fileName, handle) => {
+const initializeUploadSession = (chunks, fileName, handle, retentionYears) => {
   const host = API.BROKER_NODE_A;
   const genesisHash = Encryption.genesisHash(handle);
   const numChunks = chunks.length;
-  const storageLengthInYears = 999; //TODO make this a real thing
+  const storageLengthInYears = retentionYears;
 
   return createUploadSession(
     host,

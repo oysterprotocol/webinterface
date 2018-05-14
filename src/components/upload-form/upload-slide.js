@@ -176,7 +176,7 @@ class UploadSlide extends Component {
                   `Please select retention years`
                 );
               } else {
-                upload(file);
+                upload(file, retentionYears);
               }
             }}
           >

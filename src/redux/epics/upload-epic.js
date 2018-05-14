@@ -23,12 +23,7 @@ const UPLOAD_POLL_FREQUENCY =
 
 const initializeUpload = (action$, store) => {
   return action$.ofType(uploadActions.INITIALIZE_UPLOAD).mergeMap(action => {
-    const file = action.payload;
-    //create the session here
-
-
-    // trigger poll payment status
-    //verify payment status
+    const {file, retentionYears} = action.payload;
 
     return Observable.fromPromise(FileProcessor.initializeUpload(file)).map(
       ({numberOfChunks, handle, fileName, chunks}) => {
@@ -36,7 +31,8 @@ const initializeUpload = (action$, store) => {
           chunks,
           fileName,
           handle,
-          numberOfChunks
+          numberOfChunks,
+          retentionYears
         });
       }
     );
@@ -45,9 +41,9 @@ const initializeUpload = (action$, store) => {
 
 const initializeSession = (action$, store) => {
   return action$.ofType(uploadActions.INITIALIZE_SESSION).mergeMap(action => {
-    const {chunks, fileName, handle} = action.payload;
+    const {chunks, fileName, handle, retentionYears} = action.payload;
 
-    return Observable.fromPromise(Backend.initializeUploadSession(chunks, fileName, handle)).map(
+    return Observable.fromPromise(Backend.initializeUploadSession(chunks, fileName, handle, retentionYears)).map(
       ({alphaSessionId, betaSessionId, invoice, numberOfChunks, handle, fileName, genesisHash, storageLengthInYears, host}) => {
           return uploadActions.pollPaymentStatus({
             host,
