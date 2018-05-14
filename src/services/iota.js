@@ -31,19 +31,48 @@ const parseMessage = message => {
   return Iota.utils.fromTrytes(evenChars);
 };
 
+const lightTxObjects = trytes => {
+  return _.map(trytes, trytes => {
+    if (!trytes) return;
+
+    // validity check
+    for (var i = 2279; i < 2295; i++) {
+      if (trytes.charAt(i) !== "9") return;
+    }
+
+    return {
+      signatureMessageFragment: trytes.slice(0, 2187),
+      address: trytes.slice(2187, 2268)
+    };
+  });
+};
+
+const queryTrytes = (iotaProvider, transactions) =>
+  new Promise((resolve, reject) => {
+    iotaProvider.api.getTrytes(transactions, (error, trytes) => {
+      if (error) {
+        return reject(error);
+      }
+
+      resolve(trytes);
+    });
+  });
+
 const queryTransactions = (iotaProvider, addresses) =>
   new Promise((resolve, reject) => {
-    iotaProvider.api.findTransactionObjects(
-      { addresses },
-      (error, transactionObjects) => {
-        if (error) {
-          console.log("IOTA ERROR: ", error);
-        }
+    iotaProvider.api.findTransactions({ addresses }, (error, transactions) => {
+      if (error) {
+        console.log("IOTA ERROR: ", error);
+        return reject(error);
+      }
+
+      queryTrytes(iotaProvider, transactions).then(trytes => {
+        const transactionObjects = lightTxObjects(trytes);
         const settledTransactions = transactionObjects || [];
         const uniqTransactions = _.uniqBy(settledTransactions, "address");
         resolve(uniqTransactions);
-      }
-    );
+      }, reject);
+    });
   });
 
 const skinnyQueryTransactions = (iotaProvider, addresses) =>
@@ -59,36 +88,46 @@ const skinnyQueryTransactions = (iotaProvider, addresses) =>
     );
   });
 
-const checkUploadPercentage = (addresses, frontIndex, backIndex) => {
-  let backOfFile = new Promise((resolve, reject) => {
-    skinnyQueryTransactions(IotaA, [addresses[backIndex]]).then(
-      transactions => {
-        resolve({
-          backIndex,
-          updateIndex: transactions.length > 0
-        });
-      }
-    );
-  });
+const checkUploadPercentage = (addresses, indexes) => {
+  let promises = [];
 
-  let frontOfFile = new Promise((resolve, reject) => {
-    skinnyQueryTransactions(IotaA, [addresses[frontIndex]]).then(
-      transactions => {
-        resolve({
-          frontIndex,
-          updateIndex: transactions.length > 0
-        });
-      }
-    );
-  });
+  promises.push(
+    new Promise((resolve, reject) => {
+      skinnyQueryTransactions(IotaA, [addresses[indexes[0]]]).then(
+        transactions => {
+          resolve({
+            removeIndex: transactions.length > 0
+          });
+        }
+      );
+    })
+  );
 
-  return Promise.all([frontOfFile, backOfFile]).then(indexResults => {
+  if (indexes.length > 1) {
+    promises.push(
+      new Promise((resolve, reject) => {
+        skinnyQueryTransactions(IotaA, [
+          addresses[indexes[indexes.length - 1]]
+        ]).then(transactions => {
+          resolve({
+            removeIndex: transactions.length > 0
+          });
+        });
+      })
+    );
+  }
+
+  return Promise.all(promises).then(indexResults => {
     const [front, back] = indexResults;
+
+    if (front.removeIndex) {
+      indexes.shift();
+    }
+    if (back && back.removeIndex) {
+      indexes.pop();
+    }
     return {
-      frontIndex: front.frontIndex,
-      updateFrontIndex: front.updateIndex,
-      backIndex: back.backIndex,
-      updateBackIndex: back.updateIndex
+      updatedIndexes: indexes
     };
   });
 };

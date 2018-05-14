@@ -72,14 +72,9 @@ const ACTIONS = Object.freeze({
     type: ACTIONS.UPLOAD_FAILURE,
     payload: handle
   }),
-  updateUploadProgress: ({
-    handle,
-    uploadProgress,
-    frontIndex,
-    backIndex
-  }) => ({
+  updateUploadProgress: ({ handle, uploadProgress, indexes }) => ({
     type: ACTIONS.UPDATE_UPLOAD_PROGRESS,
-    payload: { handle, uploadProgress, frontIndex, backIndex }
+    payload: { handle, uploadProgress, indexes }
   }),
   markUploadAsComplete: handle => ({
     type: ACTIONS.MARK_UPLOAD_AS_COMPLETE,
@@ -100,13 +95,13 @@ const ACTIONS = Object.freeze({
     type: ACTIONS.SELECT_BETA_BROKER,
     payload: url
   }),
-  initializePollingIndexes: ({ frontIdx, backIdx, dataMapLength }) => ({
-    type: ACTIONS.INITIALIZE_POLLING_INDEXES,
-    payload: { frontIdx, backIdx, dataMapLength }
-  }),
   selectRetentionYears: value => ({
     type: ACTIONS.SELECT_RETENTION_YEARS,
     payload: value
+  }),
+  initializePollingIndexes: ({ indexes, dataMapLength }) => ({
+    type: ACTIONS.INITIALIZE_POLLING_INDEXES,
+    payload: { indexes, dataMapLength }
   })
 });
 

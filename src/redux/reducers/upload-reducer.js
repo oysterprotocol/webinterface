@@ -5,10 +5,8 @@ const initState = {
   alphaBroker: API.BROKER_NODE_A,
   betaBroker: API.BROKER_NODE_B,
   indexes: {
-    startingIdx: 0,
-    endingIdx: 0,
-    frontIdx: 0,
-    backIdx: 0
+    indexes: [],
+    startingLength: 0
   },
   dataMapLength: 0,
   history: [
@@ -61,21 +59,19 @@ const uploadReducer = (state = initState, action) => {
       const {
         handle: fileHandle,
         uploadProgress,
-        frontIndex,
-        backIndex
+        indexes: updatedIndexes
       } = action.payload;
       const updatedHistory = state.history.map(f => {
         return f.handle === fileHandle ? { ...f, uploadProgress } : f;
       });
-      const newIndexes = {
+      const updated = {
         ...state.indexes,
-        frontIdx: frontIndex,
-        backIdx: backIndex
+        indexes: updatedIndexes
       };
       return {
         ...state,
         history: updatedHistory,
-        indexes: newIndexes
+        indexes: updated
       };
 
     case uploadActions.ADD_TO_HISTORY:
@@ -113,16 +109,15 @@ const uploadReducer = (state = initState, action) => {
       };
 
     case uploadActions.INITIALIZE_POLLING_INDEXES:
-      const { frontIdx, backIdx, dataMapLength } = action.payload;
-      const indexes = {
+      const { indexes, dataMapLength } = action.payload;
+      const initial = {
         ...state.indexes,
-        endingIdx: dataMapLength - 1,
-        frontIdx,
-        backIdx
+        indexes,
+        startingLength: indexes.length
       };
       return {
         ...state,
-        indexes,
+        indexes: initial,
         dataMapLength
       };
 

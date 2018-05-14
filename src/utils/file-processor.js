@@ -1,5 +1,6 @@
 import CryptoJS from "crypto-js";
 import Encryption from "utils/encryption";
+import _ from "lodash";
 
 import Iota from "../services/iota";
 
@@ -118,13 +119,7 @@ const chunksToFile = (chunks, handle) =>
 // TODO:  This seems like it could be better, do something different
 const bin2String = byteArray => String.fromCharCode.apply(String, byteArray);
 
-const string2Bin = str => {
-  let result = [];
-  for (let i = 0; i < str.length; i++) {
-    result.push(str.charCodeAt(i));
-  }
-  return result;
-};
+const string2Bin = str => _.map(str, c => c.charCodeAt(0));
 
 // TODO: Switch to a different crypto lib where we don't need these?
 
