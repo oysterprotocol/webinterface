@@ -1,7 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
 
-import PaymentRequestSlide from "components/payment-request/payment-request-slide";
+import PaymentInvoiceSlide from "components/payment-invoice/payment-invoice-slide";
 
 const mapStateToProps = state => ({
   history: state.upload.history,
@@ -11,14 +11,14 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({});
 
 
-const PaymentRequest = ({
+const PaymentInvoice = ({
   cost,
   ethAddress
 }) => (
-  <PaymentRequestSlide
+  <PaymentInvoiceSlide
   cost={cost}
   ethAddress={ethAddress}
   />
 );
 
-export default connect(mapStateToProps, mapDispatchToProps)(PaymentRequest);
+export default connect(mapStateToProps, mapDispatchToProps)(PaymentInvoice);

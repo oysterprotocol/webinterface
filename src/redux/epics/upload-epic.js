@@ -40,19 +40,53 @@ const initializeSession = (action$, store) => {
     const {chunks, fileName, handle} = action.payload;
 
     return Observable.fromPromise(Backend.initializeUploadSession(chunks, fileName, handle)).map(
-      ({alphaSessionId, betaSessionId, invoice, numberOfChunks, handle, fileName, genesisHash, storageLengthInYears}) => {
-          return uploadActions.beginUploadAction({
+      ({alphaSessionId, betaSessionId, invoice, numberOfChunks, handle, fileName, genesisHash, storageLengthInYears, host}) => {
+          return uploadActions.pollPaymentStatus({
+            host,
+            alphaSessionId,
             chunks,
             fileName,
             handle,
             numberOfChunks,
-            alphaSessionId,
             betaSessionId,
             genesisHash,
             invoice
           });
         }
       );
+  });
+};
+
+const pollPaymentStatus = (action$, store) => {
+  return action$.ofType(uploadActions.POLL_PAYMENT_STATUS).mergeMap(action => {
+    const {host, alphaSessionId, chunks, fileName, handle, numberOfChunks, betaSessionId, genesisHash, invoice} = action.payload;
+
+    return Observable.interval(3000)
+      .startWith(0)
+      .takeUntil(
+        action$.ofType(uploadActions.BEGIN_UPLOAD)
+      )
+      .mergeMap(() => Observable.fromPromise(Backend.confirmPaid(host, alphaSessionId))
+          .mergeMap(paymentStatus => {
+            switch(paymentStatus) {
+              case "invoiced":
+                return Observable.empty();
+              case "pending":
+                return Observable.of(uploadActions.paymentPending());
+               case "confirmed":
+                 return Observable.of(uploadActions.beginUploadAction({
+                   chunks,
+                   fileName,
+                   handle,
+                   numberOfChunks,
+                   alphaSessionId,
+                   betaSessionId,
+                   genesisHash,
+                   invoice
+                 }));
+            }
+          })
+      )
   });
 };
 
@@ -68,7 +102,7 @@ const saveToHistory = (action$, store) => {
 
 const uploadFile = (action$, store) => {
   return action$.ofType(uploadActions.BEGIN_UPLOAD).mergeMap(action => {
-    const { chunks, fileName, handle, numberOfChunks,  alphaSessionId, betaSessionId, genesisHash } = action.payload;
+    const { chunks, fileName, handle, numberOfChunks,  alphaSessionId, betaSessionId, genesisHash, } = action.payload;
 
     return Observable.fromPromise(Backend.uploadFile(chunks, fileName, handle, alphaSessionId, betaSessionId, genesisHash))
       .map(({ numberOfChunks, handle }) =>
@@ -190,6 +224,7 @@ const markUploadAsComplete = (action$, store) => {
 export default combineEpics(
   initializeUpload,
   initializeSession,
+  pollPaymentStatus,
   saveToHistory,
   uploadFile,
   pollUploadProgress,

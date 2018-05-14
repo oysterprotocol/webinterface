@@ -13,6 +13,8 @@ const SELECT_BETA_BROKER = "oyster/upload/select_beta_broker";
 const SELECT_RETENTION_YEARS = "oyster/upload/select_retention_years";
 const INITIALIZE_POLLING_INDEXES = "oyster/upload/initialize_polling_indexes";
 const INITIALIZE_SESSION = "oyster/upload/initialize_session";
+const POLL_PAYMENT_STATUS = "oyster/upload/poll_payment_status";
+const PAYMENT_PENDING = "oyster/upload/payment_pending";
 
 const ACTIONS = Object.freeze({
   // actions
@@ -31,6 +33,8 @@ const ACTIONS = Object.freeze({
   SELECT_RETENTION_YEARS,
   INITIALIZE_POLLING_INDEXES,
   INITIALIZE_SESSION,
+  POLL_PAYMENT_STATUS,
+  PAYMENT_PENDING,
 
   // actionCreators
   initializeUploadAction: file => ({
@@ -41,9 +45,16 @@ const ACTIONS = Object.freeze({
     type: ACTIONS.INITIALIZE_SESSION,
     payload: { chunks, handle, fileName, numberOfChunks }
   }),
-  beginUploadAction: ({ chunks, fileName, handle, numberOfChunks, alphaSessionId, betaSessionId, genesisHash, invoice }) => ({
+  pollPaymentStatus: ({ host, alphaSessionId, chunks, fileName, handle, numberOfChunks, betaSessionId, genesisHash, invoice}) => ({
+    type: ACTIONS.POLL_PAYMENT_STATUS,
+    payload: { host, alphaSessionId, chunks, fileName, handle, numberOfChunks, betaSessionId, genesisHash, invoice }
+  }),
+  paymentPending: () => ({
+    type: ACTIONS.PAYMENT_PENDING,
+  }),
+  beginUploadAction: ({ chunks, fileName, handle, numberOfChunks, alphaSessionId, betaSessionId, genesisHash, invoice, host }) => ({
     type: ACTIONS.BEGIN_UPLOAD,
-    payload: { chunks, fileName, handle, numberOfChunks, alphaSessionId, betaSessionId, genesisHash, invoice }
+    payload: { chunks, fileName, handle, numberOfChunks, alphaSessionId, betaSessionId, genesisHash, invoice, host }
   }),
   addToHistoryAction: ({ numberOfChunks, fileName, handle }) => ({
     type: ACTIONS.ADD_TO_HISTORY,

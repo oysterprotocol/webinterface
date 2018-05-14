@@ -51,7 +51,7 @@ const uploadReducer = (state = initState, action) => {
         retentionYears: action.payload,
       };
 
-    case uploadActions.BEGIN_UPLOAD:
+    case uploadActions.POLL_PAYMENT_STATUS:
       return {
         ...state,
         invoice: action.payload.invoice

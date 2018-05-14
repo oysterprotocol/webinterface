@@ -4,7 +4,7 @@ import Slide from "components/shared/slide";
 import ICON_PlANE from "assets/images/sendAirplane.svg";
 
 
-class PaymentRequestSlide extends Component {
+class PaymentInvoiceSlide extends Component {
   constructor(props) {
     super(props);
   }
@@ -28,4 +28,4 @@ class PaymentRequestSlide extends Component {
   }
 }
 
-export default PaymentRequestSlide;
+export default PaymentInvoiceSlide;

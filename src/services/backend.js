@@ -50,13 +50,11 @@ const createUploadSession = (
         storageLengthInYears
       })
       .then(({data}) => {
-        console.log("UPLOAD SESSION SUCCESS: ", data);
         const {id: alphaSessionId, betaSessionId} = data;
         const {invoice} = data;
         resolve({alphaSessionId, betaSessionId, invoice});
       })
       .catch(error => {
-        console.log("UPLOAD SESSION ERROR: ", error);
         reject(error);
       });
   });
@@ -111,18 +109,15 @@ const sendToBetaBroker = (sessionId, chunks, genesisHash) =>
     ).then(resolve);
   });
 
-const getPaymentStatus = (host, id) => { //change to confirmPaid
-  console.log("GETTING PAYMENT STATUS")
-  new Promise((resolve, reject) => {
+const confirmPaid = (host, id) => { //change to confirmPaid
+  return new Promise((resolve, reject) => {
     axiosInstance
       .get(`${host}${API.V2_UPLOAD_SESSIONS_PATH}/${id}`)
       .then(response => {
-        console.log("PAYMENT REQUEST SUCCESS:", response);
         resolve(response.data.paymentStatus);
       })
       .catch(error => {
-        console.log("PAYMENT REQUEST FAILED:", error);
-        reject();
+        reject(error);
       });
   });
 };
@@ -148,13 +143,14 @@ const initializeUploadSession = (chunks, fileName, handle) => {
         handle,
         fileName,
         genesisHash,
-        storageLengthInYears
+        storageLengthInYears,
+        host
       };
     });
 };
 
 export default {
   uploadFile,
-  getPaymentStatus,
+  confirmPaid,
   initializeUploadSession
 };
