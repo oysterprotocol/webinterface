@@ -90,16 +90,27 @@ class UploadSlide extends Component {
                 min="0"
                 max="10"
                 value={retentionYears}
-                onChange={slider => {
-                  selectRetentionYears(slider.target.value);
+                onChange={event => {
+                  let retentionYears = event.target.value;
+                  selectRetentionYears(retentionYears);
                   this.setState({
-                    storageCost: ((this.state.fileSize / BYTES_IN_GIGABYTE) * slider.target.value).toFixed(8)
+                    storageCost: this.calculateStorageCost(this.state.fileSize, retentionYears)
                   });
                 }}
               />
             </div>
             <div className="upload-column">
-              <select id="sel" disabled value={retentionYears}>
+              <select
+                id="sel"
+                value={retentionYears}
+                onChange={event => {
+                  let retentionYears = event.target.value;
+                  selectRetentionYears(retentionYears);
+                  this.setState({
+                    storageCost: this.calculateStorageCost(this.state.fileSize, retentionYears)
+                  });
+                }}
+              >
                 <option>0</option>
                 <option>1</option>
                 <option>2</option>
@@ -138,14 +149,14 @@ class UploadSlide extends Component {
                     fileName: file.name,
                     fileSize: file.size,
                     humanFileSize: this.humanFileSize(file.size, true),
-                    storageCost: ((file.size / BYTES_IN_GIGABYTE) * retentionYears).toFixed(8)
+                    storageCost: this.calculateStorageCost(file.size, retentionYears)
                   });
                 } else {
                   this.setState({
                     fileName: DEFAULT_FILE_INPUT_TEXT,
                     fileSize: DEFAULT_FILE_INPUT_SIZE,
                     humanFileSize: this.humanFileSize(DEFAULT_FILE_INPUT_SIZE, true),
-                    storageCost: DEFAULT_FILE_INPUT_COST
+                    storageCost: this.calculateStorageCost(file.size, retentionYears)
                   });
                 }
               }}
@@ -189,6 +200,10 @@ class UploadSlide extends Component {
         </aside>
       </Slide>
     );
+  }
+
+  calculateStorageCost(fileSize, years) {
+    return ((fileSize / BYTES_IN_GIGABYTE) * years).toFixed(8)
   }
 
   humanFileSize(bytes, si) {
