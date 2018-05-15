@@ -5,18 +5,21 @@ import PaymentInvoiceSlide from "components/payment-invoice/payment-invoice-slid
 
 const mapStateToProps = state => ({
   cost: state.upload.invoice.cost,
-  ethAddress: state.upload.invoice.ethAddress
+  ethAddress: state.upload.invoice.ethAddress,
+  gasPrice: state.upload.invoice.gasPrice
 });
 const mapDispatchToProps = dispatch => ({});
 
 
 const PaymentInvoice = ({
   cost,
-  ethAddress
+  ethAddress,
+  gasPrice
 }) => (
   <PaymentInvoiceSlide
   cost={cost}
   ethAddress={ethAddress}
+  gasPrice={gasPrice}
   />
 );
 

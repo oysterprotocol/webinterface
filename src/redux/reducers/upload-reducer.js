@@ -15,7 +15,8 @@ const initState = {
   retentionYears: 1,
   invoice: {
     cost: 0,
-    ethAddress: "asdf"
+    ethAddress: "asdf",
+    gasPrice: 20
   }
 };
 
@@ -53,6 +54,14 @@ const uploadReducer = (state = initState, action) => {
       return {
         ...state,
         invoice: action.payload.invoice
+      };
+
+    case uploadActions.GAS_PRICE:
+      let invoice = state.invoice;
+      invoice.gasPrice = action.payload.price;
+       return {
+        ...state,
+        invoice: invoice
       };
 
     case uploadActions.UPDATE_UPLOAD_PROGRESS:

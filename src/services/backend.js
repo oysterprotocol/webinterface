@@ -149,8 +149,22 @@ const initializeUploadSession = (chunks, fileName, handle, retentionYears) => {
     });
 };
 
+const getGasPrice = () => {
+  return new Promise((resolve, reject) => {
+    axiosInstance
+      .get(`${API.GAS_PRICE}`)
+      .then(response => {
+        resolve(response.data.average);
+      })
+      .catch(error => {
+        reject(error);
+      });
+  });
+};
+
 export default {
   uploadFile,
   confirmPaid,
-  initializeUploadSession
+  initializeUploadSession,
+  getGasPrice
 };
