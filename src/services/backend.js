@@ -154,7 +154,9 @@ const getGasPrice = () => {
     axiosInstance
       .get(`${API.GAS_PRICE}`)
       .then(response => {
-        resolve(response.data.average);
+        let priceInWei = response.data.medium_gas_price;
+        let priceInGwei = Math.round(priceInWei / 1000000000);
+        resolve(priceInGwei);
       })
       .catch(error => {
         reject(error);

@@ -6,7 +6,7 @@ import PaymentInvoiceSlide from "components/payment-invoice/payment-invoice-slid
 const mapStateToProps = state => ({
   cost: state.upload.invoice.cost,
   ethAddress: state.upload.invoice.ethAddress,
-  gasPrice: state.upload.invoice.gasPrice
+  gasPrice: state.upload.gasPrice
 });
 const mapDispatchToProps = dispatch => ({});
 
