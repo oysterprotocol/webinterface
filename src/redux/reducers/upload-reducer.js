@@ -15,8 +15,9 @@ const initState = {
   retentionYears: 1,
   invoice: {
     cost: 0,
-    ethAddress: "asdf"
-  }
+    ethAddress: "asdf",
+  },
+  gasPrice: 20
 };
 
 const uploadedFileGenerator = ({ numberOfChunks, fileName, handle }) => {
@@ -53,6 +54,12 @@ const uploadReducer = (state = initState, action) => {
       return {
         ...state,
         invoice: action.payload.invoice
+      };
+
+    case uploadActions.GAS_PRICE:
+       return {
+        ...state,
+        gasPrice: action.payload.price
       };
 
     case uploadActions.UPDATE_UPLOAD_PROGRESS:

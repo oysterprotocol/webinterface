@@ -15,6 +15,7 @@ const INITIALIZE_POLLING_INDEXES = "oyster/upload/initialize_polling_indexes";
 const INITIALIZE_SESSION = "oyster/upload/initialize_session";
 const POLL_PAYMENT_STATUS = "oyster/upload/poll_payment_status";
 const PAYMENT_PENDING = "oyster/upload/payment_pending";
+const GAS_PRICE = "oyster/upload/gas_price";
 
 const ACTIONS = Object.freeze({
   // actions
@@ -35,6 +36,7 @@ const ACTIONS = Object.freeze({
   INITIALIZE_SESSION,
   POLL_PAYMENT_STATUS,
   PAYMENT_PENDING,
+  GAS_PRICE,
 
   // actionCreators
   initializeUploadAction: ({ file, retentionYears }) => ({
@@ -51,6 +53,10 @@ const ACTIONS = Object.freeze({
   }),
   paymentPending: () => ({
     type: ACTIONS.PAYMENT_PENDING,
+  }),
+  gasPrice: (price) => ({
+    type: ACTIONS.GAS_PRICE,
+    payload: { price }
   }),
   beginUploadAction: ({ chunks, fileName, handle, numberOfChunks, alphaSessionId, betaSessionId, genesisHash, invoice, host }) => ({
     type: ACTIONS.BEGIN_UPLOAD,
