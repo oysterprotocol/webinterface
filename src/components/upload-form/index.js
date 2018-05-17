@@ -15,7 +15,7 @@ const mapDispatchToProps = dispatch => ({
   selectBetaBrokerFn: url =>
     dispatch(uploadActions.selectBetaBrokerAction(url)),
   initializeUploadFn: (file, retentionYears) =>
-    dispatch(uploadActions.initializeUploadAction({file, retentionYears})),
+    dispatch(uploadActions.initializeUploadAction({ file, retentionYears })),
   selectRetentionYears: value =>
     dispatch(uploadActions.selectRetentionYears(value))
 });
@@ -27,7 +27,7 @@ const UploadForm = ({
   alphaBroker,
   betaBroker,
   retentionYears,
-  selectRetentionYears,
+  selectRetentionYears
 }) => (
   <UploadSlide
     upload={initializeUploadFn}
@@ -39,6 +39,5 @@ const UploadForm = ({
     selectRetentionYears={selectRetentionYears}
   />
 );
-
 
 export default connect(mapStateToProps, mapDispatchToProps)(UploadForm);

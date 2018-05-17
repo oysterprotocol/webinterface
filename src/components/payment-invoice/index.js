@@ -9,15 +9,8 @@ const mapStateToProps = state => ({
 });
 const mapDispatchToProps = dispatch => ({});
 
-
-const PaymentInvoice = ({
-  cost,
-  ethAddress
-}) => (
-  <PaymentInvoiceSlide
-  cost={cost}
-  ethAddress={ethAddress}
-  />
+const PaymentInvoice = ({ cost, ethAddress }) => (
+  <PaymentInvoiceSlide cost={cost} ethAddress={ethAddress} />
 );
 
 export default connect(mapStateToProps, mapDispatchToProps)(PaymentInvoice);

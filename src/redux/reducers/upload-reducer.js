@@ -46,7 +46,7 @@ const uploadReducer = (state = initState, action) => {
     case uploadActions.SELECT_RETENTION_YEARS:
       return {
         ...state,
-        retentionYears: action.payload,
+        retentionYears: action.payload
       };
 
     case uploadActions.POLL_PAYMENT_STATUS:

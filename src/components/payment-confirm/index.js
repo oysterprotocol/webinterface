@@ -9,7 +9,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({});
 
 const PaymentConfirm = () => {
-  return <PaymentConfirmSlide/>;
+  return <PaymentConfirmSlide />;
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(PaymentConfirm);

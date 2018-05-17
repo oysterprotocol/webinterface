@@ -94,7 +94,10 @@ class UploadSlide extends Component {
                   let retentionYears = event.target.value;
                   selectRetentionYears(retentionYears);
                   this.setState({
-                    storageCost: this.calculateStorageCost(this.state.fileSize, retentionYears)
+                    storageCost: this.calculateStorageCost(
+                      this.state.fileSize,
+                      retentionYears
+                    )
                   });
                 }}
               />
@@ -107,7 +110,10 @@ class UploadSlide extends Component {
                   let retentionYears = event.target.value;
                   selectRetentionYears(retentionYears);
                   this.setState({
-                    storageCost: this.calculateStorageCost(this.state.fileSize, retentionYears)
+                    storageCost: this.calculateStorageCost(
+                      this.state.fileSize,
+                      retentionYears
+                    )
                   });
                 }}
               >
@@ -149,14 +155,23 @@ class UploadSlide extends Component {
                     fileName: file.name,
                     fileSize: file.size,
                     humanFileSize: this.humanFileSize(file.size, true),
-                    storageCost: this.calculateStorageCost(file.size, retentionYears)
+                    storageCost: this.calculateStorageCost(
+                      file.size,
+                      retentionYears
+                    )
                   });
                 } else {
                   this.setState({
                     fileName: DEFAULT_FILE_INPUT_TEXT,
                     fileSize: DEFAULT_FILE_INPUT_SIZE,
-                    humanFileSize: this.humanFileSize(DEFAULT_FILE_INPUT_SIZE, true),
-                    storageCost: this.calculateStorageCost(file.size, retentionYears)
+                    humanFileSize: this.humanFileSize(
+                      DEFAULT_FILE_INPUT_SIZE,
+                      true
+                    ),
+                    storageCost: this.calculateStorageCost(
+                      file.size,
+                      retentionYears
+                    )
                   });
                 }
               }}
@@ -182,10 +197,8 @@ class UploadSlide extends Component {
                 alert(
                   `Please select a file under ${FILE.MAX_FILE_SIZE / 1000} KB.`
                 );
-              } else if (retentionYears === '0') {
-                alert(
-                  `Please select retention years`
-                );
+              } else if (retentionYears === "0") {
+                alert(`Please select retention years`);
               } else {
                 upload(file, retentionYears);
               }
@@ -203,23 +216,23 @@ class UploadSlide extends Component {
   }
 
   calculateStorageCost(fileSize, years) {
-    return ((fileSize / BYTES_IN_GIGABYTE) * years).toFixed(8)
+    return (fileSize / BYTES_IN_GIGABYTE * years).toFixed(8);
   }
 
   humanFileSize(bytes, si) {
     let thresh = si ? 1000 : 1024;
-    if(Math.abs(bytes) < thresh) {
-      return bytes + ' B';
+    if (Math.abs(bytes) < thresh) {
+      return bytes + " B";
     }
     let units = si
-      ? ['kB','MB','GB','TB','PB','EB','ZB','YB']
-      : ['KiB','MiB','GiB','TiB','PiB','EiB','ZiB','YiB'];
+      ? ["kB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB"]
+      : ["KiB", "MiB", "GiB", "TiB", "PiB", "EiB", "ZiB", "YiB"];
     let u = -1;
     do {
       bytes /= thresh;
       ++u;
-    } while(Math.abs(bytes) >= thresh && u < units.length - 1);
-    return bytes.toFixed(1)+' '+units[u];
+    } while (Math.abs(bytes) >= thresh && u < units.length - 1);
+    return bytes.toFixed(1) + " " + units[u];
   }
 }
 
