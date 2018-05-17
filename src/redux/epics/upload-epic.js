@@ -118,6 +118,15 @@ const pollPaymentStatus = (action$, store) => {
   });
 };
 
+const getGasPrice = (action$, store) => {
+  return action$.ofType(uploadActions.INITIALIZE_SESSION).mergeMap(action => {
+    return Observable.fromPromise(Backend.getGasPrice())
+      .mergeMap(prices => {
+        return Observable.of(uploadActions.gasPrice( prices ))
+      })
+  })
+};
+
 const saveToHistory = (action$, store) => {
   return action$.ofType(uploadActions.BEGIN_UPLOAD).map(action => {
     const { handle, fileName } = action.payload;
@@ -241,6 +250,7 @@ export default combineEpics(
   pollPaymentStatus,
   saveToHistory,
   uploadFile,
+  getGasPrice,
   pollUploadProgress,
   markUploadAsComplete,
   refreshIncompleteUploads

@@ -4,6 +4,7 @@ export const API = Object.freeze({
   BROKER_NODE_B: "http://BETA_BROKER_IP",
   V1_UPLOAD_SESSIONS_PATH: ":3000/api/v1/upload-sessions",
   V2_UPLOAD_SESSIONS_PATH: ":3000/api/v2/upload-sessions",
+  GAS_PRICE: "https://api.blockcypher.com/v1/eth/main",
   CHUNKS_PER_REQUEST: 10
 });
 
