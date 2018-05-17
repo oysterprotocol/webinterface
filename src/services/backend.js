@@ -16,22 +16,28 @@ const adaptChunkToParams = (chunk, genesisHash) => ({
   hash: genesisHash
 });
 
-const uploadFile = (chunks, fileName, handle, alphaSessionId, betaSessionId, genesisHash) => {
+const uploadFile = (
+  chunks,
+  fileName,
+  handle,
+  alphaSessionId,
+  betaSessionId,
+  genesisHash
+) => {
   console.log("UPLOADING FILE TO BROKER NODES");
 
   // Appends meta chunk
 
   return Promise.all([
     sendToAlphaBroker(alphaSessionId, chunks, genesisHash),
-    sendToBetaBroker(betaSessionId, chunks, genesisHash),
-  ])
-    .then(() => {
-      return {
-        numberOfChunks: chunks.length,
-        fileName,
-        handle
-      };
-    });
+    sendToBetaBroker(betaSessionId, chunks, genesisHash)
+  ]).then(() => {
+    return {
+      numberOfChunks: chunks.length,
+      fileName,
+      handle
+    };
+  });
 };
 
 const createUploadSession = (
@@ -49,10 +55,10 @@ const createUploadSession = (
         betaIp: API.BROKER_NODE_B,
         storageLengthInYears
       })
-      .then(({data}) => {
-        const {id: alphaSessionId, betaSessionId} = data;
-        const {invoice} = data;
-        resolve({alphaSessionId, betaSessionId, invoice});
+      .then(({ data }) => {
+        const { id: alphaSessionId, betaSessionId } = data;
+        const { invoice } = data;
+        resolve({ alphaSessionId, betaSessionId, invoice });
       })
       .catch(error => {
         reject(error);
@@ -62,7 +68,7 @@ const createUploadSession = (
 const sendChunksToBroker = (brokerUrl, chunks) =>
   new Promise((resolve, reject) => {
     axiosInstance
-      .put(brokerUrl, {chunks})
+      .put(brokerUrl, { chunks })
       .then(response => {
         console.log("SENT CHUNK TO BROKER: ", response);
         resolve(response);
@@ -109,7 +115,8 @@ const sendToBetaBroker = (sessionId, chunks, genesisHash) =>
     ).then(resolve);
   });
 
-const confirmPaid = (host, id) => { //change to confirmPaid
+const confirmPaid = (host, id) => {
+  //change to confirmPaid
   return new Promise((resolve, reject) => {
     axiosInstance
       .get(`${host}${API.V2_UPLOAD_SESSIONS_PATH}/${id}`)
@@ -133,20 +140,19 @@ const initializeUploadSession = (chunks, fileName, handle, retentionYears) => {
     numChunks,
     genesisHash,
     storageLengthInYears
-  )
-    .then(({ alphaSessionId, betaSessionId, invoice }) => {
-      return {
-        alphaSessionId,
-        betaSessionId,
-        invoice,
-        numberOfChunks: numChunks,
-        handle,
-        fileName,
-        genesisHash,
-        storageLengthInYears,
-        host
-      };
-    });
+  ).then(({ alphaSessionId, betaSessionId, invoice }) => {
+    return {
+      alphaSessionId,
+      betaSessionId,
+      invoice,
+      numberOfChunks: numChunks,
+      handle,
+      fileName,
+      genesisHash,
+      storageLengthInYears,
+      host
+    };
+  });
 };
 
 const getGasPrice = () => {

@@ -1,4 +1,5 @@
 import fs from "fs";
+import _ from "lodash";
 
 import FileProcessor from "./file-processor";
 
@@ -96,6 +97,7 @@ test("file |> fileToChunks |> chunksToFile - Success w/ Meta", done => {
 
   readTestFile().then(file => {
     FileProcessor.fileToChunks(file, handle, { withMeta: true })
+      .then(encryptedChks => _.tail(encryptedChks))
       .then(encryptedChks => FileProcessor.chunksToFile(encryptedChks, handle))
       .then(decryptedBlob => FileProcessor.readBlob(decryptedBlob))
       .then(reassembledFileContent => {
@@ -127,7 +129,7 @@ test("file |> fileToChunks |> chunksToFile - correct meta", done => {
         expect(metaData).toEqual({
           fileName: "file.png",
           ext: "png",
-          numberOfChunks: 21
+          numberOfChunks: 16
         });
         done();
       })

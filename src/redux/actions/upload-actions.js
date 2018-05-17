@@ -43,24 +43,70 @@ const ACTIONS = Object.freeze({
     type: ACTIONS.INITIALIZE_UPLOAD,
     payload: { file, retentionYears }
   }),
-  initializeSession: ({ chunks, handle, fileName, numberOfChunks, retentionYears }) => ({
+  initializeSession: ({
+    chunks,
+    handle,
+    fileName,
+    numberOfChunks,
+    retentionYears
+  }) => ({
     type: ACTIONS.INITIALIZE_SESSION,
     payload: { chunks, handle, fileName, numberOfChunks, retentionYears }
   }),
-  pollPaymentStatus: ({ host, alphaSessionId, chunks, fileName, handle, numberOfChunks, betaSessionId, genesisHash, invoice}) => ({
+  pollPaymentStatus: ({
+    host,
+    alphaSessionId,
+    chunks,
+    fileName,
+    handle,
+    numberOfChunks,
+    betaSessionId,
+    genesisHash,
+    invoice
+  }) => ({
     type: ACTIONS.POLL_PAYMENT_STATUS,
-    payload: { host, alphaSessionId, chunks, fileName, handle, numberOfChunks, betaSessionId, genesisHash, invoice }
+    payload: {
+      host,
+      alphaSessionId,
+      chunks,
+      fileName,
+      handle,
+      numberOfChunks,
+      betaSessionId,
+      genesisHash,
+      invoice
+    }
   }),
   paymentPending: () => ({
-    type: ACTIONS.PAYMENT_PENDING,
+    type: ACTIONS.PAYMENT_PENDING
   }),
-  gasPrice: (price) => ({
+  gasPrice: price => ({
     type: ACTIONS.GAS_PRICE,
     payload: { price }
   }),
-  beginUploadAction: ({ chunks, fileName, handle, numberOfChunks, alphaSessionId, betaSessionId, genesisHash, invoice, host }) => ({
+  beginUploadAction: ({
+    chunks,
+    fileName,
+    handle,
+    numberOfChunks,
+    alphaSessionId,
+    betaSessionId,
+    genesisHash,
+    invoice,
+    host
+  }) => ({
     type: ACTIONS.BEGIN_UPLOAD,
-    payload: { chunks, fileName, handle, numberOfChunks, alphaSessionId, betaSessionId, genesisHash, invoice, host }
+    payload: {
+      chunks,
+      fileName,
+      handle,
+      numberOfChunks,
+      alphaSessionId,
+      betaSessionId,
+      genesisHash,
+      invoice,
+      host
+    }
   }),
   addToHistoryAction: ({ numberOfChunks, fileName, handle }) => ({
     type: ACTIONS.ADD_TO_HISTORY,

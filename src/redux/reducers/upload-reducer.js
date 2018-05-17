@@ -15,7 +15,7 @@ const initState = {
   retentionYears: 1,
   invoice: {
     cost: 0,
-    ethAddress: "asdf",
+    ethAddress: "asdf"
   },
   gasPrice: 20
 };
@@ -47,7 +47,7 @@ const uploadReducer = (state = initState, action) => {
     case uploadActions.SELECT_RETENTION_YEARS:
       return {
         ...state,
-        retentionYears: action.payload,
+        retentionYears: action.payload
       };
 
     case uploadActions.POLL_PAYMENT_STATUS:
@@ -57,7 +57,7 @@ const uploadReducer = (state = initState, action) => {
       };
 
     case uploadActions.GAS_PRICE:
-       return {
+      return {
         ...state,
         gasPrice: action.payload.price
       };

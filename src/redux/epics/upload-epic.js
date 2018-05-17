@@ -23,10 +23,10 @@ const UPLOAD_POLL_FREQUENCY =
 
 const initializeUpload = (action$, store) => {
   return action$.ofType(uploadActions.INITIALIZE_UPLOAD).mergeMap(action => {
-    const {file, retentionYears} = action.payload;
+    const { file, retentionYears } = action.payload;
 
     return Observable.fromPromise(FileProcessor.initializeUpload(file)).map(
-      ({numberOfChunks, handle, fileName, chunks}) => {
+      ({ numberOfChunks, handle, fileName, chunks }) => {
         return uploadActions.initializeSession({
           chunks,
           fileName,
@@ -41,66 +41,89 @@ const initializeUpload = (action$, store) => {
 
 const initializeSession = (action$, store) => {
   return action$.ofType(uploadActions.INITIALIZE_SESSION).mergeMap(action => {
-    const {chunks, fileName, handle, retentionYears} = action.payload;
+    const { chunks, fileName, handle, retentionYears } = action.payload;
 
-    return Observable.fromPromise(Backend.initializeUploadSession(chunks, fileName, handle, retentionYears)).map(
-      ({alphaSessionId, betaSessionId, invoice, numberOfChunks, handle, fileName, genesisHash, storageLengthInYears, host}) => {
-          return uploadActions.pollPaymentStatus({
-            host,
-            alphaSessionId,
-            chunks,
-            fileName,
-            handle,
-            numberOfChunks,
-            betaSessionId,
-            genesisHash,
-            invoice
-          });
-        }
-      );
+    return Observable.fromPromise(
+      Backend.initializeUploadSession(chunks, fileName, handle, retentionYears)
+    ).map(
+      ({
+        alphaSessionId,
+        betaSessionId,
+        invoice,
+        numberOfChunks,
+        handle,
+        fileName,
+        genesisHash,
+        storageLengthInYears,
+        host
+      }) => {
+        return uploadActions.pollPaymentStatus({
+          host,
+          alphaSessionId,
+          chunks,
+          fileName,
+          handle,
+          numberOfChunks,
+          betaSessionId,
+          genesisHash,
+          invoice
+        });
+      }
+    );
   });
 };
 
 const pollPaymentStatus = (action$, store) => {
   return action$.ofType(uploadActions.POLL_PAYMENT_STATUS).mergeMap(action => {
-    const {host, alphaSessionId, chunks, fileName, handle, numberOfChunks, betaSessionId, genesisHash, invoice} = action.payload;
+    const {
+      host,
+      alphaSessionId,
+      chunks,
+      fileName,
+      handle,
+      numberOfChunks,
+      betaSessionId,
+      genesisHash,
+      invoice
+    } = action.payload;
 
     return Observable.interval(3000)
       .startWith(0)
-      .takeUntil(
-        action$.ofType(uploadActions.BEGIN_UPLOAD)
-      )
-      .mergeMap(() => Observable.fromPromise(Backend.confirmPaid(host, alphaSessionId))
-          .mergeMap(paymentStatus => {
-            switch(paymentStatus) {
-              case "invoiced":
-                return Observable.empty();
-              case "pending":
-                return Observable.of(uploadActions.paymentPending());
-               case "confirmed":
-                 return Observable.of(uploadActions.beginUploadAction({
-                   chunks,
-                   fileName,
-                   handle,
-                   numberOfChunks,
-                   alphaSessionId,
-                   betaSessionId,
-                   genesisHash,
-                   invoice
-                 }));
-            }
-          })
-      )
+      .takeUntil(action$.ofType(uploadActions.BEGIN_UPLOAD))
+      .mergeMap(() =>
+        Observable.fromPromise(
+          Backend.confirmPaid(host, alphaSessionId)
+        ).mergeMap(paymentStatus => {
+          switch (paymentStatus) {
+            case "invoiced":
+              return Observable.empty();
+            case "pending":
+              return Observable.of(uploadActions.paymentPending());
+            case "confirmed":
+              return Observable.of(
+                uploadActions.beginUploadAction({
+                  chunks,
+                  fileName,
+                  handle,
+                  numberOfChunks,
+                  alphaSessionId,
+                  betaSessionId,
+                  genesisHash,
+                  invoice
+                })
+              );
+          }
+        })
+      );
   });
 };
 
 const getGasPrice = (action$, store) => {
   return action$.ofType(uploadActions.INITIALIZE_SESSION).mergeMap(action => {
-    return Observable.fromPromise(Backend.getGasPrice())
-      .mergeMap(prices => {
-        return Observable.of(uploadActions.gasPrice( prices ))
-      })
-  })
+    return Observable.fromPromise(Backend.getGasPrice()).mergeMap(prices => {
+      return Observable.of(uploadActions.gasPrice(prices));
+    });
+  });
 };
 
 const saveToHistory = (action$, store) => {
@@ -115,9 +138,26 @@ const saveToHistory = (action$, store) => {
 
 const uploadFile = (action$, store) => {
   return action$.ofType(uploadActions.BEGIN_UPLOAD).mergeMap(action => {
-    const { chunks, fileName, handle, numberOfChunks,  alphaSessionId, betaSessionId, genesisHash, } = action.payload;
+    const {
+      chunks,
+      fileName,
+      handle,
+      numberOfChunks,
+      alphaSessionId,
+      betaSessionId,
+      genesisHash
+    } = action.payload;
 
-    return Observable.fromPromise(Backend.uploadFile(chunks, fileName, handle, alphaSessionId, betaSessionId, genesisHash))
+    return Observable.fromPromise(
+      Backend.uploadFile(
+        chunks,
+        fileName,
+        handle,
+        alphaSessionId,
+        betaSessionId,
+        genesisHash
+      )
+    )
       .map(({ numberOfChunks, handle }) =>
         uploadActions.uploadSuccessAction(handle)
       )

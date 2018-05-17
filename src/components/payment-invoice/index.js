@@ -10,16 +10,11 @@ const mapStateToProps = state => ({
 });
 const mapDispatchToProps = dispatch => ({});
 
-
-const PaymentInvoice = ({
-  cost,
-  ethAddress,
-  gasPrice
-}) => (
+const PaymentInvoice = ({ cost, ethAddress, gasPrice }) => (
   <PaymentInvoiceSlide
-  cost={cost}
-  ethAddress={ethAddress}
-  gasPrice={gasPrice}
+    cost={cost}
+    ethAddress={ethAddress}
+    gasPrice={gasPrice}
   />
 );
 
