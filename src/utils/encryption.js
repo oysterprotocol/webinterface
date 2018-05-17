@@ -1,5 +1,7 @@
 import _ from "lodash";
 import forge from "node-forge";
+import Raven from "raven-js";
+import analytics from "analytics.js";
 
 const IV_LENGTH = 16;
 const CHUNK_PREFIX = "File_chunk_data: ";
@@ -88,7 +90,9 @@ const decryptChunk = (key, secret) => {
   );
 
   if (!decipher.finish()) {
-    // TODO:  Should we throw an error here?
+    let msg =
+      "decipher failed to finished in decryptChunk in utils/encryption.js";
+    Raven.captureException(new Error(msg));
     return "";
   }
 
