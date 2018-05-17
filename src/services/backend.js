@@ -80,7 +80,7 @@ const sendChunksToBroker = (brokerUrl, chunks) =>
   });
 
 const sendFileToBroker = (brokerUrl, genesisHash, chunks) => {
-  const batches = [_.slice(chunks, 0, chunks.length)];
+  const batches = _.chunk(chunks, 5000);
 
   const batchRequests = batches.map(
     batch =>
