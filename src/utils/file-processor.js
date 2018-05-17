@@ -3,7 +3,7 @@ import _ from "lodash";
 
 import Iota from "../services/iota";
 
-const CHUNK_SIZE = 1000;
+const CHUNK_SIZE = 1024;
 const fileSizeFromNumChunks = numChunks => numChunks * CHUNK_SIZE;
 
 const initializeUpload = file => {
