@@ -42,18 +42,6 @@ const readBlob = blob =>
     try {
       const reader = new FileReader();
       reader.onloadend = ({ target }) => resolve(target.result);
-      //reader.readAsBinaryString(blob);
-      reader.readAsArrayBuffer(blob);
-    } catch (err) {
-      reject(err);
-    }
-  });
-
-const readBlobForTests = blob =>
-  new Promise((resolve, reject) => {
-    try {
-      const reader = new FileReader();
-      reader.onloadend = ({ target }) => resolve(target.result);
       reader.readAsArrayBuffer(blob);
     } catch (err) {
       reject(err);
@@ -87,8 +75,9 @@ const fileToChunks = (file, handle, opts = {}) =>
         fileOffset += CHUNK_SIZE;
       }
 
-      Promise.all(chunks.map(readBlob)).then(chunks => {
-        let encryptedChunks = chunks
+      Promise.all(chunks.map(readBlob)).then(arrayBuffer => {
+        let encryptedChunks = arrayBuffer
+          .map(arrayBufferToString)
           .map(binaryString =>
             Encryption.encryptChunk(handleInBytes, binaryString)
           )
@@ -141,13 +130,36 @@ const chunksToFile = (chunks, handle) =>
     }
   });
 
+function arrayBufferToString(buffer) {
+  return binaryToString(
+    String.fromCharCode.apply(
+      null,
+      Array.prototype.slice.apply(new Uint8Array(buffer))
+    )
+  );
+}
+
+function binaryToString(binary) {
+  let error;
+
+  try {
+    return decodeURIComponent(escape(binary));
+  } catch (_error) {
+    error = _error;
+    if (error instanceof URIError) {
+      return binary;
+    } else {
+      throw error;
+    }
+  }
+}
+
 const string2Bin = str => _.map(str, c => c.charCodeAt(0));
 
 export default {
   metaDataFromIotaFormat,
   initializeUpload,
   readBlob,
-  readBlobForTests,
   fileSizeFromNumChunks,
   fileToChunks, // used just for testing.
   chunksToFile
