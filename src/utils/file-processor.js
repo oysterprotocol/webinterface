@@ -42,7 +42,8 @@ const readBlob = blob =>
     try {
       const reader = new FileReader();
       reader.onloadend = ({ target }) => resolve(target.result);
-      reader.readAsBinaryString(blob);
+      //reader.readAsBinaryString(blob);
+      reader.readAsArrayBuffer(blob);
     } catch (err) {
       reject(err);
     }
