@@ -16,7 +16,17 @@ const IotaC = new IOTA({
   provider: IOTA_API.PROVIDER_C
 });
 
+const STOPPER_TRYTE = "A";
+
 const toAddress = string => string.substr(0, IOTA_API.ADDRESS_LENGTH);
+
+const addStopperTryte = trytes => trytes + STOPPER_TRYTE;
+
+const removeStopperTryteAndPadding = trytes =>
+  trytes.slice(0, _.findLastIndex(trytes, c => c === STOPPER_TRYTE));
+
+const addPaddingIfOdd = trytes =>
+  trytes.length % 2 === 0 ? trytes : trytes + "9";
 
 const parseMessage = message => {
   const characters = message.split("");
@@ -152,5 +162,8 @@ export default {
   parseMessage,
   checkUploadPercentage,
   findTransactionObjects,
+  removeStopperTryteAndPadding,
+  addStopperTryte,
+  addPaddingIfOdd,
   utils: Iota.utils
 };
