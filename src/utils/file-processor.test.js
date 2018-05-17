@@ -20,9 +20,9 @@ test("file |> fileToChunks |> chunksToFile - Success", done => {
   readTestFile().then(file => {
     FileProcessor.fileToChunks(file, handle)
       .then(encryptedChks => FileProcessor.chunksToFile(encryptedChks, handle))
-      .then(decryptedBlob => FileProcessor.readBlob(decryptedBlob))
+      .then(decryptedBlob => FileProcessor.readBlobForTests(decryptedBlob))
       .then(reassembledFileContent => {
-        FileProcessor.readBlob(file).then(origFile => {
+        FileProcessor.readBlobForTests(file).then(origFile => {
           expect(reassembledFileContent).toEqual(origFile);
           done();
         });
@@ -44,9 +44,9 @@ test("file |> fileToChunks |> chunksToFile - Beta Success", done => {
         encryptedChunks = encryptedChunks.reverse();
         return FileProcessor.chunksToFile(encryptedChunks, handle);
       })
-      .then(decryptedBlob => FileProcessor.readBlob(decryptedBlob))
+      .then(decryptedBlob => FileProcessor.readBlobForTests(decryptedBlob))
       .then(reassembledFileContent => {
-        FileProcessor.readBlob(file).then(origFile => {
+        FileProcessor.readBlobForTests(file).then(origFile => {
           expect(reassembledFileContent).toEqual(origFile);
           done();
         });
@@ -78,9 +78,9 @@ test("file |> fileToChunks |> chunksToFile - Success w/ treasure", done => {
 
         return FileProcessor.chunksToFile(encryptedChunks, handle);
       })
-      .then(decryptedBlob => FileProcessor.readBlob(decryptedBlob))
+      .then(decryptedBlob => FileProcessor.readBlobForTests(decryptedBlob))
       .then(reassembledFileContent => {
-        FileProcessor.readBlob(file).then(origFile => {
+        FileProcessor.readBlobForTests(file).then(origFile => {
           expect(reassembledFileContent).toEqual(origFile);
           done();
         });
@@ -99,9 +99,9 @@ test("file |> fileToChunks |> chunksToFile - Success w/ Meta", done => {
     FileProcessor.fileToChunks(file, handle, { withMeta: true })
       .then(encryptedChks => _.tail(encryptedChks))
       .then(encryptedChks => FileProcessor.chunksToFile(encryptedChks, handle))
-      .then(decryptedBlob => FileProcessor.readBlob(decryptedBlob))
+      .then(decryptedBlob => FileProcessor.readBlobForTests(decryptedBlob))
       .then(reassembledFileContent => {
-        FileProcessor.readBlob(file).then(origFile => {
+        FileProcessor.readBlobForTests(file).then(origFile => {
           expect(reassembledFileContent).toEqual(origFile);
           done();
         });

@@ -78,13 +78,23 @@ const ACTIONS = Object.freeze({
     }
   }),
   paymentPending: () => ({
-    type: ACTIONS.PAYMENT_PENDING,
+    type: ACTIONS.PAYMENT_PENDING
   }),
-  gasPrice: (price) => ({
+  gasPrice: price => ({
     type: ACTIONS.GAS_PRICE,
     payload: { price }
   }),
-  beginUploadAction: ({ chunks, fileName, handle, numberOfChunks, alphaSessionId, betaSessionId, genesisHash, invoice, host }) => ({
+  beginUploadAction: ({
+    chunks,
+    fileName,
+    handle,
+    numberOfChunks,
+    alphaSessionId,
+    betaSessionId,
+    genesisHash,
+    invoice,
+    host
+  }) => ({
     type: ACTIONS.BEGIN_UPLOAD,
     payload: {
       chunks,

@@ -48,6 +48,17 @@ const readBlob = blob =>
     }
   });
 
+const readBlobForTests = blob =>
+  new Promise((resolve, reject) => {
+    try {
+      const reader = new FileReader();
+      reader.onloadend = ({ target }) => resolve(target.result);
+      reader.readAsArrayBuffer(blob);
+    } catch (err) {
+      reject(err);
+    }
+  });
+
 const createMetaData = (fileName, numberOfChunks) => {
   const fileExtension = fileName.split(".").pop();
 
@@ -135,6 +146,7 @@ export default {
   metaDataFromIotaFormat,
   initializeUpload,
   readBlob,
+  readBlobForTests,
   fileSizeFromNumChunks,
   fileToChunks, // used just for testing.
   chunksToFile

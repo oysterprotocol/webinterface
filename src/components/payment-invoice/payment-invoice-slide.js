@@ -9,11 +9,7 @@ class PaymentInvoiceSlide extends Component {
   }
 
   render() {
-    const {
-      cost,
-      ethAddress,
-      gasPrice
-    } = this.props;
+    const { cost, ethAddress, gasPrice } = this.props;
     return (
       <Slide title="Send PRL" image={ICON_PlANE}>
         <div className="payment-request">
@@ -23,8 +19,11 @@ class PaymentInvoiceSlide extends Component {
           <br />
           <br />
           <span>{ethAddress}</span>
-          <p>We suggest using at least {gasPrice} Gwei for a gas price and 42,000 gas limit to ensure the transaction
-            is confirmed as quickly as possible.</p>
+          <p>
+            We suggest using at least {gasPrice} Gwei for a gas price and 42,000
+            gas limit to ensure the transaction is confirmed as quickly as
+            possible.
+          </p>
         </div>
       </Slide>
     );

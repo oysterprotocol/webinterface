@@ -120,11 +120,10 @@ const pollPaymentStatus = (action$, store) => {
 
 const getGasPrice = (action$, store) => {
   return action$.ofType(uploadActions.INITIALIZE_SESSION).mergeMap(action => {
-    return Observable.fromPromise(Backend.getGasPrice())
-      .mergeMap(prices => {
-        return Observable.of(uploadActions.gasPrice( prices ))
-      })
-  })
+    return Observable.fromPromise(Backend.getGasPrice()).mergeMap(prices => {
+      return Observable.of(uploadActions.gasPrice(prices));
+    });
+  });
 };
 
 const saveToHistory = (action$, store) => {
