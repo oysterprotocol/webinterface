@@ -11,7 +11,8 @@ import PrimaryButton from "components/shared/primary-button";
 const DEFAULT_FILE_INPUT_TEXT = "No file selected";
 const DEFAULT_FILE_INPUT_SIZE = 0;
 const DEFAULT_FILE_INPUT_COST = 0;
-const BYTES_IN_GIGABYTE = 1073741824;
+const BYTES_IN_GIGABYTE = 1000000000;
+const STORAGE_PEG = 64;
 
 class UploadSlide extends Component {
   constructor(props) {
@@ -215,8 +216,9 @@ class UploadSlide extends Component {
     );
   }
 
-  calculateStorageCost(fileSize, years) {
-    return (fileSize / BYTES_IN_GIGABYTE * years).toFixed(8);
+  calculateStorageCost(fileSizeBytes, years) {
+    let fileSizeGigaBytes = fileSizeBytes / BYTES_IN_GIGABYTE;
+    return ((fileSizeGigaBytes / STORAGE_PEG) * years).toFixed(8);
   }
 
   humanFileSize(bytes, si) {
