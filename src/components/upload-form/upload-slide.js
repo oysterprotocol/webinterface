@@ -217,7 +217,7 @@ class UploadSlide extends Component {
   }
 
   calculateStorageCost(fileSizeBytes, years) {
-    let fileSizeGigaBytes = fileSizeBytes * BYTES_IN_GIGABYTE;
+    let fileSizeGigaBytes = fileSizeBytes / BYTES_IN_GIGABYTE;
     return ((fileSizeGigaBytes / STORAGE_PEG) * years).toFixed(8);
   }
 
