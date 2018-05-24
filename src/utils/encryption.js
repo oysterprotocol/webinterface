@@ -21,10 +21,10 @@ const parseEightCharsOfFilename = fileName => {
   return fileName;
 };
 
-// `length` should be a multiple of 8
+// `length` should be a multiple of 2
 export function getSalt(length) {
-  const bytes = forge.random.getBytesSync(Math.ceil(length / 8 * 6));
-  return forge.util.encode64(bytes);
+  const bytes = forge.random.getBytesSync(Math.ceil(length / 2))
+  return forge.util.binary.hex.encode(bytes)
 }
 
 export function getPrimordialHash() {
