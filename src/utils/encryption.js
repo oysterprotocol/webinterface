@@ -10,7 +10,7 @@ const CHUNK_PREFIX_IN_HEX = forge.util.bytesToHex(CHUNK_PREFIX);
 export function bytesFromHandle(handle) {
   return forge.md.sha256
     .create()
-    .update(handle)
+    .update(handle, 'utf8')
     .digest();
 }
 
@@ -23,8 +23,10 @@ const parseEightCharsOfFilename = fileName => {
 
 // `length` should be a multiple of 2
 export function getSalt(length) {
-  const bytes = forge.random.getBytesSync(Math.ceil(length / 2))
-  return forge.util.binary.hex.encode(bytes)
+  const bytes = forge.random.getBytesSync(length);
+  const byteArr = forge.util.binary.raw.decode(bytes);
+  const salt = forge.util.binary.base58.encode(byteArr);
+  return salt.substr(0, length);
 }
 
 export function getPrimordialHash() {
@@ -36,26 +38,39 @@ export function getPrimordialHash() {
     .toHex();
 }
 
-// Returns [obfuscatedHash, nextHash]
-export function hashChain(hash) {
+// Expects byteString as input
+// Returns [obfuscatedHash, nextHash] as byteString
+export function hashChain(byteStr) {
   const obfuscatedHash = forge.md.sha384
     .create()
-    .update(hash)
+    .update(byteStr)
     .digest()
-    .toHex();
+    .bytes();
   const nextHash = forge.md.sha256
     .create()
-    .update(hash)
+    .update(byteStr)
     .digest()
-    .toHex();
+    .bytes();
 
   return [obfuscatedHash, nextHash];
 }
+
+// Expects the handle
 // Genesis hash is not yet obfuscated.
 const genesisHash = handle => {
-  const [_obfuscatedHash, genHash] = hashChain(handle);
+  const primordialHash = handle.substr(8, 64);
+  const byteStr = forge.util.hexToBytes(primordialHash);
+  const [_obfuscatedHash, genHash] = hashChain(byteStr);
 
-  return genHash;
+  return forge.util.bytesToHex(genHash);
+};
+
+// First hash in the datamap
+const obfuscatedGenesisHash = hash => {
+  const byteStr = forge.util.hexToBytes(hash)
+  const [obfuscatedHash, _genHash] = hashChain(byteStr);
+
+  return forge.util.bytesToHex(obfuscatedHash);
 };
 
 const encryptChunk = (key, secret) => {
@@ -113,6 +128,7 @@ export default {
   getPrimordialHash,
   hashChain,
   genesisHash,
+  obfuscatedGenesisHash,
   encryptChunk,
   decryptChunk,
   bytesFromHandle
