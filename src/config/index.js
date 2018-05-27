@@ -15,7 +15,7 @@ const BROKERS = IS_DEV
 const randElem = xs => xs[Math.floor(Math.random() * xs.length)];
 const randBrokers = brokers => {
   const alpha = randElem(brokers);
-  const remBrokers = brokers.filter(b => b != alpha);
+  const remBrokers = brokers.filter(br => br != alpha);
   const beta = randElem(remBrokers);
 
   return [alpha, beta];
