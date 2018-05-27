@@ -2,6 +2,7 @@ import { Observable } from "rxjs";
 import { combineEpics } from "redux-observable";
 import _ from "lodash";
 import FileSaver from "file-saver";
+import forge from "node-forge";
 
 import downloadActions from "redux/actions/download-actions";
 import Iota from "services/iota";
@@ -16,8 +17,12 @@ const initializeDownload = (action$, store) => {
     .mergeMap(action => {
       const handle = action.payload;
       const genesisHash = Encryption.genesisHash(handle);
-      const [obfuscatedGenesisHash] = Encryption.hashChain(genesisHash);
-      const genesisHashInTrytes = Iota.utils.toTrytes(obfuscatedGenesisHash);
+      const obfuscatedGenesisHash = Encryption.obfuscatedGenesisHash(
+        genesisHash
+      );
+      const genesisHashInTrytes = Iota.utils.toTrytes(
+        forge.util.hexToBytes(obfuscatedGenesisHash)
+      );
       const iotaAddress = Iota.toAddress(genesisHashInTrytes);
       return Observable.fromPromise(Iota.findTransactionObjects([iotaAddress]))
         .map(transactions => {
@@ -46,7 +51,8 @@ const beginDownload = (action$, store) => {
   return action$.ofType(downloadActions.BEGIN_DOWNLOAD).mergeMap(action => {
     const { handle, fileName, numberOfChunks } = action.payload;
     const datamapOpts = { includeTreasureOffsets: INCLUDE_TREASURE_OFFSETS };
-    const datamap = Datamap.generate(handle, numberOfChunks, datamapOpts);
+    const genHash = Encryption.genesisHash(handle);
+    const datamap = Datamap.generate(genHash, numberOfChunks, datamapOpts);
     const addresses = _.values(datamap);
     const nonMetaDataAddresses = addresses.slice(1, addresses.length);
 
