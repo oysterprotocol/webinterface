@@ -113,7 +113,6 @@ const fileToChunks = (file, handle, opts = {}) =>
           const versionedMeta = addVersionToMeta(encryptedMeta);
           const trytedMetaData = Iota.addStopperTryte(
             Iota.utils.toTrytes(versionedMeta)
-            // Iota.utils.toTrytes(encryptedMeta)
           );
 
           encryptedChunks = [
