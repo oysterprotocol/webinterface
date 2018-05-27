@@ -57,9 +57,9 @@
     "start": "cross-env NODE_PATH=src react-scripts start",
     "build": "cross-env NODE_PATH=src react-scripts build",
     "test": "jest",
-    "watch-test": "cross-env NODE_PATH=src jest --watch --colors",
-    "eject": "cross-env NODE_PATH=src react-scripts eject",
-    "cypress:open": "cypress open"
+    "test:watch": "cross-env NODE_PATH=src jest --watch --colors",
+    "cypress:open": "cypress open",
+    "eject": "cross-env NODE_PATH=src react-scripts eject"
   },
   "jest": {
     "roots": [
