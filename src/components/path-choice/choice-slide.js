@@ -15,7 +15,7 @@ const ChoiceSlide = ({ visitUploadFormFn, visitDownloadFormFn }) => (
           <img src={ICON_UPLOAD} className="upload-image" alt="upload" />
         </div>
         <div>
-          <PrimaryButton onClick={visitUploadFormFn}>
+          <PrimaryButton id="upload-btn" onClick={visitUploadFormFn}>
             Upload a File
           </PrimaryButton>
         </div>
@@ -27,7 +27,7 @@ const ChoiceSlide = ({ visitUploadFormFn, visitDownloadFormFn }) => (
           <img src={ICON_DOWNLOAD} className="upload-image" alt="download" />
         </div>
         <div>
-          <PrimaryButton onClick={visitDownloadFormFn}>
+          <PrimaryButton id="download-btn" onClick={visitDownloadFormFn}>
             Retrieve a File
           </PrimaryButton>
         </div>

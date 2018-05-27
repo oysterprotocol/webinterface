@@ -190,6 +190,7 @@ class UploadSlide extends Component {
         </div>
         <div className="upload_button">
           <PrimaryButton
+            id="start-upload-btn"
             className="btn btn-upload"
             type="button"
             onClick={() => {
