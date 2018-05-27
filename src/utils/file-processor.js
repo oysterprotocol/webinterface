@@ -6,6 +6,10 @@ import Iota from "../services/iota";
 const CHUNK_SIZE = 1024;
 const fileSizeFromNumChunks = numChunks => numChunks * CHUNK_SIZE;
 
+// DO NOT CHANGE THIS! It will  break encoding/decoding  meta chunks.
+const VERSION_BYTES = 4;
+const CURRENT_VERSION = "00000001"; // 4 bytes in hex (8 chars)
+
 const initializeUpload = file => {
   const handle = createHandle(file.name);
   return fileToChunks(file, handle, { withMeta: true }).then(chunks => {
@@ -23,7 +27,9 @@ const metaDataFromIotaFormat = (trytes, handle) => {
     Iota.addPaddingIfOdd(stopperRemoved)
   );
 
-  const decryptedData = Encryption.decryptChunk(handleInBytes, encryptedData);
+  const { version, meta: encryptedMeta } = parseMetaVersion(encryptedData);
+
+  const decryptedData = Encryption.decryptChunk(handleInBytes, encryptedMeta);
 
   return JSON.parse(decryptedData);
 };
@@ -60,6 +66,18 @@ const createMetaData = (fileName, numberOfChunks) => {
   return JSON.stringify(meta);
 };
 
+const addVersionToMeta = metaStr => `${CURRENT_VERSION}${metaStr}`;
+
+const parseMetaVersion = metaRaw => {
+  const idx = 2 * VERSION_BYTES; // 2 chars per byte in hex
+  const vStr = metaRaw.substring(0, idx);
+  const meta = metaRaw.substr(idx);
+
+  const version = parseInt(`0x${vStr}`);
+
+  return { version, meta };
+};
+
 // Pipeline: file |> splitToChunks |> encrypt |> toTrytes
 const fileToChunks = (file, handle, opts = {}) =>
   new Promise((resolve, reject) => {
@@ -91,8 +109,11 @@ const fileToChunks = (file, handle, opts = {}) =>
             handleInBytes,
             metaChunk
           );
+
+          const versionedMeta = addVersionToMeta(encryptedMeta);
           const trytedMetaData = Iota.addStopperTryte(
-            Iota.utils.toTrytes(encryptedMeta)
+            Iota.utils.toTrytes(versionedMeta)
+            // Iota.utils.toTrytes(encryptedMeta)
           );
 
           encryptedChunks = [
