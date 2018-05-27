@@ -1,8 +1,27 @@
 const IS_DEV = process.env.NODE_ENV === "development";
 
-// TODO: Script to set produciton values.
-const ALPHA_IP = IS_DEV ? "52.14.218.135" : "ALPHA_IP";
-const BETA_IP = IS_DEV ? "18.217.133.146" : "BETA_IP";
+const BROKERS = IS_DEV
+  ? ["52.14.218.135", "18.217.133.146"]
+  : [
+      "TODO_IP_1",
+      "TODO_IP_2",
+      "TODO_IP_3",
+      "TODO_IP_4",
+      "TODO_IP_5",
+      "TODO_IP_6"
+    ];
+
+// Hack until we have proper load balancing.
+const randElem = xs => xs[Math.floor(Math.random() * xs.length)];
+const randBrokers = brokers => {
+  const alpha = randElem(brokers);
+  const remBrokers = brokers.filter(b => b != alpha);
+  const beta = randElem(remBrokers);
+
+  return [alpha, beta];
+};
+
+const [ALPHA_IP, BETA_IP] = randBrokers(BROKERS);
 
 export const API = Object.freeze({
   BROKER_NODE_A: `http://${ALPHA_IP}`,
