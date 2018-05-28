@@ -1,8 +1,9 @@
 const IS_DEV = process.env.NODE_ENV === "development";
 
 const BROKERS = IS_DEV
-  ? ["52.14.218.135", "18.217.133.146"]
-  : [
+  ? ["52.14.218.135", "18.217.133.146"] // QA brokers
+  : //["18.188.64.13", "18.188.230.212"] // Rebel brokers
+    [
       "TODO_IP_1",
       "TODO_IP_2",
       "TODO_IP_3",

@@ -24,13 +24,15 @@ describe("Oyster file upload and download", () => {
         expect(path).to.eq("/upload-complete");
       });
 
-      let handle; // TODO: Use this for webnode tests
       cy
         .get("#oyster-handle")
         .invoke("text")
-        .then(h => {
-          handle = h;
+        .then(handle => {
           expect(handle).to.not.be.null;
+
+          cy.visit("http://0.0.0.0:3000/download-form");
+          cy.get("#download-handle-input").type(handle);
+          cy.get("#download-btn").click();
         });
     });
   });
