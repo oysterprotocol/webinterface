@@ -30,14 +30,14 @@ export function getSalt(length) {
   return salt.substr(0, length);
 }
 
-export function getNonce (key, idx) {
+export function getNonce(key, idx) {
   const nonce = forge.util.binary.hex.decode(idx.toString(16));
   return forge.md.sha384
-          .create()
-          .update(key.bytes())
-          .update(nonce)
-          .digest()
-          .getBytes(IV_LENGTH);
+    .create()
+    .update(key.bytes())
+    .update(nonce)
+    .digest()
+    .getBytes(IV_LENGTH);
 }
 
 export function getPrimordialHash() {
@@ -66,16 +66,6 @@ export function hashChain(byteStr) {
   return [obfuscatedHash, nextHash];
 }
 
-// Expects the handle
-// Genesis hash is not yet obfuscated.
-const genesisHash = handle => {
-  const primordialHash = handle.substr(8, 64);
-  const byteStr = forge.util.hexToBytes(primordialHash);
-  const [_obfuscatedHash, genHash] = hashChain(byteStr);
-
-  return forge.util.bytesToHex(genHash);
-};
-
 // First hash in the datamap
 const obfuscatedGenesisHash = hash => {
   const byteStr = forge.util.hexToBytes(hash);
@@ -92,7 +82,7 @@ const encryptChunk = (key, idx, secret) => {
   cipher.start({
     iv: iv,
     tagLength: TAG_LENGTH * 8,
-    additionalData: 'binary-encoded string'
+    additionalData: "binary-encoded string"
   });
 
   cipher.update(forge.util.createBuffer(secret));
@@ -105,7 +95,7 @@ const decryptChunk = (key, secret) => {
   key.read = 0;
 
   // Require a payload of at least one byte to attempt decryption
-  if (secret.length <= (IV_LENGTH + TAG_LENGTH)) {
+  if (secret.length <= IV_LENGTH + TAG_LENGTH) {
     return "";
   }
 
@@ -117,11 +107,13 @@ const decryptChunk = (key, secret) => {
     iv: iv,
     tag: tag,
     tagLength: TAG_LENGTH * 8,
-    additionalData: 'binary-encoded string'
+    additionalData: "binary-encoded string"
   });
 
   decipher.update(
-    forge.util.createBuffer(secret.substring(0, secret.length - TAG_LENGTH - IV_LENGTH))
+    forge.util.createBuffer(
+      secret.substring(0, secret.length - TAG_LENGTH - IV_LENGTH)
+    )
   );
 
   // Most likely a treasure chunk, skip
@@ -129,7 +121,7 @@ const decryptChunk = (key, secret) => {
     return "";
   }
 
-  return decipher.output.bytes()
+  return decipher.output.bytes();
 };
 
 export default {
@@ -137,7 +129,6 @@ export default {
   getSalt,
   getPrimordialHash,
   hashChain,
-  genesisHash,
   obfuscatedGenesisHash,
   encryptChunk,
   decryptChunk,

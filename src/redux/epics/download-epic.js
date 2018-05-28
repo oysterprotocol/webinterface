@@ -16,7 +16,7 @@ const initializeDownload = (action$, store) => {
     .ofType(downloadActions.INITIALIZE_DOWNLOAD)
     .mergeMap(action => {
       const handle = action.payload;
-      const genesisHash = Encryption.genesisHash(handle);
+      const genesisHash = Datamap.genesisHash(handle);
       const obfuscatedGenesisHash = Encryption.obfuscatedGenesisHash(
         genesisHash
       );
@@ -51,7 +51,7 @@ const beginDownload = (action$, store) => {
   return action$.ofType(downloadActions.BEGIN_DOWNLOAD).mergeMap(action => {
     const { handle, fileName, numberOfChunks } = action.payload;
     const datamapOpts = { includeTreasureOffsets: INCLUDE_TREASURE_OFFSETS };
-    const genHash = Encryption.genesisHash(handle);
+    const genHash = Datamap.genesisHash(handle);
     const datamap = Datamap.generate(genHash, numberOfChunks, datamapOpts);
     const addresses = _.values(datamap);
     const nonMetaDataAddresses = addresses.slice(1, addresses.length);
