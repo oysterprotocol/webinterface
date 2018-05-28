@@ -58,7 +58,7 @@ const createMetaData = (fileName, numberOfChunks) => {
   const fileExtension = fileName.split(".").pop();
 
   const meta = {
-    fileName: fileName.substr(0, 500),
+    fileName: fileName.substring(0, 500),
     ext: fileExtension,
     numberOfChunks
   };
@@ -71,7 +71,7 @@ const addVersionToMeta = metaStr => `${CURRENT_VERSION}${metaStr}`;
 const parseMetaVersion = metaRaw => {
   const idx = 2 * VERSION_BYTES; // 2 chars per byte in hex
   const vStr = metaRaw.substring(0, idx);
-  const meta = metaRaw.substr(idx);
+  const meta = metaRaw.substring(idx);
 
   const version = parseInt(`0x${vStr}`);
 
