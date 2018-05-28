@@ -1,5 +1,6 @@
 import Encryption from "utils/encryption";
 import _ from "lodash";
+import forge from "node-forge";
 
 import Iota from "../services/iota";
 
@@ -8,7 +9,7 @@ const fileSizeFromNumChunks = numChunks => numChunks * CHUNK_SIZE;
 
 // DO NOT CHANGE THIS! It will  break encoding/decoding  meta chunks.
 const VERSION_BYTES = 4;
-const CURRENT_VERSION = "00000001"; // 4 bytes in hex (8 chars)
+const CURRENT_VERSION = 1;
 
 const initializeUpload = file => {
   const handle = createHandle(file.name);
@@ -66,14 +67,18 @@ const createMetaData = (fileName, numberOfChunks) => {
   return JSON.stringify(meta);
 };
 
-const addVersionToMeta = metaStr => `${CURRENT_VERSION}${metaStr}`;
+const addVersionToMeta = metaStr => {
+  const typedVersion = new DataView(new ArrayBuffer(VERSION_BYTES));
+  typedVersion.setUint32(0, CURRENT_VERSION);
+  const buf = new forge.util.ByteBuffer(typedVersion.buffer);
+  return `${buf.bytes()}${metaStr}`;
+};
 
 const parseMetaVersion = metaRaw => {
-  const idx = 2 * VERSION_BYTES; // 2 chars per byte in hex
-  const vStr = metaRaw.substring(0, idx);
-  const meta = metaRaw.substring(idx);
-
-  const version = parseInt(`0x${vStr}`);
+  const rawVersion = metaRaw.substring(0, VERSION_BYTES);
+  const meta = metaRaw.substring(VERSION_BYTES);
+  const bytes = forge.util.binary.raw.decode(rawVersion);
+  const version = (new DataView(bytes.buffer)).getUint32(0);
 
   return { version, meta };
 };
