@@ -2273,7 +2273,7 @@ dashdash@^1.12.0:
 
 "datamap-generator@git+https://github.com/oysterprotocol/datamap-generator.git":
   version "1.0.4"
-  resolved "git+https://github.com/oysterprotocol/datamap-generator.git#b7bbd3469fc71caa27533b523b2bc98d6f262587"
+  resolved "git+https://github.com/oysterprotocol/datamap-generator.git#d6e19ce8733e003f4730a203eaf24ee23beaeef6"
 
 date-fns@^1.27.2:
   version "1.29.0"

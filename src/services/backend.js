@@ -2,7 +2,7 @@ import _ from "lodash";
 import axios from "axios";
 
 import FileProcessor from "utils/file-processor";
-import Encryption from "utils/encryption";
+import Datamap from "datamap-generator";
 import { API, IOTA_API } from "config";
 
 const axiosInstance = axios.create({
@@ -131,7 +131,7 @@ const confirmPaid = (host, id) => {
 
 const initializeUploadSession = (chunks, fileName, handle, retentionYears) => {
   const host = API.BROKER_NODE_A;
-  const genesisHash = Encryption.genesisHash(handle);
+  const genesisHash = Datamap.genesisHash(handle);
   const numChunks = chunks.length;
   const storageLengthInYears = retentionYears;
 
