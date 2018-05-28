@@ -19,6 +19,7 @@ class DownloadFormSlide extends Component {
           <label>
             <span className="handle-label">Oyster Handle:</span>
             <input
+              id="download-handle-input"
               name="handle"
               type="text"
               ref="handleInput"
@@ -28,6 +29,7 @@ class DownloadFormSlide extends Component {
         </div>
         <div>
           <PrimaryButton
+            id="download-btn"
             disabled={status === DOWNLOAD_STATUSES.PENDING}
             onClick={() => {
               const handle = this.refs.handleInput.value;
