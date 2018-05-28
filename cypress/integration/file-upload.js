@@ -6,17 +6,22 @@ describe("Oyster file upload and download", () => {
       // Goes to upload form
       cy.visit("http://0.0.0.0:3000/");
       cy.get("#upload-btn").click();
-      cy.location().should(location => {
-        expect(location.pathname).to.eq("/upload-form");
+      cy.location("pathname").should(path => {
+        expect(path).to.eq("/upload-form");
       });
 
       // Uploads image and submit
       cy.uploadFile("#upload-input", "ditto.png");
       cy.get("#start-upload-btn").click();
 
+      // Payment
+      cy.location("pathname").should(path => {
+        expect(path).to.eq("/payment-invoice");
+      });
+
       // Starts Polling
-      cy.location().should(location => {
-        expect(location.pathname).to.eq("/upload-started");
+      cy.location("pathname").should(path => {
+        expect(path).to.eq("/upload-started");
       });
 
       // Success (60s timeout)
