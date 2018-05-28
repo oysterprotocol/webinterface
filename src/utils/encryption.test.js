@@ -11,7 +11,7 @@ const metaData =
   '{"fileName":"ditto - Copy.png","ext":"png","numberOfChunks":3}';
 
 test("chunk > encrypt > decrypt > chunk", done => {
-  const encryptionResult = Encryption.encryptChunk(handleInBytes, secret);
+  const encryptionResult = Encryption.encryptChunk(handleInBytes, 1, secret);
 
   const trytedResultWithStopperAndPadding =
     Iota.utils.toTrytes(encryptionResult) + "A" + "9999999999";
@@ -30,7 +30,7 @@ test("chunk > encrypt > decrypt > chunk", done => {
 });
 
 test("metadata > encrypt > decrypt > metadata", done => {
-  const encryptionResult = Encryption.encryptChunk(handleInBytes, metaData);
+  const encryptionResult = Encryption.encryptChunk(handleInBytes, 0, metaData);
 
   const trytedResultWithStopperAndPadding =
     Iota.utils.toTrytes(encryptionResult) + "A" + "9999999999";

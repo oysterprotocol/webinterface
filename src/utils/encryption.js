@@ -4,6 +4,7 @@ import Raven from "raven-js";
 import analytics from "analytics.js";
 
 const IV_LENGTH = 16;
+const TAG_LENGTH = 16;
 const CHUNK_PREFIX = "File_chunk_data: ";
 const CHUNK_PREFIX_IN_HEX = forge.util.bytesToHex(CHUNK_PREFIX);
 
@@ -27,6 +28,16 @@ export function getSalt(length) {
   const byteArr = forge.util.binary.raw.decode(bytes);
   const salt = forge.util.binary.base58.encode(byteArr);
   return salt.substr(0, length);
+}
+
+export function getNonce (key, idx) {
+  const nonce = forge.util.binary.hex.decode(idx.toString(16));
+  return forge.md.sha384
+          .create()
+          .update(key.bytes())
+          .update(nonce)
+          .digest()
+          .getBytes(IV_LENGTH);
 }
 
 export function getPrimordialHash() {
@@ -73,53 +84,52 @@ const obfuscatedGenesisHash = hash => {
   return forge.util.bytesToHex(obfuscatedHash);
 };
 
-const encryptChunk = (key, secret) => {
+const encryptChunk = (key, idx, secret) => {
   key.read = 0;
-  const iv = forge.random.getBytesSync(16);
+  const iv = getNonce(key, idx);
   const cipher = forge.cipher.createCipher("AES-GCM", key);
 
   cipher.start({
     iv: iv,
-    tagLength: 0
+    tagLength: TAG_LENGTH * 8,
+    additionalData: 'binary-encoded string'
   });
 
-  cipher.update(forge.util.createBuffer(CHUNK_PREFIX + secret));
+  cipher.update(forge.util.createBuffer(secret));
   cipher.finish();
 
-  return cipher.output.getBytes() + iv;
+  return cipher.output.bytes() + cipher.mode.tag.bytes() + iv;
 };
 
 const decryptChunk = (key, secret) => {
   key.read = 0;
+
+  // Require a payload of at least one byte to attempt decryption
+  if (secret.length <= (IV_LENGTH + TAG_LENGTH)) {
+    return "";
+  }
+
   const iv = secret.substr(-IV_LENGTH);
+  const tag = secret.substr(-TAG_LENGTH - IV_LENGTH, TAG_LENGTH);
   const decipher = forge.cipher.createDecipher("AES-GCM", key);
 
   decipher.start({
     iv: iv,
-    tagLength: 0,
-    output: null
+    tag: tag,
+    tagLength: TAG_LENGTH * 8,
+    additionalData: 'binary-encoded string'
   });
 
   decipher.update(
-    forge.util.createBuffer(secret.substring(0, secret.length - IV_LENGTH))
+    forge.util.createBuffer(secret.substring(0, secret.length - TAG_LENGTH - IV_LENGTH))
   );
 
+  // Most likely a treasure chunk, skip
   if (!decipher.finish()) {
-    let msg =
-      "decipher failed to finished in decryptChunk in utils/encryption.js";
-    Raven.captureException(new Error(msg));
     return "";
   }
 
-  const hexedOutput = forge.util.bytesToHex(decipher.output);
-
-  if (_.startsWith(hexedOutput, CHUNK_PREFIX_IN_HEX)) {
-    return forge.util.hexToBytes(
-      hexedOutput.substr(CHUNK_PREFIX_IN_HEX.length, hexedOutput.length)
-    );
-  } else {
-    return "";
-  }
+  return decipher.output.bytes()
 };
 
 export default {
