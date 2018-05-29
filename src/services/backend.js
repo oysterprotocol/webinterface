@@ -1,9 +1,10 @@
 import _ from "lodash";
 import axios from "axios";
-
-import FileProcessor from "utils/file-processor";
 import Datamap from "datamap-generator";
+
 import { API, IOTA_API } from "config";
+import FileProcessor from "utils/file-processor";
+import { alertUser } from "./error-tracker";
 
 const axiosInstance = axios.create({
   timeout: 200000
@@ -31,13 +32,15 @@ const uploadFile = (
   return Promise.all([
     sendToAlphaBroker(alphaSessionId, chunks, genesisHash),
     sendToBetaBroker(betaSessionId, chunks, genesisHash)
-  ]).then(() => {
-    return {
-      numberOfChunks: chunks.length,
-      fileName,
-      handle
-    };
-  });
+  ])
+    .then(() => {
+      return {
+        numberOfChunks: chunks.length,
+        fileName,
+        handle
+      };
+    })
+    .catch(alertUser);
 };
 
 const createUploadSession = (
@@ -61,6 +64,7 @@ const createUploadSession = (
         resolve({ alphaSessionId, betaSessionId, invoice });
       })
       .catch(error => {
+        alertUser(error);
         reject(error);
       });
   });
@@ -74,6 +78,7 @@ const sendChunksToBroker = (brokerUrl, chunks) =>
         resolve(response);
       })
       .catch(error => {
+        alertUser(error);
         console.log("ERROR SENDING CHUNK TO BROKER:", error);
         reject();
       });
@@ -94,7 +99,7 @@ const sendFileToBroker = (brokerUrl, genesisHash, chunks) => {
       })
   );
 
-  return Promise.all(batchRequests);
+  return Promise.all(batchRequests).catch(alertUser);
 };
 
 const sendToAlphaBroker = (sessionId, chunks, genesisHash) =>
@@ -104,7 +109,7 @@ const sendToAlphaBroker = (sessionId, chunks, genesisHash) =>
       genesisHash,
       chunks
     ).then(resolve);
-  });
+  }).catch(alertUser);
 
 const sendToBetaBroker = (sessionId, chunks, genesisHash) =>
   new Promise((resolve, reject) => {
@@ -113,7 +118,7 @@ const sendToBetaBroker = (sessionId, chunks, genesisHash) =>
       genesisHash,
       [...chunks].reverse()
     ).then(resolve);
-  });
+  }).catch(alertUser);
 
 const confirmPaid = (host, id) => {
   //change to confirmPaid
@@ -126,7 +131,7 @@ const confirmPaid = (host, id) => {
       .catch(error => {
         reject(error);
       });
-  });
+  }).catch(alertUser);
 };
 
 const initializeUploadSession = (chunks, fileName, handle, retentionYears) => {
@@ -135,24 +140,21 @@ const initializeUploadSession = (chunks, fileName, handle, retentionYears) => {
   const numChunks = chunks.length;
   const storageLengthInYears = retentionYears;
 
-  return createUploadSession(
-    host,
-    numChunks,
-    genesisHash,
-    storageLengthInYears
-  ).then(({ alphaSessionId, betaSessionId, invoice }) => {
-    return {
-      alphaSessionId,
-      betaSessionId,
-      invoice,
-      numberOfChunks: numChunks,
-      handle,
-      fileName,
-      genesisHash,
-      storageLengthInYears,
-      host
-    };
-  });
+  return createUploadSession(host, numChunks, genesisHash, storageLengthInYears)
+    .then(({ alphaSessionId, betaSessionId, invoice }) => {
+      return {
+        alphaSessionId,
+        betaSessionId,
+        invoice,
+        numberOfChunks: numChunks,
+        handle,
+        fileName,
+        genesisHash,
+        storageLengthInYears,
+        host
+      };
+    })
+    .catch(alertUser);
 };
 
 const getGasPrice = () => {
@@ -165,6 +167,7 @@ const getGasPrice = () => {
         resolve(priceInGwei);
       })
       .catch(error => {
+        alertUser(error);
         reject(error);
       });
   });
