@@ -129,9 +129,10 @@ const confirmPaid = (host, id) => {
         resolve(response.data.paymentStatus);
       })
       .catch(error => {
+        alertUser(error);
         reject(error);
       });
-  }).catch(alertUser);
+  });
 };
 
 const initializeUploadSession = (chunks, fileName, handle, retentionYears) => {
