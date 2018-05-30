@@ -3,9 +3,6 @@ import { connect } from "react-redux";
 
 import RetrievingInvoiceSlide from "./retrieving-invoice-slide";
 
-const RetrievingInvoice = () => (
-  <RetrievingInvoiceSlide
-  />
-);
+const RetrievingInvoice = () => <RetrievingInvoiceSlide />;
 
 export default connect()(RetrievingInvoice);

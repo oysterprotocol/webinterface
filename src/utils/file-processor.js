@@ -75,7 +75,7 @@ const parseMetaVersion = metaRaw => {
   const rawVersion = metaRaw.substring(0, VERSION_BYTES);
   const meta = metaRaw.substring(VERSION_BYTES);
   const bytes = forge.util.binary.raw.decode(rawVersion);
-  const version = (new DataView(bytes.buffer)).getUint32(0);
+  const version = new DataView(bytes.buffer).getUint32(0);
 
   return { version, meta };
 };
