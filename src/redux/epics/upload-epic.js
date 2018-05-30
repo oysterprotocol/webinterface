@@ -10,10 +10,13 @@ import Backend from "services/backend";
 import Datamap from "datamap-generator";
 import FileProcessor from "utils/file-processor";
 import IndexSelector from "utils/index-selector";
-import { IOTA_API } from "config";
-import { NUM_BROKER_CHANNELS } from "config";
-import { SECONDS_PER_CHUNK } from "config";
-import { NUM_POLLING_ADDRESSES } from "../../config";
+import {
+  IOTA_API,
+  IOTA_POLL_INTERVAL,
+  NUM_BROKER_CHANNELS,
+  NUM_POLLING_ADDRESSES,
+  SECONDS_PER_CHUNK
+} from "../../config";
 
 const BUNDLE_SIZE = IOTA_API.BUNDLE_SIZE;
 
@@ -200,7 +203,7 @@ const pollUploadProgress = (action$, store) => {
           )
         })
       ),
-      Observable.interval(1000)
+      Observable.interval(IOTA_POLL_INTERVAL)
         .takeUntil(
           Observable.merge(
             action$.ofType(uploadActions.MARK_UPLOAD_AS_COMPLETE).filter(a => {
