@@ -11,7 +11,7 @@ class PaymentInvoiceSlide extends Component {
   render() {
     const { cost, ethAddress, gasPrice } = this.props;
     return (
-      <Slide title="Send PRL" image={ICON_PlANE}>
+      <Slide title="Send PRL (Paid for by Oyster)" image={ICON_PlANE}>
         <div className="payment-request">
           To complete this transaction, send <span>{cost} PRL</span> to the
           address listed below:
