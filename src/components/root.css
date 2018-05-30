@@ -135,8 +135,12 @@ p {
 }
 
 .payment-confirm-spinner {
-
   margin: 75px auto 0 auto;
+  display: block;
+}
+
+.retrieving-invoice-spinner {
+  margin: 75px;
   display: block;
 }
 

@@ -40,11 +40,18 @@ const goToPaymentConfirmation = (action$, store) => {
     .map(action => push("/payment-confirm"));
 };
 
+const goToRetrievingInvoice = (action$, store) => {
+  return action$
+    .ofType(uploadActions.INITIALIZE_UPLOAD)
+    .map(action => push("/retrieving-invoice"));
+};
+
 export default combineEpics(
   goToDownloadForm,
   goToUploadForm,
   goToUploadStarted,
   goToUploadComplete,
   goToPaymentInvoice,
-  goToPaymentConfirmation
+  goToPaymentConfirmation,
+  goToRetrievingInvoice
 );
