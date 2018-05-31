@@ -90,6 +90,7 @@ class UploadSlide extends Component {
                 type="range"
                 min="0"
                 max="10"
+                disabled
                 value={retentionYears}
                 onChange={event => {
                   let retentionYears = event.target.value;
@@ -107,6 +108,7 @@ class UploadSlide extends Component {
               <select
                 id="sel"
                 value={retentionYears}
+                disabled
                 onChange={event => {
                   let retentionYears = event.target.value;
                   selectRetentionYears(retentionYears);

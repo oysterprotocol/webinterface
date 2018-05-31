@@ -15,7 +15,7 @@ const initState = {
   retentionYears: 1,
   invoice: {
     cost: 0,
-    ethAddress: "asdf"
+    ethAddress: ""
   },
   gasPrice: 20
 };
