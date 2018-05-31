@@ -242,6 +242,11 @@ select {
   text-indent: 1px;
   text-overflow: "";
 }
+
+select:disabled {
+  cursor: not-allowed;
+}
+
 .upload_button {
   overflow: hidden;
   width: 100%;
@@ -745,6 +750,16 @@ input.retention-slider,
 input.retention-slider:hover,
 input.retention-slider:focus {
   background: #afcbfe;
+}
+
+
+input.retention-slider:disabled {
+  background: #dcdcdc;
+  cursor: not-allowed;
+}
+
+input.retention-slider:disabled::-webkit-slider-thumb {
+  background: #dcdcdc;
 }
 
 .file-input-label {
