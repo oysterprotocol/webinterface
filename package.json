@@ -56,6 +56,7 @@
   },
   "scripts": {
     "start": "cross-env NODE_PATH=src react-scripts start",
+    "start:prod": "NODE_ENV=production yarn start",
     "build": "cross-env NODE_PATH=src react-scripts build",
     "test": "jest",
     "test:watch": "cross-env NODE_PATH=src jest --watch --colors",
