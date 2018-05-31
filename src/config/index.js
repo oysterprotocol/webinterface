@@ -2,12 +2,12 @@ const IS_DEV = process.env.NODE_ENV === "development";
 
 const POLLING_NODE = IS_DEV
   ? ["52.14.218.135"] // QA broker
-  : ["54.172.54.94"];
+  : ["poll.oysternodes.com"];
 
 const BROKERS = IS_DEV
   ? ["52.14.218.135", "18.217.133.146"] // QA brokers
   : //["18.188.64.13", "18.188.230.212"] // Rebel brokers
-    ["18.188.147.31", "18.222.7.12"];
+    ["broker-1.oysternodes.com", "broker-2.oysternodes.com"];
 
 // Hack until we have proper load balancing.
 const randElem = xs => xs[Math.floor(Math.random() * xs.length)];
