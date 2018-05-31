@@ -202,6 +202,8 @@ class UploadSlide extends Component {
                 );
               } else if (retentionYears === "0") {
                 alert(`Please select retention years`);
+              } else if (Number(retentionYears) > 1) {
+                alert(`For the beta mainnet, max storage years is 1.`);
               } else {
                 upload(file, retentionYears);
               }
@@ -211,8 +213,9 @@ class UploadSlide extends Component {
           </PrimaryButton>
         </div>
         <aside className="disclaimer">
-          DISCLAIMER: No PRL is required to use the Testnet.<br />
-          Uploads cost 1 PRL per 64GB per Year.
+          DISCLAIMER: No PRL is require to use the beta Mainnet.<br />
+          This is a beta phase and should not be used for important data.<br />
+          Uploads cost 1 PRL per 64GB per year (paid for by Oyster).
         </aside>
       </Slide>
     );

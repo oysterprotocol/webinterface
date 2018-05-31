@@ -24,8 +24,8 @@ const UploadStartedSlide = ({ uploadProgress }) => (
         className="upload-progress-bar"
       />
       <p>
-        {Math.floor(Math.min(100, Math.max(7, uploadProgress)))}% - File is
-        being broken into chunks and each chunk encrypted…
+        {Math.floor(Math.min(100, uploadProgress))}% - File is being broken into
+        chunks and each chunk encrypted…
       </p>
     </div>
   </Slide>

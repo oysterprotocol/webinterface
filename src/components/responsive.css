@@ -131,6 +131,48 @@
   .logo_img {
     width: 46%;
   }
+
+  /* mobile fix: centers, declutters, and wraps the UI */
+  .choice-wrapper {
+    flex-wrap: wrap;
+  }
+  .choice-section {
+    padding: 50px 5px 0 5px;
+  }
+  .choice-wrapper .tangle-image {
+    display: none;
+  }
+
+  .slide .container {
+    flex-direction: column;
+  }
+  .slide-image-wrapper {
+    order: -1;
+  }
+  .slide-custom-image {
+    padding-top: 25px;
+    position: relative;
+  }
+  .slide-tangle-image {
+    display: none;
+  }
+  .slide-body {
+    padding-top: 25px;
+  }
+
+  .upload_button {
+    text-align: center;
+  }
+  .upload_button .primary-button {
+    margin-top: 20px;
+  }
+
+  .handle-instructions {
+    padding-bottom: 50px
+  }
+  .retrieving-invoice-spinner {
+    margin: 50px auto;
+  }
 }
 
 /* Extra Small Devices, Phones */
