@@ -74,6 +74,10 @@
   .form_title {
     margin-bottom: 3em;
   }
+  
+  .upload-filename {
+    max-width: 250px
+  }
 
   .bordered {
     border: 0;
@@ -260,6 +264,10 @@
 
   .slide-body {
     flex: 1;
+  }
+  
+  .upload-filename {
+    max-width: 120px
   }
 
     .slide-image-wrapper {
