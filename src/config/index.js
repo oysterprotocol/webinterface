@@ -22,8 +22,8 @@ const randBrokers = brokers => {
 const [ALPHA_IP, BETA_IP] = randBrokers(BROKERS);
 
 export const API = Object.freeze({
-  BROKER_NODE_A: `http://${ALPHA_IP}`,
-  BROKER_NODE_B: `http://${BETA_IP}`,
+  BROKER_NODE_A: `https://${ALPHA_IP}`,
+  BROKER_NODE_B: `https://${BETA_IP}`,
   V1_UPLOAD_SESSIONS_PATH: ":3000/api/v1/upload-sessions",
   V2_UPLOAD_SESSIONS_PATH: ":3000/api/v2/upload-sessions",
   GAS_PRICE: "https://api.blockcypher.com/v1/eth/main",
@@ -31,9 +31,9 @@ export const API = Object.freeze({
 });
 
 export const IOTA_API = Object.freeze({
-  PROVIDER_A: `http://${POLLING_NODE}:14265`,
-  PROVIDER_B: `http://${ALPHA_IP}:14265`,
-  PROVIDER_C: `http://${BETA_IP}:14265`,
+  PROVIDER_A: `https://${POLLING_NODE}:14265`,
+  PROVIDER_B: `https://${ALPHA_IP}:14265`,
+  PROVIDER_C: `https://${BETA_IP}:14265`,
   ADDRESS_LENGTH: 81,
   MESSAGE_LENGTH: 2187,
   BUNDLE_SIZE: 100
