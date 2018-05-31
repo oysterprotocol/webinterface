@@ -197,7 +197,8 @@ class UploadSlide extends Component {
               const file = this.refs.fileInput.files[0];
               if (!file || file.size > FILE.MAX_FILE_SIZE) {
                 alert(
-                  `Please select a file under ${FILE.MAX_FILE_SIZE / 1000} KB.`
+                  `Please select a file under ${FILE.MAX_FILE_SIZE /
+                    (1000 * 1000)} MB.`
                 );
               } else if (retentionYears === "0") {
                 alert(`Please select retention years`);
