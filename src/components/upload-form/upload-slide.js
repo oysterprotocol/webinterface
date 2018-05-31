@@ -215,7 +215,7 @@ class UploadSlide extends Component {
           </PrimaryButton>
         </div>
         <aside className="disclaimer">
-          DISCLAIMER: No PRL is require to use the beta Mainnet.<br />
+          DISCLAIMER: No PRL is required to use the beta Mainnet.<br />
           This is a beta phase and should not be used for important data.<br />
           Uploads cost 1 PRL per 64GB per year (paid for by Oyster).
         </aside>
