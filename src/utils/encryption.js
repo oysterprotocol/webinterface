@@ -127,7 +127,7 @@ const decryptChunk = (key, secret) => {
 };
 
 export default {
-  parseEightCharsOfFilename,
+  parseHandleFilenameShortname,
   getSalt,
   getPrimordialHash,
   hashChain,
