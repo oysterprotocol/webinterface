@@ -15,7 +15,9 @@ export function bytesFromHandle(handle) {
     .digest();
 }
 
-const parseEightCharsOfFilename = fileName => {
+const parseHandleFilenameShortname = fileName => {
+  // discuss how to handle 'illegal' characters, strip for now
+  fileName = fileName.replace(/[^\w-]/, "")
   fileName = fileName + getSalt(8);
   fileName = fileName.substr(0, 8);
 
