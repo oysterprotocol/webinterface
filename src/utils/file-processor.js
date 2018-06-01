@@ -97,9 +97,8 @@ const fileToChunks = (file, handle, opts = {}) =>
 
       Promise.all(chunks.map(readBlob)).then(arrayBuffer => {
         let encryptedChunks = arrayBuffer
-          .map(arrayBufferToString)
-          .map((binaryString, idx) =>
-            Encryption.encryptChunk(handleInBytes, idx + 1, binaryString)
+          .map((arrayBuffer, idx) =>
+            Encryption.encryptChunk(handleInBytes, idx + 1, arrayBuffer)
           )
           .map(Iota.utils.toTrytes)
           .map(Iota.addStopperTryte)
@@ -147,37 +146,11 @@ const chunksToFile = (chunks, handle) =>
         .map(data => Encryption.decryptChunk(handleInBytes, data))
         .join(""); // join removes nulls
 
-      resolve(new Blob([new Uint8Array(string2Bin(bytes))]));
+      resolve(new Blob([new Uint8Array(forge.util.binary.raw.decode(bytes))]));
     } catch (err) {
       reject(err);
     }
   });
-
-function arrayBufferToString(buffer) {
-  return binaryToString(
-    String.fromCharCode.apply(
-      null,
-      Array.prototype.slice.apply(new Uint8Array(buffer))
-    )
-  );
-}
-
-function binaryToString(binary) {
-  let error;
-
-  try {
-    return decodeURIComponent(escape(binary));
-  } catch (_error) {
-    error = _error;
-    if (error instanceof URIError) {
-      return binary;
-    } else {
-      throw error;
-    }
-  }
-}
-
-const string2Bin = str => _.map(str, c => c.charCodeAt(0));
 
 export default {
   metaDataFromIotaFormat,
