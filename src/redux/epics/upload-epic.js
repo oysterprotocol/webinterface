@@ -13,16 +13,10 @@ import IndexSelector from "utils/index-selector";
 import {
   IOTA_API,
   IOTA_POLL_INTERVAL,
-  NUM_BROKER_CHANNELS,
-  NUM_POLLING_ADDRESSES,
-  SECONDS_PER_CHUNK
+  NUM_POLLING_ADDRESSES
 } from "../../config";
 
 const BUNDLE_SIZE = IOTA_API.BUNDLE_SIZE;
-
-// Todo:  remove this once we're sure we don't want it anymore
-const UPLOAD_POLL_FREQUENCY =
-  BUNDLE_SIZE * SECONDS_PER_CHUNK / NUM_BROKER_CHANNELS * 1000;
 
 const initializeUpload = (action$, store) => {
   return action$.ofType(uploadActions.INITIALIZE_UPLOAD).mergeMap(action => {

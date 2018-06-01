@@ -1,5 +1,7 @@
 const IS_DEV = process.env.NODE_ENV === "development";
 
+const PROTOCOL = IS_DEV ? "http" : "https";
+
 const POLLING_NODE = IS_DEV
   ? ["52.14.218.135"] // QA broker
   : ["poll.oysternodes.com"];
@@ -22,8 +24,8 @@ const randBrokers = brokers => {
 const [ALPHA_IP, BETA_IP] = randBrokers(BROKERS);
 
 export const API = Object.freeze({
-  BROKER_NODE_A: `https://${ALPHA_IP}`,
-  BROKER_NODE_B: `https://${BETA_IP}`,
+  BROKER_NODE_A: `${PROTOCOL}://${ALPHA_IP}`,
+  BROKER_NODE_B: `${PROTOCOL}://${BETA_IP}`,
   V1_UPLOAD_SESSIONS_PATH: ":3000/api/v1/upload-sessions",
   V2_UPLOAD_SESSIONS_PATH: ":3000/api/v2/upload-sessions",
   GAS_PRICE: "https://api.blockcypher.com/v1/eth/main",
@@ -31,9 +33,9 @@ export const API = Object.freeze({
 });
 
 export const IOTA_API = Object.freeze({
-  PROVIDER_A: `https://${POLLING_NODE}:14265`,
-  PROVIDER_B: `https://${ALPHA_IP}:14265`,
-  PROVIDER_C: `https://${BETA_IP}:14265`,
+  PROVIDER_A: `${PROTOCOL}://${POLLING_NODE}:14265`,
+  PROVIDER_B: `${PROTOCOL}://${ALPHA_IP}:14265`,
+  PROVIDER_C: `${PROTOCOL}://${BETA_IP}:14265`,
   ADDRESS_LENGTH: 81,
   MESSAGE_LENGTH: 2187,
   BUNDLE_SIZE: 100
@@ -61,8 +63,6 @@ export const FILE = Object.freeze({
 });
 
 export const INCLUDE_TREASURE_OFFSETS = true;
-export const NUM_BROKER_CHANNELS = 3; // number of broker cores - 1
-export const SECONDS_PER_CHUNK = 0.035; // if MWM is changed this will be incorrect
 export const MAX_ADDRESSES = 1000;
 export const NUM_POLLING_ADDRESSES = 301;
 export const IOTA_POLL_INTERVAL = 2000;
