@@ -153,5 +153,6 @@ export default {
   readBlob,
   fileSizeFromNumChunks,
   fileToChunks, // used just for testing.
-  chunksToFile
+  chunksToFile,
+  CURRENT_VERSION
 };

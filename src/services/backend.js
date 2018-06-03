@@ -56,7 +56,8 @@ const createUploadSession = (
         numChunks,
         genesisHash,
         betaIp: API.BROKER_NODE_B,
-        storageLengthInYears
+        storageLengthInYears,
+        version: FileProcessor.CURRENT_VERSION
       })
       .then(({ data }) => {
         const { id: alphaSessionId, betaSessionId } = data;
