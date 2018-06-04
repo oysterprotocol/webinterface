@@ -33,7 +33,7 @@ const metaDataFromIotaFormat = (trytes, handle) => {
 };
 
 const createHandle = fileName => {
-  const fileNameTrimmed = Encryption.parseEightCharsOfFilename(fileName);
+  const fileNameTrimmed = Encryption.parseHandleFilenameShortname(fileName);
   const salt = Encryption.getSalt(8);
   const primordialHash = Encryption.getPrimordialHash();
   const handle = fileNameTrimmed + primordialHash + salt;
