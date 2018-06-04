@@ -100,8 +100,6 @@ const fileToChunks = (file, handle, opts = {}) =>
           .map((arrayBuffer, idx) =>
             Encryption.encryptChunk(handleInBytes, idx + 1, arrayBuffer)
           )
-          .map(Iota.utils.toTrytes)
-          .map(Iota.addStopperTryte)
           .map((data, idx) => ({ idx: idx + 1, data })); // idx because things will get jumbled
 
         if (opts.withMeta) {
@@ -113,12 +111,9 @@ const fileToChunks = (file, handle, opts = {}) =>
           );
 
           const versionedMeta = addVersionToMeta(encryptedMeta);
-          const trytedMetaData = Iota.addStopperTryte(
-            Iota.utils.toTrytes(versionedMeta)
-          );
 
           encryptedChunks = [
-            { idx: 0, data: trytedMetaData },
+            { idx: 0, data: versionedMeta },
             ...encryptedChunks
           ];
         }
@@ -158,5 +153,6 @@ export default {
   readBlob,
   fileSizeFromNumChunks,
   fileToChunks, // used just for testing.
-  chunksToFile
+  chunksToFile,
+  CURRENT_VERSION
 };

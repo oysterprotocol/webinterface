@@ -1,5 +1,6 @@
 import fs from "fs";
 import _ from "lodash";
+import Iota from "../services/iota";
 
 import FileProcessor from "./file-processor";
 
@@ -119,10 +120,12 @@ test("file |> fileToChunks |> chunksToFile - correct meta", done => {
   readTestFile().then(file => {
     FileProcessor.fileToChunks(file, handle, { withMeta: true })
       .then(encryptedChks => {
-        const metaChunk = encryptedChks[0];
+        const metaChunk = Iota.addStopperTryte(
+          Iota.utils.toTrytes(encryptedChks[0].data)
+        );
 
         const metaData = FileProcessor.metaDataFromIotaFormat(
-          metaChunk.data,
+          metaChunk,
           handle
         );
 
