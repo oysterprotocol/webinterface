@@ -7,6 +7,7 @@ import uploadActions from "redux/actions/upload-actions";
 import { UPLOAD_STATUSES } from "config";
 import Iota from "services/iota";
 import Backend from "services/backend";
+import { streamUpload } from "services/oyster-stream";
 import Datamap from "datamap-generator";
 import FileProcessor from "utils/file-processor";
 import IndexSelector from "utils/index-selector";
@@ -35,6 +36,35 @@ const initializeUpload = (action$, store) => {
     );
   });
 };
+
+const streamUpload = action$ =>
+  action$.ofType(uploadActions.UPLOAD_STREAM).mergeMap(action => {
+    // TODO: Figure out what payload is needed and pass it in.
+    const {
+      file,
+      brokers: { alpha, beta }
+    } = action.payload;
+
+    const handlers = {
+      invoiceCb: invoice => {
+        // TODO: Figure out what invoice will contain.
+        const invoiceAction = {}; // Figure this out.
+        o.next(invoiceAction);
+      },
+      doneCb: result => {
+        const completeAction = {}; // TODO: create UPLOAD_COMPLETED action with payload
+        o.complete(completeAction);
+      },
+      errCb: err => {
+        const errAction = {}; // TODO: create UPLOAD_ERR action with payload
+        o.complete(errAction); // Use complete instead of error so observable isn't taken down.
+      }
+    };
+
+    return Observable.create(o => {
+      streamUpload(file, { alpha, beta }, handlers);
+    });
+  });
 
 const initializeSession = (action$, store) => {
   return action$.ofType(uploadActions.INITIALIZE_SESSION).mergeMap(action => {
@@ -214,7 +244,8 @@ const pollUploadProgress = (action$, store) => {
           )
             .map(({ updatedIndexes }) => {
               let uploadProgress =
-                (startingLength - updatedIndexes.length) / startingLength * 100;
+                ((startingLength - updatedIndexes.length) / startingLength) *
+                100;
 
               return uploadActions.updateUploadProgress({
                 handle,

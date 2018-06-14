@@ -17,6 +17,9 @@ const POLL_PAYMENT_STATUS = "oyster/upload/poll_payment_status";
 const PAYMENT_PENDING = "oyster/upload/payment_pending";
 const GAS_PRICE = "oyster/upload/gas_price";
 
+// TODO: This will replace INITIALIZE_UPLOAD, BEGIN_UPLOAD, and UPLOAD
+const UPLOAD_STREAM = "oyster/upload/stream";
+
 const ACTIONS = Object.freeze({
   // actions
   INITIALIZE_UPLOAD,
@@ -37,6 +40,7 @@ const ACTIONS = Object.freeze({
   POLL_PAYMENT_STATUS,
   PAYMENT_PENDING,
   GAS_PRICE,
+  UPLOAD_STREAM,
 
   // actionCreators
   initializeUploadAction: ({ file, retentionYears }) => ({
