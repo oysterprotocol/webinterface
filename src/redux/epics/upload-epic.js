@@ -38,41 +38,48 @@ const initializeUpload = (action$, store) => {
 };
 
 const streamUpload = action$ =>
-  action$.ofType(uploadActions.UPLOAD_STREAM).mergeMap(action => {
-    // TODO: Figure out what payload is needed and pass it in.
+  action$.ofType(uploadActions.STREAM_UPLOAD).mergeMap(action => {
     const {
       file,
-      brokers: { alpha, beta }
+      retentionYears,
+      brokers // { alpha, beta }
     } = action.payload;
 
-    const handlers = {
-      invoiceCb: invoice => {
-        // TODO: Figure out what invoice will contain.
-        const invoiceAction = {}; // Figure this out.
-        o.next(invoiceAction);
-      },
-      paymentConfirmedCb: payload => {
-        // TODO: Figure out what invoice will contain.
-        const paymentConfirmedAction = {}; // Figure this out.
-        o.next(paymentConfirmedAction);
-      },
-      upoadProgressCb: progress => {
-        // TODO: Figure out what invoice will contain.
-        const uploadProgressAction = {}; // Figure this out.
-        o.next(uploadProgressAction);
-      },
-      doneCb: result => {
-        const completeAction = {}; // TODO: create UPLOAD_COMPLETED action with payload
-        o.complete(completeAction);
-      },
-      errCb: err => {
-        const errAction = {}; // TODO: create UPLOAD_ERR action with payload
-        o.complete(errAction); // Use complete instead of error so observable isn't taken down.
-      }
+    const params = {
+      file,
+      retentionYears,
+      brokers
     };
 
     return Observable.create(o => {
-      streamUpload(file, { alpha, beta }, handlers);
+      const handlers = {
+        invoiceCb: invoice => {
+          // TODO: Figure out what invoice will contain.
+          const invoiceAction = uploadActions.streamInvoiced();
+          o.next(invoiceAction);
+        },
+        paymentConfirmedCb: payload => {
+          // TODO: Figure out what invoice will contain.
+          // Add to upload history
+          o.next(uploadActions.streamPaymentConfirmed());
+        },
+        uploadProgressCb: progress => {
+          // TODO: Figure out what invoice will contain.
+          // update history progress
+          o.next(uploadActions.streamUploadProgress());
+        },
+        doneCb: result => {
+          // change history status and progress
+          o.complete(uploadActions.streamUploadSuccess());
+        },
+        errCb: err => {
+          // change history status and progress
+          o.complete(uploadActions.streamUploadError()); // Use complete instead of error so observable isn't taken down.
+        }
+      };
+
+      // TODO: Update streamuplad to match this API.
+      streamUpload(params, handlers);
     });
   });
 
