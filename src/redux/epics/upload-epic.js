@@ -51,6 +51,16 @@ const streamUpload = action$ =>
         const invoiceAction = {}; // Figure this out.
         o.next(invoiceAction);
       },
+      paymentConfirmedCb: payload => {
+        // TODO: Figure out what invoice will contain.
+        const paymentConfirmedAction = {}; // Figure this out.
+        o.next(paymentConfirmedAction);
+      },
+      upoadProgressCb: progress => {
+        // TODO: Figure out what invoice will contain.
+        const uploadProgressAction = {}; // Figure this out.
+        o.next(uploadProgressAction);
+      },
       doneCb: result => {
         const completeAction = {}; // TODO: create UPLOAD_COMPLETED action with payload
         o.complete(completeAction);
