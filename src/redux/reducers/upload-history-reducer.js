@@ -7,6 +7,7 @@ const reducer = (state = initState, action) => {
   switch (action.type) {
     case uploadActions.STREAM_PAYMENT_CONFIRMED:
       const { filename, handle, numberOfChunks } = action.payload;
+      const now = Date.now();
       return {
         ...state,
         [handle]: {
@@ -15,7 +16,8 @@ const reducer = (state = initState, action) => {
           numberOfChunks,
           status: UPLOAD_STATUSES.PENDING,
           uploadProgress: 0,
-          updatedAt: Date.now()
+          createdAt: now,
+          updatedAt: now
         }
       };
 
