@@ -52,34 +52,34 @@ const streamUpload = action$ =>
     };
 
     return Observable.create(o => {
-      const handlers = {
+      // TODO: Update oyster-streamable to match this API.
+      streamUpload(params, {
         invoiceCb: invoice => {
-          // TODO: Figure out what invoice will contain.
-          const invoiceAction = uploadActions.streamInvoiced();
-          o.next(invoiceAction);
+          let cost, ethAddress; // TODO
+
+          o.next(uploadActions.streamInvoiced({ cost, ethAddress }));
         },
+
         paymentConfirmedCb: payload => {
           // TODO: Figure out what invoice will contain.
           // Add to upload history
           o.next(uploadActions.streamPaymentConfirmed());
         },
+
         uploadProgressCb: progress => {
           // TODO: Figure out what invoice will contain.
           // update history progress
           o.next(uploadActions.streamUploadProgress());
         },
+
         doneCb: result => {
-          // change history status and progress
           o.complete(uploadActions.streamUploadSuccess());
         },
-        errCb: err => {
-          // change history status and progress
-          o.complete(uploadActions.streamUploadError()); // Use complete instead of error so observable isn't taken down.
-        }
-      };
 
-      // TODO: Update streamuplad to match this API.
-      streamUpload(params, handlers);
+        errCb: err => {
+          o.complete(uploadActions.streamUploadError({ err })); // Use complete instead of error so observable isn't taken down.
+        }
+      });
     });
   });
 

@@ -47,6 +47,11 @@ const ACTIONS = Object.freeze({
   GAS_PRICE,
 
   STREAM_UPLOAD,
+  STREAM_INVOICED,
+  STREAM_PAYMENT_CONFIRMED,
+  STREAM_UPLOAD_PROGRESS,
+  STREAM_UPLOAD_SUCCESS,
+  STREAM_UPLOAD_ERROR,
 
   // actionCreators
   initializeUploadAction: ({ file, retentionYears }) => ({
@@ -172,25 +177,25 @@ const ACTIONS = Object.freeze({
     type: ACTIONS.STREAM_UPLOAD,
     payload: { file, retentionYears, brokers }
   }),
-  streamInvoiced: ({}) => ({
+  streamInvoiced: ({ cost, ethAddress }) => ({
     type: ACTIONS.STREAM_INVOICED,
-    payload: {}
+    payload: { cost, ethAddress }
   }),
   streamPaymentConfirmed: ({}) => ({
     type: ACTIONS.STREAM_PAYMENT_CONFIRMED,
-    payload: {}
+    payload: {} // Empty payload
   }),
-  streamUploadProgress: ({}) => ({
+  streamUploadProgress: ({ progress }) => ({
     type: ACTIONS.STREAM_UPLOAD_PROGRESS,
-    payload: {}
+    payload: { progress }
   }),
   streamUploadSuccess: ({}) => ({
     type: ACTIONS.STREAM_UPLOAD_SUCCESS,
-    payload: {}
+    payload: {} // empty payload
   }),
-  streamUploadError: ({}) => ({
+  streamUploadError: ({ err }) => ({
     type: ACTIONS.STREAM_UPLOAD_ERROR,
-    payload: {}
+    payload: { err }
   })
 });
 

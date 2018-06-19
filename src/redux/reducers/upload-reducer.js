@@ -4,20 +4,13 @@ import { API, UPLOAD_STATUSES, IOTA_API } from "config";
 const initState = {
   alphaBroker: API.BROKER_NODE_A,
   betaBroker: API.BROKER_NODE_B,
-  indexes: {
-    indexes: [],
-    startingLength: 0
-  },
+  indexes: { indexes: [], startingLength: 0 },
   dataMapLength: 0,
-  history: [
-    // object returned by uploadedFileGenerator()
-  ],
+  history: [], // object returned by uploadedFileGenerator()
   retentionYears: 1,
-  invoice: {
-    cost: 0,
-    ethAddress: ""
-  },
-  gasPrice: 20
+  invoice: null, // { cost, ethAddress }
+  gasPrice: 20,
+  uploadProgress: null
 };
 
 const uploadedFileGenerator = ({ numberOfChunks, fileName, handle }) => {
@@ -127,6 +120,27 @@ const uploadReducer = (state = initState, action) => {
         indexes: initial,
         dataMapLength
       };
+
+    // Streaming actions.
+    case uploadActions.STREAM_UPLOAD:
+      return state; // No state change.
+
+    case uploadActions.STREAM_INVOICED:
+      const { cost, ethAddress } = action.payload;
+      return { ...state, invoice: { cost, ethAddress } };
+
+    case uploadActions.STREAM_PAYMENT_CONFIRMED:
+      return state; // Add to history.
+
+    case uploadActions.STREAM_UPLOAD_PROGRESS:
+      const { progress } = action.payload;
+      return { ...state, uploadProgress: progress };
+
+    case uploadActions.STREAM_UPLOAD_SUCCESS:
+      return state; // Change history & clear state
+
+    case uploadActions.STREAM_UPLOAD_ERROR:
+      return state; // Change history & clear state
 
     default:
       return state;
