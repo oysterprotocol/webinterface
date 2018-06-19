@@ -30,7 +30,7 @@ const Header = () => (
           <ul className="nav navbar-nav navbar-right">
             <li className="navbar-row first dropdown">
               <a
-                href="/"
+                href="https://oysterprotocol.com/"
                 role="button"
                 aria-haspopup="true"
                 aria-expanded="false"
