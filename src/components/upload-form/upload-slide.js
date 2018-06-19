@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import Select from "react-select";
 import "react-select/dist/react-select.css";
 
-import { API, FILE } from "config";
+import { API, FILE, FEAT_FLAG } from "config";
 import ICON_UPLOAD from "assets/images/icon_upload.png";
 import ICON_FOLDER from "assets/images/icon_folder.png";
 import Slide from "components/shared/slide";
@@ -33,7 +33,8 @@ class UploadSlide extends Component {
       selectAlphaBroker,
       selectBetaBroker,
       retentionYears,
-      selectRetentionYears
+      selectRetentionYears,
+      streamUploadFn
     } = this.props;
     return (
       <Slide title="Upload a File" image={ICON_UPLOAD}>
@@ -207,7 +208,12 @@ class UploadSlide extends Component {
               } else if (Number(retentionYears) > 1) {
                 alert(`For the beta mainnet, max storage years is 1.`);
               } else {
-                upload(file, retentionYears);
+                if (FEAT_FLAG.STREAMING_UPLOAD) {
+                  const brokers = { alpha: alphaBroker, beta: betaBroker };
+                  streamUploadFn(file, retentionYears, brokers);
+                } else {
+                  upload(file, retentionYears);
+                }
               }
             }}
           >
