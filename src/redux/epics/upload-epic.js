@@ -61,23 +61,31 @@ const streamUpload = action$ =>
         },
 
         paymentConfirmedCb: payload => {
-          // TODO: Figure out what invoice will contain.
-          // Add to upload history
-          o.next(uploadActions.streamPaymentConfirmed());
+          let fileName, handle, numberOfChunks; // TODO
+          o.next(
+            uploadActions.streamPaymentConfirmed({
+              filename,
+              handle,
+              numberOfChunks
+            })
+          );
         },
 
         uploadProgressCb: progress => {
-          // TODO: Figure out what invoice will contain.
-          // update history progress
-          o.next(uploadActions.streamUploadProgress());
+          // TODO: Pass in progress
+          o.next(uploadActions.streamUploadProgress({ progress }));
         },
 
         doneCb: result => {
-          o.complete(uploadActions.streamUploadSuccess());
+          let handle; // TODO
+          o.complete(uploadActions.streamUploadSuccess({ handle }));
         },
 
         errCb: err => {
-          o.complete(uploadActions.streamUploadError({ err })); // Use complete instead of error so observable isn't taken down.
+          let handle; // TODO
+
+          // Use complete instead of error so observable isn't taken down.
+          o.complete(uploadActions.streamUploadError({ handle, err }));
         }
       });
     });

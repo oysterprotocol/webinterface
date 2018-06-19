@@ -122,26 +122,19 @@ const uploadReducer = (state = initState, action) => {
       };
 
     // Streaming actions.
-    case uploadActions.STREAM_UPLOAD:
-      return state; // No state change.
 
     case uploadActions.STREAM_INVOICED:
       const { cost, ethAddress } = action.payload;
       return { ...state, invoice: { cost, ethAddress } };
 
-    case uploadActions.STREAM_PAYMENT_CONFIRMED:
-      return state; // Add to history.
-
     case uploadActions.STREAM_UPLOAD_PROGRESS:
       const { progress } = action.payload;
       return { ...state, uploadProgress: progress };
 
-    case uploadActions.STREAM_UPLOAD_SUCCESS:
-      return state; // Change history & clear state
-
-    case uploadActions.STREAM_UPLOAD_ERROR:
-      return state; // Change history & clear state
-
+    // case uploadActions.STREAM_UPLOAD:
+    // case uploadActions.STREAM_PAYMENT_CONFIRMED:
+    // case uploadActions.STREAM_UPLOAD_SUCCESS:
+    // case uploadActions.STREAM_UPLOAD_ERROR:
     default:
       return state;
   }

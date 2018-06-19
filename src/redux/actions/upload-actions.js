@@ -181,19 +181,19 @@ const ACTIONS = Object.freeze({
     type: ACTIONS.STREAM_INVOICED,
     payload: { cost, ethAddress }
   }),
-  streamPaymentConfirmed: ({}) => ({
+  streamPaymentConfirmed: ({ filename, handle, numberOfChunks }) => ({
     type: ACTIONS.STREAM_PAYMENT_CONFIRMED,
-    payload: {} // Empty payload
+    payload: { filename, handle, numberOfChunks }
   }),
   streamUploadProgress: ({ progress }) => ({
     type: ACTIONS.STREAM_UPLOAD_PROGRESS,
     payload: { progress }
   }),
-  streamUploadSuccess: ({}) => ({
+  streamUploadSuccess: ({ handle }) => ({
     type: ACTIONS.STREAM_UPLOAD_SUCCESS,
     payload: {} // empty payload
   }),
-  streamUploadError: ({ err }) => ({
+  streamUploadError: ({ handle, err }) => ({
     type: ACTIONS.STREAM_UPLOAD_ERROR,
     payload: { err }
   })
