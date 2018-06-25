@@ -46,6 +46,12 @@ const goToRetrievingInvoice = (action$, store) => {
     .map(action => push("/retrieving-invoice"));
 };
 
+const goToErrorPage = (action$, store) => {
+  return action$
+    .ofType(navigationActions.ERROR_PAGE)
+    .map(action => push("/error-page"));
+};
+
 export default combineEpics(
   goToDownloadForm,
   goToUploadForm,
@@ -53,5 +59,6 @@ export default combineEpics(
   goToUploadComplete,
   goToPaymentInvoice,
   goToPaymentConfirmation,
-  goToRetrievingInvoice
+  goToRetrievingInvoice,
+  goToErrorPage
 );

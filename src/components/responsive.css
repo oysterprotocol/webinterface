@@ -43,22 +43,18 @@
     margin-top: 3rem;
     margin-bottom: 3rem;
   }
-
   .upload_img {
     display: none;
   }
-
   .slicknav_menu {
     display: block;
   }
-
   ul#manu {
     margin: 0;
     padding: 0;
     list-style: none;
     display: none;
   }
-
   .slicknav_menu {
     font-size: 16px;
     box-sizing: border-box;
@@ -66,6 +62,14 @@
     padding: 8px 0;
     position: absolute;
     right: 0;
+  }
+  .error-description {
+    margin: 80px 0 0 0;
+  }
+  .error-img {
+    float: none;
+    margin: 0 auto;
+    width: 100%;
   }
 }
 
@@ -176,6 +180,15 @@
   }
   .retrieving-invoice-spinner {
     margin: 50px auto;
+  }
+  .error-description {
+    margin: 60px 0 0 0;
+    font-size: 15px;
+  }
+  .error-img {
+    float: none;
+    margin: 60px auto 0 auto;
+    width: 100%;
   }
 }
 
