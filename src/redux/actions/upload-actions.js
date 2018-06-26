@@ -20,6 +20,7 @@ const GAS_PRICE = "oyster/upload/gas_price";
 // TODO: Remove `STREAM_` prefix once migration is done.
 const STREAM_UPLOAD = "oyster/upload/stream";
 const STREAM_INVOICED = "oyster/upload/stream-invoiced";
+const STREAM_PAYMENT_PENDING = "oyster/upload/stream-payment-pending";
 const STREAM_PAYMENT_CONFIRMED = "oyster/upload/stream-payment-confirmed";
 const STREAM_UPLOAD_PROGRESS = "oyster/upload/stream-upload-progress";
 const STREAM_UPLOAD_SUCCESS = "oyster/upload/stream-upload-success";
@@ -48,6 +49,7 @@ const ACTIONS = Object.freeze({
 
   STREAM_UPLOAD,
   STREAM_INVOICED,
+  STREAM_PAYMENT_PENDING,
   STREAM_PAYMENT_CONFIRMED,
   STREAM_UPLOAD_PROGRESS,
   STREAM_UPLOAD_SUCCESS,
@@ -180,6 +182,9 @@ const ACTIONS = Object.freeze({
   streamInvoiced: ({ cost, ethAddress }) => ({
     type: ACTIONS.STREAM_INVOICED,
     payload: { cost, ethAddress }
+  }),
+  streamPaymentPending: () => ({
+    type: ACTIONS.STREAM_PAYMENT_PENDING
   }),
   streamPaymentConfirmed: ({ filename, handle, numberOfChunks }) => ({
     type: ACTIONS.STREAM_PAYMENT_CONFIRMED,

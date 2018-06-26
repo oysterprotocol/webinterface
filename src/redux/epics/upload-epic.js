@@ -60,6 +60,10 @@ const streamUpload = action$ =>
           o.next(uploadActions.streamInvoiced({ cost, ethAddress }));
         },
 
+        paymentPendingCb: _ => {
+          o.next(uploadActions.streamPaymentPending());
+        },
+
         paymentConfirmedCb: payload => {
           let fileName, handle, numberOfChunks; // TODO
           o.next(
@@ -83,6 +87,7 @@ const streamUpload = action$ =>
 
         errCb: err => {
           let handle; // TODO
+          // window.alert the error.
 
           // Use complete instead of error so observable isn't taken down.
           o.complete(uploadActions.streamUploadError({ handle, err }));

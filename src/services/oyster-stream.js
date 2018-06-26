@@ -9,14 +9,21 @@ import { Upload } from "oyster-streamable";
 export const streamUpload = (
   file,
   { alpha, beta },
-  { inoviceCb, paymentConfirmedCb, uploadProgressCb, doneCb, errCb }
+  {
+    invoiceCb,
+    paymentPendingCb,
+    paymentConfirmedCb,
+    uploadProgressCb,
+    doneCb,
+    errCb
+  }
 ) => {
-  const u = Upload.fromFile(file).startUpload({
-    alphaSessionId: alpha,
-    betaSessionId: beta
-  });
+  // TODO: Brokers are not yet configurable in oyster-streamable.
+  // They are hardcoded.
+  const u = Upload.fromFile(file, { brokers: { alpha, beta } });
 
-  u.on("invoice", inoviceCb); // TODO: Document what is passed to the cb.
+  u.on("invoice", invoiceCb);
+  u.on("payment-pending", paymentPendingCb);
   u.on("payment-confirmed", paymentConfirmedCb);
   u.on("upload-progress", uploadProgressCb);
   u.on("finish", doneCb);
