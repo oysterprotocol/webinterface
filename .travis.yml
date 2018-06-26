@@ -19,8 +19,9 @@ cache:
     - .eslintcache
     - node_modules
 
+# TODO: Use lerna to create scripts to work with monorepo subporjects.
 script:
-  - yarn && yarn test
+  - cd packages/webinterface yarn && yarn test
 
 notifications:
   slack:
