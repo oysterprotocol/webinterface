@@ -21,7 +21,7 @@ cache:
 
 # TODO: Use lerna to create scripts to work with monorepo subporjects.
 script:
-  - cd packages/webinterface yarn && yarn test
+  - yarn && cd packages/webinterface && yarn test
 
 notifications:
   slack:
