@@ -28,15 +28,33 @@ const goToUploadComplete = (action$, store) => {
     .map(action => push("/upload-complete"));
 };
 
+const goToUploadCompleteStream = (action$, store) => {
+  return action$
+    .ofType(uploadActions.STREAM_UPLOAD_SUCCESS)
+    .map(action => push("/upload-complete"));
+};
+
 const goToPaymentInvoice = (action$, store) => {
   return action$
     .ofType(uploadActions.POLL_PAYMENT_STATUS)
     .map(action => push("/payment-invoice"));
 };
 
+const goToPaymentInvoiceStream = (action$, store) => {
+  return action$
+    .ofType(uploadActions.STREAM_INVOICED)
+    .map(action => push("/payment-invoice"));
+};
+
 const goToPaymentConfirmation = (action$, store) => {
   return action$
     .ofType(uploadActions.PAYMENT_PENDING)
+    .map(action => push("/payment-confirm"));
+};
+
+const goToPaymentConfirmationStream = (action$, store) => {
+  return action$
+    .ofType(uploadActions.STREAM_PAYMENT_PENDING)
     .map(action => push("/payment-confirm"));
 };
 
@@ -51,7 +69,10 @@ export default combineEpics(
   goToUploadForm,
   goToUploadStarted,
   goToUploadComplete,
+  goToUploadCompleteStream,
   goToPaymentInvoice,
+  goToPaymentInvoiceStream,
   goToPaymentConfirmation,
+  goToPaymentConfirmationStream,
   goToRetrievingInvoice
 );
