@@ -3,6 +3,7 @@ import { combineEpics } from "redux-observable";
 import _ from "lodash";
 
 import uploadActions from "redux/actions/upload-actions";
+import navigationActions from "redux/actions/navigation-actions";
 
 import { UPLOAD_STATUSES } from "config";
 import Iota from "services/iota";
@@ -169,6 +170,8 @@ const pollPaymentStatus = (action$, store) => {
                   invoice
                 })
               );
+            default: 
+              return Observable.of(navigationActions.errorPageAction())
           }
         })
       );

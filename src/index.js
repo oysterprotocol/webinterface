@@ -22,7 +22,10 @@ import PaymentConfirm from "components/payment-confirm";
 import Playground from "components/playground";
 import registerServiceWorker from "./register-service-worker";
 
+import ErrorPage from "components/error-page";
+
 import ErrorTracker from "services/error-tracker";
+
 
 const App = () => (
   <Provider store={store}>
@@ -46,6 +49,8 @@ const App = () => (
 
           <Route path="/payment-invoice" component={PaymentInvoice} />
           <Route path="/payment-confirm" component={PaymentConfirm} />
+
+          <Route path="/error-page" component={ErrorPage} />
 
           <Route path="/playground" component={Playground} />
         </div>
