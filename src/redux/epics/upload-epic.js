@@ -8,6 +8,7 @@ import navigationActions from "redux/actions/navigation-actions";
 import { UPLOAD_STATUSES } from "config";
 import Iota from "services/iota";
 import Backend from "services/backend";
+import { streamUpload } from "services/oyster-stream";
 import Datamap from "datamap-generator";
 import FileProcessor from "utils/file-processor";
 import IndexSelector from "utils/index-selector";
@@ -36,6 +37,65 @@ const initializeUpload = (action$, store) => {
     );
   });
 };
+
+const streamUpload = action$ =>
+  action$.ofType(uploadActions.STREAM_UPLOAD).mergeMap(action => {
+    const {
+      file,
+      retentionYears,
+      brokers // { alpha, beta }
+    } = action.payload;
+
+    const params = {
+      file,
+      retentionYears,
+      brokers
+    };
+
+    return Observable.create(o => {
+      // TODO: Update oyster-streamable to match this API.
+      streamUpload(params, {
+        invoiceCb: invoice => {
+          let cost, ethAddress; // TODO
+
+          o.next(uploadActions.streamInvoiced({ cost, ethAddress }));
+        },
+
+        paymentPendingCb: _ => {
+          o.next(uploadActions.streamPaymentPending());
+        },
+
+        paymentConfirmedCb: payload => {
+          let fileName, handle, numberOfChunks; // TODO
+          o.next(
+            uploadActions.streamPaymentConfirmed({
+              filename,
+              handle,
+              numberOfChunks
+            })
+          );
+        },
+
+        uploadProgressCb: progress => {
+          // TODO: Pass in progress
+          o.next(uploadActions.streamUploadProgress({ progress }));
+        },
+
+        doneCb: result => {
+          let handle; // TODO
+          o.complete(uploadActions.streamUploadSuccess({ handle }));
+        },
+
+        errCb: err => {
+          let handle; // TODO
+          // window.alert the error.
+
+          // Use complete instead of error so observable isn't taken down.
+          o.complete(uploadActions.streamUploadError({ handle, err }));
+        }
+      });
+    });
+  });
 
 const initializeSession = (action$, store) => {
   return action$.ofType(uploadActions.INITIALIZE_SESSION).mergeMap(action => {
@@ -217,7 +277,8 @@ const pollUploadProgress = (action$, store) => {
           )
             .map(({ updatedIndexes }) => {
               let uploadProgress =
-                (startingLength - updatedIndexes.length) / startingLength * 100;
+                ((startingLength - updatedIndexes.length) / startingLength) *
+                100;
 
               return uploadActions.updateUploadProgress({
                 handle,

@@ -62,6 +62,10 @@ export const FILE = Object.freeze({
   }
 });
 
+export const FEAT_FLAG = Object.freeze({
+  STREAMING_FILE: false
+});
+
 export const INCLUDE_TREASURE_OFFSETS = true;
 export const MAX_ADDRESSES = 1000;
 export const NUM_POLLING_ADDRESSES = 301;

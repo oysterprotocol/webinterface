@@ -17,6 +17,15 @@ const POLL_PAYMENT_STATUS = "oyster/upload/poll_payment_status";
 const PAYMENT_PENDING = "oyster/upload/payment_pending";
 const GAS_PRICE = "oyster/upload/gas_price";
 
+// TODO: Remove `STREAM_` prefix once migration is done.
+const STREAM_UPLOAD = "oyster/upload/stream";
+const STREAM_INVOICED = "oyster/upload/stream-invoiced";
+const STREAM_PAYMENT_PENDING = "oyster/upload/stream-payment-pending";
+const STREAM_PAYMENT_CONFIRMED = "oyster/upload/stream-payment-confirmed";
+const STREAM_UPLOAD_PROGRESS = "oyster/upload/stream-upload-progress";
+const STREAM_UPLOAD_SUCCESS = "oyster/upload/stream-upload-success";
+const STREAM_UPLOAD_ERROR = "oyster/upload/stream-upload-error";
+
 const ACTIONS = Object.freeze({
   // actions
   INITIALIZE_UPLOAD,
@@ -37,6 +46,14 @@ const ACTIONS = Object.freeze({
   POLL_PAYMENT_STATUS,
   PAYMENT_PENDING,
   GAS_PRICE,
+
+  STREAM_UPLOAD,
+  STREAM_INVOICED,
+  STREAM_PAYMENT_PENDING,
+  STREAM_PAYMENT_CONFIRMED,
+  STREAM_UPLOAD_PROGRESS,
+  STREAM_UPLOAD_SUCCESS,
+  STREAM_UPLOAD_ERROR,
 
   // actionCreators
   initializeUploadAction: ({ file, retentionYears }) => ({
@@ -154,6 +171,36 @@ const ACTIONS = Object.freeze({
   initializePollingIndexes: ({ indexes, dataMapLength }) => ({
     type: ACTIONS.INITIALIZE_POLLING_INDEXES,
     payload: { indexes, dataMapLength }
+  }),
+
+  // Stream actions
+  // TODO: Use static type checker instead of destructuring to document.
+  streamUpload: ({ file, retentionYears, brokers }) => ({
+    type: ACTIONS.STREAM_UPLOAD,
+    payload: { file, retentionYears, brokers }
+  }),
+  streamInvoiced: ({ cost, ethAddress }) => ({
+    type: ACTIONS.STREAM_INVOICED,
+    payload: { cost, ethAddress }
+  }),
+  streamPaymentPending: () => ({
+    type: ACTIONS.STREAM_PAYMENT_PENDING
+  }),
+  streamPaymentConfirmed: ({ filename, handle, numberOfChunks }) => ({
+    type: ACTIONS.STREAM_PAYMENT_CONFIRMED,
+    payload: { filename, handle, numberOfChunks }
+  }),
+  streamUploadProgress: ({ progress }) => ({
+    type: ACTIONS.STREAM_UPLOAD_PROGRESS,
+    payload: { progress }
+  }),
+  streamUploadSuccess: ({ handle }) => ({
+    type: ACTIONS.STREAM_UPLOAD_SUCCESS,
+    payload: {} // empty payload
+  }),
+  streamUploadError: ({ handle, err }) => ({
+    type: ACTIONS.STREAM_UPLOAD_ERROR,
+    payload: { err }
   })
 });
 
