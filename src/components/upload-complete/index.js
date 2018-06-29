@@ -12,7 +12,7 @@ const mapStateToProps = state => ({
 });
 const mapDispatchToProps = dispatch => ({});
 
-const UploadComplete = ({ history }) => {
+const UploadComplete = ({ history, historyDesc }) => {
   const uploadedFile = FEAT_FLAG.STREAMING_FILE
     ? historyDesc[0]
     : _.last(history);

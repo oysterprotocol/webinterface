@@ -38,7 +38,7 @@ const initializeUpload = (action$, store) => {
   });
 };
 
-const streamUpload = action$ =>
+const streamUploadEpic = action$ =>
   action$.ofType(uploadActions.STREAM_UPLOAD).mergeMap(action => {
     const {
       file,
@@ -66,7 +66,7 @@ const streamUpload = action$ =>
         },
 
         paymentConfirmedCb: payload => {
-          let fileName, handle, numberOfChunks; // TODO
+          let filename, handle, numberOfChunks; // TODO
           o.next(
             uploadActions.streamPaymentConfirmed({
               filename,
@@ -170,8 +170,8 @@ const pollPaymentStatus = (action$, store) => {
                   invoice
                 })
               );
-            default: 
-              return Observable.of(navigationActions.errorPageAction())
+            default:
+              return Observable.of(navigationActions.errorPageAction());
           }
         })
       );
@@ -307,6 +307,7 @@ const markUploadAsComplete = (action$, store) => {
 
 export default combineEpics(
   initializeUpload,
+  streamUploadEpic,
   initializeSession,
   pollPaymentStatus,
   saveToHistory,
