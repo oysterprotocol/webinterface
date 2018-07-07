@@ -58,8 +58,8 @@
     "yarn-or-npm": "^2.0.4"
   },
   "scripts": {
-    "start": "cross-env NODE_PATH=src react-scripts start",
-    "start:prod": "NODE_ENV=production yarn start",
+    "start": "cross-env NODE_PATH=src PORT=3001 react-scripts start ",
+    "start:prod": "NODE_ENV=production yarn start --port=3001",
     "build": "cross-env NODE_PATH=src react-scripts build",
     "test": "jest",
     "test:watch": "cross-env NODE_PATH=src jest --watch --colors",

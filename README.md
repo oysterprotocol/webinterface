@@ -28,7 +28,7 @@ yarn start
 
 Navigate to url
 
-[http://localhost:3000/](http://localhost:3000/)
+[http://localhost:3001/](http://localhost:3001/)
 
 ## Running the tests
 
@@ -69,6 +69,8 @@ yarn cypress:publish
 ### Coding style tests
 
 ES Lint is configured to run on compile, you will see warnings in the console in regards to code style. Eventually, we will start failing the build when code style warnings appear.
+
+https://docs.cypress.io/guides/references/best-practices.html
 
 ## Deployment
 
