@@ -22,6 +22,12 @@ const goToUploadStarted = (action$, store) => {
     .map(action => push("/upload-started"));
 };
 
+const goToUploadStartedStream = (action$, store) => {
+  return action$
+    .ofType(uploadActions.STREAM_PAYMENT_CONFIRMED)
+    .map(action => push("/upload-started"));
+};
+
 const goToUploadComplete = (action$, store) => {
   return action$
     .ofType(uploadActions.MARK_UPLOAD_AS_COMPLETE)
@@ -74,6 +80,7 @@ export default combineEpics(
   goToDownloadForm,
   goToUploadForm,
   goToUploadStarted,
+  goToUploadStartedStream,
   goToUploadComplete,
   goToUploadCompleteStream,
   goToPaymentInvoice,

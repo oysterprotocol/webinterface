@@ -29,11 +29,10 @@ describe("Oyster file upload and download", () => {
         expect(path).to.eq("/upload-complete");
       });
 
-      cy
-        .get("#oyster-handle")
+      cy.get("#oyster-handle")
         .invoke("text")
         .then(handle => {
-          expect(handle).to.not.be.null;
+          expect(handle).to.not.be.empty;
 
           cy.visit("/download-form");
           cy.get("#download-handle-input").type(handle);

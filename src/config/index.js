@@ -26,7 +26,6 @@ const [ALPHA_IP, BETA_IP] = randBrokers(BROKERS);
 export const API = Object.freeze({
   BROKER_NODE_A: `${PROTOCOL}://${ALPHA_IP}`,
   BROKER_NODE_B: `${PROTOCOL}://${BETA_IP}`,
-  V1_UPLOAD_SESSIONS_PATH: ":3000/api/v1/upload-sessions",
   V2_UPLOAD_SESSIONS_PATH: ":3000/api/v2/upload-sessions",
   GAS_PRICE: "https://api.blockcypher.com/v1/eth/main",
   CHUNKS_PER_REQUEST: 10
@@ -63,7 +62,7 @@ export const FILE = Object.freeze({
 });
 
 export const FEAT_FLAG = Object.freeze({
-  STREAMING_FILE: false
+  STREAMING_UPLOAD: true
 });
 
 export const INCLUDE_TREASURE_OFFSETS = true;

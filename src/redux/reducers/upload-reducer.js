@@ -10,7 +10,7 @@ const initState = {
   retentionYears: 1,
   invoice: null, // { cost, ethAddress }
   gasPrice: 20,
-  uploadProgress: null
+  uploadProgress: 0
 };
 
 const uploadedFileGenerator = ({ numberOfChunks, fileName, handle }) => {

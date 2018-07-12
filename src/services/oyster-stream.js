@@ -1,4 +1,7 @@
-import { Upload } from "oyster-streamable";
+import IOTA from "iota.lib.js";
+import Stream from "oyster-streamable";
+
+import { IOTA_API } from "../../src/config";
 
 /**
  *
@@ -8,7 +11,7 @@ import { Upload } from "oyster-streamable";
  */
 export const streamUpload = (
   file,
-  { alpha, beta },
+  { alpha, beta, retentionYears },
   {
     invoiceCb,
     paymentPendingCb,
@@ -18,9 +21,12 @@ export const streamUpload = (
     errCb
   }
 ) => {
-  // TODO: Brokers are not yet configurable in oyster-streamable.
-  // They are hardcoded.
-  const u = Upload.fromFile(file, { brokers: { alpha, beta } });
+  const u = Stream.Upload.fromFile(file, {
+    alpha,
+    beta,
+    epochs: retentionYears,
+    iotaProvider: new IOTA({ provider: IOTA_API.PROVIDER_A })
+  });
 
   u.on("invoice", invoiceCb);
   u.on("payment-pending", paymentPendingCb);

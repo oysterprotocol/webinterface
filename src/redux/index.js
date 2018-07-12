@@ -44,5 +44,5 @@ export const store = createStore(
 );
 
 export const persistor = persistStore(store, {}, () => {
-  store.dispatch(uploadActions.refreshIncompleteUploads());
+  // store.dispatch(uploadActions.refreshIncompleteUploads());
 });

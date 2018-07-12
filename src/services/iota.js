@@ -3,18 +3,9 @@ import _ from "lodash";
 import { IOTA_API } from "../../src/config";
 
 const Iota = new IOTA();
-
-const IotaA = new IOTA({
-  provider: IOTA_API.PROVIDER_A
-});
-
-const IotaB = new IOTA({
-  provider: IOTA_API.PROVIDER_B
-});
-
-const IotaC = new IOTA({
-  provider: IOTA_API.PROVIDER_C
-});
+const IotaA = new IOTA({ provider: IOTA_API.PROVIDER_A });
+const IotaB = new IOTA({ provider: IOTA_API.PROVIDER_B });
+const IotaC = new IOTA({ provider: IOTA_API.PROVIDER_C });
 
 const STOPPER_TRYTE = "A";
 
