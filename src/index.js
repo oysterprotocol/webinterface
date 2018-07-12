@@ -1,11 +1,10 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import { Provider } from "react-redux";
-import { PersistGate } from "redux-persist/lib/integration/react";
 import { ConnectedRouter } from "react-router-redux";
 import { Route } from "react-router";
 
-import { store, persistor } from "./redux";
+import { store } from "./redux";
 import history from "redux/history";
 import Root from "components/root";
 import Header from "components/shared/header";
@@ -26,36 +25,33 @@ import ErrorPage from "components/error-page";
 
 import ErrorTracker from "services/error-tracker";
 
-
 const App = () => (
   <Provider store={store}>
-    <PersistGate loading={null} persistor={persistor}>
-      <ConnectedRouter history={history}>
-        <div>
-          <Header />
-          <Route exact path="/" component={Root} />
-          <Route path="/download-form" component={DownloadForm} />
-          <Route path="/download-started" component={DownloadStarted} />
-          <Route path="/download-complete" component={DownloadComplete} />
-          <Route
-            path="/download-upload-history"
-            component={DownloadUploadHistory}
-          />
-          <Route path="/upload-form" component={UploadForm} />
-          <Route path="/upload-started" component={UploadStarted} />
-          <Route path="/upload-complete" component={UploadComplete} />
+    <ConnectedRouter history={history}>
+      <div>
+        <Header />
+        <Route exact path="/" component={Root} />
+        <Route path="/download-form" component={DownloadForm} />
+        <Route path="/download-started" component={DownloadStarted} />
+        <Route path="/download-complete" component={DownloadComplete} />
+        <Route
+          path="/download-upload-history"
+          component={DownloadUploadHistory}
+        />
+        <Route path="/upload-form" component={UploadForm} />
+        <Route path="/upload-started" component={UploadStarted} />
+        <Route path="/upload-complete" component={UploadComplete} />
 
-          <Route path="/retrieving-invoice" component={RetrievingInvoice} />
+        <Route path="/retrieving-invoice" component={RetrievingInvoice} />
 
-          <Route path="/payment-invoice" component={PaymentInvoice} />
-          <Route path="/payment-confirm" component={PaymentConfirm} />
+        <Route path="/payment-invoice" component={PaymentInvoice} />
+        <Route path="/payment-confirm" component={PaymentConfirm} />
 
-          <Route path="/error-page" component={ErrorPage} />
+        <Route path="/error-page" component={ErrorPage} />
 
-          <Route path="/playground" component={Playground} />
-        </div>
-      </ConnectedRouter>
-    </PersistGate>
+        <Route path="/playground" component={Playground} />
+      </div>
+    </ConnectedRouter>
   </Provider>
 );
 

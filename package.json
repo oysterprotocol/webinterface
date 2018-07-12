@@ -29,7 +29,6 @@
     "redux": "^3.7.2",
     "redux-logger": "^3.0.6",
     "redux-observable": "^0.17.0",
-    "redux-persist": "^5.9.1",
     "request": "^2.85.0",
     "reselect": "^3.0.1",
     "rxjs": "^5.5.10",
