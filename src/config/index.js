@@ -3,12 +3,13 @@ const IS_DEV = process.env.NODE_ENV === "development";
 const PROTOCOL = IS_DEV ? "http" : "https";
 
 const POLLING_NODE = IS_DEV
-  ? ["52.14.218.135"] // QA broker
+  ? ["18.191.77.193"] // Travis broker
   : ["poll.oysternodes.com"];
 
 const BROKERS = IS_DEV
-  ? ["52.14.218.135", "18.217.133.146"] // QA brokers
+  ? ["18.222.56.121", "18.191.77.193"] // Travis brokers
   : //["18.188.64.13", "18.188.230.212"] // Rebel brokers
+    //["52.14.218.135", "18.217.133.146"] // QA brokers
     ["broker-1.oysternodes.com", "broker-2.oysternodes.com"];
 
 // Hack until we have proper load balancing.
