@@ -1,7 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
 
-import PaymentConfirmSlide from "components/payment-confirm/payment-confirm-slide.js";
+import PaymentConfirmSlide from "./payment-confirm-slide.js";
 
 const mapStateToProps = state => ({});
 const mapDispatchToProps = dispatch => ({});

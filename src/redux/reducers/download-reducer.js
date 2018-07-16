@@ -1,5 +1,5 @@
-import downloadActions from "redux/actions/download-actions";
-import { DOWNLOAD_STATUSES } from "config";
+import downloadActions from "../actions/download-actions";
+import { DOWNLOAD_STATUSES } from "../../config";
 
 const initState = {
   status: DOWNLOAD_STATUSES.STANDBY

@@ -2,8 +2,8 @@ import _ from "lodash";
 import axios from "axios";
 import Datamap from "datamap-generator";
 
-import { API, IOTA_API } from "config";
-import FileProcessor from "utils/file-processor";
+import { API, IOTA_API } from "../config";
+import FileProcessor from "../utils/file-processor";
 import { alertUser } from "./error-tracker";
 
 const axiosInstance = axios.create({

@@ -1,10 +1,10 @@
 import React, { Component } from "react";
 
-import { DOWNLOAD_STATUSES } from "config";
-import Slide from "components/shared/slide";
-import PrimaryButton from "components/shared/primary-button";
-import Spinner from "components/shared/spinner";
-import ICON_DOWNLOAD from "assets/images/icon_download.png";
+import { DOWNLOAD_STATUSES } from "../../config";
+import Slide from "../shared/slide";
+import PrimaryButton from "../shared/primary-button";
+import Spinner from "../shared/spinner";
+import ICON_DOWNLOAD from "../../assets/images/icon_download.png";
 
 class DownloadFormSlide extends Component {
   render() {

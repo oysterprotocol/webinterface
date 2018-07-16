@@ -1,8 +1,8 @@
 import React from "react";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 
-import Slide from "components/shared/slide";
-import ICON_READY from "assets/images/icon_ready.png";
+import Slide from "../shared/slide";
+import ICON_READY from "../../assets/images/icon_ready.png";
 
 const UploadCompleteSlide = ({ handle }) => (
   <Slide title="Upload Complete" image={ICON_READY}>

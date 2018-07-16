@@ -1,7 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
 
-import PaymentInvoiceSlide from "components/payment-invoice/payment-invoice-slide";
+import PaymentInvoiceSlide from "./payment-invoice-slide";
 
 const mapStateToProps = state => ({
   cost: state.upload.invoice.cost,

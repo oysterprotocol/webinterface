@@ -1,7 +1,5 @@
 import _ from "lodash";
 import forge from "node-forge";
-import Raven from "raven-js";
-import analytics from "analytics.js";
 
 const IV_LENGTH = 16;
 const TAG_LENGTH = 16;
@@ -17,7 +15,7 @@ export function bytesFromHandle(handle) {
 
 const parseHandleFilenameShortname = fileName => {
   // discuss how to handle 'illegal' characters, strip for now
-  fileName = fileName.replace(/[^\w-]/, "")
+  fileName = fileName.replace(/[^\w-]/, "");
   fileName = fileName + getSalt(8);
   fileName = fileName.substr(0, 8);
 

@@ -1,7 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
 
-import DownloadStartedSlide from "components/download-started/download-started-slide";
+import DownloadStartedSlide from "./download-started-slide";
 
 const mapStateToProps = state => ({});
 const mapDispatchToProps = dispatch => ({});

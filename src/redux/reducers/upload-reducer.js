@@ -1,5 +1,5 @@
-import uploadActions from "redux/actions/upload-actions";
-import { API, UPLOAD_STATUSES, IOTA_API } from "config";
+import uploadActions from "../actions/upload-actions";
+import { API, UPLOAD_STATUSES, IOTA_API } from "../../config";
 
 const initState = {
   alphaBroker: API.BROKER_NODE_A,

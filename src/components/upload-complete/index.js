@@ -2,8 +2,8 @@ import React from "react";
 import { connect } from "react-redux";
 import _ from "lodash";
 
-import { FEAT_FLAG } from "config";
-import UploadCompleteSlide from "components/upload-complete/upload-complete-slide";
+import { FEAT_FLAG } from "../../config";
+import UploadCompleteSlide from "./upload-complete-slide";
 import { getSortedHistoryDesc } from "../../redux/selectors/upload-history-selector";
 
 const mapStateToProps = state => ({

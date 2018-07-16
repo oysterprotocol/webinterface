@@ -2,7 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 
 import downloadUploadHistoryActions from "../../redux/actions/download-upload-history-actions";
-import DownloadUploadHistoryButton from "components/download-upload-history/download-upload-history-button";
+import DownloadUploadHistoryButton from "./download-upload-history-button";
 
 const mapStateToProps = state => ({});
 

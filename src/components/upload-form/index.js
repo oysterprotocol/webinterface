@@ -1,8 +1,8 @@
 import React from "react";
 import { connect } from "react-redux";
 
-import uploadActions from "redux/actions/upload-actions";
-import UploadSlide from "components/upload-form/upload-slide";
+import uploadActions from "../../redux/actions/upload-actions";
+import UploadSlide from "./upload-slide";
 
 const mapStateToProps = state => ({
   alphaBroker: state.upload.alphaBroker,

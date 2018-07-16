@@ -2,9 +2,9 @@ import React from "react";
 import { connect } from "react-redux";
 import _ from "lodash";
 
-import UploadStartedSlide from "components/upload-started/upload-started-slide";
-import { getSortedHistoryDesc } from "redux/selectors/upload-history-selector";
-import { FEAT_FLAG } from "config";
+import UploadStartedSlide from "./upload-started-slide";
+import { getSortedHistoryDesc } from "../../redux/selectors/upload-history-selector";
+import { FEAT_FLAG } from "../../config";
 
 const mapStateToProps = state => ({
   upload: state.upload,

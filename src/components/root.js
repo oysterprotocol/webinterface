@@ -1,11 +1,11 @@
 import React from "react";
 
 import "bootstrap/dist/css/bootstrap.min.css";
-import "components/shared/slicknav.css";
-import "components/root.css";
-import "components/responsive.css";
+import "./shared/slicknav.css";
+import "./root.css";
+import "./responsive.css";
 
-import PathChoice from "components/path-choice";
+import PathChoice from "./path-choice";
 
 const Root = () => (
   <div className="App">

@@ -1,8 +1,8 @@
 import React from "react";
 
-import Slide from "components/shared/slide";
-import ICON_READY from "assets/images/icon_ready.png";
-import ICON_SPINNER from "assets/images/icon_spinner.png";
+import Slide from "../shared/slide";
+import ICON_READY from "../../assets/images/icon_ready.png";
+import ICON_SPINNER from "../../assets/images/icon_spinner.png";
 
 const PaymentConfirmSlide = () => (
   <Slide title="Transaction Received" image={ICON_READY}>

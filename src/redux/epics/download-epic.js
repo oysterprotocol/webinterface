@@ -4,12 +4,12 @@ import _ from "lodash";
 import FileSaver from "file-saver";
 import forge from "node-forge";
 
-import downloadActions from "redux/actions/download-actions";
-import Iota from "services/iota";
+import downloadActions from "../actions/download-actions";
+import Iota from "../../services/iota";
 import Datamap from "datamap-generator";
-import Encryption from "utils/encryption";
-import FileProcessor from "utils/file-processor";
-import { INCLUDE_TREASURE_OFFSETS, MAX_ADDRESSES } from "../../config";
+import Encryption from "../../utils/encryption";
+import FileProcessor from "../../utils/file-processor";
+import { INCLUDE_TREASURE_OFFSETS, MAX_ADDRESSES } from "../../config/index";
 
 const initializeDownload = (action$, store) => {
   return action$

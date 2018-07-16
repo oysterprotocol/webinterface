@@ -1,8 +1,8 @@
 import { combineEpics } from "redux-observable";
 import { push } from "react-router-redux";
 
-import uploadActions from "redux/actions/upload-actions";
-import navigationActions from "redux/actions/navigation-actions";
+import uploadActions from "../actions/upload-actions";
+import navigationActions from "../actions/navigation-actions";
 
 const goToDownloadForm = (action$, store) => {
   return action$

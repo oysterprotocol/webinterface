@@ -1,7 +1,7 @@
 import { combineEpics } from "redux-observable";
 import FileSaver from "file-saver";
 
-import downloadUploadHistoryActions from "redux/actions/download-upload-history-actions";
+import downloadUploadHistoryActions from "../actions/download-upload-history-actions";
 
 const beginDownloadUploadHistory = (action$, store) => {
   return action$.ofType(downloadUploadHistoryActions.BEGIN_UPLOAD_HISTORY_DOWNLOAD).filter(() => {

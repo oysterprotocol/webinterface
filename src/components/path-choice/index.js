@@ -1,8 +1,8 @@
 import React from "react";
 import { connect } from "react-redux";
 
-import ChoiceSlide from "components/path-choice/choice-slide";
-import navigationActions from "redux/actions/navigation-actions";
+import ChoiceSlide from "../path-choice/choice-slide";
+import navigationActions from "../../redux/actions/navigation-actions";
 
 const mapStateToProps = state => ({});
 const mapDispatchToProps = dispatch => ({

@@ -1,5 +1,5 @@
-import { UPLOAD_STATUSES } from "config";
-import uploadActions from "redux/actions/upload-actions";
+import { UPLOAD_STATUSES } from "../../config";
+import uploadActions from "../actions/upload-actions";
 
 const initState = {};
 

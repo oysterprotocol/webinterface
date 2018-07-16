@@ -2,11 +2,11 @@ import React, { Component } from "react";
 import Select from "react-select";
 import "react-select/dist/react-select.css";
 
-import { API, FILE, FEAT_FLAG } from "config";
-import ICON_UPLOAD from "assets/images/icon_upload.png";
-import ICON_FOLDER from "assets/images/icon_folder.png";
-import Slide from "components/shared/slide";
-import PrimaryButton from "components/shared/primary-button";
+import { API, FILE, FEAT_FLAG } from "../../config";
+import ICON_UPLOAD from "../../assets/images/icon_upload.png";
+import ICON_FOLDER from "../../assets/images/icon_folder.png";
+import Slide from "../shared/slide";
+import PrimaryButton from "../shared/primary-button";
 
 const DEFAULT_FILE_INPUT_TEXT = "No file selected";
 const DEFAULT_FILE_INPUT_SIZE = 0;

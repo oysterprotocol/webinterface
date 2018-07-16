@@ -1,8 +1,8 @@
 import React from "react";
 
-import Slide from "components/shared/slide";
-import ICON_SPINNER from "assets/images/icon_spinner.png";
-import ICON_DOWNLOAD from "assets/images/icon_download.png";
+import Slide from "../shared/slide";
+import ICON_SPINNER from "../../assets/images/icon_spinner.png";
+import ICON_DOWNLOAD from "../../assets/images/icon_download.png";
 
 const DownloadStartedSlide = () => (
   <Slide title="Retrieving file..." image={ICON_DOWNLOAD}>

@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 
-import playgroundActions from "redux/actions/playground-actions";
-import PrimaryButton from "components/shared/primary-button";
+import playgroundActions from "../../redux/actions/playground-actions";
+import PrimaryButton from "../shared/primary-button";
 
 const mapStateToProps = state => ({});
 const mapDispatchToProps = dispatch => ({

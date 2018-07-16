@@ -2,11 +2,11 @@ import { Observable } from "rxjs";
 import { combineEpics } from "redux-observable";
 import FileSaver from "file-saver";
 
-import playgroundActions from "redux/actions/playground-actions";
-import downloadActions from "redux/actions/download-actions";
+import playgroundActions from "../actions/playground-actions";
+import downloadActions from "../actions/download-actions";
 
-import { FILE, IOTA_API } from "config";
-import FileProcessor from "utils/file-processor";
+import { FILE, IOTA_API } from "../../config";
+import FileProcessor from "../../utils/file-processor";
 
 const testUpload = (action$, store) => {
   return action$.ofType(playgroundActions.TEST_UPLOAD).mergeMap(action => {

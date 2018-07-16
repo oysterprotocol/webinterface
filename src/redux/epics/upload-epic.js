@@ -3,21 +3,21 @@ import { Observable } from "rxjs";
 import { combineEpics } from "redux-observable";
 import _ from "lodash";
 
-import uploadActions from "redux/actions/upload-actions";
-import navigationActions from "redux/actions/navigation-actions";
+import uploadActions from "../actions/upload-actions";
+import navigationActions from "../actions/navigation-actions";
 
-import { UPLOAD_STATUSES } from "config";
-import Iota from "services/iota";
-import Backend from "services/backend";
-import { streamUpload } from "services/oyster-stream";
+import { UPLOAD_STATUSES } from "../../config";
+import Iota from "../../services/iota";
+import Backend from "../../services/backend";
+import { streamUpload } from "../../services/oyster-stream";
 
-import FileProcessor from "utils/file-processor";
-import IndexSelector from "utils/index-selector";
+import FileProcessor from "../../utils/file-processor";
+import IndexSelector from "../../utils/index-selector";
 import {
   IOTA_API,
   IOTA_POLL_INTERVAL,
   NUM_POLLING_ADDRESSES
-} from "../../config";
+} from "../../config/index";
 
 const BUNDLE_SIZE = IOTA_API.BUNDLE_SIZE;
 

@@ -2,7 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 import last from "lodash/last";
 
-import ErrorPageSlide from "components/error-page/error-page-slide";
+import ErrorPageSlide from "../error-page/error-page-slide";
 
 const mapStateToProps = state => ({
     history: state.upload.history

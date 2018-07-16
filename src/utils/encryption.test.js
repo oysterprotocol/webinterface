@@ -1,4 +1,4 @@
-import Encryption, { hashChain } from "./encryption";
+import Encryption from "./encryption";
 import Iota from "../services/iota";
 import forge from "node-forge";
 

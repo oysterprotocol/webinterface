@@ -1,8 +1,8 @@
 import _ from "lodash";
 
 import IndexSelector from "./index-selector";
-import { NUM_POLLING_ADDRESSES } from "../config";
-import { IOTA_API } from "../config";
+import { NUM_POLLING_ADDRESSES } from "../config/index";
+import { IOTA_API } from "../config/index";
 
 const BUNDLE_SIZE = IOTA_API.BUNDLE_SIZE;
 

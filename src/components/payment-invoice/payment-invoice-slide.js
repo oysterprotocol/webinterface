@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 
-import Slide from "components/shared/slide";
-import ICON_PlANE from "assets/images/sendAirplane.svg";
+import Slide from "../shared/slide";
+import ICON_PlANE from "../../assets/images/sendAirplane.svg";
 
 class PaymentInvoiceSlide extends Component {
   constructor(props) {

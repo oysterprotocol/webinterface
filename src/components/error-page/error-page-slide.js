@@ -1,8 +1,8 @@
 import React from "react";
 import { CopyToClipboard } from "preact";
 
-import SlideError from "components/shared/slide-error";
-import ICON_ERROR from "assets/images/icon_error.png";
+import SlideError from "../shared/slide-error";
+import ICON_ERROR from "../../assets/images/icon_error.png";
 
 const ErrorPageSlide = ({ handle }) => (
 <SlideError title="Uh oh! Something went wong." image={null} >

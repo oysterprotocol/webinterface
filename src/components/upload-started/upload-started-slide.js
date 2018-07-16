@@ -1,9 +1,9 @@
 import React from "react";
 import { Line } from "rc-progress";
 
-import Slide from "components/shared/slide";
-import Spinner from "components/shared/spinner";
-import ICON_UPLOAD from "assets/images/icon_upload.png";
+import Slide from "../shared/slide";
+import Spinner from "../shared/spinner";
+import ICON_UPLOAD from "../../assets/images/icon_upload.png";
 
 const UploadStartedSlide = ({ uploadProgress }) => (
   <Slide title="Upload Started" image={ICON_UPLOAD}>

@@ -6,11 +6,10 @@ import storage from "redux-persist/lib/storage";
 import { routerMiddleware } from "react-router-redux";
 import createRavenMiddleware from "raven-for-redux";
 
-import { UPLOAD_STATUSES } from "config";
-import epics from "redux/epics";
-import reducer from "redux/reducers";
-import history from "redux/history";
-import uploadActions from "redux/actions/upload-actions";
+import { UPLOAD_STATUSES } from "../config";
+import epics from "./epics";
+import reducer from "./reducers";
+import history from "./history";
 import Raven from "../services/error-tracker";
 
 const composeFn = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;

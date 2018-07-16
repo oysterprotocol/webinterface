@@ -1,5 +1,5 @@
 import React from "react";
-import ICON_TANGLE_UP from "assets/images/icon_tangle_up.png";
+import ICON_TANGLE_UP from "../../assets/images/icon_tangle_up.png";
 
 const Slide = ({ children, title, image }) => {
   return (

@@ -1,5 +1,5 @@
 import React from "react";
-import SlideContainer from "components/shared/slide";
+import SlideContainer from "../shared/slide";
 
 const DownloadCompleteSlide = () => (
   <SlideContainer title="Your download is ready">

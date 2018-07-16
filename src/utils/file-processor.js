@@ -1,5 +1,4 @@
-import Encryption from "utils/encryption";
-import _ from "lodash";
+import Encryption from "./encryption";
 import forge from "node-forge";
 
 import Iota from "../services/iota";
