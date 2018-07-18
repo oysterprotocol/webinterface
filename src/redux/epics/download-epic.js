@@ -10,6 +10,7 @@ import Datamap from "datamap-generator";
 import Encryption from "../../utils/encryption";
 import FileProcessor from "../../utils/file-processor";
 import { INCLUDE_TREASURE_OFFSETS, MAX_ADDRESSES } from "../../config/index";
+import { streamDownload } from "../../services/oyster-stream";
 
 const initializeDownload = (action$, store) => {
   return action$
@@ -95,4 +96,31 @@ const beginDownload = (action$, store) => {
   });
 };
 
-export default combineEpics(initializeDownload, beginDownload);
+const streamDownloadEpic = action$ => {
+  return action$.ofType(downloadActions.STREAM_DOWNLOAD).mergeMap(action => {
+    const { handle } = action.payload;
+    const params = {};
+
+    return Observable.create(o => {
+      streamDownload(handle, params, {
+        metaCb: () => {}, // no-op
+        progressCb: () => {}, // no-op
+        doneCb: () => {
+          o.next(downloadActions.streamDownloadSuccess());
+          o.complete();
+        },
+        errCb: err => {
+          // window.alert error
+          o.next(downloadActions.streamDownloadError({ err }));
+          o.complete();
+        }
+      });
+    });
+  });
+};
+
+export default combineEpics(
+  initializeDownload,
+  beginDownload,
+  streamDownloadEpic
+);

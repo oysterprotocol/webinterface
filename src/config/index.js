@@ -48,10 +48,8 @@ export const UPLOAD_STATUSES = Object.freeze({
 });
 
 export const DOWNLOAD_STATUSES = Object.freeze({
-  STANDBY: "STANDBY",
   PENDING: "PENDING",
-  RECEIVED: "RECEIVED",
-  FAILED: "FAILED"
+  STANDBY: "STANDBY"
 });
 
 export const FILE = Object.freeze({
@@ -63,7 +61,8 @@ export const FILE = Object.freeze({
 });
 
 export const FEAT_FLAG = Object.freeze({
-  STREAMING_UPLOAD: true
+  STREAMING_UPLOAD: true,
+  STREAMING_DOWNLOAD: false
 });
 
 export const INCLUDE_TREASURE_OFFSETS = true;
