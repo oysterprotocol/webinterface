@@ -1,14 +1,19 @@
-import React, { Component } from "react";
+import React from "react";
 
 import { DOWNLOAD_STATUSES } from "../../config";
 import Slide from "../shared/slide";
 import PrimaryButton from "../shared/primary-button";
 import Spinner from "../shared/spinner";
-import ICON_DOWNLOAD from "../../assets/images/icon_download.png";
 
-class DownloadFormSlide extends Component {
+interface DownloadFormSlideProps {
+    download,
+    status
+}
+
+class DownloadFormSlide extends React.Component<DownloadFormSlideProps> {
   render() {
-    const { download, status } = this.props;
+      const { download, status } = this.props;
+      const ICON_DOWNLOAD = require("../../assets/images/icon_download.png");
     return (
       <Slide title="Retrieve a File" image={ICON_DOWNLOAD}>
         <p className="handle-instructions">

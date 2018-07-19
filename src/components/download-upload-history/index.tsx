@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 import downloadUploadHistoryActions from "../../redux/actions/download-upload-history-actions";
 import DownloadUploadHistoryButton from "./download-upload-history-button";
 
-const mapStateToProps = state => ({});
+const mapStateToProps = () => ({});
 
 const mapDispatchToProps = dispatch => ({
   beginDownloadUploadHistoryFn: () =>
