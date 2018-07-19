@@ -1,10 +1,10 @@
 import React, { Component } from "react";
 
-interface IDownloadUploadHistoryButton {
+interface DownloadUploadHistoryButtonProps {
     download
 }
 
-class DownloadUploadHistoryButton extends Component<IDownloadUploadHistoryButton> {
+class DownloadUploadHistoryButton extends Component<DownloadUploadHistoryButtonProps> {
   render() {
     const { download } = this.props;
     return (

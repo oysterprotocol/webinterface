@@ -5,12 +5,12 @@ import Slide from "../shared/slide";
 import PrimaryButton from "../shared/primary-button";
 import Spinner from "../shared/spinner";
 
-interface IDownloadFormSlideProps {
+interface DownloadFormSlideProps {
     download,
     status
 }
 
-class DownloadFormSlide extends React.Component<IDownloadFormSlideProps> {
+class DownloadFormSlide extends React.Component<DownloadFormSlideProps> {
   render() {
       const { download, status } = this.props;
       const ICON_DOWNLOAD = require("../../assets/images/icon_download.png");
