@@ -12,6 +12,7 @@
     "noUnusedLocals": true,
     "strict": true,
     "skipLibCheck": true,
+    "allowSyntheticDefaultImports": true,
     "outDir": "build",
     "lib": ["es6", "es7", "es2017", "dom"],
     "baseUrl": "src",
