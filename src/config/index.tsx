@@ -13,10 +13,10 @@ const BROKERS = IS_DEV
     ["broker-1.oysternodes.com", "broker-2.oysternodes.com"];
 
 // Hack until we have proper load balancing.
-const randElem = xs => xs[Math.floor(Math.random() * xs.length)];
-const randBrokers = brokers => {
+const randElem = (xs: string) => xs[Math.floor(Math.random() * xs.length)];
+const randBrokers = (brokers:any) => {
   const alpha = randElem(brokers);
-  const remBrokers = brokers.filter(br => br != alpha);
+  const remBrokers = brokers.filter((br:any) => br != alpha);
   const beta = randElem(remBrokers);
 
   return [alpha, beta];
