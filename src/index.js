@@ -20,12 +20,11 @@ import RetrievingInvoice from "./components/retrieving-invoice";
 import PaymentInvoice from "./components/payment-invoice";
 import PaymentConfirm from "./components/payment-confirm";
 import Playground from "./components/playground";
-import registerServiceWorker from "./register-service-worker";
+import { unregister } from "./registerServiceWorker";
 
 import ErrorPage from "./components/error-page";
 
 import ErrorTracker from "./services/error-tracker";
-
 
 const App = () => (
   <Provider store={store}>
@@ -61,5 +60,5 @@ const App = () => (
 
 ErrorTracker.context(() => {
   ReactDOM.render(<App />, document.getElementById("root"));
-  registerServiceWorker();
+  unregister();
 });
