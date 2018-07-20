@@ -20,7 +20,7 @@ import RetrievingInvoice from "./components/retrieving-invoice";
 import PaymentInvoice from "./components/payment-invoice";
 import PaymentConfirm from "./components/payment-confirm";
 import Playground from "./components/playground";
-import { unregister } from "./registerServiceWorker";
+import { unregister } from "./register-service-worker";
 
 import ErrorPage from "./components/error-page";
 
