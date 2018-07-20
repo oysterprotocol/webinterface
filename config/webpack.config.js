@@ -124,7 +124,7 @@ if (env.stringified["process.env"].NODE_ENV === '"production"') {
       modules: ["node_modules", paths.appNodeModules].concat(
         process.env.NODE_PATH.split(path.delimiter).filter(Boolean)
       ),
-      extensions: [".web.js", ".mjs", ".js", ".json", ".web.jsx", ".jsx"],
+      extensions: [".web.js", ".mjs", ".js", ".json", ".web.jsx", ".jsx", ".ts", ".tsx"],
       plugins: [new ModuleScopePlugin(paths.appSrc, [paths.appPackageJson])]
     },
     plugins: [

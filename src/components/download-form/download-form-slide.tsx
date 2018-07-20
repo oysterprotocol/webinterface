@@ -10,10 +10,12 @@ interface DownloadFormSlideProps {
     status
 }
 
+const hackyGetVal = component => component.value;
+
 class DownloadFormSlide extends React.Component<DownloadFormSlideProps> {
   render() {
-      const { download, status } = this.props;
-      const ICON_DOWNLOAD = require("../../assets/images/icon_download.png");
+    const { download, status } = this.props;
+    const ICON_DOWNLOAD = require("../../assets/images/icon_download.png");
     return (
       <Slide title="Retrieve a File" image={ICON_DOWNLOAD}>
         <p className="handle-instructions">
@@ -37,7 +39,7 @@ class DownloadFormSlide extends React.Component<DownloadFormSlideProps> {
             id="download-btn"
             disabled={status === DOWNLOAD_STATUSES.PENDING}
             onClick={() => {
-              const handle = this.refs.handleInput.value;
+              const handle = hackyGetVal(this.refs.handleInput);
               if (!handle) {
                 alert("Please input a handle.");
               } else {

@@ -27,6 +27,7 @@ before_script:
   - yarn test:install
   - yarn start -- --silent &    # Silent to run E2E tests
 script:
+  - yarn build
   - yarn test:coverage          # Unit Tests
   - yarn test:record            # E2E Tests
 after_script:
