@@ -1,4 +1,4 @@
-const IS_DEV = process.env.NODE_ENV === "development";
+export const IS_DEV = process.env.NODE_ENV === "development";
 
 const PROTOCOL = IS_DEV ? "http" : "https";
 
@@ -14,9 +14,9 @@ const BROKERS = IS_DEV
 
 // Hack until we have proper load balancing.
 const randElem = (xs: string) => xs[Math.floor(Math.random() * xs.length)];
-const randBrokers = (brokers:any) => {
+const randBrokers = (brokers: any) => {
   const alpha = randElem(brokers);
-  const remBrokers = brokers.filter((br:any) => br != alpha);
+  const remBrokers = brokers.filter((br: any) => br != alpha);
   const beta = randElem(remBrokers);
 
   return [alpha, beta];
@@ -28,6 +28,7 @@ export const API = Object.freeze({
   BROKER_NODE_A: `${PROTOCOL}://${ALPHA_IP}`,
   BROKER_NODE_B: `${PROTOCOL}://${BETA_IP}`,
   V2_UPLOAD_SESSIONS_PATH: ":3000/api/v2/upload-sessions",
+  V2_STATUS_PATH: ":3000/api/v2/status",
   GAS_PRICE: "https://api.blockcypher.com/v1/eth/main",
   CHUNKS_PER_REQUEST: 10
 });
@@ -61,7 +62,7 @@ export const FILE = Object.freeze({
 });
 
 export const FEAT_FLAG = Object.freeze({
-  STREAMING_UPLOAD: true,
+  STREAMING_UPLOAD: false,
   STREAMING_DOWNLOAD: false
 });
 

@@ -6,6 +6,7 @@ import forge from "node-forge";
 
 import downloadActions from "../actions/download-actions";
 import Iota from "../../services/iota";
+import Backend from "../../services/backend";
 import Datamap from "datamap-generator";
 import Encryption from "../../utils/encryption";
 import FileProcessor from "../../utils/file-processor";
@@ -25,23 +26,29 @@ const initializeDownload = (action$, store) => {
         forge.util.hexToBytes(obfuscatedGenesisHash)
       );
       const iotaAddress = Iota.toAddress(genesisHashInTrytes);
-      return Observable.fromPromise(Iota.findTransactionObjects([iotaAddress]))
-        .map(transactions => {
-          const t = transactions[0];
-          const {
-            numberOfChunks,
-            fileName
-          } = FileProcessor.metaDataFromIotaFormat(
-            t.signatureMessageFragment,
-            handle
-          );
 
-          return downloadActions.beginDownloadAction({
-            handle,
-            numberOfChunks,
-            fileName
-          });
-        })
+      return Observable.fromPromise(Backend.checkStatus())
+        .filter(available => available)
+        .mergeMap(_ =>
+          Observable.fromPromise(
+            Iota.findTransactionObjects([iotaAddress])
+          ).map(transactions => {
+            const t = transactions[0];
+            const {
+              numberOfChunks,
+              fileName
+            } = FileProcessor.metaDataFromIotaFormat(
+              t.signatureMessageFragment,
+              handle
+            );
+
+            return downloadActions.beginDownloadAction({
+              handle,
+              numberOfChunks,
+              fileName
+            });
+          })
+        )
         .catch(error =>
           Observable.of(downloadActions.downloadFailureAction(error))
         );

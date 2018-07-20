@@ -90,33 +90,43 @@ const initializeSession = (action$, store) => {
   return action$.ofType(uploadActions.INITIALIZE_SESSION).mergeMap(action => {
     const { chunks, fileName, handle, retentionYears } = action.payload;
 
-    return Observable.fromPromise(
-      Backend.initializeUploadSession(chunks, fileName, handle, retentionYears)
-    ).map(
-      ({
-        alphaSessionId,
-        betaSessionId,
-        invoice,
-        numberOfChunks,
-        handle,
-        fileName,
-        genesisHash,
-        storageLengthInYears,
-        host
-      }) => {
-        return uploadActions.pollPaymentStatus({
-          host,
+    return Observable.fromPromise(Backend.checkStatus())
+      .filter(available => available)
+      .mergeMap(_ =>
+        Observable.fromPromise(
+          Backend.initializeUploadSession(
+            chunks,
+            fileName,
+            handle,
+            retentionYears
+          )
+        )
+      )
+      .map(
+        ({
           alphaSessionId,
-          chunks,
-          fileName,
-          handle,
-          numberOfChunks,
           betaSessionId,
+          invoice,
+          numberOfChunks,
+          handle,
+          fileName,
           genesisHash,
-          invoice
-        });
-      }
-    );
+          storageLengthInYears,
+          host
+        }) => {
+          return uploadActions.pollPaymentStatus({
+            host,
+            alphaSessionId,
+            chunks,
+            fileName,
+            handle,
+            numberOfChunks,
+            betaSessionId,
+            genesisHash,
+            invoice
+          });
+        }
+      );
   });
 };
 
