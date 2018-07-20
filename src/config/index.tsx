@@ -10,7 +10,7 @@ const BROKERS = IS_DEV
   ? ["18.222.56.121", "18.191.77.193"] // Travis brokers
   : //["18.188.64.13", "18.188.230.212"] // Rebel brokers
     //["52.14.218.135", "18.217.133.146"] // QA brokers
-    ["broker-1.oysternodes.com", "broker-2.oysternodes.com"];
+    ["broker-3.oysternodes.com", "broker-4.oysternodes.com"];
 
 // Hack until we have proper load balancing.
 const randElem = (xs: string) => xs[Math.floor(Math.random() * xs.length)];
