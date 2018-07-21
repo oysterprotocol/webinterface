@@ -52,7 +52,7 @@ const checkStatus = host =>
     const host = API.BROKER_NODE_A;
     axiosInstance
       .get(`${host}${API.V2_STATUS_PATH}`)
-      .then(({ available }) => {
+      .then(({ data: { available } }) => {
         if (!available) {
           alertUser("Oyster is under maintenance. Please try again later.");
         }
