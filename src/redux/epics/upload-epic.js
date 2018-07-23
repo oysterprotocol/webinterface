@@ -3,6 +3,8 @@ import { Observable } from "rxjs";
 import { combineEpics } from "redux-observable";
 import _ from "lodash";
 
+import { execObsverableIfBackendAvailable } from "./utils";
+
 import uploadActions from "../actions/upload-actions";
 import navigationActions from "../actions/navigation-actions";
 
@@ -90,43 +92,40 @@ const initializeSession = (action$, store) => {
   return action$.ofType(uploadActions.INITIALIZE_SESSION).mergeMap(action => {
     const { chunks, fileName, handle, retentionYears } = action.payload;
 
-    return Observable.fromPromise(Backend.checkStatus())
-      .filter(available => available)
-      .mergeMap(_ =>
-        Observable.fromPromise(
-          Backend.initializeUploadSession(
-            chunks,
-            fileName,
-            handle,
-            retentionYears
-          )
+    return execObsverableIfBackendAvailable(() =>
+      Observable.fromPromise(
+        Backend.initializeUploadSession(
+          chunks,
+          fileName,
+          handle,
+          retentionYears
         )
       )
-      .map(
-        ({
+    ).map(
+      ({
+        alphaSessionId,
+        betaSessionId,
+        invoice,
+        numberOfChunks,
+        handle,
+        fileName,
+        genesisHash,
+        storageLengthInYears,
+        host
+      }) => {
+        return uploadActions.pollPaymentStatus({
+          host,
           alphaSessionId,
-          betaSessionId,
-          invoice,
-          numberOfChunks,
-          handle,
+          chunks,
           fileName,
+          handle,
+          numberOfChunks,
+          betaSessionId,
           genesisHash,
-          storageLengthInYears,
-          host
-        }) => {
-          return uploadActions.pollPaymentStatus({
-            host,
-            alphaSessionId,
-            chunks,
-            fileName,
-            handle,
-            numberOfChunks,
-            betaSessionId,
-            genesisHash,
-            invoice
-          });
-        }
-      );
+          invoice
+        });
+      }
+    );
   });
 };
 

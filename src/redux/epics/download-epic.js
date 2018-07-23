@@ -4,9 +4,10 @@ import _ from "lodash";
 import FileSaver from "file-saver";
 import forge from "node-forge";
 
+import { execObsverableIfBackendAvailable } from "./utils";
+
 import downloadActions from "../actions/download-actions";
 import Iota from "../../services/iota";
-import Backend from "../../services/backend";
 import Datamap from "datamap-generator";
 import Encryption from "../../utils/encryption";
 import FileProcessor from "../../utils/file-processor";
@@ -27,12 +28,9 @@ const initializeDownload = (action$, store) => {
       );
       const iotaAddress = Iota.toAddress(genesisHashInTrytes);
 
-      return Observable.fromPromise(Backend.checkStatus())
-        .filter(available => available)
-        .mergeMap(_ =>
-          Observable.fromPromise(
-            Iota.findTransactionObjects([iotaAddress])
-          ).map(transactions => {
+      return execObsverableIfBackendAvailable(() =>
+        Observable.fromPromise(Iota.findTransactionObjects([iotaAddress])).map(
+          transactions => {
             const t = transactions[0];
             const {
               numberOfChunks,
@@ -47,11 +45,11 @@ const initializeDownload = (action$, store) => {
               numberOfChunks,
               fileName
             });
-          })
+          }
         )
-        .catch(error =>
-          Observable.of(downloadActions.downloadFailureAction(error))
-        );
+      ).catch(error =>
+        Observable.of(downloadActions.downloadFailureAction(error))
+      );
     });
 };
 
