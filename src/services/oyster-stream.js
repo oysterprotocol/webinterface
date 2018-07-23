@@ -41,7 +41,9 @@ export const streamDownload = (
   {},
   { metaCb, progressCb, doneCb, errCb }
 ) => {
-  const d = new Stream.Download(handle);
+  const d = Stream.Download.toBlob(handle, {
+    iotaProvider: new IOTA({ provider: IOTA_API.PROVIDER_A })
+  });
 
   d.on("meta", metaCb);
   d.on("download-progress", progressCb);

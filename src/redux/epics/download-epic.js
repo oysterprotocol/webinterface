@@ -112,7 +112,8 @@ const streamDownloadEpic = action$ => {
       streamDownload(handle, params, {
         metaCb: () => {}, // no-op
         progressCb: () => {}, // no-op
-        doneCb: () => {
+        doneCb: ({ metadata: { fileName }, result }) => {
+          FileSaver.saveAs(result, fileName);
           o.next(downloadActions.streamDownloadSuccess());
           o.complete();
         },

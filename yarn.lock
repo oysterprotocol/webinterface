@@ -2538,7 +2538,7 @@ create-hmac@^1.1.0, create-hmac@^1.1.2, create-hmac@^1.1.4:
     safe-buffer "^5.0.1"
     sha.js "^2.4.8"
 
-cross-env@^5.1.4:
+cross-env@^5.2.0:
   version "5.2.0"
   resolved "https://registry.yarnpkg.com/cross-env/-/cross-env-5.2.0.tgz#6ecd4c015d5773e614039ee529076669b9d126f2"
   dependencies:
@@ -6761,7 +6761,7 @@ output-file-sync@^1.1.2:
 
 "oyster-streamable@git+https://github.com/oysterprotocol/oyster-streamable.git":
   version "0.0.1"
-  resolved "git+https://github.com/oysterprotocol/oyster-streamable.git#8bca7613da292311e01bd0344c95e460c92f8828"
+  resolved "git+https://github.com/oysterprotocol/oyster-streamable.git#c1ba18f44ea3028ce4365bb001e11e99585dad32"
   dependencies:
     axios "^0.18.0"
     datamap-generator "git+https://github.com/oysterprotocol/datamap-generator.git"
