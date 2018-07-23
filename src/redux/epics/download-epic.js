@@ -106,22 +106,24 @@ const streamDownloadEpic = action$ => {
     const { handle } = action.payload;
     const params = {};
 
-    return Observable.create(o => {
-      streamDownload(handle, params, {
-        metaCb: () => {}, // no-op
-        progressCb: () => {}, // no-op
-        doneCb: ({ metadata: { fileName }, result }) => {
-          FileSaver.saveAs(result, fileName);
-          o.next(downloadActions.streamDownloadSuccess());
-          o.complete();
-        },
-        errCb: err => {
-          // window.alert error
-          o.next(downloadActions.streamDownloadError({ err }));
-          o.complete();
-        }
-      });
-    });
+    return execObsverableIfBackendAvailable(() =>
+      Observable.create(o => {
+        streamDownload(handle, params, {
+          metaCb: () => {}, // no-op
+          progressCb: () => {}, // no-op
+          doneCb: ({ metadata: { fileName }, result }) => {
+            FileSaver.saveAs(result, fileName);
+            o.next(downloadActions.streamDownloadSuccess());
+            o.complete();
+          },
+          errCb: err => {
+            // window.alert error
+            o.next(downloadActions.streamDownloadError({ err }));
+            o.complete();
+          }
+        });
+      })
+    );
   });
 };
 

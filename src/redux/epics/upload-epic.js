@@ -51,41 +51,43 @@ const streamUploadEpic = action$ =>
 
     const params = { alpha, beta, retentionYears };
 
-    return Observable.create(o => {
-      streamUpload(file, params, {
-        invoiceCb: invoice => {
-          o.next(uploadActions.streamInvoiced(invoice));
-        },
+    return execObsverableIfBackendAvailable(() =>
+      Observable.create(o => {
+        streamUpload(file, params, {
+          invoiceCb: invoice => {
+            o.next(uploadActions.streamInvoiced(invoice));
+          },
 
-        paymentPendingCb: _ => {
-          o.next(uploadActions.streamPaymentPending());
-        },
+          paymentPendingCb: _ => {
+            o.next(uploadActions.streamPaymentPending());
+          },
 
-        paymentConfirmedCb: payload => {
-          o.next(uploadActions.streamPaymentConfirmed(payload));
-        },
+          paymentConfirmedCb: payload => {
+            o.next(uploadActions.streamPaymentConfirmed(payload));
+          },
 
-        uploadProgressCb: progress => {
-          o.next(uploadActions.streamUploadProgress(progress));
-        },
+          uploadProgressCb: progress => {
+            o.next(uploadActions.streamUploadProgress(progress));
+          },
 
-        doneCb: result => {
-          const { handle } = result;
-          o.next(uploadActions.streamUploadSuccess({ handle }));
+          doneCb: result => {
+            const { handle } = result;
+            o.next(uploadActions.streamUploadSuccess({ handle }));
 
-          o.complete();
-        },
+            o.complete();
+          },
 
-        errCb: err => {
-          let handle; // TODO
-          // window.alert the error.
-          o.next(uploadActions.streamUploadError({ handle, err }));
+          errCb: err => {
+            let handle; // TODO
+            // window.alert the error.
+            o.next(uploadActions.streamUploadError({ handle, err }));
 
-          // Use complete instead of error so observable isn't taken down.
-          o.complete();
-        }
-      });
-    });
+            // Use complete instead of error so observable isn't taken down.
+            o.complete();
+          }
+        });
+      })
+    );
   });
 
 const initializeSession = (action$, store) => {
