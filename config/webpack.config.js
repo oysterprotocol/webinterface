@@ -129,7 +129,8 @@ if (env.stringified["process.env"].NODE_ENV === '"production"') {
     },
     plugins: [
       new BundleAnalyzerPlugin({
-        generateStatsFile: generateStatsFile
+        generateStatsFile: generateStatsFile,
+        analyzerMode: "static"
       }),
       new MiniCssExtractPlugin({
         filename: "[name].[hash].css",
