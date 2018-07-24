@@ -1,13 +1,14 @@
 import React from "react";
-import ICON_TANGLE_UP from "../../assets/images/icon_tangle_up.png";
 
-const Slide = ({ children, title, image }) => {
+const ICON_TANGLE_UP = require("../../assets/images/icon_tangle_up.png");
+
+const Slide = ({ children, title, image }:any) => {
   return (
     <section className="slide">
       <div className="container bordered indented-container">
         <div className="slide-body">
           <h1 className="slide-title">{title}</h1>
-          <hr align="left" className="underline" />
+          <hr className="underline" />
           {children}
         </div>
         <div className="slide-image-wrapper">

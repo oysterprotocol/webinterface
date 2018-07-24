@@ -1,10 +1,11 @@
 import React from "react";
 
 import PrimaryButton from "../shared/primary-button";
-import ICON_TANGLE_LEFT from "../../assets/images/icon_tangle_left.png";
-import ICON_TANGLE_RIGHT from "../../assets/images/icon_tangle_right.png";
-import ICON_UPLOAD from "../../assets/images/icon_upload.png";
-import ICON_DOWNLOAD from "../../assets/images/icon_download.png";
+
+const ICON_TANGLE_LEFT = require("../../assets/images/icon_tangle_left.png");
+const ICON_TANGLE_RIGHT = require("../../assets/images/icon_tangle_right.png");
+const ICON_UPLOAD = require("../../assets/images/icon_upload.png");
+const ICON_DOWNLOAD = require("../../assets/images/icon_download.png");
 
 const ChoiceSlide = ({ visitUploadFormFn, visitDownloadFormFn }) => (
   <section className="slide">

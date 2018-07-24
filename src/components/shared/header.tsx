@@ -1,7 +1,8 @@
 import React from "react";
 
 import "../root.css";
-import ICON_LOGO from "../../assets/images/logo.svg";
+
+const ICON_LOGO =require( "../../assets/images/logo.svg");
 
 const Header = () => (
   <header className="App-header">

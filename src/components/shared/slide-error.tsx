@@ -6,7 +6,7 @@ const SlideError = ({ children, title, image }) => {
         <div className="container bordered indented-container">
         <div className="slide-body slide-error-body">
         <h1 className="slide-title">{title}</h1>
-        <hr align="left" className="underline" />
+        <hr className="underline" />
         {children}
         </div>
         </div>

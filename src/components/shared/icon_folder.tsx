@@ -1,6 +1,6 @@
 import React from "react";
 
-import icon_folder from "../../assets/images/icon_folder.png";
+const icon_folder =require("../../assets/images/icon_folder.png");
 
 const IconFolder = () => <img src={icon_folder} />;
 

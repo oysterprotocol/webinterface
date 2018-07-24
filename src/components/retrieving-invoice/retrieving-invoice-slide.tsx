@@ -1,8 +1,9 @@
 import React, { Component } from "react";
 
 import Slide from "../shared/slide";
-import ICON_READY from "../../assets/images/icon_ready.png";
-import ICON_SPINNER from "../../assets/images/icon_spinner.png";
+
+const ICON_READY = require ("../../assets/images/icon_ready.png");
+const ICON_SPINNER = require("../../assets/images/icon_spinner.png");
 
 class RetrievingInvoiceSlide extends Component {
   constructor(props) {

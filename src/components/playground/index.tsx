@@ -9,7 +9,11 @@ const mapDispatchToProps = dispatch => ({
   testUploadFn: file => dispatch(playgroundActions.testUploadAction(file))
 });
 
-class Playground extends Component {
+interface PlaygroundProps {
+    testUploadFn
+}
+
+class Playground extends Component<PlaygroundProps> {
   render() {
     const { testUploadFn } = this.props;
     return (
@@ -20,7 +24,8 @@ class Playground extends Component {
           className="btn btn-upload"
           type="button"
           onClick={() => {
-            const file = this.refs.fileInput.files[0];
+            const fileInput:any = this.refs.fileInput;
+            const file = fileInput.files[0];
             if (!file) {
               alert("Please select a file.");
             } else {

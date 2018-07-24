@@ -1,9 +1,17 @@
 import React, { Component } from "react";
 
 import Slide from "../shared/slide";
-import ICON_PlANE from "../../assets/images/sendAirplane.svg";
 
-class PaymentInvoiceSlide extends Component {
+
+const ICON_PlANE = require("../../assets/images/sendAirplane.svg");
+
+interface PaymentInvoiceSlideProps {
+  cost,
+    ethAddress,
+    gasPrice
+}
+
+class PaymentInvoiceSlide extends Component<PaymentInvoiceSlideProps> {
   constructor(props) {
     super(props);
   }

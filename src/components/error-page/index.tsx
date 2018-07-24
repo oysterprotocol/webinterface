@@ -10,7 +10,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({});
 
 const ErrorPage = ({ history }) => {
-    const uploadedFile = last(history);
+    const uploadedFile: any = last(history);
     const handle = uploadedFile ? uploadedFile.handle : "";
     return <ErrorPageSlide handle={handle} />;
 };
