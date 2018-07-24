@@ -3,6 +3,8 @@ import { Observable } from "rxjs";
 import { combineEpics } from "redux-observable";
 import _ from "lodash";
 
+import { execObsverableIfBackendAvailable } from "./utils";
+
 import uploadActions from "../actions/upload-actions";
 import navigationActions from "../actions/navigation-actions";
 
@@ -49,84 +51,83 @@ const streamUploadEpic = action$ =>
 
     const params = { alpha, beta, retentionYears };
 
-    return Observable.create(o => {
-      streamUpload(file, params, {
-        invoiceCb: invoice => {
-          o.next(uploadActions.streamInvoiced(invoice));
-        },
+    return execObsverableIfBackendAvailable(() =>
+      Observable.create(o => {
+        streamUpload(file, params, {
+          invoiceCb: invoice => {
+            o.next(uploadActions.streamInvoiced(invoice));
+          },
 
-        paymentPendingCb: _ => {
-          o.next(uploadActions.streamPaymentPending());
-        },
+          paymentPendingCb: _ => {
+            o.next(uploadActions.streamPaymentPending());
+          },
 
-        paymentConfirmedCb: payload => {
-          o.next(uploadActions.streamPaymentConfirmed(payload));
-        },
+          paymentConfirmedCb: payload => {
+            o.next(uploadActions.streamPaymentConfirmed(payload));
+          },
 
-        uploadProgressCb: progress => {
-          o.next(uploadActions.streamUploadProgress(progress));
-        },
+          uploadProgressCb: progress => {
+            o.next(uploadActions.streamUploadProgress(progress));
+          },
 
-        doneCb: result => {
-          const { handle } = result;
-          o.next(uploadActions.streamUploadSuccess({ handle }));
+          doneCb: result => {
+            const { handle } = result;
+            o.next(uploadActions.streamUploadSuccess({ handle }));
 
-          o.complete();
-        },
+            o.complete();
+          },
 
-        errCb: err => {
-          let handle; // TODO
-          // window.alert the error.
-          o.next(uploadActions.streamUploadError({ handle, err }));
+          errCb: err => {
+            let handle; // TODO
+            // window.alert the error.
+            o.next(uploadActions.streamUploadError({ handle, err }));
 
-          // Use complete instead of error so observable isn't taken down.
-          o.complete();
-        }
-      });
-    });
+            // Use complete instead of error so observable isn't taken down.
+            o.complete();
+          }
+        });
+      })
+    );
   });
 
 const initializeSession = (action$, store) => {
   return action$.ofType(uploadActions.INITIALIZE_SESSION).mergeMap(action => {
     const { chunks, fileName, handle, retentionYears } = action.payload;
 
-    return Observable.fromPromise(Backend.checkStatus())
-      .filter(available => available)
-      .mergeMap(_ =>
-        Observable.fromPromise(
-          Backend.initializeUploadSession(
-            chunks,
-            fileName,
-            handle,
-            retentionYears
-          )
+    return execObsverableIfBackendAvailable(() =>
+      Observable.fromPromise(
+        Backend.initializeUploadSession(
+          chunks,
+          fileName,
+          handle,
+          retentionYears
         )
       )
-      .map(
-        ({
+    ).map(
+      ({
+        alphaSessionId,
+        betaSessionId,
+        invoice,
+        numberOfChunks,
+        handle,
+        fileName,
+        genesisHash,
+        storageLengthInYears,
+        host
+      }) => {
+        return uploadActions.pollPaymentStatus({
+          host,
           alphaSessionId,
-          betaSessionId,
-          invoice,
-          numberOfChunks,
-          handle,
+          chunks,
           fileName,
+          handle,
+          numberOfChunks,
+          betaSessionId,
           genesisHash,
-          storageLengthInYears,
-          host
-        }) => {
-          return uploadActions.pollPaymentStatus({
-            host,
-            alphaSessionId,
-            chunks,
-            fileName,
-            handle,
-            numberOfChunks,
-            betaSessionId,
-            genesisHash,
-            invoice
-          });
-        }
-      );
+          invoice
+        });
+      }
+    );
   });
 };
 
