@@ -3,7 +3,8 @@ import { Line } from "rc-progress";
 
 import Slide from "../shared/slide";
 import Spinner from "../shared/spinner";
-import ICON_UPLOAD from "../../assets/images/icon_upload.png";
+
+const ICON_UPLOAD = require("../../assets/images/icon_upload.png");
 
 const UploadStartedSlide = ({ uploadProgress }) => (
   <Slide title="Upload Started" image={ICON_UPLOAD}>

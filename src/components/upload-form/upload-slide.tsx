@@ -3,25 +3,46 @@ import Select from "react-select";
 import "react-select/dist/react-select.css";
 
 import { API, FILE, FEAT_FLAG } from "../../config";
-import ICON_UPLOAD from "../../assets/images/icon_upload.png";
-import ICON_FOLDER from "../../assets/images/icon_folder.png";
 import Slide from "../shared/slide";
 import PrimaryButton from "../shared/primary-button";
+
+const ICON_UPLOAD = require("../../assets/images/icon_upload.png");
+const ICON_FOLDER = require("../../assets/images/icon_folder.png");
 
 const DEFAULT_FILE_INPUT_TEXT = "No file selected";
 const DEFAULT_FILE_INPUT_SIZE = 0;
 const DEFAULT_FILE_INPUT_COST = 0;
+const DEFAULT_HUMAN_FILE_SIZE = 0;
 const CHUNCKS_IN_SECTOR = 1000000;
 const STORAGE_PEG = 64;
 
-class UploadSlide extends Component {
+interface UploadSlideProps {
+    alphaBroker,
+    betaBroker,
+    upload,
+    selectAlphaBroker,
+    selectBetaBroker,
+    retentionYears,
+    selectRetentionYears,
+    streamUploadFn
+}
+
+interface UploadSlideState {
+    fileName,
+    fileSize,
+    storageCost,
+    humanFileSize
+}
+
+class UploadSlide extends Component<UploadSlideProps,UploadSlideState> {
   constructor(props) {
     super(props);
 
     this.state = {
       fileName: DEFAULT_FILE_INPUT_TEXT,
       fileSize: DEFAULT_FILE_INPUT_SIZE,
-      storageCost: DEFAULT_FILE_INPUT_COST
+      storageCost: DEFAULT_FILE_INPUT_COST,
+      humanFileSize: DEFAULT_HUMAN_FILE_SIZE
     };
   }
 
@@ -153,7 +174,10 @@ class UploadSlide extends Component {
               id="upload-input"
               ref="fileInput"
               onChange={event => {
-                const file = event.target.files[0];
+                let file: any = [];
+                if (event.target.files) {
+                    file = event.target.files[0];
+                }
                 if (!!file) {
                   this.setState({
                     fileName: file.name,
@@ -197,7 +221,8 @@ class UploadSlide extends Component {
             className="btn btn-upload"
             type="button"
             onClick={() => {
-              const file = this.refs.fileInput.files[0];
+              const fileInput:any = this.refs.fileInput;
+              const file = fileInput.files[0];
               if (!file || file.size > FILE.MAX_FILE_SIZE) {
                 alert(
                   `Please select a file under ${FILE.MAX_FILE_SIZE /
