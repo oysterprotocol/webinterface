@@ -243,7 +243,6 @@ class UploadSlide extends Component<UploadSlideProps,UploadSlideState> {
               }
             }}
           >
-            Start Upload
             {this.state.isInitializing
                 ? "Initializing Upload..."
                 : "Start Upload"}
