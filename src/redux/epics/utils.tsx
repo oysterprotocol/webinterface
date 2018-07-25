@@ -4,5 +4,5 @@ import Backend from "../../services/backend";
 
 export const execObsverableIfBackendAvailable = obsFn =>
   Observable.fromPromise(Backend.checkStatus())
-    .filter(available => available)
+    .filter((available: any) => available)
     .mergeMap(obsFn);

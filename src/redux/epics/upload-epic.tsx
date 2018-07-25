@@ -19,7 +19,7 @@ import {
   IOTA_API,
   IOTA_POLL_INTERVAL,
   NUM_POLLING_ADDRESSES
-} from "../../config/index";
+} from "../../config";
 
 const BUNDLE_SIZE = IOTA_API.BUNDLE_SIZE;
 
@@ -28,7 +28,7 @@ const initializeUpload = (action$, store) => {
     const { file, retentionYears } = action.payload;
 
     return Observable.fromPromise(FileProcessor.initializeUpload(file)).map(
-      ({ numberOfChunks, handle, fileName, chunks }) => {
+      ({ numberOfChunks, handle, fileName, chunks }: any) => {
         return uploadActions.initializeSession({
           chunks,
           fileName,
@@ -114,7 +114,7 @@ const initializeSession = (action$, store) => {
         genesisHash,
         storageLengthInYears,
         host
-      }) => {
+      }: any) => {
         return uploadActions.pollPaymentStatus({
           host,
           alphaSessionId,
@@ -202,7 +202,6 @@ const uploadFile = (action$, store) => {
       chunks,
       fileName,
       handle,
-      numberOfChunks,
       alphaSessionId,
       betaSessionId,
       genesisHash
@@ -218,7 +217,7 @@ const uploadFile = (action$, store) => {
         genesisHash
       )
     )
-      .map(({ numberOfChunks, handle }) =>
+      .map(({ numberOfChunks, handle }: any) =>
         uploadActions.uploadSuccessAction(handle)
       )
       .catch(error => Observable.of(uploadActions.uploadFailureAction(error)));
@@ -275,7 +274,7 @@ const pollUploadProgress = (action$, store) => {
           return Observable.fromPromise(
             Iota.checkUploadPercentage(addresses, indexes)
           )
-            .map(({ updatedIndexes }) => {
+            .map(({ updatedIndexes }: any) => {
               let uploadProgress =
                 ((startingLength - updatedIndexes.length) / startingLength) *
                 100;

@@ -17,22 +17,22 @@ const CHUNCKS_IN_SECTOR = 1000000;
 const STORAGE_PEG = 64;
 
 interface UploadSlideProps {
-  alphaBroker,
-  betaBroker,
-  upload,
-  selectAlphaBroker,
-  selectBetaBroker,
-  retentionYears,
-  selectRetentionYears,
-  streamUploadFn
+    alphaBroker,
+    betaBroker,
+    upload,
+    selectAlphaBroker,
+    selectBetaBroker,
+    retentionYears,
+    selectRetentionYears,
+    streamUploadFn
 }
 
 interface UploadSlideState {
-  fileName,
-  fileSize,
-  storageCost,
-  humanFileSize,
-  isInitializing: boolean // TODO: Enum this.
+    fileName,
+    fileSize,
+    storageCost,
+    humanFileSize,
+    isInitializing: boolean // TODO: Enum this.
 }
 
 class UploadSlide extends Component<UploadSlideProps,UploadSlideState> {
@@ -178,7 +178,7 @@ class UploadSlide extends Component<UploadSlideProps,UploadSlideState> {
               onChange={event => {
                 let file: any = [];
                 if (event.target.files) {
-                  file = event.target.files[0];
+                    file = event.target.files[0];
                 }
                 if (!!file) {
                   this.setState({
@@ -223,7 +223,7 @@ class UploadSlide extends Component<UploadSlideProps,UploadSlideState> {
             className="btn btn-upload"
             type="button"
             onClick={() => {
-              const fileInput: any = this.refs.fileInput;
+              const fileInput:any = this.refs.fileInput;
               const file = fileInput.files[0];
               if (!file || file.size > FILE.MAX_FILE_SIZE) {
                 alert(
@@ -243,9 +243,10 @@ class UploadSlide extends Component<UploadSlideProps,UploadSlideState> {
               }
             }}
           >
+            Start Upload
             {this.state.isInitializing
-              ? "Initializing Upload..."
-              : "Start Upload"}
+                ? "Initializing Upload..."
+                : "Start Upload"}
           </PrimaryButton>
         </div>
         <aside className="disclaimer">
