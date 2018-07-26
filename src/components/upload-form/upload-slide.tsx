@@ -5,6 +5,7 @@ import "react-select/dist/react-select.css";
 import { API, FILE, FEAT_FLAG } from "../../config";
 import Slide from "../shared/slide";
 import PrimaryButton from "../shared/primary-button";
+import Spinner from "../shared/spinner";
 
 const ICON_UPLOAD = require("../../assets/images/icon_upload.png");
 const ICON_FOLDER = require("../../assets/images/icon_folder.png");
@@ -178,7 +179,7 @@ class UploadSlide extends Component<UploadSlideProps,UploadSlideState> {
               onChange={event => {
                 let file: any = [];
                 if (event.target.files) {
-                    file = event.target.files[0];
+                  file = event.target.files[0];
                 }
                 if (!!file) {
                   this.setState({
@@ -221,9 +222,10 @@ class UploadSlide extends Component<UploadSlideProps,UploadSlideState> {
           <PrimaryButton
             id="start-upload-btn"
             className="btn btn-upload"
+            disabled={this.state.isInitializing}
             type="button"
             onClick={() => {
-              const fileInput:any = this.refs.fileInput;
+              const fileInput: any = this.refs.fileInput;
               const file = fileInput.files[0];
               if (!file || file.size > FILE.MAX_FILE_SIZE) {
                 alert(
@@ -244,9 +246,13 @@ class UploadSlide extends Component<UploadSlideProps,UploadSlideState> {
             }}
           >
             {this.state.isInitializing
-                ? "Initializing Upload..."
-                : "Start Upload"}
+              ? "Initializing Upload..."
+              : "Start Upload"}
           </PrimaryButton>
+          <Spinner
+            isActive={this.state.isInitializing}
+            className="download-spinner"
+          />
         </div>
         <aside className="disclaimer">
           DISCLAIMER: No PRL is required to use the beta Mainnet.<br />
