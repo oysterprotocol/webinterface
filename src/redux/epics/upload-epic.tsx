@@ -12,6 +12,7 @@ import { UPLOAD_STATUSES } from "../../config";
 import Iota from "../../services/iota";
 import Backend from "../../services/backend";
 import { streamUpload } from "../../services/oyster-stream";
+import { alertUser } from "../../services/error-tracker";
 
 import FileProcessor from "../../utils/file-processor";
 import IndexSelector from "../../utils/index-selector";
@@ -79,7 +80,7 @@ const streamUploadEpic = action$ =>
 
           errCb: err => {
             let handle; // TODO
-            // window.alert the error.
+            alertUser(err);
             o.next(uploadActions.streamUploadError({ handle, err }));
 
             // Use complete instead of error so observable isn't taken down.

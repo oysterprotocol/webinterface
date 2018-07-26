@@ -13,6 +13,7 @@ import Encryption from "../../utils/encryption";
 import FileProcessor from "../../utils/file-processor";
 import { INCLUDE_TREASURE_OFFSETS, MAX_ADDRESSES } from "../../config";
 import { streamDownload } from "../../services/oyster-stream";
+import { alertUser } from "../../services/error-tracker";
 
 const initializeDownload = (action$, store) => {
   return action$
@@ -69,7 +70,7 @@ const beginDownload = (action$, store) => {
         addressBatches.map(addresses => {
           return new Promise((resolve, reject) =>
             Iota.findTransactionObjects(addresses)
-              .then((transactions: any)  => {
+              .then((transactions: any) => {
                 const addrToIdx = _.reduce(
                   nonMetaDataAddresses,
                   (acc, addr, idx) => {
@@ -90,7 +91,7 @@ const beginDownload = (action$, store) => {
         })
       )
     ).mergeMap(chunkArrays => {
-      let chunks:any = [];
+      let chunks: any = [];
       chunks = chunks.concat(...chunkArrays);
       return Observable.fromPromise(
         FileProcessor.chunksToFile(chunks, handle)
@@ -118,7 +119,7 @@ const streamDownloadEpic = action$ => {
             o.complete();
           },
           errCb: err => {
-            // window.alert error
+            alertUser(err);
             o.next(downloadActions.streamDownloadError({ err }));
             o.complete();
           }
