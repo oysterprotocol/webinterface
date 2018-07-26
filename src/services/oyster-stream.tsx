@@ -1,7 +1,7 @@
 import IOTA from "iota.lib.js";
 import Stream from "oyster-streamable";
 
-import { IOTA_API } from "../config/index";
+import { IOTA_API } from "../config";
 
 /**
  *

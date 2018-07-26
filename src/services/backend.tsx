@@ -43,7 +43,7 @@ const uploadFile = (
     .catch(alertUser);
 };
 
-const checkStatus = host =>
+const checkStatus = () =>
   new Promise((resolve, reject) => {
     // TODO: Quick fix to get this deployed ASAP and pass Travis.
     // This should be removed later
@@ -52,7 +52,7 @@ const checkStatus = host =>
     const host = API.BROKER_NODE_A;
     axiosInstance
       .get(`${host}${API.V2_STATUS_PATH}`)
-      .then(({ data: { available } }) => {
+      .then(({ data: { available } }: any) => {
         if (!available) {
           alertUser("Oyster is under maintenance. Please try again later.");
         }
@@ -125,7 +125,7 @@ const sendFileToBroker = (brokerUrl, genesisHash, chunks) => {
 };
 
 const sendToAlphaBroker = (sessionId, chunks, genesisHash) =>
-  new Promise((resolve, reject) => {
+  new Promise((resolve: any) => {
     sendFileToBroker(
       `${API.BROKER_NODE_A}${API.V2_UPLOAD_SESSIONS_PATH}/${sessionId}`,
       genesisHash,
@@ -134,7 +134,7 @@ const sendToAlphaBroker = (sessionId, chunks, genesisHash) =>
   }).catch(alertUser);
 
 const sendToBetaBroker = (sessionId, chunks, genesisHash) =>
-  new Promise((resolve, reject) => {
+  new Promise((resolve: any) => {
     sendFileToBroker(
       `${API.BROKER_NODE_B}${API.V2_UPLOAD_SESSIONS_PATH}/${sessionId}`,
       genesisHash,
@@ -164,7 +164,7 @@ const initializeUploadSession = (chunks, fileName, handle, retentionYears) => {
   const storageLengthInYears = retentionYears;
 
   return createUploadSession(host, numChunks, genesisHash, storageLengthInYears)
-    .then(({ alphaSessionId, betaSessionId, invoice }) => {
+    .then(({ alphaSessionId, betaSessionId, invoice }: any) => {
       return {
         alphaSessionId,
         betaSessionId,

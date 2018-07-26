@@ -1,6 +1,6 @@
 import IOTA from "iota.lib.js";
 import _ from "lodash";
-import { IOTA_API } from "../config/index";
+import { IOTA_API } from "../config";
 
 const Iota = new IOTA();
 const IotaA = new IOTA({ provider: IOTA_API.PROVIDER_A });
@@ -90,12 +90,12 @@ const skinnyQueryTransactions = (iotaProvider, addresses) =>
   });
 
 const checkUploadPercentage = (addresses, indexes) => {
-  let promises = [];
+  let promises: any = [];
 
   promises.push(
-    new Promise((resolve, reject) => {
+    new Promise((resolve: any, reject: any) => {
       skinnyQueryTransactions(IotaA, [addresses[indexes[0]]]).then(
-        transactions => {
+          (transactions: any) => {
           resolve({
             removeIndex: transactions.length > 0
           });
@@ -109,7 +109,7 @@ const checkUploadPercentage = (addresses, indexes) => {
       new Promise((resolve, reject) => {
         skinnyQueryTransactions(IotaA, [
           addresses[indexes[indexes.length - 1]]
-        ]).then(transactions => {
+        ]).then((transactions: any) => {
           resolve({
             removeIndex: transactions.length > 0
           });
@@ -119,7 +119,7 @@ const checkUploadPercentage = (addresses, indexes) => {
   }
 
   return Promise.all(promises).then(indexResults => {
-    const [front, back] = indexResults;
+    const [front, back]: any = indexResults;
 
     if (front.removeIndex) {
       indexes.shift();
@@ -139,7 +139,7 @@ const findTransactionObjects = addresses =>
       queryTransactions(IotaA, addresses),
       queryTransactions(IotaB, addresses),
       queryTransactions(IotaC, addresses)
-    ]).then(transactions => {
+    ]).then((transactions: any) => {
       if (transactions.length === addresses.length) {
         resolve(transactions);
       } else {

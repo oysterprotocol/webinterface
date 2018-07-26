@@ -69,7 +69,7 @@ const beginDownload = (action$, store) => {
         addressBatches.map(addresses => {
           return new Promise((resolve, reject) =>
             Iota.findTransactionObjects(addresses)
-              .then(transactions => {
+              .then((transactions: any)  => {
                 const addrToIdx = _.reduce(
                   nonMetaDataAddresses,
                   (acc, addr, idx) => {
