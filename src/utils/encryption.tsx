@@ -1,10 +1,7 @@
-import _ from "lodash";
 import forge from "node-forge";
 
 const IV_LENGTH = 16;
 const TAG_LENGTH = 16;
-const CHUNK_PREFIX = "File_chunk_data: ";
-const CHUNK_PREFIX_IN_HEX = forge.util.bytesToHex(CHUNK_PREFIX);
 
 export function bytesFromHandle(handle) {
   return forge.md.sha256
@@ -69,7 +66,7 @@ export function hashChain(byteStr) {
 // First hash in the datamap
 const obfuscatedGenesisHash = hash => {
   const byteStr = forge.util.hexToBytes(hash);
-  const [obfuscatedHash, _genHash] = hashChain(byteStr);
+  const [obfuscatedHash] = hashChain(byteStr);
 
   return forge.util.bytesToHex(obfuscatedHash);
 };
