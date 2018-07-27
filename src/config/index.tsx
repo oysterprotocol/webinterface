@@ -10,7 +10,7 @@ const BROKERS = IS_DEV
   ? ["18.222.56.121", "18.191.77.193"] // Travis brokers
   : //["18.188.64.13", "18.188.230.212"] // Rebel brokers
     //["52.14.218.135", "18.217.133.146"] // QA brokers
-    ["broker-3.oysternodes.com", "broker-4.oysternodes.com"];
+    ["broker-1.oysternodes.com", "broker-2.oysternodes.com"];
 
 // Hack until we have proper load balancing.
 const randElem = (xs: string) => xs[Math.floor(Math.random() * xs.length)];
@@ -54,7 +54,7 @@ export const DOWNLOAD_STATUSES = Object.freeze({
 });
 
 export const FILE = Object.freeze({
-  MAX_FILE_SIZE: 100 * 1000 * 1000, // 100mb
+  MAX_FILE_SIZE: 25 * 1000 * 1000, // 25mb
   CHUNK_TYPES: {
     METADATA: "METADATA",
     FILE_CONTENTS: "FILE_CONTENTS"
