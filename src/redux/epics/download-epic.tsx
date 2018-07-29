@@ -9,7 +9,6 @@ import { execObsverableIfBackendAvailable } from "./utils";
 import downloadActions from "../actions/download-actions";
 import Iota from "../../services/iota";
 import Datamap from "datamap-generator";
-import Encryption from "../../utils/encryption";
 import FileProcessor from "../../utils/file-processor";
 import { INCLUDE_TREASURE_OFFSETS, MAX_ADDRESSES } from "../../config";
 import { streamDownload } from "../../services/oyster-stream";
@@ -21,7 +20,7 @@ const initializeDownload = (action$, store) => {
     .mergeMap(action => {
       const handle = action.payload;
       const genesisHash = Datamap.genesisHash(handle);
-      const obfuscatedGenesisHash = Encryption.obfuscatedGenesisHash(
+      const obfuscatedGenesisHash = Datamap.obfuscatedGenesisHash(
         genesisHash
       );
       const genesisHashInTrytes = Iota.utils.toTrytes(
