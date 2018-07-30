@@ -1,4 +1,4 @@
-import Encryption from "./encryption";
+import Datamap from "datamap-generator";
 import forge from "node-forge";
 
 import Iota from "../services/iota";
@@ -20,21 +20,21 @@ const initializeUpload = file => {
 };
 
 const metaDataFromIotaFormat = (trytes, handle) => {
-  const handleInBytes = Encryption.bytesFromHandle(handle);
+  const handleInBytes = Datamap.bytesFromHandle(handle);
   const stopperRemoved = Iota.removeStopperTryteAndPadding(trytes);
   const encryptedData = Iota.utils.fromTrytes(
     Iota.addPaddingIfOdd(stopperRemoved)
   );
   const { version, meta: encryptedMeta } = parseMetaVersion(encryptedData);
-  const decryptedData = Encryption.decryptChunk(handleInBytes, encryptedMeta);
+  const decryptedData = Datamap.decryptChunk(handleInBytes, encryptedMeta);
 
   return JSON.parse(decryptedData);
 };
 
 const createHandle = fileName => {
-  const fileNameTrimmed = Encryption.parseHandleFilenameShortname(fileName);
-  const salt = Encryption.getSalt(8);
-  const primordialHash = Encryption.getPrimordialHash();
+  const fileNameTrimmed = Datamap.parseHandleFilenameShortname(fileName);
+  const salt = Datamap.getSalt(8);
+  const primordialHash = Datamap.getPrimordialHash();
   const handle = fileNameTrimmed + primordialHash + salt;
 
   return handle;
@@ -86,7 +86,7 @@ const fileToChunks = (file, handle, opts = {}) =>
       // Split into chunks.
       const chunksCount = Math.ceil(file.size / CHUNK_SIZE, CHUNK_SIZE);
       const chunks = [];
-      const handleInBytes = Encryption.bytesFromHandle(handle);
+      const handleInBytes = Datamap.bytesFromHandle(handle);
 
       let fileOffset = 0;
       for (let i = 0; i < chunksCount; i++) {
@@ -97,13 +97,13 @@ const fileToChunks = (file, handle, opts = {}) =>
       Promise.all(chunks.map(readBlob)).then(arrayBuffer => {
         let encryptedChunks = arrayBuffer
           .map((arrayBuffer, idx) =>
-            Encryption.encryptChunk(handleInBytes, idx + 1, arrayBuffer)
+            Datamap.encryptChunk(handleInBytes, idx + 1, arrayBuffer)
           )
           .map((data, idx) => ({ idx: idx + 1, data })); // idx because things will get jumbled
 
         if (opts.withMeta) {
           const metaChunk = createMetaData(file.name, chunksCount);
-          const encryptedMeta = Encryption.encryptChunk(
+          const encryptedMeta = Datamap.encryptChunk(
             handleInBytes,
             0,
             metaChunk
@@ -130,14 +130,14 @@ const chunksToFile = (chunks, handle) =>
       // ASC order.
       // NOTE: Cannot use `>` because JS treats 0 as null and doesn't work.
       chunks.sort((x, y) => x.idx - y.idx);
-      const handleInBytes = Encryption.bytesFromHandle(handle);
+      const handleInBytes = Datamap.bytesFromHandle(handle);
 
       const bytes = chunks
         .map(({ data }) => data)
         .map(Iota.removeStopperTryteAndPadding)
         .map(Iota.addPaddingIfOdd)
         .map(Iota.utils.fromTrytes)
-        .map(data => Encryption.decryptChunk(handleInBytes, data))
+        .map(data => Datamap.decryptChunk(handleInBytes, data))
         .join(""); // join removes nulls
 
       resolve(new Blob([new Uint8Array(forge.util.binary.raw.decode(bytes))]));
