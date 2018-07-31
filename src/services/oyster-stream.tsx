@@ -16,6 +16,7 @@ export const streamUpload = (
     invoiceCb,
     paymentPendingCb,
     paymentConfirmedCb,
+    chunksDeliveredCb,
     uploadProgressCb,
     doneCb,
     errCb
@@ -31,6 +32,7 @@ export const streamUpload = (
   u.on("invoice", invoiceCb);
   u.on("payment-pending", paymentPendingCb);
   u.on("payment-confirmed", paymentConfirmedCb);
+  u.on("retrieved", chunksDeliveredCb);
   u.on("upload-progress", uploadProgressCb);
   u.on("finish", doneCb);
   u.on("error", errCb);

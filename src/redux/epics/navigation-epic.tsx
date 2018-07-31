@@ -16,15 +16,9 @@ const goToUploadForm = (action$, store) => {
     .map(() => push("/upload-form"));
 };
 
-const goToUploadStarted = (action$, store) => {
-  return action$
-    .ofType(uploadActions.BEGIN_UPLOAD)
-    .map(() => push("/upload-started"));
-};
-
 const goToUploadStartedStream = (action$, store) => {
   return action$
-    .ofType(uploadActions.STREAM_PAYMENT_CONFIRMED)
+    .ofType(uploadActions.STREAM_CHUNKS_DELIVERED)
     .map(() => push("/upload-started"));
 };
 
@@ -79,7 +73,6 @@ const goToErrorPage = (action$, store) => {
 export default combineEpics(
   goToDownloadForm,
   goToUploadForm,
-  goToUploadStarted,
   goToUploadStartedStream,
   goToUploadComplete,
   goToUploadCompleteStream,

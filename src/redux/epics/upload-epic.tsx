@@ -66,6 +66,9 @@ const streamUploadEpic = action$ =>
           paymentConfirmedCb: payload => {
             o.next(uploadActions.streamPaymentConfirmed(payload));
           },
+          chunksDeliveredCb: () => {
+            o.next(uploadActions.streamChunksDelivered());
+          },
 
           uploadProgressCb: progress => {
             o.next(uploadActions.streamUploadProgress(progress));
