@@ -733,6 +733,7 @@ matej-01
   border-color: #6ea0de;
   border-width: 4px;
   width: 40px;
+  margin-left: 0;
 }
 
 .handle-label {
