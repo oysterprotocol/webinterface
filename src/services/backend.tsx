@@ -6,9 +6,7 @@ import { API, IS_DEV } from "../config";
 import FileProcessor from "../utils/file-processor";
 import { alertUser } from "./error-tracker";
 
-const axiosInstance = axios.create({
-  timeout: 200000
-});
+const axiosInstance = axios.create({ timeout: 200000 });
 
 const adaptChunkToParams = (chunk, genesisHash) => ({
   idx: chunk.idx,
@@ -43,16 +41,21 @@ const uploadFile = (
     .catch(alertUser);
 };
 
-const checkStatus = () =>
+const checkStatus = hosts =>
   new Promise((resolve, reject) => {
     // TODO: Quick fix to get this deployed ASAP and pass Travis.
     // This should be removed later
     if (IS_DEV) return resolve(true);
 
-    const host = API.BROKER_NODE_A;
-    axiosInstance
-      .get(`${host}${API.V2_STATUS_PATH}`)
-      .then(({ data: { available } }: any) => {
+    Promise.all(
+      hosts.map(host =>
+        axiosInstance
+          .get(`${host}${API.V2_STATUS_PATH}`)
+          .then(({ data: { available } }: any) => available)
+      )
+    )
+      .then(availabilities => {
+        const available = availabilities.every(Boolean);
         if (!available) {
           alertUser("Oyster is under maintenance. Please try again later.");
         }

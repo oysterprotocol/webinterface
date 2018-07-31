@@ -17,6 +17,7 @@ import { alertUser } from "../../services/error-tracker";
 import FileProcessor from "../../utils/file-processor";
 import IndexSelector from "../../utils/index-selector";
 import {
+  API,
   IOTA_API,
   IOTA_POLL_INTERVAL,
   NUM_POLLING_ADDRESSES
@@ -52,42 +53,44 @@ const streamUploadEpic = action$ =>
 
     const params = { alpha, beta, retentionYears };
 
-    return execObsverableIfBackendAvailable(() =>
-      Observable.create(o => {
-        streamUpload(file, params, {
-          invoiceCb: invoice => {
-            o.next(uploadActions.streamInvoiced(invoice));
-          },
+    return execObsverableIfBackendAvailable(
+      [API.BROKER_NODE_A, API.BROKER_NODE_B],
+      () =>
+        Observable.create(o => {
+          streamUpload(file, params, {
+            invoiceCb: invoice => {
+              o.next(uploadActions.streamInvoiced(invoice));
+            },
 
-          paymentPendingCb: _ => {
-            o.next(uploadActions.streamPaymentPending());
-          },
+            paymentPendingCb: _ => {
+              o.next(uploadActions.streamPaymentPending());
+            },
 
-          paymentConfirmedCb: payload => {
-            o.next(uploadActions.streamPaymentConfirmed(payload));
-          },
+            paymentConfirmedCb: payload => {
+              o.next(uploadActions.streamPaymentConfirmed(payload));
+            },
 
-          uploadProgressCb: progress => {
-            o.next(uploadActions.streamUploadProgress(progress));
-          },
+            uploadProgressCb: progress => {
+              o.next(uploadActions.streamUploadProgress(progress));
+            },
 
-          doneCb: result => {
-            const { handle } = result;
-            o.next(uploadActions.streamUploadSuccess({ handle }));
+            doneCb: result => {
+              const { handle } = result;
+              o.next(uploadActions.streamUploadSuccess({ handle }));
 
-            o.complete();
-          },
+              o.complete();
+            },
 
-          errCb: err => {
-            let handle; // TODO
-            alertUser(err);
-            o.next(uploadActions.streamUploadError({ handle, err }));
+            errCb: err => {
+              let handle; // TODO
+              alertUser(err);
+              o.next(uploadActions.streamUploadError({ handle, err }));
 
-            // Use complete instead of error so observable isn't taken down.
-            o.complete();
-          }
-        });
-      })
+              // Use complete instead of error so observable isn't taken down.
+              o.complete();
+            }
+          });
+        })
     );
   });
 
@@ -95,15 +98,17 @@ const initializeSession = (action$, store) => {
   return action$.ofType(uploadActions.INITIALIZE_SESSION).mergeMap(action => {
     const { chunks, fileName, handle, retentionYears } = action.payload;
 
-    return execObsverableIfBackendAvailable(() =>
-      Observable.fromPromise(
-        Backend.initializeUploadSession(
-          chunks,
-          fileName,
-          handle,
-          retentionYears
+    return execObsverableIfBackendAvailable(
+      [API.BROKER_NODE_A, API.BROKER_NODE_B],
+      () =>
+        Observable.fromPromise(
+          Backend.initializeUploadSession(
+            chunks,
+            fileName,
+            handle,
+            retentionYears
+          )
         )
-      )
     ).map(
       ({
         alphaSessionId,

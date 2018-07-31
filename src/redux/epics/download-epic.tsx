@@ -11,7 +11,7 @@ import Iota from "../../services/iota";
 import Datamap from "datamap-generator";
 import Encryption from "../../utils/encryption";
 import FileProcessor from "../../utils/file-processor";
-import { INCLUDE_TREASURE_OFFSETS, MAX_ADDRESSES } from "../../config";
+import { API, INCLUDE_TREASURE_OFFSETS, MAX_ADDRESSES } from "../../config";
 import { streamDownload } from "../../services/oyster-stream";
 import { alertUser } from "../../services/error-tracker";
 
@@ -29,7 +29,8 @@ const initializeDownload = (action$, store) => {
       );
       const iotaAddress = Iota.toAddress(genesisHashInTrytes);
 
-      return execObsverableIfBackendAvailable(() =>
+      // TODO: Pass in hosts instead of hardcoding here.
+      return execObsverableIfBackendAvailable([API.BROKER_NODE_A], () =>
         Observable.fromPromise(Iota.findTransactionObjects([iotaAddress])).map(
           transactions => {
             const t = transactions[0];
@@ -108,7 +109,8 @@ const streamDownloadEpic = action$ => {
     const { handle } = action.payload;
     const params = {};
 
-    return execObsverableIfBackendAvailable(() =>
+    // TODO: Pass in hosts instead of hardcoding here.
+    return execObsverableIfBackendAvailable([API.BROKER_NODE_A], () =>
       Observable.create(o => {
         streamDownload(handle, params, {
           metaCb: () => {}, // no-op
