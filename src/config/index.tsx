@@ -6,6 +6,8 @@ const POLLING_NODE = IS_DEV
   ? ["18.191.77.193"] // Travis broker
   : ["poll.oysternodes.com"];
 
+export const OLD_TANGLE_NODE = "https://download.oysternodes.com:14265";
+
 const BROKERS = IS_DEV
   ? ["18.222.56.121", "18.191.77.193"] // Travis brokers
   : //["18.188.64.13", "18.188.230.212"] // Rebel brokers
