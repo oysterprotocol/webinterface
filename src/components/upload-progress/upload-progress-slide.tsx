@@ -6,7 +6,7 @@ import Spinner from "../shared/spinner";
 
 const ICON_UPLOAD = require("../../assets/images/icon_upload.png");
 
-const UploadStartedSlide = ({ uploadProgress }) => (
+const UploadProgressSlide = ({ uploadProgress }) => (
   <Slide title="Upload Started" image={ICON_UPLOAD}>
     <p className="transaction-confirmed-instructions">
         Transaction Confirmed. Your file is now being uploaded to the Tangle.
@@ -30,4 +30,4 @@ const UploadStartedSlide = ({ uploadProgress }) => (
   </Slide>
 );
 
-export default UploadStartedSlide;
+export default UploadProgressSlide;

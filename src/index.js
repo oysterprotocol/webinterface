@@ -14,7 +14,7 @@ import DownloadStarted from "./components/download-started";
 import DownloadComplete from "./components/download-complete";
 import DownloadUploadHistory from "./components/download-upload-history";
 import UploadForm from "./components/upload-form";
-import UploadStarted from "./components/upload-started";
+import UploadProgress from "./components/upload-progress";
 import UploadComplete from "./components/upload-complete";
 import RetrievingInvoice from "./components/retrieving-invoice";
 import PaymentInvoice from "./components/payment-invoice";
@@ -41,7 +41,7 @@ const App = () => (
             component={DownloadUploadHistory}
           />
           <Route path="/upload-form" component={UploadForm} />
-          <Route path="/upload-started" component={UploadStarted} />
+          <Route path="/upload-progress" component={UploadProgress} />
           <Route path="/upload-complete" component={UploadComplete} />
 
           <Route path="/retrieving-invoice" component={RetrievingInvoice} />

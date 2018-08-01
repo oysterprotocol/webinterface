@@ -2,7 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 import _ from "lodash";
 
-import UploadStartedSlide from "./upload-started-slide";
+import UploadProgressSlide from "./upload-progress-slide";
 import { getSortedHistoryDesc } from "../../redux/selectors/upload-history-selector";
 import { FEAT_FLAG } from "../../config";
 
@@ -13,17 +13,17 @@ const mapStateToProps = state => ({
 });
 const mapDispatchToProps = dispatch => ({});
 
-interface UploadStartedProps {
+interface UploadProgressProps {
   upload: any;
   history: any;
   historyDesc: any[];
 }
 
-interface UploadStartedState {}
+interface UploadProgressState {}
 
-class UploadStarted extends React.Component<
-  UploadStartedProps,
-  UploadStartedState
+class UploadProgress extends React.Component<
+  UploadProgressProps,
+  UploadProgressState
 > {
   componentDidMount() {
     console.log("xxxxxxxxxxxxxxxxxxxxxxxxxx fire action here");
@@ -39,11 +39,11 @@ class UploadStarted extends React.Component<
       ? upload.uploadProgress
       : (uploadedFile && uploadedFile.uploadProgress) || 0;
 
-    return <UploadStartedSlide uploadProgress={uploadProgress} />;
+    return <UploadProgressSlide uploadProgress={uploadProgress} />;
   }
 }
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(UploadStarted);
+)(UploadProgress);
