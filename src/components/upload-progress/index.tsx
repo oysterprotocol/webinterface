@@ -48,16 +48,9 @@ class UploadProgress extends React.Component<
   }
 }
 
-<<<<<<< HEAD:src/components/upload-progress/index.tsx
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(UploadProgress);
-=======
 export default withRouter(
   connect(
     mapStateToProps,
     mapDispatchToProps
-  )(UploadStarted)
+  )(UploadProgress)
 );
->>>>>>> support for query string:src/components/upload-started/index.tsx
