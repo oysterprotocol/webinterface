@@ -13,17 +13,35 @@ const mapStateToProps = state => ({
 });
 const mapDispatchToProps = dispatch => ({});
 
-const UploadStarted = ({ history, historyDesc, upload }) => {
-  const uploadedFile = FEAT_FLAG.STREAMING_UPLOAD
-    ? historyDesc[0] // This might not be needed.
-    : _.last(history);
+interface UploadStartedProps {
+  upload: any;
+  history: any;
+  historyDesc: any[];
+}
 
-  const uploadProgress = FEAT_FLAG.STREAMING_UPLOAD
-    ? upload.uploadProgress
-    : (uploadedFile && uploadedFile.uploadProgress) || 0;
+interface UploadStartedState {}
 
-  return <UploadStartedSlide uploadProgress={uploadProgress} />;
-};
+class UploadStarted extends React.Component<
+  UploadStartedProps,
+  UploadStartedState
+> {
+  componentDidMount() {
+    console.log("xxxxxxxxxxxxxxxxxxxxxxxxxx fire action here");
+  }
+
+  render() {
+    const { history, historyDesc, upload } = this.props;
+    const uploadedFile = FEAT_FLAG.STREAMING_UPLOAD
+      ? historyDesc[0] // This might not be needed.
+      : _.last(history);
+
+    const uploadProgress = FEAT_FLAG.STREAMING_UPLOAD
+      ? upload.uploadProgress
+      : (uploadedFile && uploadedFile.uploadProgress) || 0;
+
+    return <UploadStartedSlide uploadProgress={uploadProgress} />;
+  }
+}
 
 export default connect(
   mapStateToProps,
