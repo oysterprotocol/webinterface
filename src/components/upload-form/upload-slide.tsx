@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import Select from "react-select";
 import "react-select/dist/react-select.css";
 
-import { API, FILE, FEAT_FLAG } from "../../config";
+import { API, FILE } from "../../config";
 import Slide from "../shared/slide";
 import PrimaryButton from "../shared/primary-button";
 import Spinner from "../shared/spinner";
@@ -20,7 +20,6 @@ const STORAGE_PEG = 64;
 interface UploadSlideProps {
     alphaBroker,
     betaBroker,
-    upload,
     selectAlphaBroker,
     selectBetaBroker,
     retentionYears,
@@ -53,7 +52,6 @@ class UploadSlide extends Component<UploadSlideProps,UploadSlideState> {
     const {
       alphaBroker,
       betaBroker,
-      upload,
       selectAlphaBroker,
       selectBetaBroker,
       retentionYears,
@@ -236,12 +234,9 @@ class UploadSlide extends Component<UploadSlideProps,UploadSlideState> {
                 alert(`Please select retention years`);
               } else if (Number(retentionYears) > 1) {
                 alert(`For the beta mainnet, max storage years is 1.`);
-              } else if (FEAT_FLAG.STREAMING_UPLOAD) {
+              } else {
                 const brokers = { alpha: alphaBroker, beta: betaBroker };
                 streamUploadFn(file, retentionYears, brokers);
-              } else {
-                upload(file, retentionYears);
-                this.setState({ isInitializing: true });
               }
             }}
           >
