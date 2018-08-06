@@ -19,7 +19,6 @@ import UploadComplete from "./components/upload-complete";
 import RetrievingInvoice from "./components/retrieving-invoice";
 import PaymentInvoice from "./components/payment-invoice";
 import PaymentConfirm from "./components/payment-confirm";
-import Playground from "./components/playground";
 import { unregister } from "./register-service-worker";
 
 import ErrorPage from "./components/error-page";
@@ -50,8 +49,6 @@ const App = () => (
           <Route path="/payment-confirm" component={PaymentConfirm} />
 
           <Route path="/error-page" component={ErrorPage} />
-
-          <Route path="/playground" component={Playground} />
         </div>
       </ConnectedRouter>
     </PersistGate>
