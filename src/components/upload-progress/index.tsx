@@ -1,6 +1,5 @@
 import React from "react";
 import { connect } from "react-redux";
-import _ from "lodash";
 import { withRouter } from "react-router";
 import queryString from "query-string";
 
@@ -34,8 +33,8 @@ class UploadProgress extends React.Component<
   }
 
   render() {
-    const { uploadHistory } = this.props;
-    const uploadProgress = _.last(uploadHistory)
+    const { upload } = this.props;
+    const uploadProgress = upload.uploadProgress;
 
     return <UploadProgressSlide uploadProgress={uploadProgress} />;
   }
