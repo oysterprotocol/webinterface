@@ -6,6 +6,8 @@ const POLLING_NODE = IS_DEV
   ? ["18.191.77.193"] // Travis broker
   : ["poll.oysternodes.com"];
 
+export const OLD_TANGLE_NODE = "https://download.oysternodes.com:14265";
+
 const BROKERS = IS_DEV
   ? ["18.222.56.121", "18.191.77.193"] // Travis brokers
   : //["18.188.64.13", "18.188.230.212"] // Rebel brokers
@@ -59,11 +61,6 @@ export const FILE = Object.freeze({
     METADATA: "METADATA",
     FILE_CONTENTS: "FILE_CONTENTS"
   }
-});
-
-export const FEAT_FLAG = Object.freeze({
-  STREAMING_UPLOAD: true,
-  STREAMING_DOWNLOAD: true
 });
 
 export const INCLUDE_TREASURE_OFFSETS = true;

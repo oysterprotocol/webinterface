@@ -14,8 +14,6 @@ const mapDispatchToProps = dispatch => ({
     dispatch(uploadActions.selectAlphaBrokerAction(url)),
   selectBetaBrokerFn: url =>
     dispatch(uploadActions.selectBetaBrokerAction(url)),
-  initializeUploadFn: (file, retentionYears) =>
-    dispatch(uploadActions.initializeUploadAction({ file, retentionYears })),
   selectRetentionYears: value =>
     dispatch(uploadActions.selectRetentionYears(value)),
   streamUploadFn: (file, retentionYears, brokers) =>
@@ -33,7 +31,6 @@ const UploadForm = ({
   selectRetentionYears
 }) => (
   <UploadSlide
-    upload={initializeUploadFn}
     streamUploadFn={streamUploadFn}
     selectAlphaBroker={selectAlphaBrokerFn}
     selectBetaBroker={selectBetaBrokerFn}

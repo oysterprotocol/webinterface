@@ -16,16 +16,11 @@ const goToUploadForm = (action$, store) => {
     .map(() => push("/upload-form"));
 };
 
+
 const goToUploadStartedStream = (action$, store) => {
   return action$
     .ofType(uploadActions.STREAM_CHUNKS_DELIVERED)
     .map(() => push("/upload-progress"));
-};
-
-const goToUploadComplete = (action$, store) => {
-  return action$
-    .ofType(uploadActions.MARK_UPLOAD_AS_COMPLETE)
-    .map(() => push("/upload-complete"));
 };
 
 const goToUploadCompleteStream = (action$, store) => {
@@ -34,22 +29,10 @@ const goToUploadCompleteStream = (action$, store) => {
     .map(() => push("/upload-complete"));
 };
 
-const goToPaymentInvoice = (action$, store) => {
-  return action$
-    .ofType(uploadActions.POLL_PAYMENT_STATUS)
-    .map(() => push("/payment-invoice"));
-};
-
 const goToPaymentInvoiceStream = (action$, store) => {
   return action$
     .ofType(uploadActions.STREAM_INVOICED)
     .map(() => push("/payment-invoice"));
-};
-
-const goToPaymentConfirmation = (action$, store) => {
-  return action$
-    .ofType(uploadActions.PAYMENT_PENDING)
-    .map(() => push("/payment-confirm"));
 };
 
 const goToPaymentConfirmationStream = (action$, store) => {
@@ -58,11 +41,6 @@ const goToPaymentConfirmationStream = (action$, store) => {
     .map(action => push("/payment-confirm"));
 };
 
-const goToRetrievingInvoice = (action$, store) => {
-  return action$
-    .ofType(uploadActions.INITIALIZE_UPLOAD)
-    .map(() => push("/retrieving-invoice"));
-};
 
 const goToErrorPage = (action$, store) => {
   return action$
@@ -74,12 +52,8 @@ export default combineEpics(
   goToDownloadForm,
   goToUploadForm,
   goToUploadStartedStream,
-  goToUploadComplete,
   goToUploadCompleteStream,
-  goToPaymentInvoice,
   goToPaymentInvoiceStream,
-  goToPaymentConfirmation,
   goToPaymentConfirmationStream,
-  goToRetrievingInvoice,
   goToErrorPage
 );

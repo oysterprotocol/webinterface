@@ -2,6 +2,7 @@ import IOTA from "iota.lib.js";
 import Stream from "oyster-streamable";
 
 import { IOTA_API } from "../config";
+import { OLD_TANGLE_NODE } from "../config";
 
 /**
  *
@@ -44,7 +45,10 @@ export const streamDownload = (
   { metaCb, progressCb, doneCb, errCb }
 ) => {
   const d = Stream.Download.toBlob(handle, {
-    iotaProvider: new IOTA({ provider: IOTA_API.PROVIDER_A })
+    iotaProviders: [
+      new IOTA({ provider: OLD_TANGLE_NODE }),
+      new IOTA({ provider: IOTA_API.PROVIDER_A })
+    ]
   });
 
   d.on("meta", metaCb);

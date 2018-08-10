@@ -1,5 +1,5 @@
 import uploadActions from "../actions/upload-actions";
-import { API, UPLOAD_STATUSES } from "../../config";
+import { API } from "../../config";
 
 const initState = {
   alphaBroker: API.BROKER_NODE_A,
@@ -11,16 +11,6 @@ const initState = {
   invoice: null, // { cost, ethAddress }
   gasPrice: 20,
   uploadProgress: 0
-};
-
-const uploadedFileGenerator = ({ numberOfChunks, fileName, handle }) => {
-  return {
-    numberOfChunks,
-    fileName,
-    handle,
-    uploadProgress: 0,
-    status: UPLOAD_STATUSES.PENDING
-  };
 };
 
 const uploadReducer = (state = initState, action) => {
@@ -43,87 +33,6 @@ const uploadReducer = (state = initState, action) => {
         retentionYears: action.payload
       };
 
-    case uploadActions.POLL_PAYMENT_STATUS:
-      return {
-        ...state,
-        invoice: action.payload.invoice
-      };
-
-    case uploadActions.GAS_PRICE:
-      return {
-        ...state,
-        gasPrice: action.payload.price
-      };
-
-    case uploadActions.UPDATE_UPLOAD_PROGRESS:
-      const {
-        handle: fileHandle,
-        uploadProgress,
-        indexes: updatedIndexes
-      } = action.payload;
-      const updatedHistory = state.history.map((f: any) => {
-          if (f.handle !== fileHandle) return f;
-
-          // Make sure progress doesn't go backwards.
-          const prog = Math.max(f.uploadProgress, uploadProgress);
-          return { ...f, uploadProgress: prog };
-      });
-      const updated = {
-        ...state.indexes,
-        indexes: updatedIndexes
-      };
-      return {
-        ...state,
-        history: updatedHistory,
-        indexes: updated
-      };
-
-    case uploadActions.ADD_TO_HISTORY:
-      const { numberOfChunks, fileName, handle } = action.payload;
-      return {
-        ...state,
-        history: [
-          ...state.history,
-          uploadedFileGenerator({ numberOfChunks, fileName, handle })
-        ]
-      };
-
-    case uploadActions.UPLOAD_SUCCESS:
-      const succeededHandle = action.payload;
-      const newHistory = state.history.map((f:any) => {
-        return f.handle === succeededHandle
-          ? { ...f, status: UPLOAD_STATUSES.SENT }
-          : f;
-      });
-      return {
-        ...state,
-        history: newHistory
-      };
-
-    case uploadActions.UPLOAD_FAILURE:
-      const failedHandle = action.payload;
-      const h = state.history.map((f:any) => {
-        return f.handle === failedHandle
-          ? { ...f, status: UPLOAD_STATUSES.FAILED }
-          : f;
-      });
-      return {
-        ...state,
-        history: h
-      };
-
-    case uploadActions.INITIALIZE_POLLING_INDEXES:
-      const { indexes, dataMapLength } = action.payload;
-      const initial = {
-        ...state.indexes,
-        indexes,
-        startingLength: indexes.length
-      };
-      return {
-        ...state,
-        indexes: initial,
-        dataMapLength
-      };
 
     // Streaming actions.
 

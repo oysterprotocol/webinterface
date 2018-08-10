@@ -6,7 +6,6 @@ import queryString from "query-string";
 
 import UploadProgressSlide from "./upload-progress-slide";
 import { getSortedHistoryDesc } from "../../redux/selectors/upload-history-selector";
-import { FEAT_FLAG } from "../../config";
 
 const mapStateToProps = state => ({
   upload: state.upload,
@@ -35,19 +34,12 @@ class UploadProgress extends React.Component<
   }
 
   render() {
-    const { uploadHistory, historyDesc, upload } = this.props;
-    const uploadedFile = FEAT_FLAG.STREAMING_UPLOAD
-      ? historyDesc[0] // This might not be needed.
-      : _.last(uploadHistory);
-
-    const uploadProgress = FEAT_FLAG.STREAMING_UPLOAD
-      ? upload.uploadProgress
-      : (uploadedFile && uploadedFile.uploadProgress) || 0;
+    const { uploadHistory } = this.props;
+    const uploadProgress = _.last(uploadHistory)
 
     return <UploadProgressSlide uploadProgress={uploadProgress} />;
   }
 }
-
 export default withRouter(
   connect(
     mapStateToProps,
