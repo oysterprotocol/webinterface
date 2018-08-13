@@ -2,6 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 import { withRouter } from "react-router";
 import queryString from "query-string";
+import { streamUploadProgress } from "../../services/oyster-stream";
 
 import UploadProgressSlide from "./upload-progress-slide";
 import { getSortedHistoryDesc } from "../../redux/selectors/upload-history-selector";
@@ -24,12 +25,15 @@ interface UploadProgressState {}
 
 class UploadProgress extends React.Component<
   UploadProgressProps,
-  UploadProgressState
-> {
+  UploadProgressState> {
   componentDidMount() {
     const { location } = this.props;
     const query = queryString.parse(location.search);
     console.log("xxxxxxxxxxxxxxxxxxxxxxxxxx fire action here", query);
+
+    if (query.handle) {
+      streamUploadProgress(query.handle)
+    }
   }
 
   render() {

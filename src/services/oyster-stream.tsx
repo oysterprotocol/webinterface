@@ -39,6 +39,10 @@ export const streamUpload = (
   u.on("error", errCb);
 };
 
+export const streamUploadProgress = (handle) => {
+    Stream.UploadProgress.streamUploadProgress(handle);
+};
+
 export const streamDownload = (
   handle,
   {},
