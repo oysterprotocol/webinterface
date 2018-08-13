@@ -40,7 +40,9 @@ export const streamUpload = (
 };
 
 export const streamUploadProgress = (handle) => {
-    Stream.UploadProgress.streamUploadProgress(handle);
+    Stream.UploadProgress.streamUploadProgress(handle, {
+        iotaProvider: new IOTA({ provider: IOTA_API.PROVIDER_A })
+    });
 };
 
 export const streamDownload = (
