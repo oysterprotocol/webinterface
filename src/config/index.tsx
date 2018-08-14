@@ -3,14 +3,16 @@ export const IS_DEV = process.env.NODE_ENV === "development";
 const PROTOCOL = IS_DEV ? "http" : "https";
 
 const POLLING_NODE = IS_DEV
-  ? ["18.191.77.193"] // Travis broker
-  : ["poll.oysternodes.com"];
+  ? ["18.219.166.133"] // QA brokers 2
+  : // ? ["18.191.77.193"] // Travis broker
+    ["poll.oysternodes.com"];
 
 export const OLD_TANGLE_NODE = "https://download.oysternodes.com:14265";
 
 const BROKERS = IS_DEV
-  ? ["18.222.56.121", "18.191.77.193"] // Travis brokers
-  : //["18.188.64.13", "18.188.230.212"] // Rebel brokers
+  ? ["18.223.97.209", "18.219.166.133"] // QA brokers 2
+  : // ? ["18.222.56.121", "18.191.77.193"] // Travis brokers
+    //["18.188.64.13", "18.188.230.212"] // Rebel brokers
     //["52.14.218.135", "18.217.133.146"] // QA brokers
     ["broker-1.oysternodes.com", "broker-2.oysternodes.com"];
 
