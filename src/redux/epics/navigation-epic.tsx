@@ -18,9 +18,9 @@ const goToUploadForm = (action$, store) => {
 
 
 const goToUploadStartedStream = (action$, store) => {
-  return action$
+    return action$
     .ofType(uploadActions.STREAM_CHUNKS_DELIVERED)
-    .map(() => push("/upload-progress"));
+    .map((action) => push("/upload-progress?handle=" + action.payload.handle));
 };
 
 const goToUploadCompleteStream = (action$, store) => {

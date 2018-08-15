@@ -32,7 +32,7 @@ class UploadProgress extends React.Component<
     console.log("xxxxxxxxxxxxxxxxxxxxxxxxxx fire action here", query);
 
     if (query.handle) {
-      streamUploadProgress//(query.handle)
+      streamUploadProgress(//query.handle)
     }
   }
 
