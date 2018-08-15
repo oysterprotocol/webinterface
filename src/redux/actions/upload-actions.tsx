@@ -57,8 +57,9 @@ const ACTIONS = Object.freeze({
     type: ACTIONS.STREAM_PAYMENT_CONFIRMED,
     payload: { filename, handle, numberOfChunks }
   }),
-  streamChunksDelivered: () => ({
+  streamChunksDelivered: ({handle}) => ({
     type: ACTIONS.STREAM_CHUNKS_DELIVERED,
+      payload: { handle }
   }),
   streamUploadProgress: ({ progress }) => ({
     type: ACTIONS.STREAM_UPLOAD_PROGRESS,

@@ -34,8 +34,9 @@ const streamUploadEpic = action$ =>
               o.next(uploadActions.streamPaymentConfirmed(payload));
             },
 
-            chunksDeliveredCb: () => {
-              o.next(uploadActions.streamChunksDelivered());
+            chunksDeliveredCb: payload => {
+                const handle = payload.handle;
+              o.next(uploadActions.streamChunksDelivered({ handle}));
             },
 
             uploadProgressCb: progress => {
