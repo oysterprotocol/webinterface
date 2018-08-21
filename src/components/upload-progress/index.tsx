@@ -32,7 +32,17 @@ class UploadProgress extends React.Component<
     console.log("xxxxxxxxxxxxxxxxxxxxxxxxxx fire action here", query);
 
     if (query.handle) {
-      streamUploadProgress//(query.handle)
+      streamUploadProgress(query.handle, {
+        uploadProgressCb: (res) => {
+          console.log('Progress Callback: ',res)
+        },
+        doneCb: (res) => {
+          console.log('Done Callback: ',res)
+        },
+        errCb: (res) => {
+          console.log('Error Callback: ',res)
+        }
+      })
     }
   }
 

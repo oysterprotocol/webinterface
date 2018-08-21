@@ -39,10 +39,21 @@ export const streamUpload = (
   u.on("error", errCb);
 };
 
-export const streamUploadProgress = (handle) => {
-    Stream.UploadProgress.streamUploadProgress(handle, {
+export const streamUploadProgress = (
+    handle,
+    {
+        uploadProgressCb,
+        doneCb,
+        errCb
+    }
+    ) => {
+    const u = Stream.UploadProgress.streamUploadProgress(handle, {
         iotaProvider: new IOTA({ provider: IOTA_API.PROVIDER_A })
     });
+
+    u.on("upload-progress", uploadProgressCb);
+    u.on("finish", doneCb);
+    u.on("error", errCb);
 };
 
 export const streamDownload = (
