@@ -33,21 +33,20 @@ const uploadReducer = (state = initState, action) => {
         retentionYears: action.payload
       };
 
-
     // Streaming actions.
 
-    case uploadActions.STREAM_INVOICED:
+    case uploadActions.INVOICED:
       const { cost, ethAddress } = action.payload;
       return { ...state, invoice: { cost, ethAddress } };
 
-    case uploadActions.STREAM_UPLOAD_PROGRESS:
+    case uploadActions.UPLOAD_PROGRESS:
       const { progress } = action.payload;
       return { ...state, uploadProgress: progress };
 
-    // case uploadActions.STREAM_UPLOAD:
-    // case uploadActions.STREAM_PAYMENT_CONFIRMED:
-    // case uploadActions.STREAM_UPLOAD_SUCCESS:
-    // case uploadActions.STREAM_UPLOAD_ERROR:
+    // case uploadActions.UPLOAD:
+    // case uploadActions.PAYMENT_CONFIRMED:
+    // case uploadActions.UPLOAD_SUCCESS:
+    // case uploadActions.UPLOAD_ERROR:
     default:
       return state;
   }

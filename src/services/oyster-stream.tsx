@@ -1,8 +1,7 @@
 import IOTA from "iota.lib.js";
 import Stream from "oyster-streamable";
 
-import { IOTA_API } from "../config";
-import { OLD_TANGLE_NODE } from "../config";
+import { IOTA_API, OLD_TANGLE_NODE } from "../config";
 
 /**
  *
@@ -40,20 +39,16 @@ export const streamUpload = (
 };
 
 export const streamUploadProgress = (
-    handle,
-    {
-        uploadProgressCb,
-        doneCb,
-        errCb
-    }
-    ) => {
-    const u = Stream.UploadProgress.streamUploadProgress(handle, {
-        iotaProvider: new IOTA({ provider: IOTA_API.PROVIDER_A })
-    });
+  handle,
+  { uploadProgressCb, doneCb, errCb }
+) => {
+  const u = Stream.UploadProgress.streamUploadProgress(handle, {
+    iotaProvider: new IOTA({ provider: IOTA_API.PROVIDER_A })
+  });
 
-    u.on("upload-progress", uploadProgressCb);
-    u.on("finish", doneCb);
-    u.on("error", errCb);
+  u.on("upload-progress", uploadProgressCb);
+  u.on("finish", doneCb);
+  u.on("error", errCb);
 };
 
 export const streamDownload = (

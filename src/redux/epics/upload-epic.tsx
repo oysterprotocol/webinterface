@@ -1,14 +1,14 @@
 import { Observable } from "rxjs";
 import { combineEpics } from "redux-observable";
-import { execObsverableIfBackendAvailable } from "./utils";
+
 import uploadActions from "../actions/upload-actions";
+import { execObsverableIfBackendAvailable } from "./utils";
 import { streamUpload } from "../../services/oyster-stream";
 import { alertUser } from "../../services/error-tracker";
 import { API } from "../../config";
 
-
 const streamUploadEpic = action$ =>
-  action$.ofType(uploadActions.STREAM_UPLOAD).mergeMap(action => {
+  action$.ofType(uploadActions.UPLOAD).mergeMap(action => {
     const {
       file,
       retentionYears,
@@ -35,8 +35,8 @@ const streamUploadEpic = action$ =>
             },
 
             chunksDeliveredCb: payload => {
-                const handle = payload.handle;
-              o.next(uploadActions.streamChunksDelivered({ handle}));
+              const handle = payload.handle;
+              o.next(uploadActions.streamChunksDelivered({ handle }));
             },
 
             uploadProgressCb: progress => {
@@ -63,6 +63,4 @@ const streamUploadEpic = action$ =>
     );
   });
 
-export default combineEpics(
-  streamUploadEpic
-);
+export default combineEpics(streamUploadEpic);

@@ -1,11 +1,11 @@
-import { UPLOAD_STATUSES } from "../../config";
 import uploadActions from "../actions/upload-actions";
+import { UPLOAD_STATUSES } from "../../config";
 
 const initState = {};
 
 const reducer = (state = initState, action) => {
   switch (action.type) {
-    case uploadActions.STREAM_PAYMENT_CONFIRMED: {
+    case uploadActions.PAYMENT_CONFIRMED: {
       const { filename, handle, numberOfChunks } = action.payload;
       const now = Date.now();
       return {
@@ -22,7 +22,7 @@ const reducer = (state = initState, action) => {
       };
     }
 
-    case uploadActions.STREAM_UPLOAD_SUCCESS: {
+    case uploadActions.UPLOAD_SUCCESS: {
       const { handle } = action.payload;
       const hist = {
         ...state[handle],
@@ -32,7 +32,7 @@ const reducer = (state = initState, action) => {
       return { ...state, [handle]: hist };
     }
 
-    case uploadActions.STREAM_UPLOAD_ERROR: {
+    case uploadActions.UPLOAD_ERROR: {
       const { handle } = action.payload;
       const hist = {
         ...state[handle],

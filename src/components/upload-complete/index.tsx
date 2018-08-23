@@ -11,7 +11,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({});
 
 const UploadComplete = ({ history, historyDesc }) => {
-  const uploadedFile = historyDesc[0]
+  const uploadedFile = historyDesc[0];
   const handle = uploadedFile ? uploadedFile.handle : "";
   return <UploadCompleteSlide handle={handle} />;
 };

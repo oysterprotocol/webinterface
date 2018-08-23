@@ -9,7 +9,7 @@ const ICON_UPLOAD = require("../../assets/images/icon_upload.png");
 const UploadProgressSlide = ({ uploadProgress }) => (
   <Slide title="Upload Started" image={ICON_UPLOAD}>
     <p className="transaction-confirmed-instructions">
-        Transaction Confirmed. Your file is now being uploaded to the Tangle.
+      Transaction Confirmed. Your file is now being uploaded to the Tangle.
       <Spinner isActive={uploadProgress === 0} className="download-spinner" />
     </p>
     <div>

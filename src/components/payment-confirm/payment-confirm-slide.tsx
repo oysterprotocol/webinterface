@@ -1,6 +1,6 @@
 import React from "react";
 
-import Slide from "../shared/slide"
+import Slide from "../shared/slide";
 
 const ICON_READY = require("../../assets/images/icon_ready.png");
 const ICON_SPINNER = require("../../assets/images/icon_spinner.png");

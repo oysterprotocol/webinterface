@@ -2,7 +2,7 @@ import React, { Component } from "react";
 
 import Slide from "../shared/slide";
 
-const ICON_READY = require ("../../assets/images/icon_ready.png");
+const ICON_READY = require("../../assets/images/icon_ready.png");
 const ICON_SPINNER = require("../../assets/images/icon_spinner.png");
 
 class RetrievingInvoiceSlide extends Component {

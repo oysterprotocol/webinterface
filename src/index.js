@@ -7,6 +7,7 @@ import { Route } from "react-router";
 
 import { store, persistor } from "./redux";
 import history from "./redux/history";
+
 import Root from "./components/root";
 import Header from "./components/shared/header";
 import DownloadForm from "./components/download-form";
@@ -19,11 +20,10 @@ import UploadComplete from "./components/upload-complete";
 import RetrievingInvoice from "./components/retrieving-invoice";
 import PaymentInvoice from "./components/payment-invoice";
 import PaymentConfirm from "./components/payment-confirm";
-import { unregister } from "./register-service-worker";
 
 import ErrorPage from "./components/error-page";
-
 import ErrorTracker from "./services/error-tracker";
+import { unregister } from "./register-service-worker";
 
 const App = () => (
   <Provider store={store}>
