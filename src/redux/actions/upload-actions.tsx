@@ -67,7 +67,7 @@ const ACTIONS = Object.freeze({
   }),
   streamUploadSuccess: ({ handle }) => ({
     type: ACTIONS.STREAM_UPLOAD_SUCCESS,
-    payload: { handle } // empty payload
+    payload: { handle }
   }),
   streamUploadError: ({ handle, err }) => ({
     type: ACTIONS.STREAM_UPLOAD_ERROR,
