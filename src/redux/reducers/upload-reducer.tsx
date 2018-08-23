@@ -10,7 +10,8 @@ const initState = {
   retentionYears: 1,
   invoice: null, // { cost, ethAddress }
   gasPrice: 20,
-  uploadProgress: 0
+  uploadProgress: 0,
+  handle: ""
 };
 
 const uploadReducer = (state = initState, action) => {
@@ -46,7 +47,9 @@ const uploadReducer = (state = initState, action) => {
 
     // case uploadActions.STREAM_UPLOAD:
     // case uploadActions.STREAM_PAYMENT_CONFIRMED:
-    // case uploadActions.STREAM_UPLOAD_SUCCESS:
+     case uploadActions.STREAM_UPLOAD_SUCCESS:
+       const { handle } = action.payload;
+       return { ...state, handle: handle}
     // case uploadActions.STREAM_UPLOAD_ERROR:
     default:
       return state;
