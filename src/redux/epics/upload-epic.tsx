@@ -34,20 +34,10 @@ const streamUploadEpic = action$ =>
               o.next(uploadActions.streamPaymentConfirmed(payload));
             },
 
-            chunksDeliveredCb: payload => {
-              const handle = payload.handle;
-              o.next(uploadActions.streamChunksDelivered({ handle }));
-            },
-
-            uploadProgressCb: progress => {
-              o.next(uploadActions.streamUploadProgress(progress));
-            },
-
-            doneCb: result => {
-              const { handle } = result;
-              o.next(uploadActions.streamUploadSuccess({ handle }));
-
-              o.complete();
+            chunksDeliveredCb: payload => {    
+                const handle = payload.handle;
+                console.log(handle);
+                o.next(uploadActions.streamChunksDelivered({ handle}));
             },
 
             errCb: err => {

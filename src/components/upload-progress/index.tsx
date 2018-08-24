@@ -6,19 +6,27 @@ import { streamUploadProgress } from "../../services/oyster-stream";
 
 import UploadProgressSlide from "./upload-progress-slide";
 import { getSortedHistoryDesc } from "../../redux/selectors/upload-history-selector";
+import uploadActions from "../../redux/actions/upload-actions";
 
 const mapStateToProps = state => ({
   upload: state.upload,
   uploadHistory: state.upload.history,
   historyDesc: getSortedHistoryDesc(state)
 });
-const mapDispatchToProps = dispatch => ({});
+const mapDispatchToProps = dispatch => ({
+    streamUploadProgressFn: progress =>
+        dispatch(uploadActions.streamUploadProgress({progress})),
+    streamUploadSuccessFn: handle =>
+        dispatch(uploadActions.streamUploadSuccess({handle}))
+});
 
 interface UploadProgressProps {
   upload: any;
   uploadHistory: any;
   historyDesc: any[];
   location: any;
+  streamUploadProgressFn: any;
+  streamUploadSuccessFn: any;
 }
 
 interface UploadProgressState {}
@@ -26,18 +34,20 @@ interface UploadProgressState {}
 class UploadProgress extends React.Component<
   UploadProgressProps,
   UploadProgressState> {
+
   componentDidMount() {
-    const { location } = this.props;
+    const { location, streamUploadProgressFn, streamUploadSuccessFn } = this.props;
     const query = queryString.parse(location.search);
-    console.log("xxxxxxxxxxxxxxxxxxxxxxxxxx fire action here", query);
 
     if (query.handle) {
       streamUploadProgress(query.handle, {
         uploadProgressCb: (res) => {
-          console.log('Progress Callback: ',res)
+            const progress = res.progress;
+            streamUploadProgressFn(progress)
         },
         doneCb: (res) => {
-          console.log('Done Callback: ',res)
+            const handle = res.handle;
+            streamUploadSuccessFn(handle)
         },
         errCb: (res) => {
           console.log('Error Callback: ',res)
