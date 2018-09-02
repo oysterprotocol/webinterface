@@ -47,7 +47,7 @@
     "mini-css-extract-plugin": "^0.4.1",
     "node-forge": "^0.7.5",
     "object-assign": "4.1.1",
-    "oyster-streamable": "git+https://github.com/oysterprotocol/oyster-streamable.git",
+    "oyster-streamable": "^0.0.2",
     "postcss-flexbugs-fixes": "3.2.0",
     "postcss-loader": "2.0.8",
     "preact": "^8.2.9",
