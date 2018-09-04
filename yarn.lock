@@ -2794,6 +2794,13 @@ data-urls@^1.0.0:
     whatwg-mimetype "^2.0.0"
     whatwg-url "^6.4.0"
 
+datamap-generator@^1.0.8:
+  version "1.0.8"
+  resolved "https://registry.yarnpkg.com/datamap-generator/-/datamap-generator-1.0.8.tgz#8d899964be513eae21157d7657954ce879546ca9"
+  dependencies:
+    js-sha3 "^0.7.0"
+    lodash "^4.17.5"
+
 "datamap-generator@git+https://github.com/oysterprotocol/datamap-generator.git":
   version "1.0.7"
   resolved "git+https://github.com/oysterprotocol/datamap-generator.git#05abccb9fa2af0630c5d5a58142d0853c937ac15"
@@ -6765,12 +6772,12 @@ output-file-sync@^1.1.2:
     mkdirp "^0.5.1"
     object-assign "^4.1.0"
 
-oyster-streamable@^0.0.2:
-  version "0.0.2"
-  resolved "https://registry.yarnpkg.com/oyster-streamable/-/oyster-streamable-0.0.2.tgz#68a4e6d3e17cab91ee9fc1fbdd5a1edd743b0432"
+oyster-streamable@^2.0.5:
+  version "2.0.5"
+  resolved "https://registry.yarnpkg.com/oyster-streamable/-/oyster-streamable-2.0.5.tgz#3b269aa7212214ba335cd6c3640e5d8864fe0738"
   dependencies:
     axios "^0.18.0"
-    datamap-generator "git+https://github.com/oysterprotocol/datamap-generator.git"
+    datamap-generator "^1.0.8"
     iota.lib.js "^0.4.7"
     mime "^2.3.1"
     node-forge "^0.7.5"
@@ -7479,6 +7486,13 @@ query-string@^4.1.0:
   dependencies:
     object-assign "^4.1.0"
     strict-uri-encode "^1.0.0"
+
+query-string@^6.1.0:
+  version "6.1.0"
+  resolved "https://registry.yarnpkg.com/query-string/-/query-string-6.1.0.tgz#01e7d69f6a0940dac67a937d6c6325647aa4532a"
+  dependencies:
+    decode-uri-component "^0.2.0"
+    strict-uri-encode "^2.0.0"
 
 querystring-es3@^0.2.0:
   version "0.2.1"
@@ -8586,6 +8600,10 @@ stream-to-observable@^0.1.0:
 strict-uri-encode@^1.0.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/strict-uri-encode/-/strict-uri-encode-1.1.0.tgz#279b225df1d582b1f54e65addd4352e18faa0713"
+
+strict-uri-encode@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/strict-uri-encode/-/strict-uri-encode-2.0.0.tgz#b9c7330c7042862f6b142dc274bbcc5866ce3546"
 
 string-length@^1.0.1:
   version "1.0.1"

@@ -1,6 +1,6 @@
 language: node_js
 node_js:
-  - '9'
+  - "9"
 sudo: false
 env:
   global:
@@ -15,7 +15,7 @@ cache:
     - node_modules
 
 before_install:
-  - 'curl -o- -L https://yarnpkg.com/install.sh | bash'
+  - "curl -o- -L https://yarnpkg.com/install.sh | bash"
   - 'export PATH="$HOME/.yarn/bin:$PATH"'
 before_script:
   - "sh -e /etc/init.d/xvfb start"
@@ -25,11 +25,11 @@ before_script:
   - ./cc-test-reporter before-build
   - yarn
   - yarn test:install
-  - yarn start -- --silent &    # Silent to run E2E tests
+  - yarn start -- --silent & # Silent to run E2E tests
 script:
   - yarn build
-  - yarn test:coverage          # Unit Tests
-  # - yarn test:record            # E2E Tests    UNCOMMENT WHEN METADATA UPLOADS ARE FASTER
+  - yarn test:coverage # Unit Tests
+  - yarn test:record # E2E Tests
 after_script:
   # Publishes Unit test report to Code Climate
   - ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT
