@@ -16,31 +16,29 @@ const goToUploadForm = (action$, store) => {
     .map(() => push("/upload-form"));
 };
 
-
 const goToUploadStartedStream = (action$, store) => {
   return action$
-    .ofType(uploadActions.STREAM_PAYMENT_CONFIRMED)
-    .map(() => push("/upload-started"));
+    .ofType(uploadActions.CHUNKS_DELIVERED)
+    .map(action => push("/upload-progress?handle=" + action.payload.handle));
 };
 
 const goToUploadCompleteStream = (action$, store) => {
   return action$
-    .ofType(uploadActions.STREAM_UPLOAD_SUCCESS)
+    .ofType(uploadActions.UPLOAD_SUCCESS)
     .map(() => push("/upload-complete"));
 };
 
 const goToPaymentInvoiceStream = (action$, store) => {
   return action$
-    .ofType(uploadActions.STREAM_INVOICED)
+    .ofType(uploadActions.INVOICED)
     .map(() => push("/payment-invoice"));
 };
 
 const goToPaymentConfirmationStream = (action$, store) => {
   return action$
-    .ofType(uploadActions.STREAM_PAYMENT_PENDING)
+    .ofType(uploadActions.PAYMENT_PENDING)
     .map(action => push("/payment-confirm"));
 };
-
 
 const goToErrorPage = (action$, store) => {
   return action$

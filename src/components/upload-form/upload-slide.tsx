@@ -18,24 +18,24 @@ const CHUNCKS_IN_SECTOR = 1000000;
 const STORAGE_PEG = 64;
 
 interface UploadSlideProps {
-    alphaBroker,
-    betaBroker,
-    selectAlphaBroker,
-    selectBetaBroker,
-    retentionYears,
-    selectRetentionYears,
-    streamUploadFn
+  alphaBroker;
+  betaBroker;
+  selectAlphaBroker;
+  selectBetaBroker;
+  retentionYears;
+  selectRetentionYears;
+  streamUploadFn;
 }
 
 interface UploadSlideState {
-    fileName,
-    fileSize,
-    storageCost,
-    humanFileSize,
-    isInitializing: boolean // TODO: Enum this.
+  fileName;
+  fileSize;
+  storageCost;
+  humanFileSize;
+  isInitializing: boolean; // TODO: Enum this.
 }
 
-class UploadSlide extends Component<UploadSlideProps,UploadSlideState> {
+class UploadSlide extends Component<UploadSlideProps, UploadSlideState> {
   constructor(props) {
     super(props);
 
@@ -250,8 +250,10 @@ class UploadSlide extends Component<UploadSlideProps,UploadSlideState> {
           />
         </div>
         <aside className="disclaimer">
-          DISCLAIMER: No PRL is required to use the beta Mainnet.<br />
-          This is a beta phase and should not be used for important data.<br />
+          DISCLAIMER: No PRL is required to use the beta Mainnet.
+          <br />
+          This is a beta phase and should not be used for important data.
+          <br />
           Uploads cost 1 PRL per 64GB per year (paid for by Oyster). <br />
           Current filesize limit is 25MB per file.
         </aside>

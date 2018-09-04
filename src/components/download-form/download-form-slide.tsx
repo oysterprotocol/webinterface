@@ -1,17 +1,18 @@
 import React from "react";
 
-import { DOWNLOAD_STATUSES } from "../../config";
 import Slide from "../shared/slide";
 import PrimaryButton from "../shared/primary-button";
 import Spinner from "../shared/spinner";
 
+import { DOWNLOAD_STATUSES } from "../../config";
+
 interface DownloadFormSlideProps {
-  download,
-  status
+  download;
+  status;
 }
 
 interface DownloadFormState {
-  handle
+  handle;
 }
 
 class DownloadFormSlide extends React.Component<
@@ -21,12 +22,9 @@ class DownloadFormSlide extends React.Component<
   constructor(props) {
     super(props);
     this.state = { handle: "" };
-
-    // OOP SUCKS!
-    this.inputHandler = this.inputHandler.bind(this);
   }
 
-  inputHandler(evt) {
+  inputHandler = (evt) => {
     this.setState({ handle: evt.target.value });
   }
 
@@ -46,7 +44,7 @@ class DownloadFormSlide extends React.Component<
               id="download-handle-input"
               name="handle"
               type="text"
-              onChange={this.inputHandler}
+              onChange={ (evt) => this.inputHandler(evt)}
               className="handle-text-input"
             />
           </label>

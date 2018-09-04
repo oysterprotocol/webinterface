@@ -7,6 +7,7 @@ import { Route } from "react-router";
 
 import { store, persistor } from "./redux";
 import history from "./redux/history";
+
 import Root from "./components/root";
 import Header from "./components/shared/header";
 import DownloadForm from "./components/download-form";
@@ -14,16 +15,15 @@ import DownloadStarted from "./components/download-started";
 import DownloadComplete from "./components/download-complete";
 import DownloadUploadHistory from "./components/download-upload-history";
 import UploadForm from "./components/upload-form";
-import UploadStarted from "./components/upload-started";
+import UploadProgress from "./components/upload-progress";
 import UploadComplete from "./components/upload-complete";
 import RetrievingInvoice from "./components/retrieving-invoice";
 import PaymentInvoice from "./components/payment-invoice";
 import PaymentConfirm from "./components/payment-confirm";
-import { unregister } from "./register-service-worker";
 
 import ErrorPage from "./components/error-page";
-
 import ErrorTracker from "./services/error-tracker";
+import { unregister } from "./register-service-worker";
 
 const App = () => (
   <Provider store={store}>
@@ -40,7 +40,7 @@ const App = () => (
             component={DownloadUploadHistory}
           />
           <Route path="/upload-form" component={UploadForm} />
-          <Route path="/upload-started" component={UploadStarted} />
+          <Route path="/upload-progress" component={UploadProgress} />
           <Route path="/upload-complete" component={UploadComplete} />
 
           <Route path="/retrieving-invoice" component={RetrievingInvoice} />

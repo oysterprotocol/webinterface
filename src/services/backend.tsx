@@ -1,4 +1,5 @@
 import axios from "axios";
+
 import { API, IS_DEV } from "../config";
 import { alertUser } from "./error-tracker";
 
@@ -31,5 +32,5 @@ const checkStatus = hosts =>
   });
 
 export default {
-  checkStatus,
+  checkStatus
 };

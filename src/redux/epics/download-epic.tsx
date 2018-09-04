@@ -2,15 +2,14 @@ import { Observable } from "rxjs";
 import { combineEpics } from "redux-observable";
 import FileSaver from "file-saver";
 
-import { execObsverableIfBackendAvailable } from "./utils";
-
 import downloadActions from "../actions/download-actions";
-import { API } from "../../config";
+import { execObsverableIfBackendAvailable } from "./utils";
 import { streamDownload } from "../../services/oyster-stream";
 import { alertUser } from "../../services/error-tracker";
+import { API } from "../../config";
 
 const streamDownloadEpic = action$ => {
-  return action$.ofType(downloadActions.STREAM_DOWNLOAD).mergeMap(action => {
+  return action$.ofType(downloadActions.DOWNLOAD).mergeMap(action => {
     const { handle } = action.payload;
     const params = {};
 
@@ -36,6 +35,4 @@ const streamDownloadEpic = action$ => {
   });
 };
 
-export default combineEpics(
-  streamDownloadEpic
-);
+export default combineEpics(streamDownloadEpic);
