@@ -2801,13 +2801,6 @@ datamap-generator@^1.0.8:
     js-sha3 "^0.7.0"
     lodash "^4.17.5"
 
-"datamap-generator@git+https://github.com/oysterprotocol/datamap-generator.git":
-  version "1.0.7"
-  resolved "git+https://github.com/oysterprotocol/datamap-generator.git#05abccb9fa2af0630c5d5a58142d0853c937ac15"
-  dependencies:
-    js-sha3 "^0.7.0"
-    lodash "^4.17.5"
-
 date-fns@^1.27.2:
   version "1.29.0"
   resolved "https://registry.yarnpkg.com/date-fns/-/date-fns-1.29.0.tgz#12e609cdcb935127311d04d33334e2960a2a54e6"
