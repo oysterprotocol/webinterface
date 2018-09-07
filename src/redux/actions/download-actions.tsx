@@ -20,11 +20,11 @@ const ACTIONS = Object.freeze({
     payload: progress
   }),
   streamDownloadSuccess: () => ({
-    type: ACTIONS.DOWNLOAD_SUCCESS,
+    type: DOWNLOAD_SUCCESS,
     payload: {} // empty payload
   }),
   streamDownloadError: ({ err }) => ({
-    type: ACTIONS.DOWNLOAD_ERROR,
+    type: DOWNLOAD_ERROR,
     payload: err
   })
 });

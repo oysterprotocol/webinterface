@@ -27,49 +27,49 @@ const ACTIONS = Object.freeze({
   UPLOAD_ERROR,
 
   selectAlphaBrokerAction: url => ({
-    type: ACTIONS.SELECT_ALPHA_BROKER,
+    type: SELECT_ALPHA_BROKER,
     payload: url
   }),
   selectBetaBrokerAction: url => ({
-    type: ACTIONS.SELECT_BETA_BROKER,
+    type: SELECT_BETA_BROKER,
     payload: url
   }),
   selectRetentionYears: value => ({
-    type: ACTIONS.SELECT_RETENTION_YEARS,
+    type: SELECT_RETENTION_YEARS,
     payload: value
   }),
 
   // Stream actions
   // TODO: Use static type checker instead of destructuring to document.
   streamUpload: ({ file, retentionYears, brokers }) => ({
-    type: ACTIONS.UPLOAD,
+    type: UPLOAD,
     payload: { file, retentionYears, brokers }
   }),
   streamInvoiced: ({ cost, ethAddress }) => ({
-    type: ACTIONS.INVOICED,
+    type: INVOICED,
     payload: { cost, ethAddress }
   }),
   streamPaymentPending: () => ({
-    type: ACTIONS.PAYMENT_PENDING
+    type: PAYMENT_PENDING
   }),
   streamPaymentConfirmed: ({ filename, handle, numberOfChunks }) => ({
-    type: ACTIONS.PAYMENT_CONFIRMED,
+    type: PAYMENT_CONFIRMED,
     payload: { filename, handle, numberOfChunks }
   }),
   streamChunksDelivered: ({ handle }) => ({
-    type: ACTIONS.CHUNKS_DELIVERED,
+    type: CHUNKS_DELIVERED,
     payload: { handle }
   }),
   streamUploadProgress: ({ progress }) => ({
-    type: ACTIONS.UPLOAD_PROGRESS,
+    type: UPLOAD_PROGRESS,
     payload: { progress }
   }),
   streamUploadSuccess: ({ handle }) => ({
-    type: ACTIONS.UPLOAD_SUCCESS,
+    type: UPLOAD_SUCCESS,
     payload: { handle }
   }),
   streamUploadError: ({ handle, err }) => ({
-    type: ACTIONS.UPLOAD_ERROR,
+    type: UPLOAD_ERROR,
     payload: { err }
   })
 });

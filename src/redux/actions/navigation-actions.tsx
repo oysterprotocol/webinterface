@@ -10,13 +10,13 @@ const ACTIONS = Object.freeze({
 
   // actionCreators
   visitUploadFormAction: () => ({
-    type: ACTIONS.VISIT_UPLOAD_FORM
+    type: VISIT_UPLOAD_FORM
   }),
   visitDownloadFormAction: () => ({
-    type: ACTIONS.VISIT_DOWNLOAD_FORM
+    type: VISIT_DOWNLOAD_FORM
   }),
   errorPageAction: () => ({
-    type: ACTIONS.ERROR_PAGE
+    type: ERROR_PAGE
   })
 });
 
