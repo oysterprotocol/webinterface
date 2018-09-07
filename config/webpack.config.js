@@ -53,7 +53,7 @@ const common = {
             loader: require.resolve("url-loader"),
             options: {
               limit: 10000,
-              name: "static/media/[name].[ext]"
+              name: "static/media/[name].[hash].[ext]"
             }
           },
           // Process JS with Babel.
@@ -86,7 +86,7 @@ const common = {
             use: {
               loader: "worker-loader",
               options: {
-                name: "[name].[ext]",
+                name: "[name].[hash].[ext]",
                 publicPath: "src/redux/workers/"
               }
             }
@@ -95,7 +95,7 @@ const common = {
             loader: require.resolve("file-loader"),
             exclude: [/\.(js|jsx|mjs)$/, /\.html$/, /\.json$/],
             options: {
-              name: "static/media/[name].[ext]"
+              name: "static/media/[name].[hash].[ext]"
             }
           }
         ]
@@ -219,8 +219,8 @@ if (env.stringified["process.env"].NODE_ENV === '"development"') {
         template: paths.appHtml
       }),
       new MiniCssExtractPlugin({
-        filename: "[name].css",
-        chunkFilename: "[id].css"
+        filename: "[name].[hash].css",
+        chunkFilename: "[id].[hash].css"
       }),
       new InterpolateHtmlPlugin(env.raw)
     ]
