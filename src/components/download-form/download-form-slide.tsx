@@ -24,9 +24,9 @@ class DownloadFormSlide extends React.Component<
     this.state = { handle: "" };
   }
 
-  inputHandler = (evt) => {
+  inputHandler = evt => {
     this.setState({ handle: evt.target.value });
-  }
+  };
 
   render() {
     const { download, status } = this.props;
@@ -44,7 +44,7 @@ class DownloadFormSlide extends React.Component<
               id="download-handle-input"
               name="handle"
               type="text"
-              onChange={ (evt) => this.inputHandler(evt)}
+              onChange={evt => this.inputHandler(evt)}
               className="handle-text-input"
             />
           </label>
