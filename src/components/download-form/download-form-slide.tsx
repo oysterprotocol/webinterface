@@ -1,10 +1,32 @@
 import React from "react";
+import styled from "styled-components";
 
 import Slide from "../shared/slide";
 import PrimaryButton from "../shared/primary-button";
 import Spinner from "../shared/spinner";
 
 import { DOWNLOAD_STATUSES } from "../../config";
+
+const HandleInstructions = styled.p`
+  padding-bottom: 150px;
+`;
+
+const HandleLabel = styled.span`
+  color: #6ea0de;
+  font-size: 20px;
+  margin-right: 15px;
+`;
+
+const HandleTextInput = styled.input`
+  border: none;
+  border-bottom: #0068ea 1px solid;
+  width: 40%;
+
+  &:focus {
+    outline: none !important;
+    box-shadow: none !important;
+  }
+`;
 
 interface DownloadFormSlideProps {
   download;
@@ -33,19 +55,18 @@ class DownloadFormSlide extends React.Component<
     const ICON_DOWNLOAD = require("../../assets/images/icon_download.png");
     return (
       <Slide title="Retrieve a File" image={ICON_DOWNLOAD}>
-        <p className="handle-instructions">
+        <HandleInstructions>
           Enter your Oyster handle below to access your stored file from the
           Tangle.
-        </p>
+        </HandleInstructions>
         <div>
           <label>
-            <span className="handle-label">Oyster Handle:</span>
-            <input
+            <HandleLabel>Oyster Handle:</HandleLabel>
+            <HandleTextInput
               id="download-handle-input"
               name="handle"
               type="text"
               onChange={evt => this.inputHandler(evt)}
-              className="handle-text-input"
             />
           </label>
         </div>

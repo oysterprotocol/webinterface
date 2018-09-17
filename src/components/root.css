@@ -149,8 +149,12 @@ p {
 }
 
 @keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
 /********************************
@@ -168,11 +172,11 @@ matej-01
 .error-description__link {
   font-weight: bold;
   color: #0068ea;
-  text-decoration:none;
+  text-decoration: none;
 }
 
 .error-description__link:hover {
-  text-decoration:none;
+  text-decoration: none;
   color: #0068ea;
 }
 
@@ -644,7 +648,6 @@ matej-01
   flex: 1;
 }
 
-
 /******************************/
 
 .slide-custom-image {
@@ -736,16 +739,6 @@ matej-01
   margin-left: 0;
 }
 
-.handle-label {
-  color: #6ea0de;
-  font-size: 20px;
-  margin-right: 15px;
-}
-
-.handle-instructions {
-  padding-bottom: 150px;
-}
-
 .retrieval-instructions {
   padding-bottom: 50px;
 }
@@ -774,17 +767,6 @@ h2 {
   font-size: 15px;
 }
 
-.handle-text-input {
-  border: none;
-  border-bottom: #0068ea 1px solid;
-  width: 40%;
-}
-
-.handle-text-input:focus {
-  outline: none !important;
-  box-shadow: none !important;
-}
-
 .underline {
   width: 50px;
   border-color: #afcbfe;
@@ -796,7 +778,6 @@ input.retention-slider:hover,
 input.retention-slider:focus {
   background: #afcbfe;
 }
-
 
 input.retention-slider:disabled {
   background: #dcdcdc;
