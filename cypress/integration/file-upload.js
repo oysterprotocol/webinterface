@@ -24,6 +24,10 @@ describe("Oyster file upload and download", () => {
         expect(path).to.eq("/payment-confirm");
       });
 
+      cy.location("pathname", { timeout: 60000 }).should(path => {
+        expect(path).to.eq("/upload-progress");
+      });
+
       // Success (60s timeout)
       cy.location("pathname", { timeout: 60000 }).should(path => {
         expect(path).to.eq("/upload-complete");

@@ -18,7 +18,7 @@ const goToUploadForm = (action$, store) => {
 
 const goToUploadStartedStream = (action$, store) => {
   return action$
-    .ofType(uploadActions.CHUNKS_DELIVERED)
+    .ofType(uploadActions.PAYMENT_CONFIRMED)
     .map(action => push("/upload-progress?handle=" + action.payload.handle));
 };
 

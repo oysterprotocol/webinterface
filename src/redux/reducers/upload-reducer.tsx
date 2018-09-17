@@ -1,5 +1,12 @@
 import uploadActions from "../actions/upload-actions";
+import navigationActions from "../actions/navigation-actions";
 import { API } from "../../config";
+
+export const UPLOAD_STATE = Object.freeze({
+  UPLOADING: "UPLOADING",
+  ATTACHING_META: "ATTACHING_META", // Upload complete, waiting for meta.
+  COMPLETE: "COMPLETE" // Attached meta, could be waiting for rest of chunks or completed.
+});
 
 const initState = {
   alphaBroker: API.BROKER_NODE_A,
@@ -11,11 +18,15 @@ const initState = {
   invoice: null, // { cost, ethAddress }
   gasPrice: 20,
   uploadProgress: 0,
-  handle: ""
+  handle: "",
+  uploadState: UPLOAD_STATE.UPLOADING
 };
 
 const uploadReducer = (state = initState, action) => {
   switch (action.type) {
+    case navigationActions.VISIT_UPLOAD_FORM:
+      return initState; // resets state.
+
     case uploadActions.SELECT_ALPHA_BROKER:
       return {
         ...state,
@@ -40,17 +51,23 @@ const uploadReducer = (state = initState, action) => {
       const { cost, ethAddress } = action.payload;
       return { ...state, invoice: { cost, ethAddress } };
 
+    case uploadActions.PAYMENT_CONFIRMED:
+      return { ...state, uploadState: UPLOAD_STATE.ATTACHING_META };
+
+    case uploadActions.CHUNKS_DELIVERED: {
+      const { handle } = action.payload;
+      return { ...state, handle, uploadState: UPLOAD_STATE.COMPLETE };
+    }
+
     case uploadActions.UPLOAD_PROGRESS:
       const { progress } = action.payload;
       return { ...state, uploadProgress: progress };
 
-    // case uploadActions.UPLOAD:
-    // case uploadActions.PAYMENT_CONFIRMED:
-    // case uploadActions.UPLOAD_ERROR:
+    case uploadActions.UPLOAD_SUCCESS: {
+      const { handle } = action.payload;
+      return { ...state, handle: handle };
+    }
 
-    case uploadActions.UPLOAD_SUCCESS:
-       const { handle } = action.payload;
-       return { ...state, handle: handle}
     default:
       return state;
   }

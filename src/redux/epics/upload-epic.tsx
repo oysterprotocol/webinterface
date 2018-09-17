@@ -1,9 +1,13 @@
 import { Observable } from "rxjs";
 import { combineEpics } from "redux-observable";
+// import queryString from "query-string";
 
 import uploadActions from "../actions/upload-actions";
 import { execObsverableIfBackendAvailable } from "./utils";
-import { streamUpload } from "../../services/oyster-stream";
+import {
+  streamUpload,
+  streamUploadProgress
+} from "../../services/oyster-stream";
 import { alertUser } from "../../services/error-tracker";
 import { API } from "../../config";
 
@@ -34,10 +38,9 @@ const streamUploadEpic = action$ =>
               o.next(uploadActions.streamPaymentConfirmed(payload));
             },
 
-            chunksDeliveredCb: payload => {    
-                const handle = payload.handle;
-                console.log(handle);
-                o.next(uploadActions.streamChunksDelivered({ handle}));
+            chunksDeliveredCb: payload => {
+              const handle = payload.handle;
+              o.next(uploadActions.streamChunksDelivered({ handle }));
             },
 
             errCb: err => {
@@ -53,4 +56,25 @@ const streamUploadEpic = action$ =>
     );
   });
 
-export default combineEpics(streamUploadEpic);
+const streamUploadProgressEpic = action$ =>
+  action$.ofType(uploadActions.CHUNKS_DELIVERED).mergeMap(action => {
+    const { handle } = action.payload;
+
+    return Observable.create(o => {
+      streamUploadProgress(handle, {
+        uploadProgressCb: ({ progress }) => {
+          o.next(uploadActions.streamUploadProgress({ progress }));
+        },
+        doneCb: ({ handle }) => {
+          o.next(uploadActions.streamUploadSuccess({ handle }));
+          o.complete();
+        },
+        errCb: err => {
+          o.next(uploadActions.streamUploadError({ handle, err }));
+          o.complete();
+        }
+      });
+    });
+  });
+
+export default combineEpics(streamUploadEpic, streamUploadProgressEpic);
