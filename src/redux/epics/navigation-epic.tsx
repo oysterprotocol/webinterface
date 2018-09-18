@@ -19,7 +19,7 @@ const goToUploadForm = (action$, store) => {
 const goToUploadStartedStream = (action$, store) => {
   return action$
     .ofType(uploadActions.PAYMENT_CONFIRMED)
-    .map(action => push("/upload-progress?handle=" + action.payload.handle));
+    .map(action => push("/upload-progress#handle=" + action.payload.handle));
 };
 
 const goToUploadCompleteStream = (action$, store) => {
