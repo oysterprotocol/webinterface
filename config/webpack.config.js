@@ -124,7 +124,16 @@ if (env.stringified["process.env"].NODE_ENV === '"production"') {
       modules: ["node_modules", paths.appNodeModules].concat(
         process.env.NODE_PATH.split(path.delimiter).filter(Boolean)
       ),
-      extensions: [".web.js", ".mjs", ".js", ".json", ".web.jsx", ".jsx", ".ts", ".tsx"],
+      extensions: [
+        ".web.js",
+        ".mjs",
+        ".js",
+        ".json",
+        ".web.jsx",
+        ".jsx",
+        ".ts",
+        ".tsx"
+      ],
       plugins: [new ModuleScopePlugin(paths.appSrc, [paths.appPackageJson])]
     },
     plugins: [
@@ -211,7 +220,16 @@ if (env.stringified["process.env"].NODE_ENV === '"development"') {
       chunkFilename: "static/js/[name].chunk.[chunkhash:8].js"
     },
     resolve: {
-      extensions: [".web.js", ".mjs", ".js", ".json", ".web.jsx", ".jsx", '.tsx', '.ts']
+      extensions: [
+        ".web.js",
+        ".mjs",
+        ".js",
+        ".json",
+        ".web.jsx",
+        ".jsx",
+        ".tsx",
+        ".ts"
+      ]
     },
     plugins: [
       new HtmlWebpackPlugin({

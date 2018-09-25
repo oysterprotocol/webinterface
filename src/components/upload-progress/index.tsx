@@ -32,8 +32,5 @@ class UploadProgress extends React.Component<
   }
 }
 export default withRouter(
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  )(UploadProgress)
+  connect(mapStateToProps, mapDispatchToProps)(UploadProgress)
 );

@@ -12,13 +12,7 @@ import { IOTA_API, OLD_TANGLE_NODE } from "../config";
 export const streamUpload = (
   file,
   { alpha, beta, retentionYears },
-  {
-    invoiceCb,
-    paymentPendingCb,
-    paymentConfirmedCb,
-    chunksDeliveredCb,
-    errCb
-  }
+  { invoiceCb, paymentPendingCb, paymentConfirmedCb, chunksDeliveredCb, errCb }
 ) => {
   const u = Stream.Upload.fromFile(file, {
     alpha,

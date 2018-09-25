@@ -10,7 +10,4 @@ const PaymentConfirm = () => {
   return <PaymentConfirmSlide />;
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(PaymentConfirm);
+export default connect(mapStateToProps, mapDispatchToProps)(PaymentConfirm);

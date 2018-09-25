@@ -2,13 +2,12 @@ import React, { Component } from "react";
 
 import Slide from "../shared/slide";
 
-
 const ICON_PlANE = require("../../assets/images/sendAirplane.svg");
 
 interface PaymentInvoiceSlideProps {
-  cost,
-    ethAddress,
-    gasPrice
+  cost;
+  ethAddress;
+  gasPrice;
 }
 
 class PaymentInvoiceSlide extends Component<PaymentInvoiceSlideProps> {

@@ -41,7 +41,4 @@ const UploadForm = ({
   />
 );
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(UploadForm);
+export default connect(mapStateToProps, mapDispatchToProps)(UploadForm);

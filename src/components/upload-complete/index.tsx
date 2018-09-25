@@ -9,11 +9,8 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({});
 
-const UploadComplete = ({handle}) => {
+const UploadComplete = ({ handle }) => {
   return <UploadCompleteSlide handle={handle} />;
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(UploadComplete);
+export default connect(mapStateToProps, mapDispatchToProps)(UploadComplete);

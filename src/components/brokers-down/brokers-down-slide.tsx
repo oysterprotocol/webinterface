@@ -41,28 +41,32 @@ const BrokersDownLinkText = styled.a`
   color: #0068ea !important;
   text-decoration: none;
   ${BrokersDownLinkSpan}:hover & {
-  text-decoration: none;
-  color: #0068ea !important;
-  }`;
+    text-decoration: none;
+    color: #0068ea !important;
+  }
+`;
 
 class BrokersDownSlide extends React.Component {
-    render() {
-        return (
-    <SlideError title="Broker Nodes Offline" image={null}>
-        <BrokersDownImage
-            src={BROKERS_DOWN}
-            alt="brokers-down"/>
+  render() {
+    return (
+      <SlideError title="Broker Nodes Offline" image={null}>
+        <BrokersDownImage src={BROKERS_DOWN} alt="brokers-down" />
         <BrokersDownParagraph>
-            Oyster Storage’s broker nodes are currently offline.
-            Uploads are unavailable at this time.
-            <br/>
-            <br/>
-            Please visit our{" "}
-            <BrokersDownLinkSpan><BrokersDownLinkText href="https://t.me/oysterprotocol">
-                Telegram Channel</BrokersDownLinkText></BrokersDownLinkSpan>
-            {" "}for more information. We apologize for the inconvenience.
+          Oyster Storage’s broker nodes are currently offline. Uploads are
+          unavailable at this time.
+          <br />
+          <br />
+          Please visit our{" "}
+          <BrokersDownLinkSpan>
+            <BrokersDownLinkText href="https://t.me/oysterprotocol">
+              Telegram Channel
+            </BrokersDownLinkText>
+          </BrokersDownLinkSpan>{" "}
+          for more information. We apologize for the inconvenience.
         </BrokersDownParagraph>
-    </SlideError>
-)}}
+      </SlideError>
+    );
+  }
+}
 
 export default BrokersDownSlide;

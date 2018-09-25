@@ -2,7 +2,7 @@ import React from "react";
 
 const ICON_TANGLE_UP = require("../../assets/images/icon_tangle_up.png");
 
-const Slide = ({ children, title, image }:any) => {
+const Slide = ({ children, title, image }: any) => {
   return (
     <section className="slide">
       <div className="container bordered indented-container">
