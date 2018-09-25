@@ -8,12 +8,12 @@ const ErrorPageSlide = ({ handle }) => (
   <SlideError title="Uh oh! Something went wong." image={null}>
     <img src={ICON_ERROR} className="error-img" alt="error-img" />
     <p className="error-description">
-      There was a problem with your upload. Please{" "}
-      <a className="error-description__link" href="support@oyster.ws">
+      There was a problem with your upload. Please visit our{" "}
+      <a className="error-description__link" href="https://t.me/oysterprotocol">
         {" "}
-        contact support{" "}
+        Telegram Channel{" "}
       </a>{" "}
-      about your issue.
+      for more information.
     </p>
   </SlideError>
 );

@@ -10,6 +10,7 @@ import history from "./redux/history";
 
 import Root from "./components/root";
 import Header from "./components/shared/header";
+import BrokerDown from "./components/brokers-down";
 import DownloadForm from "./components/download-form";
 import DownloadStarted from "./components/download-started";
 import DownloadComplete from "./components/download-complete";
@@ -49,6 +50,7 @@ const App = () => (
           <Route path="/payment-confirm" component={PaymentConfirm} />
 
           <Route path="/error-page" component={ErrorPage} />
+          <Route path="/brokers-down" component={BrokerDown} />
         </div>
       </ConnectedRouter>
     </PersistGate>
