@@ -771,7 +771,8 @@ h2 {
   width: 50px;
   border-color: #afcbfe;
   border-width: 5px;
-  float: left;
+  margin-left: 0px;
+  margin-top: 15px;
 }
 
 input.retention-slider,
