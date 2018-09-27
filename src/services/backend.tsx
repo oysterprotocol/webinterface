@@ -24,7 +24,7 @@ const checkStatus = hosts =>
         resolve(available);
       })
       .catch(err => {
-        reject(err);
+        resolve(false);
       });
   });
 
