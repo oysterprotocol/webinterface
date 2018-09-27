@@ -14,7 +14,7 @@ const DEFAULT_FILE_INPUT_TEXT = "No file selected";
 const DEFAULT_FILE_INPUT_SIZE = 0;
 const DEFAULT_FILE_INPUT_COST = 0;
 const DEFAULT_HUMAN_FILE_SIZE = 0;
-const CHUNCKS_IN_SECTOR = 1000000;
+const CHUNKS_IN_SECTOR = 1000000;
 const STORAGE_PEG = 64;
 
 interface UploadSlideProps {
@@ -263,7 +263,7 @@ class UploadSlide extends Component<UploadSlideProps, UploadSlideState> {
 
   calculateStorageCost(fileSizeBytes, years) {
     let chunks = Math.ceil(fileSizeBytes / 1000) + 1; // 1 kb for metadata
-    let numSectors = Math.ceil(chunks / CHUNCKS_IN_SECTOR);
+    let numSectors = Math.ceil(chunks / CHUNKS_IN_SECTOR);
     let costPerYear = numSectors / STORAGE_PEG;
     return costPerYear * years;
   }

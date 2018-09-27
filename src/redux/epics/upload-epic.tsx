@@ -3,13 +3,14 @@ import { combineEpics } from "redux-observable";
 // import queryString from "query-string";
 
 import uploadActions from "../actions/upload-actions";
-import { execObsverableIfBackendAvailable } from "./utils";
+import { execObservableIfBackendAvailable } from "./utils";
 import {
   streamUpload,
   streamUploadProgress
 } from "../../services/oyster-stream";
 import { alertUser } from "../../services/error-tracker";
 import { API } from "../../config";
+import navigationActions from "../actions/navigation-actions";
 
 const streamUploadEpic = action$ =>
   action$.ofType(uploadActions.UPLOAD).mergeMap(action => {
@@ -21,7 +22,7 @@ const streamUploadEpic = action$ =>
 
     const params = { alpha, beta, retentionYears };
 
-    return execObsverableIfBackendAvailable(
+    return execObservableIfBackendAvailable(
       [API.BROKER_NODE_A, API.BROKER_NODE_B],
       () =>
         Observable.create(o => {
@@ -52,6 +53,10 @@ const streamUploadEpic = action$ =>
               o.complete();
             }
           });
+        }),
+      () =>
+        Observable.create(o => {
+          o.next(navigationActions.brokersDownPageAction());
         })
     );
   });

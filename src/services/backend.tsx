@@ -1,7 +1,6 @@
 import axios from "axios";
 
 import { API, IS_DEV } from "../config";
-import { alertUser } from "./error-tracker";
 
 const axiosInstance = axios.create({ timeout: 200000 });
 
@@ -21,12 +20,10 @@ const checkStatus = hosts =>
       .then(availabilities => {
         const available = availabilities.every(Boolean);
         if (!available) {
-          alertUser("Oyster is under maintenance. Please try again later.");
         }
         resolve(available);
       })
       .catch(err => {
-        alertUser(err);
         reject(err);
       });
   });

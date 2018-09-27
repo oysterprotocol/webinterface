@@ -27,7 +27,7 @@ class PaymentInvoiceSlide extends Component<PaymentInvoiceSlideProps> {
           <br />
           <span>{ethAddress}</span>
           <p>
-            We suggest using at least {gasPrice} Gwei for a gas price and 42,000
+            We suggest using at least {gasPrice} Gwei for a gas price and 55,000
             gas limit to ensure the transaction is confirmed as quickly as
             possible.
           </p>
