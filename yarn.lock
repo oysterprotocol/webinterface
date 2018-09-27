@@ -6808,9 +6808,9 @@ output-file-sync@^1.1.2:
     mkdirp "^0.5.1"
     object-assign "^4.1.0"
 
-oyster-streamable@^2.0.5:
-  version "2.0.5"
-  resolved "https://registry.yarnpkg.com/oyster-streamable/-/oyster-streamable-2.0.5.tgz#3b269aa7212214ba335cd6c3640e5d8864fe0738"
+oyster-streamable@^2.0.6:
+  version "2.0.6"
+  resolved "https://registry.yarnpkg.com/oyster-streamable/-/oyster-streamable-2.0.6.tgz#3ad7bd3536a6f3a232fbd31d522bdc7d603b5f66"
   dependencies:
     axios "^0.18.0"
     datamap-generator "^1.0.8"
