@@ -12,11 +12,11 @@ const ACTIONS = Object.freeze({
 
   // Stream actions
   streamDownload: ({ handle }) => ({
-    type: DOWNLOAD,
+    type: ACTIONS.DOWNLOAD,
     payload: { handle }
   }),
   streamDownloadProgress: ({ progress }) => ({
-    type: DOWNLOAD_PROGRESS,
+    type: ACTIONS.DOWNLOAD_PROGRESS,
     payload: progress
   }),
   streamDownloadSuccess: () => ({
