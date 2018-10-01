@@ -8,22 +8,17 @@ import navigationActions from "../actions/navigation-actions";
 import uploadActions from "../actions/upload-actions";
 import navigationEpic from "./navigation-epic";
 
-
 import { ActionsObservable } from "redux-observable";
 import configureMockStore from 'redux-mock-store';
 
 const mockStore = configureMockStore([]);
 
 test("navigationEpic goToDownloadForm", () => {
-
   const state = {};
-
   const store = mockStore(state);
-
   const action = ActionsObservable.of(
     { type: navigationActions.VISIT_DOWNLOAD_FORM }
   );
-
   const expected = [
     {
       "payload": {
@@ -33,7 +28,6 @@ test("navigationEpic goToDownloadForm", () => {
       "type": "@@router/CALL_HISTORY_METHOD"
     }
   ];
-
   navigationEpic(action, store)
     .toArray()
     .subscribe(actions => {
@@ -42,15 +36,11 @@ test("navigationEpic goToDownloadForm", () => {
 });
 
 test("navigationEpic goToUploadForm", () => {
-
   const state = {};
-
   const store = mockStore(state);
-
   const action = ActionsObservable.of(
     { type: navigationActions.VISIT_UPLOAD_FORM }
   );
-
   const expected = [
     {
       "payload": {
@@ -60,7 +50,6 @@ test("navigationEpic goToUploadForm", () => {
       "type": "@@router/CALL_HISTORY_METHOD"
     }
   ];
-
   navigationEpic(action, store)
     .toArray()
     .subscribe(actions => {
@@ -69,28 +58,23 @@ test("navigationEpic goToUploadForm", () => {
 });
 
 test("navigationEpic goToUploadStartedStream", () => {
-
   const state = {};
-
   const store = mockStore(state);
-
   const action = ActionsObservable.of(
     {
       type: uploadActions.PAYMENT_CONFIRMED,
       payload: { handle: "handle" }
     }
   );
-
   const expected = [
     {
       "payload": {
-        "args": ["/upload-progress#handle=handle"], 
+        "args": ["/upload-progress#handle=handle"],
         "method": "push"
-      }, 
+      },
       "type": "@@router/CALL_HISTORY_METHOD"
     }
   ];
-
   navigationEpic(action, store)
     .toArray()
     .subscribe(actions => {
@@ -99,17 +83,13 @@ test("navigationEpic goToUploadStartedStream", () => {
 });
 
 test("navigationEpic goToUploadCompleteStream", () => {
-
   const state = {};
-
   const store = mockStore(state);
-
   const action = ActionsObservable.of(
     {
       type: uploadActions.UPLOAD_SUCCESS
     }
   );
-
   const expected = [
     {
       "payload": {
@@ -119,7 +99,6 @@ test("navigationEpic goToUploadCompleteStream", () => {
       "type": "@@router/CALL_HISTORY_METHOD"
     }
   ];
-
   navigationEpic(action, store)
     .toArray()
     .subscribe(actions => {
@@ -128,17 +107,13 @@ test("navigationEpic goToUploadCompleteStream", () => {
 });
 
 test("navigationEpic goToPaymentInvoiceStream", () => {
-
   const state = {};
-
   const store = mockStore(state);
-
   const action = ActionsObservable.of(
     {
       type: uploadActions.INVOICED
     }
   );
-
   const expected = [
     {
       "payload": {
@@ -148,7 +123,6 @@ test("navigationEpic goToPaymentInvoiceStream", () => {
       "type": "@@router/CALL_HISTORY_METHOD"
     }
   ];
-
   navigationEpic(action, store)
     .toArray()
     .subscribe(actions => {
@@ -157,17 +131,13 @@ test("navigationEpic goToPaymentInvoiceStream", () => {
 });
 
 test("navigationEpic goToPaymentConfirmationStream", () => {
-
   const state = {};
-
   const store = mockStore(state);
-
   const action = ActionsObservable.of(
     {
       type: uploadActions.PAYMENT_PENDING
     }
   );
-
   const expected = [
     {
       "payload": {
@@ -177,7 +147,6 @@ test("navigationEpic goToPaymentConfirmationStream", () => {
       "type": "@@router/CALL_HISTORY_METHOD"
     }
   ];
-
   navigationEpic(action, store)
     .toArray()
     .subscribe(actions => {
@@ -186,17 +155,13 @@ test("navigationEpic goToPaymentConfirmationStream", () => {
 });
 
 test("navigationEpic goToErrorPage", () => {
-
   const state = {};
-
   const store = mockStore(state);
-
   const action = ActionsObservable.of(
     {
       type: navigationActions.ERROR_PAGE
     }
   );
-
   const expected = [
     {
       "payload": {
@@ -206,7 +171,6 @@ test("navigationEpic goToErrorPage", () => {
       "type": "@@router/CALL_HISTORY_METHOD"
     }
   ];
-
   navigationEpic(action, store)
     .toArray()
     .subscribe(actions => {

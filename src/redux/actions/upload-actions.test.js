@@ -1,7 +1,6 @@
 import actions from "./upload-actions";
 
 test("upload-action SELECT_ALPHA_BROKER", () => {
-
   const url = "url";
   const expected = {
     type: actions.SELECT_ALPHA_BROKER,
@@ -11,7 +10,6 @@ test("upload-action SELECT_ALPHA_BROKER", () => {
 });
 
 test("upload-action SELECT_BETA_BROKER", () => {
-
   const url = "handle";
   const expected = {
     type: actions.SELECT_BETA_BROKER,
@@ -21,7 +19,6 @@ test("upload-action SELECT_BETA_BROKER", () => {
 });
 
 test("upload-action SELECT_RETENTION_YEARS", () => {
-
   const value = "value";
   const expected = {
     type: actions.SELECT_RETENTION_YEARS,
@@ -32,7 +29,6 @@ test("upload-action SELECT_RETENTION_YEARS", () => {
 
 // Stream actions
 test("upload-action UPLOAD", () => {
-
   const file = "file";
   const retentionYears = "retentionYears";
   const brokers = "brokers";
@@ -44,7 +40,6 @@ test("upload-action UPLOAD", () => {
 });
 
 test("upload-action INVOICED", () => {
-
   const cost = "cost";
   const ethAddress = "ethAddress";
   const expected = {
@@ -55,7 +50,6 @@ test("upload-action INVOICED", () => {
 });
 
 test("upload-action PAYMENT_PENDING", () => {
-
   const expected = {
     type: actions.PAYMENT_PENDING
   };
@@ -64,7 +58,6 @@ test("upload-action PAYMENT_PENDING", () => {
 
 
 test("upload-action PAYMENT_CONFIRMED", () => {
-
   const filename = "filename";
   const handle = "handle";
   const numberOfChunks = "numberOfChunks";
@@ -77,7 +70,6 @@ test("upload-action PAYMENT_CONFIRMED", () => {
 
 
 test("upload-action CHUNKS_DELIVERED", () => {
-
   const handle = "handle";
   const expected = {
     type: actions.CHUNKS_DELIVERED,
@@ -88,7 +80,6 @@ test("upload-action CHUNKS_DELIVERED", () => {
 
 
 test("upload-action UPLOAD_PROGRESS", () => {
-
   const progress = 0.18;
   const expected = {
     type: actions.UPLOAD_PROGRESS,
@@ -99,7 +90,6 @@ test("upload-action UPLOAD_PROGRESS", () => {
 
 
 test("upload-action UPLOAD_SUCCESS", () => {
-
   const handle = "handle";
   const expected = {
     type: actions.UPLOAD_SUCCESS,
@@ -110,7 +100,6 @@ test("upload-action UPLOAD_SUCCESS", () => {
 
 
 test("upload-action UPLOAD_ERROR", () => {
-
   const handle = "handle";
   const err = "err";
   const expected = {

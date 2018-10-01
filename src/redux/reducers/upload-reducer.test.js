@@ -16,12 +16,10 @@ const initState = {
 };
 
 test("upload-reducer SELECT_ALPHA_BROKER", () => {
-
   const action = {
     type: uploadActions.SELECT_ALPHA_BROKER,
     payload: "url"
   };
-
   const expected = {
     alphaBroker: "url",
     betaBroker: API.BROKER_NODE_B,
@@ -37,17 +35,14 @@ test("upload-reducer SELECT_ALPHA_BROKER", () => {
     retentionYears: 1,
     uploadProgress: 0,
   };
-
   expect(upload(initState, action)).toEqual(expected);
 });
 
 test("upload-reducer SELECT_BETA_BROKER", () => {
-
   const action = {
     type: uploadActions.SELECT_BETA_BROKER,
     payload: "url"
   };
-
   const expected = {
     betaBroker: "url",
     alphaBroker: API.BROKER_NODE_A,
@@ -63,17 +58,14 @@ test("upload-reducer SELECT_BETA_BROKER", () => {
     retentionYears: 1,
     uploadProgress: 0,
   };
-
   expect(upload(initState, action)).toEqual(expected);
 });
 
 test("upload-reducer SELECT_RETENTION_YEARS", () => {
-
   const action = {
     type: uploadActions.SELECT_RETENTION_YEARS,
     payload: 10
   };
-
   const expected = {
     betaBroker: API.BROKER_NODE_B,
     alphaBroker: API.BROKER_NODE_A,
@@ -89,20 +81,16 @@ test("upload-reducer SELECT_RETENTION_YEARS", () => {
     retentionYears: 10,
     uploadProgress: 0,
   };
-
   expect(upload(initState, action)).toEqual(expected);
 });
 
 test("upload-reducer INVOICED", () => {
-
   const cost = 10;
   const ethAddress = "ethAddress";
-
   const action = {
     type: uploadActions.INVOICED,
     payload: { cost, ethAddress }
   };
-
   const expected = {
     betaBroker: API.BROKER_NODE_B,
     alphaBroker: API.BROKER_NODE_A,
@@ -118,19 +106,15 @@ test("upload-reducer INVOICED", () => {
     retentionYears: 1,
     uploadProgress: 0,
   };
-
   expect(upload(initState, action)).toEqual(expected);
 });
 
 test("upload-reducer CHUNKS_DELIVERED", () => {
-
   const handle = "handle";
-
   const action = {
     type: uploadActions.CHUNKS_DELIVERED,
     payload: { handle }
   };
-
   const expected = {
     betaBroker: API.BROKER_NODE_B,
     alphaBroker: API.BROKER_NODE_A,
@@ -148,16 +132,13 @@ test("upload-reducer CHUNKS_DELIVERED", () => {
     uploadState: UPLOAD_STATE.COMPLETE,
     handle: handle
   };
-
   expect(upload(initState, action)).toEqual(expected);
 });
 
 test("upload-reducer PAYMENT_CONFIRMED", () => {
-
   const action = {
     type: uploadActions.PAYMENT_CONFIRMED
   };
-
   const expected = {
     betaBroker: API.BROKER_NODE_B,
     alphaBroker: API.BROKER_NODE_A,
@@ -174,19 +155,15 @@ test("upload-reducer PAYMENT_CONFIRMED", () => {
     uploadProgress: 0,
     uploadState: UPLOAD_STATE.ATTACHING_META
   };
-
   expect(upload(initState, action)).toEqual(expected);
 });
 
 test("upload-reducer UPLOAD_PROGRESS", () => {
-
   const progress = 10;
-
   const action = {
     type: uploadActions.UPLOAD_PROGRESS,
     payload: { progress }
   };
-
   const expected = {
     betaBroker: API.BROKER_NODE_B,
     alphaBroker: API.BROKER_NODE_A,
@@ -202,19 +179,15 @@ test("upload-reducer UPLOAD_PROGRESS", () => {
     retentionYears: 1,
     uploadProgress: progress,
   };
-
   expect(upload(initState, action)).toEqual(expected);
 });
 
 test("upload-reducer UPLOAD_SUCCESS", () => {
-
   const handle = "handle";
-
   const action = {
     type: uploadActions.UPLOAD_SUCCESS,
     payload: { handle }
   };
-
   const expected = {
     betaBroker: API.BROKER_NODE_B,
     alphaBroker: API.BROKER_NODE_A,
@@ -230,6 +203,5 @@ test("upload-reducer UPLOAD_SUCCESS", () => {
     retentionYears: 1,
     uploadProgress: 0,
   };
-
   expect(upload(initState, action)).toEqual(expected);
 });
