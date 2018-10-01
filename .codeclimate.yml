@@ -1,0 +1,8 @@
+exclude_patterns:
+- "**/*.test.tsx"
+- "**/*.test.js"
+- "**/*.d.ts"
+- "**/node_modules/"
+- "build/"
+- "config/"
+- "public/"
