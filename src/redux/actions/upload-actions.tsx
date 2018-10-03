@@ -6,6 +6,7 @@ const UPLOAD = "oyster/upload/stream";
 const INVOICED = "oyster/upload/stream-invoiced";
 const PAYMENT_PENDING = "oyster/upload/stream-payment-pending";
 const PAYMENT_CONFIRMED = "oyster/upload/stream-payment-confirmed";
+const CHUNKS_PROGRESS = "oyster/upload/stream-chunks-progress";
 const CHUNKS_DELIVERED = "oyster/upload/stream-chunks-delivered";
 const UPLOAD_PROGRESS = "oyster/upload/stream-upload-progress";
 const UPLOAD_SUCCESS = "oyster/upload/stream-upload-success";
@@ -21,6 +22,7 @@ const ACTIONS = Object.freeze({
   INVOICED,
   PAYMENT_PENDING,
   PAYMENT_CONFIRMED,
+  CHUNKS_PROGRESS,
   CHUNKS_DELIVERED,
   UPLOAD_PROGRESS,
   UPLOAD_SUCCESS,
@@ -55,6 +57,10 @@ const ACTIONS = Object.freeze({
   streamPaymentConfirmed: ({ filename, handle, numberOfChunks }) => ({
     type: ACTIONS.PAYMENT_CONFIRMED,
     payload: { filename, handle, numberOfChunks }
+  }),
+  streamChunksProgress: ({ progress }) => ({
+    type: ACTIONS.CHUNKS_PROGRESS,
+    payload: { progress }
   }),
   streamChunksDelivered: ({ handle }) => ({
     type: ACTIONS.CHUNKS_DELIVERED,

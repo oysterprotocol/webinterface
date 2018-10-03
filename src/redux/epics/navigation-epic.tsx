@@ -29,10 +29,16 @@ const goToUploadForm = (action$, store) => {
   });
 };
 
-const goToUploadStartedStream = (action$, store) => {
+const goToUploadStarted = (action$, store) => {
   return action$
     .ofType(uploadActions.PAYMENT_CONFIRMED)
-    .map(action => push("/upload-progress#handle=" + action.payload.handle));
+    .map(action => push("/upload-started"));
+};
+
+const goToUploadProgress = (action$, store) => {
+  return action$
+    .ofType(uploadActions.CHUNKS_DELIVERED)
+    .map(action => push(`/upload-progress#handle=${action.payload.handle}`));
 };
 
 const goToUploadCompleteStream = (action$, store) => {
@@ -68,7 +74,8 @@ const goToBrokersDownPage = (action$, store) => {
 export default combineEpics(
   goToDownloadForm,
   goToUploadForm,
-  goToUploadStartedStream,
+  goToUploadStarted,
+  goToUploadProgress,
   goToUploadCompleteStream,
   goToPaymentInvoiceStream,
   goToPaymentConfirmationStream,

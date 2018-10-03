@@ -19,11 +19,17 @@ describe("Oyster file upload and download", () => {
         expect(path).to.eq("/payment-invoice");
       });
 
-      // Starts Polling
+      // Payment confirmed
       cy.location("pathname", { timeout: 60000 }).should(path => {
         expect(path).to.eq("/payment-confirm");
       });
 
+      // Upload chunks
+      cy.location("pathname", { timeout: 60000 }).should(path => {
+        expect(path).to.eq("/upload-started");
+      });
+
+      // attach to tangle
       cy.location("pathname", { timeout: 60000 }).should(path => {
         expect(path).to.eq("/upload-progress");
       });
@@ -33,8 +39,7 @@ describe("Oyster file upload and download", () => {
         expect(path).to.eq("/upload-complete");
       });
 
-      cy
-        .get("#oyster-handle")
+      cy.get("#oyster-handle")
         .invoke("text")
         .then(handle => {
           expect(handle).to.not.be.empty;

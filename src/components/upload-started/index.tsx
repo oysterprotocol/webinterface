@@ -2,7 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 import { withRouter } from "react-router";
 
-import UploadProgressSlide from "./upload-progress-slide";
+import UploadStartedSlide from "./upload-started-slide";
 
 const mapStateToProps = state => ({
   upload: state.upload
@@ -21,9 +21,9 @@ class UploadProgress extends React.Component<
 > {
   render() {
     const { upload } = this.props;
-    const { uploadProgress } = upload;
+    const { chunksProgress } = upload;
 
-    return <UploadProgressSlide uploadProgress={uploadProgress} />;
+    return <UploadStartedSlide chunksProgress={chunksProgress} />;
   }
 }
 export default withRouter(

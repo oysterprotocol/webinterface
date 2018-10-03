@@ -17,6 +17,7 @@ const initState = {
   retentionYears: 1,
   invoice: null, // { cost, ethAddress }
   gasPrice: 20,
+  chunksProgress: 0,
   uploadProgress: 0,
   handle: "",
   uploadState: UPLOAD_STATE.UPLOADING
@@ -54,18 +55,29 @@ const uploadReducer = (state = initState, action) => {
     case uploadActions.PAYMENT_CONFIRMED:
       return { ...state, uploadState: UPLOAD_STATE.ATTACHING_META };
 
-    case uploadActions.CHUNKS_DELIVERED: {
-      const { handle } = action.payload;
-      return { ...state, handle, uploadState: UPLOAD_STATE.COMPLETE };
+    case uploadActions.CHUNKS_PROGRESS: {
+      const { progress } = action.payload;
+      return { ...state, chunksProgress: progress };
     }
 
-    case uploadActions.UPLOAD_PROGRESS:
+    case uploadActions.CHUNKS_DELIVERED: {
+      const { handle } = action.payload;
+      return {
+        ...state,
+        handle,
+        chunksProgress: 100,
+        uploadState: UPLOAD_STATE.COMPLETE
+      };
+    }
+
+    case uploadActions.UPLOAD_PROGRESS: {
       const { progress } = action.payload;
       return { ...state, uploadProgress: progress };
+    }
 
     case uploadActions.UPLOAD_SUCCESS: {
       const { handle } = action.payload;
-      return { ...state, handle: handle };
+      return { ...state, handle: handle, uploadProgress: 100 };
     }
 
     default:
