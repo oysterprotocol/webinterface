@@ -14,10 +14,10 @@ const ProgressBorder = styled.div`
 const ProgressBar = ({ progress }) => (
   <ProgressBorder className="progress">
     <div
-      class="progress-bar"
+      className="progress-bar"
       role="progressbar"
       style={{
-        "background-color": "#2184fc",
+        backgroundColor: "#2184fc",
         width: `${progress}%`
       }}
       aria-valuenow={progress}

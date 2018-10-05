@@ -1,6 +1,5 @@
 import { Observable } from "rxjs";
 import { combineEpics } from "redux-observable";
-// import queryString from "query-string";
 
 import uploadActions from "../actions/upload-actions";
 import { execObservableIfBackendAvailable } from "./utils";

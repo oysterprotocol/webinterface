@@ -1,11 +1,15 @@
 import { combineEpics } from "redux-observable";
 import { push } from "react-router-redux";
 import { Observable } from "rxjs/Rx";
+import queryString from "query-string";
 
 import { API } from "../../config";
 import uploadActions from "../actions/upload-actions";
+import { UPLOAD_STATE } from "../reducers/upload-reducer";
 import navigationActions from "../actions/navigation-actions";
 import { execObservableIfBackendAvailable } from "./utils";
+
+const LOCATION_CHANGE_ACTION = "@@router/LOCATION_CHANGE";
 
 const goToDownloadForm = (action$, store) => {
   return action$
@@ -71,6 +75,23 @@ const goToBrokersDownPage = (action$, store) => {
     .map(() => push("/brokers-down"));
 };
 
+const uploadProgressListener = (action$, store) => {
+  return action$
+    .ofType(LOCATION_CHANGE_ACTION)
+    .filter(({ payload: { pathname } }) => pathname === "/upload-progress")
+    .switchMap(({ payload: { hash } }) => {
+      const {
+        upload: { uploadState }
+      } = store.getState();
+
+      // Prevent from getting into a cycle from the normal synchronous flow.
+      if (uploadState === UPLOAD_STATE.COMPLETE) return Observable.empty();
+
+      const { handle } = queryString.parse(hash);
+      return Observable.of(uploadActions.streamChunksDelivered({ handle }));
+    });
+};
+
 export default combineEpics(
   goToDownloadForm,
   goToUploadForm,
@@ -80,5 +101,6 @@ export default combineEpics(
   goToPaymentInvoiceStream,
   goToPaymentConfirmationStream,
   goToErrorPage,
-  goToBrokersDownPage
+  goToBrokersDownPage,
+  uploadProgressListener
 );

@@ -7549,10 +7549,10 @@ output-file-sync@^1.1.2:
     mkdirp "^0.5.1"
     object-assign "^4.1.0"
 
-oyster-streamable@^2.1.1:
-  version "2.1.1"
-  resolved "https://registry.yarnpkg.com/oyster-streamable/-/oyster-streamable-2.1.1.tgz#ace67988e07fa366342e761b266969818bd8d326"
-  integrity sha512-AJOgv2U6TwpHH6N1WxnObRzHQMfZcg6A9ye6M3U6ImGME40xJRzR6EhiNmUhaIvITQwu1GLaUC3n0KbNA0dOyA==
+oyster-streamable@^2.1.5:
+  version "2.1.5"
+  resolved "https://registry.yarnpkg.com/oyster-streamable/-/oyster-streamable-2.1.5.tgz#1d9a0027ac3f49e084c86e471d854b2ae19f8ee9"
+  integrity sha512-RfgPgIQm3tRbUGaJKMrn1ti7uVbHyb8RvGitfRIvoWHADS+Fy+XzU9r+qkBSCt/m/IJZVgBPcrRQbNGXIHM5lQ==
   dependencies:
     axios "^0.18.0"
     datamap-generator "^1.0.8"
