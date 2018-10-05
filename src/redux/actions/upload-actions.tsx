@@ -42,7 +42,7 @@ const ACTIONS = Object.freeze({
   // Stream actions
   // TODO: Use static type checker instead of destructuring to document.
   streamUpload: ({ file, retentionYears, brokers }) => ({
-    type: UPLOAD,
+    type: ACTIONS.UPLOAD,
     payload: { file, retentionYears, brokers }
   }),
   streamInvoiced: ({ cost, ethAddress }) => ({
@@ -53,7 +53,7 @@ const ACTIONS = Object.freeze({
     type: ACTIONS.PAYMENT_PENDING
   }),
   streamPaymentConfirmed: ({ filename, handle, numberOfChunks }) => ({
-    type: PAYMENT_CONFIRMED,
+    type: ACTIONS.PAYMENT_CONFIRMED,
     payload: { filename, handle, numberOfChunks }
   }),
   streamChunksDelivered: ({ handle }) => ({

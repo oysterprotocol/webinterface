@@ -130,7 +130,8 @@ test("upload-reducer CHUNKS_DELIVERED", () => {
     retentionYears: 1,
     uploadProgress: 0,
     uploadState: UPLOAD_STATE.COMPLETE,
-    handle: handle
+    handle: handle,
+    chunksProgress: 100,
   };
   expect(upload(initState, action)).toEqual(expected);
 });
@@ -201,7 +202,7 @@ test("upload-reducer UPLOAD_SUCCESS", () => {
     },
     invoice: null,
     retentionYears: 1,
-    uploadProgress: 0,
+    uploadProgress: 100,
   };
   expect(upload(initState, action)).toEqual(expected);
 });

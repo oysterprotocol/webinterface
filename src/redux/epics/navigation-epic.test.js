@@ -69,7 +69,7 @@ test("navigationEpic goToUploadStartedStream", () => {
   const expected = [
     {
       "payload": {
-        "args": ["/upload-progress#handle=handle"],
+        "args": ["/upload-started"],
         "method": "push"
       },
       "type": "@@router/CALL_HISTORY_METHOD"

@@ -2,10 +2,10 @@ version: "2"
 checks:
   identical-code:
     config:
-      threshold: 25
+      threshold: 50
   similar-code:
     config:
-      threshold: 50
+      threshold: 100
 exclude_patterns:
 - "**/*.test.tsx"
 - "**/*.test.js"

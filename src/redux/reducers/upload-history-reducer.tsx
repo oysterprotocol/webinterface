@@ -34,12 +34,12 @@ const reducer = (state = initState, action) => {
 
     case uploadActions.UPLOAD_ERROR: {
       const { handle } = action.payload;
-      const handleHist = {
+      const hist = {
         ...state[handle],
         status: UPLOAD_STATUSES.FAILED,
         updatedAt: Date.now()
       };
-      return { ...state, [handle]: handleHist };
+      return { ...state, [handle]: hist };
     }
 
     default:
