@@ -1,0 +1,16 @@
+version: "2"
+checks:
+  identical-code:
+    config:
+      threshold: 50
+  similar-code:
+    config:
+      threshold: 100
+exclude_patterns:
+- "**/*.test.tsx"
+- "**/*.test.js"
+- "**/*.d.ts"
+- "**/node_modules/"
+- "build/"
+- "config/"
+- "public/"

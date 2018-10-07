@@ -19,7 +19,8 @@ const beginDownloadUploadHistory = (action$, store) => {
       const items = history.map(e => e);
       const json = JSON.stringify(items);
       let blob = new Blob([json], { type: "application/json" });
-      FileSaver.saveAs(blob, "handle.json");
+      if (FileSaver !== undefined)
+        FileSaver.saveAs(blob, "handle.json");
       return downloadUploadHistoryActions.downloadUploadHistorySuccessAction();
     });
 };
