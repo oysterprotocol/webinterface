@@ -1,6 +1,6 @@
 import React from "react";
-import { CopyToClipboard } from "react-copy-to-clipboard";
 
+import ClipboardBtn from "../shared/clipboard-button";
 import Slide from "../shared/slide";
 
 const ICON_READY = require("../../assets/images/icon_ready.png");
@@ -15,13 +15,11 @@ const UploadCompleteSlide = ({ handle }) => (
     <div>
       <p>
         <span className="handle-header">Oyster Handle:</span>
-        <CopyToClipboard text={handle}>
-          <button className="clipboard-button">Copy to clipboard</button>
-        </CopyToClipboard>
       </p>
       <p id="oyster-handle" className="oyster-handle">
         {handle}
       </p>
+      <ClipboardBtn text={handle}>Copy to clipboard</ClipboardBtn>
     </div>
   </Slide>
 );

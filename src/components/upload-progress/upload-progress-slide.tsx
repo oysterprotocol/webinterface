@@ -1,5 +1,6 @@
 import React from "react";
 
+import ClipboardBtn from "../shared/clipboard-button";
 import ProgressBar from "../shared/progress-bar";
 import Slide from "../shared/slide";
 import Spinner from "../shared/spinner";
@@ -13,9 +14,11 @@ const UploadProgressSlide = ({ uploadProgress }) => (
       <Spinner isActive={uploadProgress === 0} className="download-spinner" />
     </p>
     <p>
-      You can come and check your progress at{" "}
-      <a href={window.location.href}>here</a>
+      You can come back and check your progress using
+      <br />
+      <a href={window.location.href}>{window.location.href}</a>
     </p>
+    <ClipboardBtn text={window.location.href}>Copy URL</ClipboardBtn>
     <div>
       <ProgressBar progress={uploadProgress} />
       <p>{Math.floor(Math.min(100, uploadProgress))}%</p>
