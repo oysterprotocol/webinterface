@@ -255,7 +255,7 @@ class UploadSlide extends Component<UploadSlideProps, UploadSlideState> {
           This is a beta phase and should not be used for important data.
           <br />
           Uploads cost 1 PRL per 64GB per year (paid for by Oyster). <br />
-          Current filesize limit is 25MB per file.
+          Current filesize limit is 125MB per file.
         </aside>
       </Slide>
     );
