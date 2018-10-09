@@ -163,29 +163,6 @@ matej-01
 
 */
 
-.error-description {
-  margin: 80px 0 0 0;
-  max-width: 450px;
-  font-size: 20px;
-}
-
-.error-description__link {
-  font-weight: bold;
-  color: #0068ea;
-  text-decoration: none;
-}
-
-.error-description__link:hover {
-  text-decoration: none;
-  color: #0068ea;
-}
-
-.error-img {
-  display: block;
-  float: right;
-  margin: 0 0 0 0;
-}
-
 /******************************/
 
 .upload-section {
