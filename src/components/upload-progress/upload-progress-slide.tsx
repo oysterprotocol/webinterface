@@ -1,4 +1,5 @@
 import React from "react";
+import styled from "styled-components";
 
 import ClipboardBtn from "../shared/clipboard-button";
 import ProgressBar from "../shared/progress-bar";
@@ -7,12 +8,16 @@ import Spinner from "../shared/spinner";
 
 const ICON_UPLOAD = require("../../assets/images/icon_upload.png");
 
+const TransactionConfirmedInstructions = styled.span`
+  padding-bottom: 20px;
+`;
+
 const UploadProgressSlide = ({ uploadProgress }) => (
   <Slide title="Upload Progress" image={ICON_UPLOAD}>
-    <p className="transaction-confirmed-instructions">
+    <TransactionConfirmedInstructions>
       Transaction Confirmed. Your file is now being uploaded to the Tangle...
       <Spinner isActive={uploadProgress === 0} className="download-spinner" />
-    </p>
+    </TransactionConfirmedInstructions>
     <p>
       You can come back and check your progress using
       <br />

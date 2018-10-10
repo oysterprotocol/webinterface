@@ -4,6 +4,8 @@ import styled from "styled-components";
 import ClipboardBtn from "../shared/clipboard-button";
 import Slide from "../shared/slide";
 
+const ICON_READY = require("../../assets/images/icon_ready.png");
+
 const HandleHeader = styled.span`
   color: #afcbfe;
   font-size: 20px;
@@ -14,8 +16,6 @@ const OysterHandle = styled.p`
   color: #0068ea;
   font-size: 15px;
 `;
-
-const ICON_READY = require("../../assets/images/icon_ready.png");
 
 const UploadCompleteSlide = ({ handle }) => (
   <Slide title="Upload Complete" image={ICON_READY}>
