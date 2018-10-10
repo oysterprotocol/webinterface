@@ -1,20 +1,43 @@
 import React from "react";
+import styled from "styled-components";
 
 import SlideError from "../shared/slide-error";
 
 const ICON_ERROR = require("../../assets/images/icon_error.png");
 
+const ErrorImg = styled.img`
+  display: block;
+  float: right;
+  margin: 0;
+`;
+
+const ErrorDescription = styled.p`
+  font-size: 20px;
+  margin: 80px 0 0;
+  max-width: 450px;
+`;
+
+const ErrorDescriptionLink = styled.a`
+  color: #0068ea;
+  font-weight: bold;
+  text-decoration: none;
+  &:hover {
+    text-decoration: none;
+    color: #0068ea;
+  }
+`;
+
 const ErrorPageSlide = ({ handle }) => (
   <SlideError title="Uh oh! Something went wong." image={null}>
-    <img src={ICON_ERROR} className="error-img" alt="error-img" />
-    <p className="error-description">
+    <ErrorImg src={ICON_ERROR} alt="error-img" />
+    <ErrorDescription>
       There was a problem with your upload. Please visit our{" "}
-      <a className="error-description__link" href="https://t.me/oysterprotocol">
+      <ErrorDescriptionLink href="https://t.me/oysterprotocol">
         {" "}
         Telegram Channel{" "}
-      </a>{" "}
+      </ErrorDescriptionLink>{" "}
       for more information.
-    </p>
+    </ErrorDescription>
   </SlideError>
 );
 
