@@ -731,11 +731,6 @@ h2 {
   font-size: 20px;
 }
 
-.oyster-handle {
-  color: #0068ea;
-  font-size: 15px;
-}
-
 .underline {
   width: 50px;
   border-color: #afcbfe;
@@ -801,12 +796,6 @@ input.retention-slider:disabled::-webkit-slider-thumb {
   color: white;
   height: 40px;
   font-size: 14px;
-}
-
-.handle-header {
-  color: #afcbfe;
-  font-size: 20px;
-  font-weight: 500;
 }
 
 .download-spinner {
