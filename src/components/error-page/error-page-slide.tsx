@@ -8,12 +8,12 @@ const ICON_ERROR = require("../../assets/images/icon_error.png");
 const ErrorImg = styled.img`
   display: block;
   float: right;
-  margin: 0 0 0 0;
+  margin: 0;
 `;
 
 const ErrorDescription = styled.p`
   font-size: 20px;
-  margin: 80px 0 0 0;
+  margin: 80px 0 0;
   max-width: 450px;
 `;
 
