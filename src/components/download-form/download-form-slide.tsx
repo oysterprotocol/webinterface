@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 
 import Slide from "../shared/slide";
-import PrimaryButton from "../shared/primary-button";
+import Button from "../shared/button";
 import Spinner from "../shared/spinner";
 
 import { DOWNLOAD_STATUSES } from "../../config";
@@ -71,8 +71,9 @@ class DownloadFormSlide extends React.Component<
           </label>
         </div>
         <div>
-          <PrimaryButton
+          <Button
             id="download-btn"
+            className="primary-button"
             disabled={status === DOWNLOAD_STATUSES.PENDING}
             onClick={() => {
               const handle = this.state.handle;
@@ -86,7 +87,7 @@ class DownloadFormSlide extends React.Component<
             {status === DOWNLOAD_STATUSES.PENDING
               ? "Retrieving file..."
               : "Retrieve File"}
-          </PrimaryButton>
+          </Button>
           <Spinner
             isActive={status === DOWNLOAD_STATUSES.PENDING}
             className="download-spinner"

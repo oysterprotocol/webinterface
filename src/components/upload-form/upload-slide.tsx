@@ -4,7 +4,7 @@ import "react-select/dist/react-select.css";
 
 import { API, FILE } from "../../config";
 import Slide from "../shared/slide";
-import PrimaryButton from "../shared/primary-button";
+import Button from "../shared/button";
 import Spinner from "../shared/spinner";
 
 const ICON_UPLOAD = require("../../assets/images/icon_upload.png");
@@ -217,9 +217,9 @@ class UploadSlide extends Component<UploadSlideProps, UploadSlideState> {
           </div>
         </div>
         <div className="upload_button">
-          <PrimaryButton
+          <Button
             id="start-upload-btn"
-            className="btn btn-upload"
+            className="btn btn-upload primary-button"
             disabled={this.state.isInitializing}
             type="button"
             onClick={() => {
@@ -243,7 +243,7 @@ class UploadSlide extends Component<UploadSlideProps, UploadSlideState> {
             {this.state.isInitializing
               ? "Initializing Upload..."
               : "Start Upload"}
-          </PrimaryButton>
+          </Button>
           <Spinner
             isActive={this.state.isInitializing}
             className="download-spinner"

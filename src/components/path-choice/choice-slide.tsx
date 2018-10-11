@@ -1,6 +1,6 @@
 import React from "react";
 
-import PrimaryButton from "../shared/primary-button";
+import Button from "../shared/button";
 
 const ICON_TANGLE_LEFT = require("../../assets/images/icon_tangle_left.png");
 const ICON_TANGLE_RIGHT = require("../../assets/images/icon_tangle_right.png");
@@ -16,9 +16,9 @@ const ChoiceSlide = ({ visitUploadFormFn, visitDownloadFormFn }) => (
           <img src={ICON_UPLOAD} className="upload-image" alt="upload" />
         </div>
         <div>
-          <PrimaryButton id="upload-btn" onClick={visitUploadFormFn}>
+          <Button id="upload-btn" className="primary-button" onClick={visitUploadFormFn}>
             Upload a File
-          </PrimaryButton>
+          </Button>
         </div>
         <p className="instructions">Use Oyster to host a file on the Tangle.</p>
       </div>
@@ -28,9 +28,9 @@ const ChoiceSlide = ({ visitUploadFormFn, visitDownloadFormFn }) => (
           <img src={ICON_DOWNLOAD} className="upload-image" alt="download" />
         </div>
         <div>
-          <PrimaryButton id="download-btn" onClick={visitDownloadFormFn}>
+          <Button id="download-btn" className="primary-button" onClick={visitDownloadFormFn}>
             Retrieve a File
-          </PrimaryButton>
+          </Button>
         </div>
         <p className="instructions">
           Use an Oyster handle to retrieve a file from the Tangle.
