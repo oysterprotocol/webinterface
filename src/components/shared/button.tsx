@@ -1,11 +1,11 @@
 import React from "react";
 
-const PrimaryButton = props => {
-  const { children, onClick, disabled } = props;
+const Button = props => {
+  const { children, onClick, disabled, className } = props;
   return (
     <button
       {...props}
-      className="primary-button"
+      className={className}
       onClick={onClick}
       disabled={disabled}
     >
@@ -14,4 +14,4 @@ const PrimaryButton = props => {
   );
 };
 
-export default PrimaryButton;
+export default Button;
