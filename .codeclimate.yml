@@ -5,7 +5,7 @@ checks:
       threshold: 50
   similar-code:
     config:
-      threshold: 100
+      threshold: 170
 exclude_patterns:
 - "**/*.test.tsx"
 - "**/*.test.js"
