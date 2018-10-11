@@ -1,5 +1,6 @@
 import React from "react";
 import { CopyToClipboard } from "react-copy-to-clipboard";
+import Button from "./button";
 
 const POPUP_TIME = 300;
 
@@ -23,9 +24,9 @@ class ClipboardBtn extends React.Component<ClipboardBtnProps> {
           this.setState({ popTimeout });
         }}
       >
-        <button className="clipboard-button">
+        <Button className="clipboard-button">
           {!!this.state.popTimeout ? "Copied!" : this.props.children}
-        </button>
+        </Button>
       </CopyToClipboard>
     );
   }

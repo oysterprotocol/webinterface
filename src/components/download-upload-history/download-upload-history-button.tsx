@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import Button from "../shared/button";
 
 interface DownloadUploadHistoryButtonProps {
   download;
@@ -11,13 +12,13 @@ class DownloadUploadHistoryButton extends Component<
     const { download } = this.props;
     return (
       <div>
-        <button
+        <Button
           onClick={() => {
             download();
           }}
         >
           Download upload history
-        </button>
+        </Button>
       </div>
     );
   }

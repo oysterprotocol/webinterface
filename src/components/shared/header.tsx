@@ -1,5 +1,7 @@
 import React from "react";
 
+import Button from "./button";
+
 import "../root.css";
 
 const ICON_LOGO = require("../../assets/images/logo.svg");
@@ -9,7 +11,7 @@ const Header = () => (
     <div role="navigation" className="navbar navbar-default">
       <div className="container">
         <div className="navbar-header">
-          <button
+          <Button
             type="button"
             className="navbar-toggle collapsed"
             data-toggle="collapse"
@@ -21,7 +23,7 @@ const Header = () => (
             <span className="icon-bar" />
             <span className="icon-bar" />
             <span className="icon-bar" />
-          </button>
+          </Button>
           <a href="/" className="logo" title="Oyster Storage's Logo">
             <img src={ICON_LOGO} className="header-logo" alt="logo" />
             <span className="App-title wordmark">Oyster Storage</span>
