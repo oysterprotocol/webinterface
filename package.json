@@ -133,7 +133,7 @@
     }
   },
   "lint-staged": {
-    "*.{js,json,css,md}": [
+    "*.{js,jsx,ts,tsx,json,css,md}": [
       "npx prettier --write",
       "git add"
     ]
