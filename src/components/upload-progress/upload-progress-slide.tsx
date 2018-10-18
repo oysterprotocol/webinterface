@@ -11,7 +11,7 @@ const UploadProgressSlide = ({ uploadProgress }) => (
   <Slide title="Upload Progress" image={ICON_UPLOAD}>
     <p className="transaction-confirmed-instructions">
       Transaction Confirmed. Your file is now being uploaded to the Tangle...
-      <Spinner isActive={uploadProgress === 0} className="download-spinner" />
+      <Spinner isActive={true} className="download-spinner" />
     </p>
     <p>
       You can come back and check your progress using

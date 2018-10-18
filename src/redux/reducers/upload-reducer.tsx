@@ -52,7 +52,7 @@ const uploadReducer = (state = initState, action) => {
       const { cost, ethAddress } = action.payload;
       return { ...state, invoice: { cost, ethAddress } };
 
-    case uploadActions.PAYMENT_CONFIRMED:
+    case uploadActions.CHUNKS_UPLOADED:
       return { ...state, uploadState: UPLOAD_STATE.ATTACHING_META };
 
     case uploadActions.CHUNKS_PROGRESS: {

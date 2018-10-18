@@ -11,7 +11,11 @@ const numberOfChunks = 1;
 test("upload-history-reducer PAYMENT_CONFIRMED", () => {
   const action = {
     type: uploadActions.PAYMENT_CONFIRMED,
-    payload: { handle: handle, filename: filename, numberOfChunks: numberOfChunks }
+    payload: {
+      handle: handle,
+      filename: filename,
+      numberOfChunks: numberOfChunks
+    }
   };
   const expected = {
     [handle]: {

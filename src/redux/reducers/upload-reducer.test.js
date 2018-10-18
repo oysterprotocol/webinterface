@@ -29,11 +29,11 @@ test("upload-reducer SELECT_ALPHA_BROKER", () => {
     history: [],
     indexes: {
       indexes: [],
-      startingLength: 0,
+      startingLength: 0
     },
     invoice: null,
     retentionYears: 1,
-    uploadProgress: 0,
+    uploadProgress: 0
   };
   expect(upload(initState, action)).toEqual(expected);
 });
@@ -52,11 +52,11 @@ test("upload-reducer SELECT_BETA_BROKER", () => {
     history: [],
     indexes: {
       indexes: [],
-      startingLength: 0,
+      startingLength: 0
     },
     invoice: null,
     retentionYears: 1,
-    uploadProgress: 0,
+    uploadProgress: 0
   };
   expect(upload(initState, action)).toEqual(expected);
 });
@@ -75,11 +75,11 @@ test("upload-reducer SELECT_RETENTION_YEARS", () => {
     history: [],
     indexes: {
       indexes: [],
-      startingLength: 0,
+      startingLength: 0
     },
     invoice: null,
     retentionYears: 10,
-    uploadProgress: 0,
+    uploadProgress: 0
   };
   expect(upload(initState, action)).toEqual(expected);
 });
@@ -100,11 +100,11 @@ test("upload-reducer INVOICED", () => {
     history: [],
     indexes: {
       indexes: [],
-      startingLength: 0,
+      startingLength: 0
     },
     invoice: { cost, ethAddress },
     retentionYears: 1,
-    uploadProgress: 0,
+    uploadProgress: 0
   };
   expect(upload(initState, action)).toEqual(expected);
 });
@@ -124,14 +124,14 @@ test("upload-reducer CHUNKS_DELIVERED", () => {
     history: [],
     indexes: {
       indexes: [],
-      startingLength: 0,
+      startingLength: 0
     },
     invoice: null,
     retentionYears: 1,
     uploadProgress: 0,
     uploadState: UPLOAD_STATE.COMPLETE,
     handle: handle,
-    chunksProgress: 100,
+    chunksProgress: 100
   };
   expect(upload(initState, action)).toEqual(expected);
 });
@@ -149,12 +149,11 @@ test("upload-reducer PAYMENT_CONFIRMED", () => {
     history: [],
     indexes: {
       indexes: [],
-      startingLength: 0,
+      startingLength: 0
     },
     invoice: null,
     retentionYears: 1,
-    uploadProgress: 0,
-    uploadState: UPLOAD_STATE.ATTACHING_META
+    uploadProgress: 0
   };
   expect(upload(initState, action)).toEqual(expected);
 });
@@ -174,11 +173,11 @@ test("upload-reducer UPLOAD_PROGRESS", () => {
     history: [],
     indexes: {
       indexes: [],
-      startingLength: 0,
+      startingLength: 0
     },
     invoice: null,
     retentionYears: 1,
-    uploadProgress: progress,
+    uploadProgress: progress
   };
   expect(upload(initState, action)).toEqual(expected);
 });
@@ -198,11 +197,11 @@ test("upload-reducer UPLOAD_SUCCESS", () => {
     history: [],
     indexes: {
       indexes: [],
-      startingLength: 0,
+      startingLength: 0
     },
     invoice: null,
     retentionYears: 1,
-    uploadProgress: 100,
+    uploadProgress: 100
   };
   expect(upload(initState, action)).toEqual(expected);
 });
