@@ -4,9 +4,10 @@ const PROTOCOL = IS_DEV ? "http" : "https";
 
 const POLLING_NODE = IS_DEV
   ? ["18.191.77.193"] // Travis broker
-  : ["poll.oysternodes.com"];
+  : ["poll2.oysternodes.com"];
 
-export const OLD_TANGLE_NODE = "https://download.oysternodes.com:14265";
+export const OLD_TANGLE_NODE_1 = "https://download.oysternodes.com:14265";
+export const OLD_TANGLE_NODE_2 = "https://poll.oysternodes.com:14265";
 
 const BROKERS = IS_DEV
   ? ["18.222.56.121", "18.191.77.193"] // Travis brokers
