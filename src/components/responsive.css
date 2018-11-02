@@ -1,28 +1,14 @@
 @media (min-width: 1200px) {
   /*margins*/
-  main {
-    margin: 5rem 0;
-  }
   section {
     margin: 5rem 0;
-  }
-  main [class^="col-"] {
-    margin-top: 5rem;
-    margin-bottom: 5rem;
   }
 }
 
 @media (min-width: 992px) and (max-width: 1199px) {
   /*margins*/
-  main {
-    margin: 4rem 0;
-  }
   section {
     margin: 4rem 0;
-  }
-  main [class^="col-"] {
-    margin-top: 4rem;
-    margin-bottom: 4rem;
   }
 }
 
@@ -33,15 +19,8 @@
 /* Small Devices, Tablets */
 @media (min-width: 768px) and (max-width: 991px) {
   /*margins*/
-  main {
-    margin: 3rem 0;
-  }
   section {
     margin: 3rem 0;
-  }
-  main [class^="col-"] {
-    margin-top: 3rem;
-    margin-bottom: 3rem;
   }
   .slicknav_menu {
     display: block;
@@ -89,15 +68,8 @@
     display: block;
   }
   /*margins*/
-  main {
-    margin: 0 0 2rem 0;
-  }
   section {
     margin: 2rem 0;
-  }
-  main [class^="col-"] {
-    margin-top: 2rem;
-    margin-bottom: 2rem;
   }
   .slicknav_menu {
     display: block;

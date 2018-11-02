@@ -2,7 +2,7 @@ import styled from "styled-components";
 import Container from "./container";
 
 const Flexbox = styled(Container)`
-  display: flex;
+  display: ${ (props : any) => props.display || 'flex' };;
   align-items: ${ (props : any) => props.alignItems || 'flex-start' };
   align-content: ${ (props : any) => props.alignContent || 'flex-start' };
   justify-content: ${ (props : any) => props.justifyContent || 'flex-start' };

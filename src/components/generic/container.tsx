@@ -24,6 +24,7 @@ const Container = styled.div`
   font-family: ${ (props : any) => props.fontFamily || 'auto' };
   position: ${ (props : any) => props.position || 'static' };
   background-color: ${ (props : any) => props.backgroundColor || '#ffffff' };
+  flex: ${ (props : any) => props.flex || 'auto' };
 `;
 
 export default Container;

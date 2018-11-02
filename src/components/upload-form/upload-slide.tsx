@@ -8,6 +8,8 @@ import Slide from "../shared/slide";
 import Button from "../shared/button";
 import Spinner from "../shared/spinner";
 
+import { Flexbox } from "../generic";
+
 const ICON_UPLOAD = require("../../assets/images/icon_upload.png");
 const ICON_FOLDER = require("../../assets/images/icon_folder.png");
 
@@ -45,6 +47,33 @@ const Disclaimer = styled.aside`
   left: 0;
   right: 0;
   padding-top: 20px;
+`;
+
+const RetentionWrapperForm = styled.form`
+  display: flex;
+`;
+
+const SelectBox = styled.select`
+  border: 1px solid #ecedef;
+  width: 44px;
+  font-size: 16px;
+  padding: 1px 0;
+  line-height: 26px;
+  margin: 0 auto;
+  text-align: center;
+  padding-left: 15px;
+  border-radius: 5px;
+  font-weight: 500;
+`;
+
+const FlexContainer = styled.div`
+  flex: 1;
+  padding-right: 10px;
+`;
+
+
+const FlexboxStyled = styled(Flexbox)`
+  marginTop="20px"
 `;
 
 interface UploadSlideProps {
@@ -91,8 +120,8 @@ class UploadSlide extends Component<UploadSlideProps, UploadSlideState> {
     } = this.props;
     return (
       <Slide title="Upload a File" image={ICON_UPLOAD}>
-        <div className="broker-select-wrapper">
-          <div className="upload-column">
+        <Flexbox>
+          <FlexContainer>
             <label htmlFor="broker-node-1">Broker Node 1</label>
             <Select
               name="broker-node-1"
@@ -112,8 +141,8 @@ class UploadSlide extends Component<UploadSlideProps, UploadSlideState> {
                 }
               ]}
             />
-          </div>
-          <div className="upload-column">
+          </FlexContainer>
+          <FlexContainer>
             <label htmlFor="broker-node-2">Broker Node 2</label>
             <Select
               name="broker-node-2"
@@ -133,12 +162,12 @@ class UploadSlide extends Component<UploadSlideProps, UploadSlideState> {
                 }
               ]}
             />
-          </div>
-        </div>
-        <div className="upload-section">
+          </FlexContainer>
+        </Flexbox>
+        <FlexboxStyled>
           <Paragraph>Select Retention File</Paragraph>
-          <form className="retention-wrapper">
-            <div className="upload-column">
+          <RetentionWrapperForm>
+            <FlexContainer>
               <input
                 className="retention-slider"
                 type="range"
@@ -157,10 +186,9 @@ class UploadSlide extends Component<UploadSlideProps, UploadSlideState> {
                   });
                 }}
               />
-            </div>
-            <div className="upload-column">
-              <select
-                id="sel"
+            </FlexContainer>
+            <FlexContainer>
+              <SelectBox
                 value={retentionYears}
                 disabled
                 onChange={event => {
@@ -185,13 +213,13 @@ class UploadSlide extends Component<UploadSlideProps, UploadSlideState> {
                 <option>8</option>
                 <option>9</option>
                 <option>10</option>
-              </select>
+              </SelectBox>
               <SpanYearsRetantion>Years of retention</SpanYearsRetantion>
-            </div>
-          </form>
-        </div>
-        <div className="file-select-wrapper upload-section">
-          <div className="upload-column">
+            </FlexContainer>
+          </RetentionWrapperForm>
+        </FlexboxStyled>
+        <FlexboxStyled>
+          <FlexContainer>
             <Paragraph>Select a file</Paragraph>
             <div className="file-input-wrapper">
               <label htmlFor="upload-input" className="file-input-label">
@@ -238,15 +266,15 @@ class UploadSlide extends Component<UploadSlideProps, UploadSlideState> {
               type="file"
               required
             />
-          </div>
-          <div className="upload-column">
+          </FlexContainer>
+          <FlexContainer>
             <Paragraph>Cost</Paragraph>
             <StorageFees>
               {this.state.humanFileSize} for {retentionYears} years:
               <SpanStorageFees> {this.state.storageCost} PRL</SpanStorageFees>
             </StorageFees>
-          </div>
-        </div>
+          </FlexContainer>
+        </FlexboxStyled>
         <div className="upload_button">
           <Button
             id="start-upload-btn"

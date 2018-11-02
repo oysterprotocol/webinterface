@@ -1,36 +1,3 @@
-.upload-section {
-  margin-top: 20px;
-}
-
-.retention-wrapper,
-.file-select-wrapper,
-.broker-select-wrapper {
-  display: flex;
-}
-
-.upload-column {
-  flex: 1;
-  padding-right: 10px;
-}
-
-div.Select-control {
-  border-radius: 10px;
-  border: 1px solid #ecedef;
-}
-
-select#sel {
-  border: 1px solid #ecedef;
-  width: 44px;
-  font-size: 16px;
-  padding: 1px 0;
-  line-height: 26px;
-  margin: 0 auto;
-  text-align: center;
-  padding-left: 15px;
-  border-radius: 5px;
-  font-weight: 500;
-}
-
 button.btn {
   border-radius: 4px;
   padding: 0.5em 3em;
@@ -343,8 +310,6 @@ option:active {
   background-size: contain;
 }
 
-/* additions after fiverr */
-
 header a {
   color: white;
 }
@@ -352,11 +317,6 @@ header a {
 .logo img {
   display: inline-block;
   max-width: 100px;
-}
-
-main {
-  max-width: 100vw;
-  overflow-x: hidden;
 }
 
 [class^="navbar"] {
@@ -424,17 +384,9 @@ header a:focus {
   padding: 50px;
 }
 
-/********************************
-
-matej-01
-
-*/
-
 .slide-body.slide-error-body {
   flex: 1;
 }
-
-/******************************/
 
 .slide-custom-image {
   position: absolute;
@@ -483,11 +435,6 @@ matej-01
   position: absolute;
   top: -60px;
 }
-
-/* .slide-tangle-image { */
-/* position: absolute; */
-/* top: -60px; */
-/* } */
 
 .upload-image {
   width: 100px;
