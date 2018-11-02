@@ -29,6 +29,23 @@ const SpanYearsRetantion = styled.span`
   margin-left: 10px;
 `;
 
+const StorageFees = styled.h3`
+  color: #778291;
+  font-weight: 500;
+  font-size: 18px;
+`;
+
+const SpanStorageFees = styled.span`
+  color: #0068ea;
+`;
+
+const Disclaimer = styled.aside`
+  text-align: center;
+  position: absolute;
+  left: 0;
+  right: 0;
+  padding-top: 20px;
+`;
 
 interface UploadSlideProps {
   alphaBroker;
@@ -224,10 +241,10 @@ class UploadSlide extends Component<UploadSlideProps, UploadSlideState> {
           </div>
           <div className="upload-column">
             <Paragraph>Cost</Paragraph>
-            <h3 className="storage-fees">
+            <StorageFees>
               {this.state.humanFileSize} for {retentionYears} years:
-              <span> {this.state.storageCost} PRL</span>
-            </h3>
+              <SpanStorageFees> {this.state.storageCost} PRL</SpanStorageFees>
+            </StorageFees>
           </div>
         </div>
         <div className="upload_button">
@@ -263,14 +280,14 @@ class UploadSlide extends Component<UploadSlideProps, UploadSlideState> {
             className="download-spinner"
           />
         </div>
-        <aside className="disclaimer">
+        <Disclaimer>
           DISCLAIMER: No PRL is required to use the beta Mainnet.
           <br />
           This is a beta phase and should not be used for important data.
           <br />
           Uploads cost 1 PRL per 64GB per year (paid for by Oyster). <br />
           Current filesize limit is 125MB per file.
-        </aside>
+        </Disclaimer>
       </Slide>
     );
   }

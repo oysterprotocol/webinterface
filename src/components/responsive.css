@@ -150,9 +150,6 @@
   .handle-instructions {
     padding-bottom: 50px
   }
-  .retrieving-invoice-spinner {
-    margin: 50px auto;
-  }
   .error-description {
     margin: 60px 0 0 0;
     font-size: 15px;
@@ -212,11 +209,6 @@
 
   .border_img img {
     width: 105%;
-  }
-
-  .disclaimer p {
-    font-size: 10px;
-    line-height: 15px;
   }
 }
 

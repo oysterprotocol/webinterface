@@ -1,62 +1,3 @@
-.storage-fees {
-  color: #778291;
-  font-weight: 500;
-  font-size: 18px;
-}
-
-.disclaimer {
-  text-align: center;
-  padding-top: 40px;
-  position: absolute;
-  left: 0;
-  right: 0;
-}
-
-.storage-fees span {
-  color: #0068ea;
-}
-
-.payment-request span {
-  color: #0068ea;
-}
-
-.payment-request p {
-  margin-top: 50px;
-  color: gray;
-  font-weight: bold;
-}
-
-.payment-confirm-spinner {
-  margin: 75px auto 0 auto;
-  display: block;
-}
-
-.retrieving-invoice-spinner {
-  margin: 75px;
-  display: block;
-}
-
-.spin-2s {
-  animation: spin 2s linear infinite;
-}
-
-@keyframes spin {
-  0% {
-    transform: rotate(0deg);
-  }
-  100% {
-    transform: rotate(360deg);
-  }
-}
-
-/********************************
-
-matej-01
-
-*/
-
-/******************************/
-
 .upload-section {
   margin-top: 20px;
 }
@@ -380,15 +321,6 @@ option:active {
 }
 .image-preview-input-title {
   margin-left: 2px;
-}
-
-.disclaimer {
-  text-align: center;
-  padding-top: 20px;
-}
-.disclaimer p {
-  font-size: 12px;
-  line-height: 20px;
 }
 
 .slicknav_menu {

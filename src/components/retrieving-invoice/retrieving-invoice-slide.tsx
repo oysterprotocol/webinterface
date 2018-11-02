@@ -13,6 +13,23 @@ const Paragraph = styled.p`
   line-height: 26px;
 `;
 
+const RetrievingInvoiceSpinnerImage = styled.img`
+  margin: 75px;
+  display: block;
+  animation: spin 2s linear infinite;
+  @keyframes spin {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+  @media (max-width: 767px) {
+    margin: 50px auto;
+  }
+`;
+
 class RetrievingInvoiceSlide extends Component {
   constructor(props) {
     super(props);
@@ -22,10 +39,7 @@ class RetrievingInvoiceSlide extends Component {
     return (
       <Slide title="Retrieving Invoice..." image={ICON_READY}>
         <Paragraph>We are retrieving your invoice...</Paragraph>
-        <img
-          src={ICON_SPINNER}
-          className="retrieving-invoice-spinner spin-2s"
-        />
+        <RetrievingInvoiceSpinnerImage src={ICON_SPINNER} />
       </Slide>
     );
   }

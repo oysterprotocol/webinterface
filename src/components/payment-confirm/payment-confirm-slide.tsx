@@ -14,13 +14,27 @@ const Paragraph = styled.p`
   line-height: 26px;
 `;
 
+const PaymentConfirmSpinnerImage = styled.img`
+  margin: 75px auto 0 auto;
+  display: block;
+  animation: spin 2s linear infinite;
+  @keyframes spin {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+`;
+
 const PaymentConfirmSlide = () => (
   <Slide title="Transaction Received" image={ICON_READY}>
     <Paragraph>
       Your transaction has been received, and is now being confirmed on the
       Ethereum Blockchain.
     </Paragraph>
-    <img src={ICON_SPINNER} className="payment-confirm-spinner spin-2s" />
+    <PaymentConfirmSpinnerImage src={ICON_SPINNER} />
   </Slide>
 );
 

@@ -11,11 +11,16 @@ interface PaymentInvoiceSlideProps {
   gasPrice;
 }
 
-const Paragraph = styled.p`
-  color: #778291;
-  font-weight: 500;
+const PaymentRequestParagraph = styled.p`
   font-size: 15px;
   line-height: 26px;
+  margin-top: 50px;
+  color: gray;
+  font-weight: bold;
+`;
+
+const PaymentRequestSpan = styled.span`
+  color: #0068ea;
 `;
 
 class PaymentInvoiceSlide extends Component<PaymentInvoiceSlideProps> {
@@ -27,18 +32,18 @@ class PaymentInvoiceSlide extends Component<PaymentInvoiceSlideProps> {
     const { cost, ethAddress, gasPrice } = this.props;
     return (
       <Slide title="Send PRL (Paid for by Oyster)" image={ICON_PlANE}>
-        <div className="payment-request">
+        <div>
           To complete this transaction, send <span>{cost} PRL</span> to the
           address listed below:
           <br />
           <br />
           <br />
-          <span>{ethAddress}</span>
-          <Paragraph>
+          <PaymentRequestSpan>{ethAddress}</PaymentRequestSpan>
+          <PaymentRequestParagraph>
             We suggest using at least {gasPrice} Gwei for a gas price and 55,000
             gas limit to ensure the transaction is confirmed as quickly as
             possible.
-          </Paragraph>
+          </PaymentRequestParagraph>
         </div>
       </Slide>
     );
