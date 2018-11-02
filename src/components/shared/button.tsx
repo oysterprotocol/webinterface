@@ -1,16 +1,23 @@
 import React from "react";
+import styled from "styled-components";
+
+const ButtonFocus = styled.button`
+  :focus {
+    outline: 0;
+  }
+`;
 
 const Button = props => {
   const { children, onClick, disabled, className } = props;
   return (
-    <button
+    <ButtonFocus
       {...props}
       className={className}
       onClick={onClick}
       disabled={disabled}
     >
       {children}
-    </button>
+    </ButtonFocus>
   );
 };
 

@@ -70,6 +70,8 @@ const ErrorSlideBody = styled.div`
 
 const ErrorSlideTitle = styled.h1`
   color: #0068ea;
+  font-weight: 600;
+  font-size: 32px;
 `;
 
 const ErrorSlideUnderline = styled.hr`

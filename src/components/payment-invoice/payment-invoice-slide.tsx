@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import styled from "styled-components";
 
 import Slide from "../shared/slide";
 
@@ -9,6 +10,13 @@ interface PaymentInvoiceSlideProps {
   ethAddress;
   gasPrice;
 }
+
+const Paragraph = styled.p`
+  color: #778291;
+  font-weight: 500;
+  font-size: 15px;
+  line-height: 26px;
+`;
 
 class PaymentInvoiceSlide extends Component<PaymentInvoiceSlideProps> {
   constructor(props) {
@@ -26,11 +34,11 @@ class PaymentInvoiceSlide extends Component<PaymentInvoiceSlideProps> {
           <br />
           <br />
           <span>{ethAddress}</span>
-          <p>
+          <Paragraph>
             We suggest using at least {gasPrice} Gwei for a gas price and 55,000
             gas limit to ensure the transaction is confirmed as quickly as
             possible.
-          </p>
+          </Paragraph>
         </div>
       </Slide>
     );

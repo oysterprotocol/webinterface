@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import styled from "styled-components";
 import Select from "react-select";
 import "react-select/dist/react-select.css";
 
@@ -17,6 +18,18 @@ const DEFAULT_HUMAN_FILE_SIZE = 0;
 const CHUNKS_IN_SECTOR = 1000000;
 const STORAGE_PEG = 64;
 
+const Paragraph = styled.p`
+  color: #778291;
+  font-weight: 500;
+  font-size: 15px;
+  line-height: 26px;
+`;
+
+const SpanYearsRetantion = styled.span`
+  margin-left: 10px;
+`;
+
+
 interface UploadSlideProps {
   alphaBroker;
   betaBroker;
@@ -34,6 +47,7 @@ interface UploadSlideState {
   humanFileSize;
   isInitializing: boolean; // TODO: Enum this.
 }
+
 
 class UploadSlide extends Component<UploadSlideProps, UploadSlideState> {
   constructor(props) {
@@ -105,7 +119,7 @@ class UploadSlide extends Component<UploadSlideProps, UploadSlideState> {
           </div>
         </div>
         <div className="upload-section">
-          <p>Select Retention File</p>
+          <Paragraph>Select Retention File</Paragraph>
           <form className="retention-wrapper">
             <div className="upload-column">
               <input
@@ -155,13 +169,13 @@ class UploadSlide extends Component<UploadSlideProps, UploadSlideState> {
                 <option>9</option>
                 <option>10</option>
               </select>
-              <span className="years-retention">Years of retention</span>
+              <SpanYearsRetantion>Years of retention</SpanYearsRetantion>
             </div>
           </form>
         </div>
         <div className="file-select-wrapper upload-section">
           <div className="upload-column">
-            <p>Select a file</p>
+            <Paragraph>Select a file</Paragraph>
             <div className="file-input-wrapper">
               <label htmlFor="upload-input" className="file-input-label">
                 <span className="upload-filename">{this.state.fileName}</span>
@@ -209,7 +223,7 @@ class UploadSlide extends Component<UploadSlideProps, UploadSlideState> {
             />
           </div>
           <div className="upload-column">
-            <p>Cost</p>
+            <Paragraph>Cost</Paragraph>
             <h3 className="storage-fees">
               {this.state.humanFileSize} for {retentionYears} years:
               <span> {this.state.storageCost} PRL</span>

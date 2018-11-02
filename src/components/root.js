@@ -2,15 +2,19 @@ import React from "react";
 
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./shared/slicknav.css";
-import "./root.css";
 import "./responsive.css";
+import styled from "styled-components";
 
 import PathChoice from "./path-choice";
 
+const AppContainer = styled.div`
+  font-family: "Poppins", sans-serif;
+`;
+
 const Root = () => (
-  <div className="App">
+  <AppContainer className="App">
     <PathChoice />
-  </div>
+  </AppContainer>
 );
 
 export default Root;

@@ -1,13 +1,25 @@
 import React from "react";
+import styled from "styled-components";
 
 import Button from "./button";
 
-import "../root.css";
-
 const ICON_LOGO = require("../../assets/images/logo.svg");
 
+const AppHeader = styled.header`
+  background: #0068ea;
+  padding: 10px 0;
+  -webkit-box-shadow: 0px 5px 20px 0px rgba(50, 50, 50, 0.5);
+  -moz-box-shadow: 0px 5px 20px 0px rgba(50, 50, 50, 0.5);
+  box-shadow: 0px 5px 20px 0px rgba(50, 50, 50, 0.5);
+`;
+
+const AppTitle = styled.span`
+  font-size: 18px;
+  padding: 0 2rem;
+`;
+
 const Header = () => (
-  <header className="App-header">
+  <AppHeader>
     <div role="navigation" className="navbar navbar-default">
       <div className="container">
         <div className="navbar-header">
@@ -26,7 +38,7 @@ const Header = () => (
           </Button>
           <a href="/" className="logo" title="Oyster Storage's Logo">
             <img src={ICON_LOGO} className="header-logo" alt="logo" />
-            <span className="App-title wordmark">Oyster Storage</span>
+            <AppTitle>Oyster Storage</AppTitle>
           </a>
         </div>
         <div id="navbar" className="navbar-collapse collapse">
@@ -46,7 +58,7 @@ const Header = () => (
         </div>
       </div>
     </div>
-  </header>
+  </AppHeader>
 );
 
 export default Header;

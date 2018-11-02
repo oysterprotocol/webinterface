@@ -43,17 +43,8 @@
     margin-top: 3rem;
     margin-bottom: 3rem;
   }
-  .upload_img {
-    display: none;
-  }
   .slicknav_menu {
     display: block;
-  }
-  ul#manu {
-    margin: 0;
-    padding: 0;
-    list-style: none;
-    display: none;
   }
   .slicknav_menu {
     font-size: 16px;
@@ -75,10 +66,6 @@
 
 /* Small Devices Potrait */
 @media (max-width: 767px) {
-  .form_title {
-    margin-bottom: 3em;
-  }
-  
   .upload-filename {
     max-width: 250px
   }
@@ -112,19 +99,8 @@
     margin-top: 2rem;
     margin-bottom: 2rem;
   }
-
-  .upload_img {
-    display: none;
-  }
-
   .slicknav_menu {
     display: block;
-  }
-  ul#manu {
-    margin: 0;
-    padding: 0;
-    list-style: none;
-    display: none;
   }
   .slicknav_menu {
     font-size: 16px;
@@ -134,10 +110,6 @@
     position: absolute;
     right: 0;
     z-index: 9999;
-  }
-
-  .logo_img {
-    width: 46%;
   }
 
   /* mobile fix: centers, declutters, and wraps the UI */
@@ -194,10 +166,6 @@
 
 /* Extra Small Devices, Phones */
 @media (max-width: 479px) {
-  .upload_img {
-    display: none;
-  }
-
   .rights {
     width: 100%;
     float: left;
@@ -206,12 +174,6 @@
   .lefts {
     width: 100%;
     float: left;
-  }
-
-  .years {
-    float: right;
-    text-align: left;
-    width: 71%;
   }
 
   input[type="range"] {
@@ -237,12 +199,7 @@
   .slicknav_menu {
     display: block;
   }
-  ul#manu {
-    margin: 0;
-    padding: 0;
-    list-style: none;
-    display: none;
-  }
+
   .slicknav_menu {
     font-size: 16px;
     box-sizing: border-box;
@@ -253,19 +210,10 @@
     z-index: 9999;
   }
 
-  .logo_img img {
-    width: 124%;
-  }
   .border_img img {
     width: 105%;
   }
 
-  .form_title h2 {
-    color: #0068ea;
-    font-weight: 400;
-    font-size: 30px;
-    line-height: 45px;
-  }
   .disclaimer p {
     font-size: 10px;
     line-height: 15px;

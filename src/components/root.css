@@ -1,117 +1,9 @@
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-body {
-  font-family: "Poppins", sans-serif;
-}
-
-h1 {
-  font-weight: 600;
-  font-size: 32px;
-}
-
-header {
-  background: #0068ea;
-  padding: 10px 0;
-  -webkit-box-shadow: 0px 5px 20px 0px rgba(50, 50, 50, 0.5);
-  -moz-box-shadow: 0px 5px 20px 0px rgba(50, 50, 50, 0.5);
-  box-shadow: 0px 5px 20px 0px rgba(50, 50, 50, 0.5);
-}
-
-hr {
-  margin-top: 0.5rem;
-  margin-bottom: 2rem;
-}
-
-button:focus {
-  outline: 0;
-}
-
-.boxshadow {
-  margin: 70px 0;
-  -webkit-box-shadow: 0px 0px 17px 0px rgba(50, 50, 50, 0.5);
-  -moz-box-shadow: 0px 0px 17px 0px rgba(50, 50, 50, 0.5);
-  box-shadow: 0px 0px 17px 0px rgba(50, 50, 50, 0.5);
-  border: 3px solid #e9eaec;
-  border-radius: 10px;
-  width: 95%;
-  margin: 30px auto;
-  padding: 0px 30px 0px 60px;
-}
-
-.logo .icon {
-  max-height: 50px;
-}
-
-.logo .wordmark {
-  font-size: 18px;
-  padding: 0 2rem;
-}
-
-.logo_img img {
-  width: 55%;
-}
-
-ul#manu {
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-ul#manu li {
-}
-ul#manu li a {
-  text-decoration: none;
-  color: #fff;
-  font-size: 20px;
-  float: right;
-  line-height: 65px;
-}
-
-.upload_img {
-  position: absolute;
-  right: -17px;
-  margin-top: 75px;
-}
-.upload_img img {
-  width: 100%;
-}
-
-.col-md-3.space {
-  margin: 0;
-  padding: 0;
-}
-
-.form_title h2 {
-  color: #0068ea;
-  font-weight: 400;
-  font-size: 35px;
-  line-height: 45px;
-}
-p {
-  color: #778291;
-  font-weight: 500;
-  font-size: 15px;
-  line-height: 26px;
-}
-
-.years h3 {
-  color: #778291;
-  font-weight: 500;
-  font-size: 18px;
-  line-height: 0px;
-}
-
 .storage-fees {
   color: #778291;
   font-weight: 500;
   font-size: 18px;
 }
+
 .disclaimer {
   text-align: center;
   padding-top: 40px;
@@ -196,11 +88,6 @@ select#sel {
   padding-left: 15px;
   border-radius: 5px;
   font-weight: 500;
-}
-.years {
-  float: right;
-  text-align: left;
-  width: 80%;
 }
 
 button.btn {
@@ -504,14 +391,6 @@ option:active {
   line-height: 20px;
 }
 
-.form_title span {
-  background: #0068ea;
-  display: block;
-  width: 50px;
-  height: 2px;
-  margin-bottom: 8px;
-}
-
 .slicknav_menu {
   display: none;
 }
@@ -519,9 +398,7 @@ option:active {
 #body_area {
   position: relative;
 }
-.boxshadow {
-  position: relative;
-}
+
 .border_img img {
   width: 72%;
 }
@@ -649,10 +526,6 @@ matej-01
   border-right: none;
 }
 
-.slide-title {
-  color: #0068ea;
-}
-
 .bordered {
   border-left: 2rem solid transparent;
   border-right: 2rem solid transparent;
@@ -705,19 +578,11 @@ matej-01
   border: 1px solid #ededed;
 }
 
-.instructions {
-  margin-top: 20px;
-}
-
 .title-underline {
   border-color: #6ea0de;
   border-width: 4px;
   width: 40px;
   margin-left: 0;
-}
-
-.transaction-confirmed-instructions {
-  padding-bottom: 20px;
 }
 
 .upload-progress-bar {
@@ -729,19 +594,6 @@ matej-01
 h2 {
   color: #afcbfe;
   font-size: 20px;
-}
-
-.oyster-handle {
-  color: #0068ea;
-  font-size: 15px;
-}
-
-.underline {
-  width: 50px;
-  border-color: #afcbfe;
-  border-width: 5px;
-  margin-left: 0px;
-  margin-top: 15px;
 }
 
 input.retention-slider,
@@ -785,10 +637,6 @@ input.retention-slider:disabled::-webkit-slider-thumb {
   border-radius: 0 10px 10px 0;
 }
 
-.years-retention {
-  margin-left: 10px;
-}
-
 .header-logo {
   width: 50px;
   height: 50px;
@@ -801,12 +649,6 @@ input.retention-slider:disabled::-webkit-slider-thumb {
   color: white;
   height: 40px;
   font-size: 14px;
-}
-
-.handle-header {
-  color: #afcbfe;
-  font-size: 20px;
-  font-weight: 500;
 }
 
 .download-spinner {

@@ -1,4 +1,5 @@
 import React from "react";
+import styled from "styled-components";
 
 import Button from "../shared/button";
 
@@ -6,6 +7,14 @@ const ICON_TANGLE_LEFT = require("../../assets/images/icon_tangle_left.png");
 const ICON_TANGLE_RIGHT = require("../../assets/images/icon_tangle_right.png");
 const ICON_UPLOAD = require("../../assets/images/icon_upload.png");
 const ICON_DOWNLOAD = require("../../assets/images/icon_download.png");
+
+const Paragraph = styled.p`
+  color: #778291;
+  font-weight: 500;
+  font-size: 15px;
+  line-height: 26px;
+  margin-top: 20px;
+`;
 
 const ChoiceSlide = ({ visitUploadFormFn, visitDownloadFormFn }) => (
   <section className="slide">
@@ -20,7 +29,7 @@ const ChoiceSlide = ({ visitUploadFormFn, visitDownloadFormFn }) => (
             Upload a File
           </Button>
         </div>
-        <p className="instructions">Use Oyster to host a file on the Tangle.</p>
+        <Paragraph>Use Oyster to host a file on the Tangle.</Paragraph>
       </div>
       <div className="choice-section">
         <img src={ICON_TANGLE_RIGHT} className="tangle-image" alt="tangle" />
@@ -32,9 +41,9 @@ const ChoiceSlide = ({ visitUploadFormFn, visitDownloadFormFn }) => (
             Retrieve a File
           </Button>
         </div>
-        <p className="instructions">
+        <Paragraph>
           Use an Oyster handle to retrieve a file from the Tangle.
-        </p>
+        </Paragraph>
       </div>
     </div>
   </section>
