@@ -8,28 +8,22 @@ env:
 branches:
   only:
     - master
-cache:
-  yarn: true
-  directories:
-    - .eslintcache
-    - node_modules
+cache: npm
 
 before_install:
-  - "curl -o- -L https://yarnpkg.com/install.sh | bash"
-  - 'export PATH="$HOME/.yarn/bin:$PATH"'
+  - npm i -g npm@6.4.1
 before_script:
   - "sh -e /etc/init.d/xvfb start"
   - sleep 3 # give xvfb some time to start
   - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter # Set up Code Climate
   - chmod +x ./cc-test-reporter
   - ./cc-test-reporter before-build
-  - yarn
-  - yarn test:install
-  - yarn start -- --silent & # Silent to run E2E tests
+  - npm run test:install
+  - npm start -- --silent & # Silent to run E2E tests
 script:
-  - yarn build
-  - yarn test:coverage # Unit Tests
-  - yarn test:record # E2E Tests
+  - npm build
+  - npm run test:coverage # Unit Tests
+  - npm run test:record # E2E Tests
 after_script:
   # Publishes Unit test report to Code Climate
   - ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT

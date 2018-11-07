@@ -1,6 +1,6 @@
 # Web Interface
 
-Webinterface is Oyster's official interface for storage users to initiate an upload with the brokers to store their files securely on the tangle.  It allows users to select how long they would like the tangle to retain their file, and it will calculate how much PRL they owe for storage and give them an address to send their payment.  It shows upload progress as the user's file is attached to the tangle, and gives the user a handle to retrieve the file in the future.  Webinterface allows them to download any file that they have the handle for.
+Webinterface is Oyster's official interface for storage users to initiate an upload with the brokers to store their files securely on the tangle. It allows users to select how long they would like the tangle to retain their file, and it will calculate how much PRL they owe for storage and give them an address to send their payment. It shows upload progress as the user's file is attached to the tangle, and gives the user a handle to retrieve the file in the future. Webinterface allows them to download any file that they have the handle for.
 
 ## Getting Started
 
@@ -14,16 +14,16 @@ Clone the repo
 git clone https://github.com/oysterprotocol/webinterface.git
 ```
 
-Install dependencies 
+Install dependencies
 
 ```
-yarn
+npm
 ```
 
 Start web server
 
 ```
-yarn start
+npm start
 ```
 
 Navigate to url
@@ -37,19 +37,19 @@ Navigate to url
 Run Once
 
 ```
-yarn test
+npm test
 ```
 
 Run with watcher
 
 ```
-yarn test:watch
+npm test:watch
 ```
 
 Run with code coverage
 
 ```
-yarn test:coverage
+npm test:coverage
 ```
 
 ### End to End Tests ([Cypress](https://www.cypress.io/))
@@ -57,13 +57,13 @@ yarn test:coverage
 Run
 
 ```
-yarn cypress:open
+npm cypress:open
 ```
 
 Run and publish results to [Cypress Dashboard](https://dashboard.cypress.io/#/projects/runs)
 
 ```
-yarn cypress:publish
+npm cypress:publish
 ```
 
 ### Coding style tests
@@ -92,18 +92,16 @@ git pull
 
 ## Built With
 
-* [React](https://reactjs.org/) - The web framework used
-* [Redux](https://redux.js.org/) - State Management
-* [IOTA](https://github.com/iotaledger/iota.lib.js/) - IOTA Core API
-* [Webpack](https://webpack.js.org/) - Build tools
-
+- [React](https://reactjs.org/) - The web framework used
+- [Redux](https://redux.js.org/) - State Management
+- [IOTA](https://github.com/iotaledger/iota.lib.js/) - IOTA Core API
+- [Webpack](https://webpack.js.org/) - Build tools
 
 ## Project Status
 
-* [Travis CI Builds](https://travis-ci.org/oysterprotocol/webinterface) - Build Report
-* [E2E Test Dashboard (Cypress)](https://www.cypress.io/) - E2E test results
-* [Code Climate](https://codeclimate.com/github/oysterprotocol/webinterface) - Reports code coverage, maintainability, and trends
-
+- [Travis CI Builds](https://travis-ci.org/oysterprotocol/webinterface) - Build Report
+- [E2E Test Dashboard (Cypress)](https://www.cypress.io/) - E2E test results
+- [Code Climate](https://codeclimate.com/github/oysterprotocol/webinterface) - Reports code coverage, maintainability, and trends
 
 ## Contributing
 

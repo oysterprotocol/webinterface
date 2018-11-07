@@ -111,12 +111,11 @@
     "jest-enzyme": "^4.2.0",
     "nock": "^9.2.5",
     "regenerator-runtime": "^0.11.1",
-    "ts-jest": "^23.0.1",
-    "yarn-or-npm": "^2.0.4"
+    "ts-jest": "^23.0.1"
   },
   "scripts": {
     "start": "cross-env NODE_ENV=development PORT=3001 webpack-dev-server --config='config/webpack.config.js' --mode development",
-    "start:prod": "NODE_ENV=production yarn start --port=3001",
+    "start:prod": "NODE_ENV=production npm start --port=3001",
     "build": "cross-env NODE_ENV=production webpack --config='config/webpack.config.js' --mode production",
     "test": "jest",
     "test:install": "cypress install",
