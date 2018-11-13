@@ -1,7 +1,7 @@
 import IOTA from "iota.lib.js";
 import Stream from "oyster-streamable";
 
-import { IOTA_API, OLD_TANGLE_NODE_1, OLD_TANGLE_NODE_2 } from "../config";
+import { API, IOTA_API, OLD_TANGLE_NODE_1, OLD_TANGLE_NODE_2 } from "../config";
 
 /**
  *
@@ -26,7 +26,9 @@ export const streamUpload = (
     alpha,
     beta,
     epochs: retentionYears,
-    iotaProvider: new IOTA({ provider: IOTA_API.PROVIDER_A })
+    iotaProvider: new IOTA({ provider: IOTA_API.PROVIDER_A }),
+    unsignedTreasurePath: API.V2_UNSIGNED_TREASURE_PATH,
+    signedTreasurePath: API.V2_SIGNED_TREASURE_PATH,
   });
 
   u.on("invoice", invoiceCb);
